@@ -1,4 +1,11 @@
 #!/bin/bash
+################################################################################
+## Pegasus' Linux Administration Tools                             VER0.1BETA ##
+## (C)2017 Mattijs Snepvangers                          pegasus.ict@gmail.com ##
+## pegs_postinstall.sh        postinstall script                   VER0.1BETA ##
+## License: GPL v3                         Please keep my name in the credits ##
+################################################################################
+
 # Make sure only root can run our script
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 1>&2
@@ -49,7 +56,10 @@ gdebi -n teamviewer_i386.deb >>pegspostinstall.log 2>&1
 rm teamviewer_i386.deb >>pegspostinstall.log 2>&1
 echo "######################## Adding maintenance script to anacron ###############"
 echo "######################## Adding maintenance script to anacron ###############" >>pegspostinstall.log 2>&1
-echo -e "\n###Added by Pegs Linux Administration Tools ###\n@weekly\t10\tpegs.maintenance\tbash /media/storage/pegs_maintenance.sh\n### /PLAT ###\n" >> /etc/anacrontab
+cp pegs_maintenance.sh /etc/pegs_maintenance.sh
+chmod 555 /etc/pegs_maintenance.sh
+chown root:root /etc/pegs_maintenance.sh
+echo -e "\n###Added by Pegs Linux Administration Tools ###\n@weekly\t10\tpegs.maintenance\tbash /etc/pegs_maintenance.sh\n### /PLAT ###\n" >> /etc/anacrontab
 echo "######################## Done ###############################################"
 echo "######################## Done ###############################################" >>pegspostinstall.log 2>&1
 

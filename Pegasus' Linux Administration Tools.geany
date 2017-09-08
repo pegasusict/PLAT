@@ -1,0 +1,41 @@
+[editor]
+line_wrapping=false
+line_break_column=80
+auto_continue_multiline=true
+
+[file_prefs]
+final_new_line=true
+ensure_convert_new_lines=false
+strip_trailing_spaces=true
+replace_tabs=false
+
+[indentation]
+indent_width=2
+indent_type=0
+indent_hard_tab_width=8
+detect_indent=false
+detect_indent_width=false
+indent_mode=1
+
+[project]
+name=Pegasus' Linux Administration Tools
+base_path=/media/storage/[ SPOOR 11 ]/[[[ Projects ]]]/Pegs Linux Administration Tools
+description=
+
+[long line marker]
+long_line_behaviour=1
+long_line_column=80
+
+[files]
+current_page=0
+FILE_NAME_0=4329;Sh;0;EUTF-8;0;1;0;%2Fmedia%2Fstorage%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPegs%20Linux%20Administration%20Tools%2Fpegs_postinstall.sh;0;2
+FILE_NAME_1=12;Sh;0;EUTF-8;0;1;0;%2Fmedia%2Fstorage%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPegs%20Linux%20Administration%20Tools%2Fpegs_maintenance.sh;0;2
+FILE_NAME_2=0;Python;0;EUTF-8;0;1;0;%2Fmedia%2Fstorage%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPegs%20Linux%20Administration%20Tools%2Fpegs_gmail_mailer.py;0;2
+
+[prjorg]
+source_patterns=*.c;*.C;*.cpp;*.cxx;*.c++;*.cc;*.m;
+header_patterns=*.h;*.H;*.hpp;*.hxx;*.h++;*.hh;
+ignored_dirs_patterns=.*;CVS;
+ignored_file_patterns=*.o;*.obj;*.a;*.lib;*.so;*.dll;*.lo;*.la;*.class;*.jar;*.pyc;*.mo;*.gmo;
+generate_tag_prefs=0
+external_dirs=
