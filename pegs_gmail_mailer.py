@@ -1,4 +1,4 @@
-** pegs gmail mailer
+### pegs gmail mailer
 
 
 from __future__ import print_function
