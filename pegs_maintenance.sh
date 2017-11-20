@@ -1,8 +1,8 @@
 #!/bin/bash
 ################################################################################
-## Pegasus' Linux Administration Tools                             VER0.1BETA ##
+## Pegasus' Linux Administration Tools                             VER0.2BETA ##
 ## (C)2017 Mattijs Snepvangers                          pegasus.ict@gmail.com ##
-## pegs_maintenance.sh        maintenance script                   VER0.1BETA ##
+## pegs_maintenance.sh        maintenance script                   VER0.2BETA ##
 ## License: GPL v3                         Please keep my name in the credits ##
 ################################################################################
 
@@ -11,10 +11,9 @@ if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 1>&2
    exit 1
 fi
-
-
-_now=$(date +"%Y%m%d")
-PEGS_LOGFILE="pegsMaintenance_$_now.log"
+### trap
+_now=$(date +"%Y%m%d.%H%M%S%3N")
+PEGS_LOGFILE="/var/log/pegsMaintenance_$_now.log"
 
 echo "1/8 #################### Updating apt cache #################################"
 echo "1/8 #################### Updating apt cache #################################" >> "$PEGS_LOGFILE" 2>&1
@@ -59,4 +58,3 @@ find $CRUNCHIFY_TMP_DIRS -depth -mindepth 1 -type d -a -empty -a ! -name 'lost+f
 echo ""
 echo "######################## Maintenance complete ###############################"
 echo "######################## Maintenance complete ###############################" >> "$PEGS_LOGFILE" 2>&1
-
