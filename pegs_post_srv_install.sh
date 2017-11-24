@@ -2,7 +2,7 @@
 ################################################################################
 ## Pegasus' Linux Administration Tools                             VER0.5BETA ##
 ## (C)2017 Mattijs Snepvangers                          pegasus.ict@gmail.com ##
-## pegs_postinstall.sh        postinstall script                   VER0.5BETA ##
+## pegs_post_srv_install.sh   postinstall server script            VER0.5BETA ##
 ## License: GPL v3                         Please keep my name in the credits ##
 ################################################################################
 
@@ -19,48 +19,36 @@ _timestamp=$(date +"%Y%m%d.%H%M%S%3N")
 _logline="$_timestamp-1/7 ## installing extra PPA's #############################"
 echo _logline >> 2>&1
 echo _logline >>"$PEGS_LOGFILE" 2>&1
-echo 'deb http://archive.ubuntu.com/ubuntu-mate main restricted universe multiverse proposed backports' >/tmp/pegsaddition.list
-echo 'deb http://archive.ubuntu.com/ubuntu main restricted universe multiverse proposed backports' >> /tmp/pegsaddition.list
-sudo cp /tmp/pegsaddition.list /etc/apt/sources.list.d/
-rm /tmp/pegsaddition.list
-#webupd8 y-ppa-manager
-add-apt-repository -y ppa:webupd8team/y-ppa-manager >>"$PEGS_LOGFILE" 2>&1
+#echo 'deb http://archive.ubuntu.com/ubuntu main restricted universe multiverse proposed backports' >> /tmp/pegsaddition.list
+#sudo cp /tmp/pegsaddition.list /etc/apt/sources.list.d/
+#rm /tmp/pegsaddition.list
 add-apt-repository -y ppa:juju/stable >>"$PEGS_LOGFILE" 2>&1
-#caja-extensions
-add-apt-repository -y ppa:atareao/caja-extensions >>"$PEGS_LOGFILE" 2>&1
-#webupd8
-add-apt-repository -y ppa:nilarimogard/webupd8 >>"$PEGS_LOGFILE" 2>&1
-#noobslab apps
-add-apt-repository -y ppa:noobslab/apps >>"$PEGS_LOGFILE" 2>&1
-
+add-apt-repository -y ppa:landscape/17.03 >>"$PEGS_LOGFILE" 2>&1
 ######################################################
 _timestamp=$(date +"%Y%m%d.%H%M%S%3N")
 _logline="$_timestamp-2/7 ## Updating apt cache #################################"
 echo _logline >> 2>&1
 echo _logline >>"$PEGS_LOGFILE" 2>&1
 apt-get -qqy update >>"$PEGS_LOGFILE" 2>&1
-
 ######################################################
 _timestamp=$(date +"%Y%m%d.%H%M%S%3N")
 _logline="$_timestamp-3/7 ## installing updates #################################"
 echo _logline >> 2>&1
 echo _logline >>"$PEGS_LOGFILE" 2>&1
 apt-get -qqy --allow-unauthenticated upgrade >>"$PEGS_LOGFILE" 2>&1
-
 ######################################################
 _timestamp=$(date +"%Y%m%d.%H%M%S%3N")
 _logline="$_timestamp-4/7 ## installing extra packages ##########################"
 echo _logline >> 2>&1
 echo _logline >>"$PEGS_LOGFILE" 2>&1
-apt-get -qqy --allow-unauthenticated install mc tilda synaptic plank adb fastboot gmusicbrowser audacious forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted wine-stable playonlinux trash-cli winetricks gadmin-proftpd python3-crontab >>PEGS_LOGFILE  2>&1
-
+apt-get -qqy --allow-unauthenticated install mc trash-cli python3-crontab landscape-server-quickstart >>PEGS_LOGFILE  2>&1
+snap install conjure-up --classic
 ######################################################
 _timestamp=$(date +"%Y%m%d.%H%M%S%3N")
 _logline="$_timestamp-5/7 ## cleaning up obsolete packages ######################"
 echo _logline >> 2>&1
 echo _logline >>"$PEGS_LOGFILE" 2>&1
 apt-get -qqy autoremove >>"$PEGS_LOGFILE" 2>&1
-
 ######################################################
 _timestamp=$(date +"%Y%m%d.%H%M%S%3N")
 _logline="$_timestamp-6/7 ## installing extra software ##########################"
@@ -70,13 +58,6 @@ wget -nv https://download.teamviewer.com/download/teamviewer_i386.deb >>"$PEGS_L
 gdebi -n teamviewer_i386.deb >>"$PEGS_LOGFILE" 2>&1
 rm teamviewer_i386.deb >>"$PEGS_LOGFILE" 2>&1
 apt-get install -f
-wget -nv http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb >>"$PEGS_LOGFILE" 2>&1
-gdebi -n libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb >>"$PEGS_LOGFILE" 2>&1
-rm libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb >>"$PEGS_LOGFILE" 2>&1
-wget -nv http://staruml.io/download/release/v2.8.0/StarUML-v2.8.0-64-bit.deb >>"$PEGS_LOGFILE" 2>&1
-gdebi -n StarUML-v2.8.0-64-bit.deb >>"$PEGS_LOGFILE" 2>&1
-rm StarUML-v2.8.0-64-bit.deb >>"$PEGS_LOGFILE" 2>&1
-
 ######################################################
 _timestamp=$(date +"%Y%m%d.%H%M%S%3N")
 _logline="$_timestamp-7/7 ## Adding maintenance script to anacron ###############"
