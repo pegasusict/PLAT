@@ -1,5 +1,11 @@
-### pegs gmail mailer
-
+"""
+************************************************************************
+** Pegs' Linux Administration Tools                        VER0.5BETA **
+** (C)2017 Mattijs Snepvangers                  pegasus.ict@gmail.com **
+** pegs_gmail_mailer     gmail mail script           VER0.0.0PREALPHA **
+** License: MIT                    Please keep my name in the credits **
+************************************************************************
+"""
 
 from __future__ import print_function
 import httplib2
@@ -67,13 +73,10 @@ def main():
     if not labels:
         print('No labels found.')
     else:
-      print('Labels:')
-      for label in labels:
-        print(label['name'])
+        print('Labels:')
+        for label in labels:
+            print(label['name'])
 
 
 if __name__ == '__main__':
     main()
-
-
-
