@@ -2,7 +2,7 @@
 ################################################################################
 ## Pegasus' Linux Administration Tools                             VER0.5BETA ##
 ## (C)2017 Mattijs Snepvangers                          pegasus.ict@gmail.com ##
-## pegs_maintenance.sh        maintenance script                   VER0.5BETA ##
+## pegs_maintenance.sh        maintenance script                   VER0.5 BETA ##
 ## License: GPL v3                         Please keep my name in the credits ##
 ################################################################################
 
@@ -11,7 +11,7 @@ if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 1>&2
    exit 1
 fi
-
+###TODO### Create auto update script
 _now=$(date +"%Y%m%d.%H%M%S%3N")
 PEGS_LOGFILE="/var/log/pegsMaintenance_$_now.log"
 
