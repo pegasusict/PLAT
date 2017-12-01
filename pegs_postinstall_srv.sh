@@ -1,8 +1,8 @@
 #!/bin/bash
 ################################################################################
-## Pegasus' Linux Administration Tools                             VER0.5BETA ##
+## Pegasus' Linux Administration Tools                             VER0.6BETA ##
 ## (C)2017 Mattijs Snepvangers                          pegasus.ict@gmail.com ##
-## pegs_postinstall_srv.sh    postinstall script server edition    VER0.5BETA ##
+## pegs_postinstall_srv.sh    postinstall script server edition    VER0.6BETA ##
 ## License: GPL v3                         Please keep my name in the credits ##
 ################################################################################
 
@@ -14,47 +14,53 @@ fi
 
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 PEGS_LOGFILE="/var/log/pegsPostInstall_$_now.log"
+echo "################################################################################\n"
+echo "## Pegasus' Linux Administration Tools - Server Post Install Script  V0.6Beta ##\n"
+echo "## (c) 2017 Mattijs Snepvangers				         pegasus.ict@gmail.com ##\n"
+echo "################################################################################\n"
+echo "\n" 
+
 # Install extra ppa's
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="$_timestamp-1/7 ## installing extra PPA's #############################"
+_logline="$_timestamp-1/7 ###### installing extra PPA's #############################"
 echo $_logline 2>&1
 echo $_logline >> $PEGS_LOGFILE 2>&1
 echo 'deb http://archive.ubuntu.com/ubuntu main restricted universe multiverse proposed backports' >> /tmp/pegsaddition.list
 sudo cp /tmp/pegsaddition.list /etc/apt/sources.list.d/
 rm /tmp/pegsaddition.list
-add-apt-repository -y ppa:juju/stable >>"$PEGS_LOGFILE" 2>&1
-add-apt-repository -y ppa:landscape/17.03 >>"$PEGS_LOGFILE" 2>&1
+#add-apt-repository -y ppa:juju/stable >>"$PEGS_LOGFILE" 2>&1
+#add-apt-repository -y ppa:landscape/17.03 >>"$PEGS_LOGFILE" 2>&1
 ######################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="$_timestamp-2/7 ## Updating apt cache #################################"
+_logline="$_timestamp-2/7 ###### Updating apt cache #################################"
 echo $_logline 2>&1
 echo $_logline >> $PEGS_LOGFILE 2>&1
 apt-get -qqy update >> $PEGS_LOGFILE 2>&1
 
 ######################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="$_timestamp-3/7 ## installing updates #################################"
+_logline="$_timestamp-3/7 ###### installing updates #################################"
 echo $_logline 2>&1
 echo $_logline >> $PEGS_LOGFILE 2>&1
 apt-get -qqy --allow-unauthenticated upgrade >> $PEGS_LOGFILE 2>&1
 
 ######################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="$_timestamp-4/7 ## installing extra packages ##########################"
+_logline="$_timestamp-4/7 ###### installing extra packages ##########################"
 echo $_logline 2>&1
 echo $_logline >> $PEGS_LOGFILE 2>&1
-apt-get -qqy --allow-unauthenticated install mc trash-cli python3-crontab >> $PEGS_LOGFILE  2>&1
+apt-get -qqy --allow-unauthenticated install mc trash-cli python3-crontab lxc lxd lxd-tools bridge-utils xfsutils-linux criu >> $PEGS_LOGFILE  2>&1
 
 ######################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="$_timestamp-5/7 ## cleaning up obsolete packages ######################"
+_logline="$_timestamp-5/7 ###### cleaning up obsolete packages ######################"
 echo $_logline 2>&1
 echo $_logline >> $PEGS_LOGFILE 2>&1
 apt-get -qqy autoremove >> $PEGS_LOGFILE 2>&1
 
 ######################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="$_timestamp-6/7 ## installing extra software ##########################"
+_logline="$_timestamp-6/7 ###### installing extra software ##########################"
 echo $_logline 2>&1
 echo $_logline >> $PEGS_LOGFILE 2>&1
 ### teamviewer
@@ -65,15 +71,16 @@ apt-get install -f >> $PEGS_LOGFILE 2>&1
 
 ######################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="$_timestamp-7/7 ## Adding maintenance script to crontab ###############"
+_logline="$_timestamp-7/7 ###### Adding maintenance script to crontab ###############"
 echo $_logline 2>&1
 echo $_logline >> $PEGS_LOGFILE 2>&1
 cp pegs_maintenance.sh /etc/pegs_maintenance.sh
 chmod 555 /etc/pegs_maintenance.sh
 chown root:root /etc/pegs_maintenance.sh
-echo -e "\n###Added by Pegs Linux Administration Tools ###\n@weekly\t10\tpegs.maintenance\tbash /etc/pegs_maintenance.sh\n### /PLAT ###\n" >> /etc/crontab
+echo -e "\n### Added by Pegs Linux Administration Tools ###\n0 * * 4 0 bash /etc/pegs_maintenance.sh\n\n" >> /etc/crontab
+
 ######################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="$_timestamp-###### Done ###############################################"
+_logline="$_timestamp ###### DONE ###################################################"
 echo $_logline 2>&1
 echo $_logline >> $PEGS_LOGFILE 2>&1
