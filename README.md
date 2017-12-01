@@ -1,11 +1,12 @@
 # plat
-Pegasus' Linux Administration Tools is a set of bash and python scripts that make life easier for the lazy/newbie user on Ubuntu
-
+Pegasus' Linux Administration Tools is a set of bash and python scripts that make life easier for the lazy/newbie user
+on Ubuntu
+---
 20171201 update:
 
 the scripts have evolved!!!
 
-planned functionality (very soon)
+planned functionality (within days)
 
 **keyword arguments:** 
   postinstall:
@@ -13,7 +14,7 @@ planned functionality (very soon)
  
         All versions: edit/add repos & ppas
                       Install trash-cli, mc, teamviewer
-                      apt-get up 
+                      apt-get update, upgrade, auto-remove, autoclean
  
         ws: Adds maintenance_ws script to anacrontab weekly
             installs samba
@@ -34,7 +35,7 @@ planned functionality (very soon)
  
 **maintenance scripts:**
  
-        ws:      apt-get update, upgrade, auto-remove, autoclean
-                 Empty trash, remove tmp-files and old logs
+        All versions: apt-get update, upgrade, auto-remove, autoclean
+                      Empty trash, remove tmp-files and 7+ days old logs
         zeus: 
         lxdhost: tape backup,also handles maintenance of containers 
