@@ -13,7 +13,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
-PEGS_LOGFILE="/var/log/pegsPostInstall_$_now.log"
+PEGS_LOGFILE="/var/log/platMaintenance_$_now.log"
 
 printf "################################################################################\n" 2>&1 | tee -a $PEGS_LOGFILE
 printf "## Pegasus' Linux Administration Tools - LXDhost Maintenance Script  V0.1Beta ##\n" 2>&1 | tee -a $PEGS_LOGFILE
