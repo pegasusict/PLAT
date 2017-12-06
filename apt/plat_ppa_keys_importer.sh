@@ -20,61 +20,52 @@ echo "## (c) 2017 Mattijs Snepvangers                         pegasus.ict@gmail.
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "" 2>&1 | tee -a $PLAT_LOGFILE
 
-echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-## Dropbox
-apt-key adv --keyserver pgp.mit.edu --recv-keys 5044912E
-
-echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-## GetDeb
-wget -q -O- http://archive.getdeb.net/getdeb-archive.key | apt-key add -
-
-echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-## GIMP
+###################### WS #################################
+echo "########## adding GIMP PPA #####################################################" 2>&1 | tee -a $PLAT_LOGFILE
 apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 614C4B38
 
-echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-## Gnome3 extras
+echo "########## adding Gnome3 Extras PPA ############################################" 2>&1 | tee -a $PLAT_LOGFILE
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B1510FD
 
-echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-## Google Chrome
+echo "########## adding Google Chrome PPA ############################################" 2>&1 | tee -a $PLAT_LOGFILE
 wget -q https://dl.google.com/linux/linux_signing_key.pub -O- | apt-key add -
 
-echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-## High Explosive Graphics
+echo "########## adding Highly Explosive (Tools for Photographers) PPA ###############" 2>&1 | tee -a $PLAT_LOGFILE
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93330B78
 
-echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-#### MKVToolnix - http://www.bunkus.org/videotools/mkvtoolnix/
+echo "########## adding MKVToolnix PPA ###############################################" 2>&1 | tee -a $PLAT_LOGFILE
 wget -q http://www.bunkus.org/gpg-pub-moritzbunkus.txt -O- | apt-key add -
 
-echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-#### muCommander - http://www.mucommander.com/
-wget -O - http://apt.mucommander.com/apt.key | apt-key add -
-
-echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-#### Opera (and Opera Beta) - http://www.opera.com/
+echo "########## adding Opera (Beta) PPA #############################################" 2>&1 | tee -a $PLAT_LOGFILE
 wget -O - http://deb.opera.com/archive.key | apt-key add -
 
-echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-#### ownCloud Desktop Client - http://owncloud.org/
+echo "########## adding OwnCloud Desktop Client PPA ##################################" 2>&1 | tee -a $PLAT_LOGFILE
 wget -q http://download.opensuse.org/repositories/isv:ownCloud:community/xUbuntu_16.04/Release.key -O- | apt-key add -
 
-echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-#### Syncthing - https://syncthing.net/
+echo "########## adding GetDeb PPA ###################################################" 2>&1 | tee -a $PLAT_LOGFILE
+wget -q -O- http://archive.getdeb.net/getdeb-archive.key | apt-key add -
+
+echo "########## adding Syncthing PPA ################################################" 2>&1 | tee -a $PLAT_LOGFILE
 curl -s https://syncthing.net/release-key.txt | apt-key add -
 
-echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-#### VirtualBox - http://www.virtualbox.org
-wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc -O- | apt-key add -
-
-echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-#### Webmin - http://www.webmin.com
-wget http://www.webmin.com/jcameron-key.asc -O- | apt-key add -
-
-echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-#### WebUpd8 PPA - http://www.webupd8.org/
+echo "########## adding WebUpd8 PPA ##################################################" 2>&1 | tee -a $PLAT_LOGFILE
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4C9D234C
 
-#### Wine PPA - https://launchpad.net/~ubuntu-wine/+archive/ppa/
+echo "########## adding Wine PPA #####################################################" 2>&1 | tee -a $PLAT_LOGFILE
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 883E8688397576B6C509DF495A9A06AEF9CB8DB0
+
+####################### SRV ##############################
+echo "########## adding GetDeb PPA ###################################################" 2>&1 | tee -a $PLAT_LOGFILE
+wget -q -O- http://archive.getdeb.net/getdeb-archive.key | apt-key add -
+
+echo "########## adding Syncthing PPA ################################################" 2>&1 | tee -a $PLAT_LOGFILE
+curl -s https://syncthing.net/release-key.txt | apt-key add -
+
+echo "########## adding VirtualBox PPA ###############################################" 2>&1 | tee -a $PLAT_LOGFILE
+wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc -O- | apt-key add -
+
+echo "########## adding Webmin PPA ###################################################" 2>&1 | tee -a $PLAT_LOGFILE
+wget http://www.webmin.com/jcameron-key.asc -O- | apt-key add -
+
+echo "########## adding WebUpd8 PPA ##################################################" 2>&1 | tee -a $PLAT_LOGFILE
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4C9D234C

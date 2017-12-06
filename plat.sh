@@ -50,12 +50,39 @@ EOF
     $clear;
 }
 
+case "$role" in
+  "basic" )
+  basic = true ;;
+  "ws" )
+  basic = true
+  ws = true ;;
+  "zeus" )
+  basic = true
+  ws = true
+  lxdhost = true
+  zeus = true ;;
+  "lxdhost" )
+  lxdhost
+  container
+
+
+
+
+# declare -a options
+# echo "please enter the numbers of the PPA's you'd like to include"
+# echo "1 - GIMP"
+# echo "2 - Gnome3 extras"
+# <etc>
+# read -a options
+# echo "Options selected:"
+
 
 # Install extra ppa's
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="$_timestamp-1/7 ###### installing extra PPA's #############################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 echo "copying PPA list."
+
 cp apt/plat.list /etc/apt/sources.list.d/
 bash apt/plat_ppa_keys_importer.sh 2>&1 | tee -a $PLAT_LOGFILE
 
