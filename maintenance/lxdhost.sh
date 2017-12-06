@@ -15,6 +15,9 @@ fi
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 PEGS_LOGFILE="/var/log/platMaintenance_$_now.log"
 
+# find ip addresses in use
+# arp-scan 192.168.1.0/24
+
 printf "################################################################################\n" 2>&1 | tee -a $PEGS_LOGFILE
 printf "## Pegasus' Linux Administration Tools - LXDhost Maintenance Script  V0.1Beta ##\n" 2>&1 | tee -a $PEGS_LOGFILE
 printf "## (c) 2017 Mattijs Snepvangers                         pegasus.ict@gmail.com ##\n" 2>&1 | tee -a $PEGS_LOGFILE

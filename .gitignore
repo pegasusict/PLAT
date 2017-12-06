@@ -2,3 +2,5 @@
 *.geany
 
 argbash-2\.5\.0/
+
+client_secret\.json
