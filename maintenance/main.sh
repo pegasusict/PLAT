@@ -13,10 +13,10 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
-PEGS_LOGFILE="/var/log/plat_maintenance_$_now.log"
+PLAT_LOGFILE="/var/log/plat_maintenance_$_now.log"
 
-printf "################################################################################\n" 2>&1 | tee -a $PEGS_LOGFILE
-printf "## Pegasus' Linux Administration Tools - Basic Maintenance Script    V0.8Beta ##\n" 2>&1 | tee -a $PEGS_LOGFILE
-printf "## (c) 2017 Mattijs Snepvangers                         pegasus.ict@gmail.com ##\n" 2>&1 | tee -a $PEGS_LOGFILE
-printf "################################################################################\n" 2>&1 | tee -a $PEGS_LOGFILE
-printf "\n" 2>&1 | tee -a $PEGS_LOGFILE
+printf "################################################################################\n" 2>&1 | tee -a $PLAT_LOGFILE
+printf "## Pegasus' Linux Administration Tools - Basic Maintenance Script    V0.8Beta ##\n" 2>&1 | tee -a $PLAT_LOGFILE
+printf "## (c) 2017 Mattijs Snepvangers                         pegasus.ict@gmail.com ##\n" 2>&1 | tee -a $PLAT_LOGFILE
+printf "################################################################################\n" 2>&1 | tee -a $PLAT_LOGFILE
+printf "\n" 2>&1 | tee -a $PLAT_LOGFILE
