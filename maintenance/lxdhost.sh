@@ -2,7 +2,7 @@
 ################################################################################
 ## Pegasus' Linux Administration Tools                             VER0.6BETA ##
 ## (C)2017 Mattijs Snepvangers                          pegasus.ict@gmail.com ##
-## pegs_postinstall_srv.sh    postinstall script server edition    VER0.6BETA ##
+## plat_maintenance_lxdhost.sh     maintenance script lxdhost      VER0.1BETA ##
 ## License: GPL v3                         Please keep my name in the credits ##
 ################################################################################
 
@@ -19,35 +19,7 @@ PEGS_LOGFILE="/var/log/platMaintenance_$_now.log"
 # arp-scan 192.168.1.0/24
 
 printf "################################################################################\n" 2>&1 | tee -a $PEGS_LOGFILE
-printf "## Pegasus' Linux Administration Tools - LXDhost Maintenance Script  V0.1Beta ##\n" 2>&1 | tee -a $PEGS_LOGFILE
+printf "## Pegasus' Linux Administration Tools - LXDhost Maintenance Script  V0.8Beta ##\n" 2>&1 | tee -a $PEGS_LOGFILE
 printf "## (c) 2017 Mattijs Snepvangers                         pegasus.ict@gmail.com ##\n" 2>&1 | tee -a $PEGS_LOGFILE
 printf "################################################################################\n" 2>&1 | tee -a $PEGS_LOGFILE
 printf "\n" 2>&1 | tee -a $PEGS_LOGFILE
-
-getargs() {
-    TEMP=`getopt -o hr:c: --long help,role:,containertype: -n "$FUNCNAME" -- "$@"`
-    if [ $? != 0 ] ; then return 1 ; fi
-    eval set -- "$TEMP";
-    local format='%s\n' escape='-E' line='-n' script clear='tput sgr0';
-    while [[ ${1:0:1} == - ]]; do
-        [[ $1 =~ ^-h|--help ]] && {
-            cat <<-EOF
-            USAGE:
-
-            OPTIONS
-              -r or --role tells the script what kind of system we're dealing with
-                    valid options: basic, ws, zeus, lxdhost, container
-              -c or --containertype tells the script what kind of container we're
-                    working on
-                    valid options are: basic, nas, web, x11, pxe
-            EOF
-            return;
-        };
-        [[ $1 == -- ]] && { shift; break; };
-        [[ $1 =~ ^-r|--role$ ]] && { role="${2}"; shift 2; continue; };
-        [[ $1 =~ ^-c|--containertype$ ]] && { container="${2}"; shift 2; continue; };
-        break
-    done
-    tput -S <<<"$script";
-    $clear;
-}

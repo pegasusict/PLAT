@@ -1,8 +1,8 @@
 #!/bin/bash
 ################################################################################
-## Pegasus' Linux Administration Tools                             VER0.6BETA ##
+## Pegasus' Linux Administration Tools                             VER1.0BETA ##
 ## (C)2017 Mattijs Snepvangers                          pegasus.ict@gmail.com ##
-## pegs_postinstall_srv.sh    postinstall script server edition    VER0.6BETA ##
+## pegs_postinstall_srv.sh    postinstall script                   VER1.0BETA ##
 ## License: GPL v3                         Please keep my name in the credits ##
 ################################################################################
 
@@ -15,12 +15,12 @@ fi
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 PEGS_LOGFILE="/var/log/pegsPostInstall_$_now.log"
 echo "################################################################################\n" 2>&1 | tee -a $PEGS_LOGFILE
-echo "## Pegasus' Linux Administration Tools - Post Install Script         V0.6Beta ##\n" 2>&1 | tee -a $PEGS_LOGFILE
+echo "## Pegasus' Linux Administration Tools - Post Install Script         V1.0Beta ##\n" 2>&1 | tee -a $PEGS_LOGFILE
 echo "## (c) 2017 Mattijs Snepvangers                         pegasus.ict@gmail.com ##\n" 2>&1 | tee -a $PEGS_LOGFILE
 echo "################################################################################\n" 2>&1 | tee -a $PEGS_LOGFILE
 echo "\n" 2>&1 | tee -a $PEGS_LOGFILE
 
-printfx() {
+getargs() {
 
     TEMP=`getopt -o hr:c: --long help,role:,containertype: -n "$FUNCNAME" -- "$@"`
 

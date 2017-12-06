@@ -7,18 +7,18 @@
 
 
 ###### Ubuntu Main Repos
-deb http://xx.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse 
-deb-src http://xx.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse 
+deb http://xx.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse
+deb-src http://xx.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse
 
 ###### Ubuntu Update Repos
-deb http://xx.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse 
-deb http://xx.archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe multiverse 
-deb http://xx.archive.ubuntu.com/ubuntu/ xenial-proposed main restricted universe multiverse 
-deb http://xx.archive.ubuntu.com/ubuntu/ xenial-backports main restricted universe multiverse 
-deb-src http://xx.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse 
-deb-src http://xx.archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe multiverse 
-deb-src http://xx.archive.ubuntu.com/ubuntu/ xenial-proposed main restricted universe multiverse 
-deb-src http://xx.archive.ubuntu.com/ubuntu/ xenial-backports main restricted universe multiverse 
+deb http://xx.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse
+deb http://xx.archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe multiverse
+deb http://xx.archive.ubuntu.com/ubuntu/ xenial-proposed main restricted universe multiverse
+deb http://xx.archive.ubuntu.com/ubuntu/ xenial-backports main restricted universe multiverse
+deb-src http://xx.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse
+deb-src http://xx.archive.ubuntu.com/ubuntu/ xenial-updates main restricted universe multiverse
+deb-src http://xx.archive.ubuntu.com/ubuntu/ xenial-proposed main restricted universe multiverse
+deb-src http://xx.archive.ubuntu.com/ubuntu/ xenial-backports main restricted universe multiverse
 
 ################################################################################
 ##                           3rd Party Binary Repos                           ##
@@ -46,27 +46,21 @@ deb http://ppa.launchpad.net/dhor/myway/ubuntu xenial main
 deb http://mega.nz/linux/MEGAsync/xUbuntu_16.04/ ./
 
 #### MKVToolnix - http://www.bunkus.org/videotools/mkvtoolnix/
-## Run this command: wget -q http://www.bunkus.org/gpg-pub-moritzbunkus.txt -O- | sudo apt-key add -
 deb http://www.bunkus.org/ubuntu/xenial/ ./
 
 #### muCommander - http://www.mucommander.com/
-## Run this command: sudo wget -O - http://apt.mucommander.com/apt.key | sudo apt-key add - 
-deb http://apt.mucommander.com stable main non-free contrib  
+deb http://apt.mucommander.com stable main non-free contrib
 
 #### Opera - http://www.opera.com/
-## Run this command: sudo wget -O - http://deb.opera.com/archive.key | sudo apt-key add -
 deb http://deb.opera.com/opera/ stable non-free
 
 #### Opera Beta - http://www.opera.com/
-## Run this command: sudo wget -O - http://deb.opera.com/archive.key | sudo apt-key add -
 deb http://deb.opera.com/opera-beta/ stable non-free
 
 #### ownCloud Desktop Client - http://owncloud.org/
-## Run this command: wget -q http://download.opensuse.org/repositories/isv:ownCloud:community/xUbuntu_16.04/Release.key -O- | sudo apt-key add -
 deb http://download.opensuse.org/repositories/isv:/ownCloud:/community/xUbuntu_16.04/ /
 
 #### Syncthing - https://syncthing.net/
-## Run this command: curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
 deb http://apt.syncthing.net/ syncthing release
 
 #### VirtualBox - http://www.virtualbox.org
@@ -101,11 +95,11 @@ deb-src http://ppa.launchpad.net/gnome3-team/gnome3/ubuntu xenial main
 
 #### Highly Explosive PPA (Source) - https://launchpad.net/~dhor/+archive/myway
 ## Run this command: sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93330B78
-deb-src http://ppa.launchpad.net/dhor/myway/ubuntu xenial main 
+deb-src http://ppa.launchpad.net/dhor/myway/ubuntu xenial main
 
 #### MKVToolnix (Source) - http://www.bunkus.org/videotools/mkvtoolnix/
 ## Run this command: wget -q http://www.bunkus.org/gpg-pub-moritzbunkus.txt -O- | sudo apt-key add -
-deb-src http://www.bunkus.org/ubuntu/xenial/ ./ 
+deb-src http://www.bunkus.org/ubuntu/xenial/ ./
 
 #### WebUpd8 PPA (Source) - http://www.webupd8.org/
 ## Run this command: sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4C9D234C
@@ -114,5 +108,3 @@ deb-src http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu xenial main
 #### Wine PPA (Source) - https://launchpad.net/~ubuntu-wine/+archive/ppa/
 ## Run this command: sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 883E8688397576B6C509DF495A9A06AEF9CB8DB0
 deb-src http://ppa.launchpad.net/ubuntu-wine/ppa/ubuntu xenial main
-
-
