@@ -5,9 +5,6 @@
 #### Dropbox PPA - http://dropbox.com
 deb http://linux.dropbox.com/ubuntu/ xenial main
 
-#### GetDeb - http://www.getdeb.net
-deb http://archive.getdeb.net/ubuntu xenial-getdeb apps
-
 #### Gimp PPA - https://launchpad.net/~otto-kesselgulasch/+archive/gimp
 deb http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu xenial main
 deb-src http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu xenial main
@@ -30,9 +27,6 @@ deb http://mega.nz/linux/MEGAsync/xUbuntu_16.04/ ./
 deb http://www.bunkus.org/ubuntu/xenial/ ./
 deb-src http://www.bunkus.org/ubuntu/xenial/ ./
 
-#### muCommander - http://www.mucommander.com/
-deb http://apt.mucommander.com stable main non-free contrib
-
 #### Opera - http://www.opera.com/
 deb http://deb.opera.com/opera/ stable non-free
 
@@ -42,22 +36,10 @@ deb http://deb.opera.com/opera-beta/ stable non-free
 #### ownCloud Desktop Client - http://owncloud.org/
 deb http://download.opensuse.org/repositories/isv:/ownCloud:/community/xUbuntu_16.04/ /
 
-#### Syncthing - https://syncthing.net/
-deb http://apt.syncthing.net/ syncthing release
-
 #### VirtualBox - http://www.virtualbox.org
 deb http://download.virtualbox.org/virtualbox/debian xenial contrib
-
-#### Webmin - http://www.webmin.com
-deb http://download.webmin.com/download/repository sarge contrib
-
-#### WebUpd8 PPA - http://www.webupd8.org/
-deb http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu xenial main
-deb-src http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu xenial main
 
 #### Wine PPA - https://launchpad.net/~ubuntu-wine/+archive/ppa/
 deb http://ppa.launchpad.net/ubuntu-wine/ppa/ubuntu xenial main
 deb-src http://ppa.launchpad.net/ubuntu-wine/ppa/ubuntu xenial main
 
-#### Yuuguu - http://yuuguu.com
-deb http://update.yuuguu.com/repositories/apt hardy multiverse
