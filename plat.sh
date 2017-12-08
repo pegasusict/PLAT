@@ -178,7 +178,7 @@ fi
 ######################################################################
 if [ "$systemrole[web]" = true ];
 then
-   apt-get -qqy --allow-unauthenticated install apache2, phpmyadmin mysql-server mytop proftpd 2>&1 | tee -a $PLAT_LOGFILE  2>&1
+   apt-get -qqy --allow-unauthenticated install apache2 phpmyadmin mysql-server mytop proftpd 2>&1 | tee -a $PLAT_LOGFILE  2>&1
 fi
 if [ "$systemrole[nas]" = true ];
 then
