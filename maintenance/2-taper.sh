@@ -15,11 +15,11 @@ fi
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 PLAT_LOGFILE="/var/log/plat_backup_$_now.log"
 
-# find ip addresses in use
-# arp-scan 192.168.1.0/24
-
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "## Pegasus' Linux Administration Tools -         Tape Backup Script  V0.8Beta ##" 2>&1 | tee -a $PLAT_LOGFILE
 echo "## (c) 2017 Mattijs Snepvangers                         pegasus.ict@gmail.com ##" 2>&1 | tee -a $PLAT_LOGFILE
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "" 2>&1 | tee -a $PLAT_LOGFILE
+
+## backup data to tape
+#   1st sunday of the month complete backup, rest incremental

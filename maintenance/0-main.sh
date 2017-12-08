@@ -20,3 +20,11 @@ echo "## Pegasus' Linux Administration Tools - Basic Maintenance Script    V0.8B
 echo "## (c) 2017 Mattijs Snepvangers                         pegasus.ict@gmail.com ##" 2>&1 | tee -a $PLAT_LOGFILE
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "" 2>&1 | tee -a $PLAT_LOGFILE
+
+### apt update
+### apt upgrade
+### apt auto-remove
+### apt purge
+### apt auto clean
+
+### purge cache/tmp/logs/trash

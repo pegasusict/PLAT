@@ -49,6 +49,11 @@ EOF
    $clear;
 }
 
+if [ $role = "lxdhost" ];
+then
+   cat lxdhost_interfaces.txt >> /etc/network/interfaces
+
+
 case "$role" in
    "ws" )
       systemrole[basic] = true
