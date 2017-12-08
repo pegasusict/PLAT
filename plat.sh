@@ -147,7 +147,6 @@ then
    curl -s https://syncthing.net/release-key.txt | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
 fi
 
-
 ######################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="$_timestamp-2/7 ###### Updating apt cache #################################"
@@ -164,7 +163,37 @@ apt-get -qqy --allow-unauthenticated upgrade 2>&1 | tee -a $PLAT_LOGFILE
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="$_timestamp-4/7 ###### installing extra packages ##########################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
-apt-get -qqy --allow-unauthenticated install mc trash-cli python3-crontab lxc lxd lxd-tools bridge-utils xfsutils-linux criu 2>&1 | tee -a $PLAT_LOGFILE  2>&1
+if [ "$systemrole[basic]" = true ];
+then
+   apt-get -qqy --allow-unauthenticated install mc trash-cli 2>&1 | tee -a $PLAT_LOGFILE  2>&1
+fi
+if [ "$systemrole[ws]" = true ];
+then
+   apt-get -qqy --allow-unauthenticated install synaptic tilda audacious samba wine-stable playonlinux winetricks 2>&1 | tee -a $PLAT_LOGFILE  2>&1
+fi
+if [ "$systemrole[zeus]" = true ];
+then
+   apt-get -qqy --allow-unauthenticated install plank picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted 2>&1 | tee -a $PLAT_LOGFILE
+fi
+######################################################################
+if [ "$systemrole[web]" = true ];
+then
+   apt-get -qqy --allow-unauthenticated install apache2, phpmyadmin mysql-server mytop proftpd 2>&1 | tee -a $PLAT_LOGFILE  2>&1
+fi
+if [ "$systemrole[nas]" = true ];
+then
+   apt-get -qqy --allow-unauthenticated install samba 2>&1 | tee -a $PLAT_LOGFILE  2>&1
+fi
+if [ "$systemrole[pxe]" = true ];
+then
+   apt-get -qqy --allow-unauthenticated install atftpd 2>&1 | tee -a $PLAT_LOGFILE  2>&1
+###check### what about: cobbler
+fi
+
+
+
+
+
 
 ######################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
