@@ -12,16 +12,16 @@ planned functionality (within days)
 
 **keyword arguments:** 
   postinstall:
-     --role <zeus|ws|lxdhost|container> [--containertype <nas|web|X11>]
+     --role <zeus|ws|lxdhost|container|basic> [--containertype <nas|web|X11|pxe|basic>]
  
         All versions: edit/add repos & ppas
                       Install trash-cli, mc, teamviewer
                       apt-get update, upgrade, auto-remove, autoclean
  
-        ws: Adds maintenance_ws script to anacrontab weekly
+        ws: Adds maintenance script to anacrontab weekly
             installs samba
             
-        zeus (my ws): adds lxdhost_maintenance script to anacrontab,
+        zeus (my ws): adds maintenance script to anacrontab weekly,
                       installs staruml, lxd stuff, proftpd, opensshd, samba
                       
         lxdhost: installs lxd stuff, bridge_utils,
@@ -35,9 +35,10 @@ planned functionality (within days)
         containertype nas: installs samba, nfs, proftpd
         containertype X11: installs ldm, teamviewer
  
-**maintenance scripts:**
+**maintenance script:**
  
+        maintenance script is purpose built by post-install script 
         All versions: apt-get update, upgrade, auto-remove, autoclean
-                      Empty trash, remove tmp-files and 7+ days old logs
-        zeus: 
-        lxdhost: tape backup,also handles maintenance of containers 
+                      Empty trash, remove temp-files and 7+ days old logs
+        zeus: also handles maintenance of containers, first creates snapshots, then manintenance
+        lxdhost: also handles maintenance of containers, first creates snapshots, then tape backup, then maintenance

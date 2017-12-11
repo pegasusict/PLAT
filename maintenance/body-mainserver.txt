@@ -1,3 +1,62 @@
+################################################################################
+_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
+_logline="########## $_timestamp-1/10 ###### Scanning for containers #####################"
+echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+active_containers = ${lxc list | grep -i running}
+inactive_containers = ${lxc list | grep -i stopped}
+# Save current IFS
+SAVEIFS=$IFS
+# Change IFS to new line. 
+IFS=$'\n'
+active_containers = ($active_containers)
+inactive_containers = ($inactive_containers)
+# Restore IFS
+IFS=$SAVEIFS
+_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
+_logline="########## $_timestamp-2/10 ###### Containers found: ###########################"
+echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+for (( i=0; i<${#active_containers[@]}; i++ ))
+do
+    echo "Active Container $i: ${active_containers[$i]}"
+    active_containers_found++
+done
+echo "found $active_containers_found active containers."
+for (( i=0; i<${#inactive_containers[@]}; i++ ))
+do
+    echo "Inactive Container $i: ${inactive_containers[$i]}"
+    inactive_containers_found++
+done
+echo "found $inactive_containers_found inactive containers."
+################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
+_logline="########## $_timestamp-1/10 ####################################################"
+echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+#lxc  2>&1 | tee -a $PLAT_LOGFILE
+
+
+
+
+
+
 
 ################################################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
