@@ -1,8 +1,8 @@
 #!/bin/bash
 ################################################################################
-## Pegasus' Linux Administration Tools                             VER0.6BETA ##
+## Pegasus' Linux Administration Tools                             VER1.0BETA ##
 ## (C)2017 Mattijs Snepvangers                          pegasus.ict@gmail.com ##
-## plat_maintenance_basic.sh    maintenance script basic           VER0.6BETA ##
+## plat_maintenance_basic.sh        maintenance script             VER1.0BETA ##
 ## License: GPL v3                         Please keep my name in the credits ##
 ################################################################################
 
@@ -16,7 +16,7 @@ _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 PLAT_LOGFILE="/var/log/plat_maintenance_$_now.log"
 
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-echo "## Pegasus' Linux Administration Tools - Basic Maintenance Script    V0.8Beta ##" 2>&1 | tee -a $PLAT_LOGFILE
+echo "## Pegasus' Linux Administration Tools    -    Maintenance Script    V1.0Beta ##" 2>&1 | tee -a $PLAT_LOGFILE
 echo "## (c) 2017 Mattijs Snepvangers                         pegasus.ict@gmail.com ##" 2>&1 | tee -a $PLAT_LOGFILE
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "" 2>&1 | tee -a $PLAT_LOGFILE

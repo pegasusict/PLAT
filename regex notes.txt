@@ -1,0 +1,42 @@
+Regular expression metacharacters
+
+A regular expression may be followed by one of several repetition operators (metacharacters):
+
+Table 4-1. Regular expression operators
+Operator	Effect
+.	Matches any single character.
+?	The preceding item is optional and will be matched, at most, once.
+*	The preceding item will be matched zero or more times.
++	The preceding item will be matched one or more times.
+{N}	The preceding item is matched exactly N times.
+{N,}	The preceding item is matched N or more times.
+{N,M}	The preceding item is matched at least N times, but not more than M times.
+-	represents the range if it's not first or last in a list or the ending point of a range in a list.
+^	Matches the empty string at the beginning of a line; also represents the characters not in the range of a list.
+$	Matches the empty string at the end of a line.
+\b	Matches the empty string at the edge of a word.
+\B	Matches the empty string provided it's not at the edge of a word.
+\<	Match the empty string at the beginning of word.
+\>	Match the empty string at the end of word.
+
+Two regular expressions may be concatenated; the resulting regular expression matches any string formed by concatenating two substrings that respectively
+ match the concatenated subexpressions.
+
+Two regular expressions may be joined by the infix operator "|"; the resulting regular expression matches any string matching either subexpression.
+
+Repetition takes precedence over concatenation, which in turn takes precedence over alternation. A whole subexpression may be enclosed in parentheses to
+ override these precedence rules.
+
+
+4.1.3. Basic versus extended regular expressions
+
+In basic regular expressions the metacharacters "?", "+", "{", "|", "(", and ")" lose their special meaning; instead use the backslashed versions 
+"\?", "\+", "\{", "\|", "\(", and "\)".
+
+=================================================================================================================================================
+| $conatainername | $state | $ipv4 | $ipv6 | $persistent | $snapshots |
+containername = \ba-zA-Z{1}a-zA-Z0-9\-{,61}a-zA-Z0-9{1}\b
+state = "RUNNING" || "STOPPED"
+ipv4 = \b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b
+ipv6 = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/
+snapshots = \b0-9*\b

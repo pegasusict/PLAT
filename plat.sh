@@ -32,9 +32,9 @@ getargs() {
 
          OPTIONS
 
-           -r or --role tells the script what kind of system we're dealing with.
-              Valid options: basic, ws, zeus, lxdhost, container
-           -c or --containertype tells the script what kind of container we're working on.
+           -r or --role tells the script what kind of system we are dealing with.
+              Valid options: basic, ws, zeus, mainserver, container
+           -c or --containertype tells the script what kind of container we are working on.
               Valid options are: basic, nas, web, x11, pxe
 EOF
 ###TODO### re indent EOF when done
@@ -49,7 +49,10 @@ EOF
    $clear;
 }
 
-if [ $role = "lxdhost" ];
+getargs()
+
+
+if [ $role = "mainserver" ];
 then
    cat lxdhost_interfaces.txt >> /etc/network/interfaces
 
@@ -66,33 +69,27 @@ case "$role" in
       systemrole[zeus] = true
       systemrole[nas] = true
       ;;
-   "lxdhost" )
+   "mainserver" )
       systemrole[basic] = true
       systemrole[lxdhost] = true
       ;;
    "container" )
       systemrole[container] = true
+      systemrole[basic] = true
       case "$containertype" in
          "nas" )
-            systemrole[basic] = true
             systemrole[nas] = true
             ;;
          "web" )
-            systemrole[basic] = true
             systemrole[nas] = true
             systemrole[web] = true
             ;;
          "x11" )
-            systemrole[basic] = true
             systemrole[ws] = true
             ;;
          "pxe" )
-            systemrole[basic] = true
             systemrole[nas] = true
             systemrole[pxe] = true
-            ;;
-         * )
-            systemrole[basic] = true
             ;;
       esac
    * )
@@ -103,9 +100,6 @@ esac
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="$_timestamp-1/7 ###### installing extra PPA's #############################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
-
-
-
 
 
 if [ "$systemrole[basic]" = true ];
@@ -121,7 +115,6 @@ then
    echo "########## adding WebUpd8 PPA key ##############################################" 2>&1 | tee -a $PLAT_LOGFILE
    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4C9D234C 2>&1 | tee -a $PLAT_LOGFILE
 fi
-
 if [ "$systemrole[ws]" = true ];
 then
    echo "########## copying extra PPA's #################################################" 2>&1 | tee -a $PLAT_LOGFILE
@@ -163,7 +156,6 @@ _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="$_timestamp-3/7 ###### installing updates #################################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 apt-get -qqy --allow-unauthenticated upgrade 2>&1 | tee -a $PLAT_LOGFILE
-
 ######################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="$_timestamp-4/7 ###### installing extra packages ##########################"
@@ -180,7 +172,6 @@ if [ "$systemrole[zeus]" = true ];
 then
    apt-get -qqy --allow-unauthenticated install plank picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted 2>&1 | tee -a $PLAT_LOGFILE
 fi
-######################################################################
 if [ "$systemrole[web]" = true ];
 then
    apt-get -qqy --allow-unauthenticated install apache2 phpmyadmin mysql-server mytop proftpd 2>&1 | tee -a $PLAT_LOGFILE  2>&1
@@ -197,34 +188,39 @@ fi
 
 
 
-
-
-
 ######################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="$_timestamp-5/7 ###### cleaning up obsolete packages ######################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 apt-get -qqy autoremove 2>&1 | tee -a $PLAT_LOGFILE
-
 ######################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="$_timestamp-6/7 ###### installing extra software ##########################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 ### teamviewer
- wget -nv https://download.teamviewer.com/download/teamviewer_i386.deb 2>&1 | tee -a $PLAT_LOGFILE
+wget -nv https://download.teamviewer.com/download/teamviewer_i386.deb 2>&1 | tee -a $PLAT_LOGFILE
 gdebi -n teamviewer_i386.deb 2>&1 | tee -a $PLAT_LOGFILE
 rm teamviewer_i386.deb 2>&1 | tee -a $PLAT_LOGFILE
 apt-get install -f 2>&1 | tee -a $PLAT_LOGFILE
-
 ######################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="$_timestamp-7/7 ###### Adding maintenance script to crontab ###############"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+
+case "$role" in
+   "ws" )
+   	maintenance_script = header+
+basic, ws, zeus, mainserver
+
+
+
+
+
+
 cp pegs_maintenance.sh /etc/pegs_maintenance.sh
 chmod 555 /etc/pegs_maintenance.sh
 chown root:root /etc/pegs_maintenance.sh
 echo -e "\n### Added by Pegs Linux Administration Tools ###\n0 * * 4 0 bash /etc/pegs_maintenance.sh\n\n" >> /etc/crontab
-
 ######################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="$_timestamp ###### DONE ###################################################"
