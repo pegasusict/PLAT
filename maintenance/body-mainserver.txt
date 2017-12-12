@@ -28,7 +28,20 @@ do
 done
 echo "found $inactive_containers_found inactive containers."
 ################################################################################
-
+_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
+_logline="########## $_timestamp-1/10 ###### creating snapshots ##########################"
+echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+#lxc  2>&1 | tee -a $PLAT_LOGFILE
+for (( i=0; i<${#active_containers[@]}; i++ ))
+do
+    lxc pause ${active_containers[$i]}
+    lxc snapshot "${active_containers[$i]}" "${active_containers[$i]}_$_timestamp"
+    lxc start ${active_containers[$i]}    
+done
+for (( i=0; i<${#inactive_containers[@]}; i++ ))
+do
+    lxc snapshot "${inactive_containers[$i]}" "${inactive_containers[$i]}_$_timestamp"
+done
 
 
 
@@ -59,10 +72,6 @@ echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 
 
 ################################################################################
-_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-1/10 ###### creating snapshots ##########################"
-echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
-#lxc  2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="########## $_timestamp-2/10 ###### full system backup ##########################"
