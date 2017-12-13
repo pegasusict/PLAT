@@ -3,11 +3,11 @@
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="########## $_timestamp-1/10 ###### Scanning for containers #####################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
-active_containers = ${lxc list | grep -i running}
-inactive_containers = ${lxc list | grep -i stopped}
+active_containers = ${lxc list -c ns | grep -i running}
+inactive_containers = ${lxc list -c ns | grep -i stopped}
 # Save current IFS
 SAVEIFS=$IFS
-# Change IFS to new line. 
+# Change IFS to new line.
 IFS=$'\n'
 active_containers = ($active_containers)
 inactive_containers = ($inactive_containers)
@@ -37,7 +37,7 @@ for (( i=0; i<${#active_containers[@]}; i++ ))
 do
     lxc pause ${active_containers[$i]}
     lxc snapshot "${active_containers[$i]}" "${active_containers[$i]}_$_timestamp"
-    lxc start ${active_containers[$i]}    
+    lxc start ${active_containers[$i]}
 done
 for (( i=0; i<${#inactive_containers[@]}; i++ ))
 do

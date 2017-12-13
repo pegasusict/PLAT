@@ -53,6 +53,7 @@ if [ $role = "mainserver" ];
 then
    cat lxdhost_interfaces.txt >> /etc/network/interfaces
 fi
+
 case "$role" in
    "ws" )
       systemrole[basic] = true
@@ -92,6 +93,7 @@ case "$role" in
       systemrole[basic] = true
       ;;
 esac
+
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="$_timestamp-1/7 ###### installing extra PPA's ######################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
@@ -195,6 +197,9 @@ then
   wget -nv http://staruml.io/download/release/v2.8.0/StarUML-v2.8.0-64-bit.deb 2>&1 | tee -a $PEGS_LOGFILE
   gdebi -n StarUML-v2.8.0-64-bit.deb 2>&1 | tee -a $PEGS_LOGFILE
   rm StarUML-v2.8.0-64-bit.deb 2>&1 | tee -a $PEGS_LOGFILE
+  wget https://release.gitkraken.com/linux/gitkraken-amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
+  gdebi -n gitkraken-amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
+  rm gitkraken-amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
 fi
 ######################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
