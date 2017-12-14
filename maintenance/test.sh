@@ -11,8 +11,9 @@ inactive_containers=$(echo "$inactive_containers" | grep -Po "\b[a-zA-Z][-a-zA-Z
 echo "test result:"
 echo "$active_containers"
 #####################################################################
-active_containers=readarray -t y <<<"$active_containers"
-echo "$active_containers[0]"
+IFS=$'\n' activecontainers=($active_containers)
+#active_containers=readarray -t y <<<"$active_containers"
+echo ${activecontainers[0]}
 echo "====================="
-echo "$active_containers[1]"
+echo ${activecontainers[1]}
 echo "====================="
