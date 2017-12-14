@@ -12,7 +12,7 @@ activecontainers=($active_containers)
 inactivecontainers=($inactive_containers)
 active_containers_found=${#activecontainers[@]}
 inactive_containers_found=${#inactivecontainers[@]}
-if [active_containers_found > 0];
+if [$active_containers_found > 0];
 then
    echo "$active_containers_found active containers found:"
    for (( i=0; i<${active_containers_found}; i++ ));
@@ -22,7 +22,7 @@ then
 else
    echo "No active containers found"
 fi
-if [inactive_containers_found > 0];
+if [$inactive_containers_found > 0];
 then
    echo "$inactive_containers_found inactive containers found:"
    for (( i=0; i<${inactive_containers_found}; i++ ));
