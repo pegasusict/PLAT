@@ -3,32 +3,45 @@
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="########## $_timestamp-1/10 ###### Scanning for containers #####################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
-active_containers = ${lxc list -c ns | grep -i running}
-inactive_containers = ${lxc list -c ns | grep -i stopped}
-active_containers = $(grep -Po "\b[a-zA-Z][-a-zA-Z0-9]{1,61}[a-zA-Z0-9](?=\s*\| RUNNING)" "$active_containers")
-inactive_containers = $(grep -Po "\b[a-zA-Z][-a-zA-Z0-9]{1,61}[a-zA-Z0-9](?=\s*\| STOPPED)" "$inactive_containers")
+active_containers=$(lxc list -c ns | grep -i running)
+inactive_containers=$(lxc list -c ns | grep -i stopped)
+active_containers=$(echo "$active_containers" | grep -Po "\b[a-zA-Z][-a-zA-Z]{0,61}[a-zA-Z0-9](?=\s*\| RUNNING)")
+inactive_containers=$(echo "$inactive_containers" | grep -Po "\b[a-zA-Z][-a-zA-Z]{0,61}[a-zA-Z0-9](?=\s*\| STOPPED)")
+IFS=$'\n'
+activecontainers=($active_containers)
+inactivecontainers=($inactive_containers)
+active_containers_found=${#activecontainers[@]}
+inactive_containers_found=${#inactivecontainers[@]}
 ################################################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="########## $_timestamp-2/10 ###### Containers found: ###########################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
-for (( i=0; i<${#active_containers[@]}; i++ ))
-do
-    echo "Active Container $i: ${active_containers[$i]}"
-    active_containers_found++
-done
-echo "found $active_containers_found active containers."
-for (( i=0; i<${#inactive_containers[@]}; i++ ))
-do
-    echo "Inactive Container $i: ${inactive_containers[$i]}"
-    inactive_containers_found++
-done
-echo "found $inactive_containers_found inactive containers."
+if [ $active_containers_found -gt 0 ];
+then
+   echo "$active_containers_found active containers found:"
+   for (( i=0; i<${active_containers_found}; i++ ));
+   do
+      echo ${activecontainers[$i]}
+   done
+else
+   echo "No active containers found"
+fi
+if [ $inactive_containers_found -gt 0 ];
+then
+   echo "$inactive_containers_found inactive containers found:"
+   for (( i=0; i<${inactive_containers_found}; i++ ));
+   do
+      echo ${inactivecontainers[$i]}
+   done
+else
+   echo "No inactive containers found"
+fi
 ################################################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="########## $_timestamp-1/10 ###### creating snapshots ##########################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 #lxc  2>&1 | tee -a $PLAT_LOGFILE
-for (( i=0; i<${#active_containers[@]}; i++ ))
+for (( i=0; i<${active_containers_found}; i++ ));
 do
     lxc pause ${active_containers[$i]}
     lxc snapshot "${active_containers[$i]}" "${active_containers[$i]}_$_timestamp"

@@ -17,7 +17,7 @@ then
    echo "$active_containers_found active containers found:"
    for (( i=0; i<${active_containers_found}; i++ ));
    do
-      echo ${activecontainers[$i]}
+      echo "-> ${activecontainers[$i]}"
    done
 else
    echo "No active containers found"
