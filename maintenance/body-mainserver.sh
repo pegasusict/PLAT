@@ -1,4 +1,3 @@
-#!/bin/bash
 ################################################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="########## $_timestamp-1/10 ###### Scanning for containers #####################"
@@ -140,8 +139,9 @@ _logline="########## $_timestamp 12/12 ##### Retrieving logs from containers ###
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 for (( i=0; i<${active_containers_found}; i++ ));
 do
-    lxc file pull ${activecontainers[$i]}$PLAT_LOGFILE
+    lxc file pull ${activecontainers[$i]}/var/log/plat/* maintenance/logs/
 done
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="########## $_timestamp ###### Maintenance complete #############################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+###TODO### send email with logs attached

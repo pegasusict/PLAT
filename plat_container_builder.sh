@@ -63,6 +63,7 @@ I'm sorry, the name you proposed is invalid, please enter a valid name:
     > name may not start or end with a dash "-"
     > name may not start with a digit "0-9""
 EOF
+###TODO### re indent EOF when done if needed
       return $FALSE
    else
       return $TRUE

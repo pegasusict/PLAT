@@ -2,7 +2,7 @@
 ################################################################################
 ## Pegasus' Linux Administration Tools                             VER1.0BETA ##
 ## (C)2017 Mattijs Snepvangers                          pegasus.ict@gmail.com ##
-## pegs_postinstall_srv.sh    postinstall script                   VER1.0BETA ##
+## plat.sh                postinstall script                       VER1.0BETA ##
 ## License: GPL v3                         Please keep my name in the credits ##
 ################################################################################
 
@@ -16,7 +16,7 @@ _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 PLAT_LOGFILE="/var/log/platPostInstall_$_now.log"
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "## Pegasus' Linux Administration Tools - Post Install Script         V1.0Beta ##" 2>&1 | tee -a $PLAT_LOGFILE
-echo "## (c) 2017 Mattijs Snepvangers    build 2017121       pegasus.ict@gmail.com ##" 2>&1 | tee -a $PLAT_LOGFILE
+echo "## (c) 2017 Mattijs Snepvangers    build 20171214       pegasus.ict@gmail.com ##" 2>&1 | tee -a $PLAT_LOGFILE
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "" 2>&1 | tee -a $PLAT_LOGFILE
 
@@ -37,7 +37,7 @@ getargs() {
            -c or --containertype tells the script what kind of container we are working on.
               Valid options are: basic, nas, web, x11, pxe
 EOF
-###TODO### re indent EOF when done
+###TODO### re indent EOF when done if needed
          return;
       };
       [[ $1 == -- ]] && { shift; break; };
@@ -93,7 +93,24 @@ case "$role" in
       systemrole[basic] = true
       ;;
 esac
+################################################################################
+#chrlen=${#myvar}
+create_logline(title) {
+   _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
+   _log_line = "$_timestamp ## $title #"
+   chrlen=${#_log_line}
+   imax = 80
+   for (( i=${#_log_line}; i<imax; i++ ))
+   do
+       _log_line = _log_line + "#"
+   done
+   echo $_log_line 2>&1 | tee -a $PLAT_LOGFILE
+   }
 
+
+
+
+################################################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="$_timestamp-1/7 ###### installing extra PPA's ######################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
