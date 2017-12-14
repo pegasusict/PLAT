@@ -16,7 +16,7 @@ _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 PLAT_LOGFILE="/var/log/platPostInstall_$_now.log"
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "## Pegasus' Linux Administration Tools - Post Install Script         V1.0Beta ##" 2>&1 | tee -a $PLAT_LOGFILE
-echo "## (c) 2017 Mattijs Snepvangers    build 20171211       pegasus.ict@gmail.com ##" 2>&1 | tee -a $PLAT_LOGFILE
+echo "## (c) 2017 Mattijs Snepvangers    build 2017121       pegasus.ict@gmail.com ##" 2>&1 | tee -a $PLAT_LOGFILE
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "" 2>&1 | tee -a $PLAT_LOGFILE
 
@@ -205,6 +205,7 @@ fi
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="$_timestamp-7/7 ###### Building maintenance script ##################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+
 maintenancescript = "plat_maintenance.sh"
 cat maintenance/maintenance-header >> "$maintenancescript"
 echo "built at $_timestamp" >> "$maintenancescript"

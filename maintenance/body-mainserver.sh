@@ -5,7 +5,7 @@ _logline="########## $_timestamp-1/10 ###### Scanning for containers ###########
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 active_containers=$(lxc list -c ns | grep -i running)
 inactive_containers=$(lxc list -c ns | grep -i stopped)
-active_containers=$(echo "$active_containers" | grep -Po "\b[a-zA-Z][-a-zA-Z]{0,61}[a-zA-Z0-9](?=\s*\| RUNNING)")
+active_containers=$(echo "$active_containers" | grep -Po "\b[a-zA-Z][-a-zA-Z0-9]{0,61}[a-zA-Z0-9](?=\s*\| RUNNING)")
 inactive_containers=$(echo "$inactive_containers" | grep -Po "\b[a-zA-Z][-a-zA-Z]{0,61}[a-zA-Z0-9](?=\s*\| STOPPED)")
 IFS=$'\n'
 activecontainers=($active_containers)
@@ -47,7 +47,7 @@ do
     lxc snapshot "${activecontainers[$i]}" "${activecontainers[$i]}_$_timestamp"
     lxc start ${activecontainers[$i]}
 done
-for (( i=0; i<#inactive_containers_found[@]; i++ ))
+for (( i=0; i<inactive_containers_found; i++ ))
 do
     lxc snapshot "${inactivecontainers[$i]}" "${inactivecontainers[$i]}_$_timestamp"
 done
