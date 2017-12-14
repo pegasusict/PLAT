@@ -21,7 +21,7 @@ then
    echo "$active_containers_found active containers found:"
    for (( i=0; i<${active_containers_found}; i++ ));
    do
-      echo ${activecontainers[$i]}
+      echo "-> ${activecontainers[$i]}"
    done
 else
    echo "No active containers found"
@@ -31,7 +31,7 @@ then
    echo "$inactive_containers_found inactive containers found:"
    for (( i=0; i<${inactive_containers_found}; i++ ));
    do
-      echo ${inactivecontainers[$i]}
+      echo "-> ${inactivecontainers[$i]}"
    done
 else
    echo "No inactive containers found"
@@ -41,89 +41,85 @@ _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="########## $_timestamp-1/10 ###### creating snapshots ##########################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 #lxc  2>&1 | tee -a $PLAT_LOGFILE
-for (( i=0; i<${active_containers_found}; i++ ));
+for (( i=0; i<active_containers_found; i++ ));
 do
-    lxc pause ${active_containers[$i]}
-    lxc snapshot "${active_containers[$i]}" "${active_containers[$i]}_$_timestamp"
-    lxc start ${active_containers[$i]}
+    lxc pause ${activecontainers[$i]}
+    lxc snapshot "${activecontainers[$i]}" "${activecontainers[$i]}_$_timestamp"
+    lxc start ${activecontainers[$i]}
 done
-for (( i=0; i<${#inactive_containers[@]}; i++ ))
+for (( i=0; i<#inactive_containers_found[@]; i++ ))
 do
-    lxc snapshot "${inactive_containers[$i]}" "${inactive_containers[$i]}_$_timestamp"
+    lxc snapshot "${inactivecontainers[$i]}" "${inactivecontainers[$i]}_$_timestamp"
 done
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-1/10 ####################################################"
-echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
-#lxc  2>&1 | tee -a $PLAT_LOGFILE
-
-
-
-
-
-
-
-################################################################################
 ################################################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="########## $_timestamp-2/10 ###### full system backup ##########################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
-#tar 2>&1 | tee -a $PLAT_LOGFILE
+mt -f /dev/st0 rewind 2>&1 | tee -a $PLAT_LOGFILE
+oldpwd=$(pwd)
+cd /
+sudo tar -cpzf /dev/st0
+-v
+–exclude=cache
+–exclude=/dev/*
+–exclude=/lost+found/*
+–exclude=/media/*
+–exclude=/mnt/*
+–exclude=/proc/*
+–exclude=/sys/*
+–exclude=/tmp/*
+–exclude=/var/cache/apt/*
+–exclude="$PLAT_LOGFILE" /
+ 2>&1 | tee -a $PLAT_LOGFILE
+ mt -f /dev/st0 offline
+ cd $oldpwd
 ################################################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-3/10 ###### Updating apt cache ##########################"
+_logline="########## $_timestamp-3/10 ###### Starting Maintenance scripts on containers ##"
+echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+for (( i=0; i<${active_containers_found}; i++ ));
+do
+    lxc file push maintenance/plat_maintenance_container.sh ${activecontainers[$i]}/etc/plat_maintenance.sh
+    lxc exec ${activecontainers[$i]} /etc/plat_maintenance.sh
+done
+################################################################################
+_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
+_logline="########## $_timestamp-4/10 ###### Updating apt cache ##########################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 apt-get -qqy update 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-4/10 ###### Updating installed packages #################"
+_logline="########## $_timestamp-5/10 ###### Updating installed packages #################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 apt-get -qqy --allow-unauthenticated upgrade 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-5/10 ###### Cleaning up obsolete packages ###############"
+_logline="########## $_timestamp-6/10 ###### Cleaning up obsolete packages ###############"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 apt-get -qqy autoremove 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-6/10 ###### Purging apt package cache ###################"
+_logline="########## $_timestamp-7/10 ###### Purging apt package cache ###################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 apt-get -qqy clean 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-7/10 ###### Emptying the trash ##########################"
+_logline="########## $_timestamp-8/10 ###### Emptying the trash ##########################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 trash-empty 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-8/10 ###### Clearing user cache #########################"
+_logline="########## $_timestamp-9/10 ###### Clearing user cache #########################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 find /home/* -type f \( -name '*.tmp' -o -name '*.temp' -o -name '*.swp' -o -name '*~' -o -name '*.bak' -o -name '..netrwhist' \) -delete 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-9/10 ###### Deleting old logs ###########################"
+_logline="########## $_timestamp 10/10 ##### Deleting old logs ###########################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 find /var/log -name "*.log" -mtime +30 -a ! -name "SQLUpdate.log" -a ! -name "updated_days*" -a ! -name "qadirectsvcd*" -exec rm -f {} \;  2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-10/10 ##### Purging TMP directories #####################"
+_logline="########## $_timestamp-11/12 ##### Purging TMP directories #####################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 # CRUNCHIFY_TMP_DIRS - List of directories to search
 CRUNCHIFY_TMP_DIRS="/tmp /var/tmp"
@@ -139,6 +135,13 @@ find $CRUNCHIFY_TMP_DIRS -depth -type f -a -empty -print -delete 2>&1 | tee -a $
 find $CRUNCHIFY_TMP_DIRS -depth -type s -a -ctime $DEFAULT_SOCK_AGE -a -size 0 -print -delete 2>&1 | tee -a $PLAT_LOGFILE
 find $CRUNCHIFY_TMP_DIRS -depth -mindepth 1 -type d -a -empty -a ! -name 'lost+found' -print -delete 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
+_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
+_logline="########## $_timestamp 12/12 ##### Retrieving logs from containers #############"
+echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+for (( i=0; i<${active_containers_found}; i++ ));
+do
+    lxc file pull ${activecontainers[$i]}$PLAT_LOGFILE
+done
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="########## $_timestamp ###### Maintenance complete #############################"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE

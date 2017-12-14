@@ -27,7 +27,7 @@ then
    echo "$inactive_containers_found inactive containers found:"
    for (( i=0; i<${inactive_containers_found}; i++ ));
    do
-      echo ${inactivecontainers[$i]}
+      echo "-> ${inactivecontainers[$i]}"
    done
 else
    echo "No inactive containers found"
