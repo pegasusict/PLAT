@@ -51,9 +51,30 @@ EOF
    tput -S <<<"$script";
    $clear;
 }
+create_logline() {
+   _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
+   _log_line="$_timestamp ## $loglinetitle #"
+   imax=80
+   for (( i=${#_log_line}; i<imax; i++ ))
+   do
+       _log_line+="#"
+   done
+   echo $_log_line 2>&1 | tee -a $PLAT_LOGFILE
+}
+create_secline() {
+   _log_line="# $loglinetitle #"
+   imax=78
+   for (( i=${#_log_line}; i<imax; i+=2 ))
+   do
+       _log_line="#$_log_line#"
+   done
+   echo $_log_line 2>&1 | tee -a $PLAT_LOGFILE
+}
+
 ################################################################################
 getargs()
-checkname(contname) {
+
+checkname() {
    filteredname=$(echo "$contname" | grep -Po "^[a-zA-Z][-a-zA-Z0-9]{0,61}[a-zA-Z0-9]$")
    if [$filteredname != $contname];
    then

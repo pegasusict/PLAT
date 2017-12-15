@@ -1,6 +1,6 @@
 #!/bin/bash
 ################################################################################
-## Pegasus' Linux Administration Tools                             VER1.0BETA ##
+## Pegasus' Linux Administration Tools       build 20171215        VER1.0BETA ##
 ## (C)2017 Mattijs Snepvangers                          pegasus.ict@gmail.com ##
 ## plat_maintenance_container.sh   container maintenance script    VER1.0BETA ##
 ## License: GPL v3                         Please keep my name in the credits ##
@@ -10,54 +10,58 @@ if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 1>&2
    exit 1
 fi
+create_logline() {
+   _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
+   _log_line="$_timestamp ## $loglinetitle #"
+   imax=80
+   for (( i=${#_log_line}; i<imax; i++ ))
+   do
+       _log_line+="#"
+   done
+   echo $_log_line 2>&1 | tee -a $PLAT_LOGFILE
+}
+create_secline() {
+   _log_line="# $loglinetitle #"
+   imax=78
+   for (( i=${#_log_line}; i<imax; i+=2 ))
+   do
+       _log_line="#$_log_line#"
+   done
+   echo $_log_line 2>&1 | tee -a $PLAT_LOGFILE
+}
 ################################################################################
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 PLAT_LOGFILE="/var/log/plat/maintenance_$_now.log"
 ################################################################################
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "## Pegasus' Linux Administration Tools    -    Maintenance Script    V1.0Beta ##" 2>&1 | tee -a $PLAT_LOGFILE
-echo "## (c) 2017 Mattijs Snepvangers                         pegasus.ict@gmail.com ##" 2>&1 | tee -a $PLAT_LOGFILE
+echo "## (c) 2017 Mattijs Snepvangers   build 20171215        pegasus.ict@gmail.com ##" 2>&1 | tee -a $PLAT_LOGFILE
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "" 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
-_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-3/10 ###### Updating apt cache ##########################"
-echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+create_logline "Updating apt cache"
 apt-get -qqy update 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
-_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-4/10 ###### Updating installed packages #################"
-echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+create_logline "Updating installed packages"
 apt-get -qqy --allow-unauthenticated upgrade 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
-_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-5/10 ###### Cleaning up obsolete packages ###############"
-echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+create_logline "Cleaning up obsolete packages"
 apt-get -qqy autoremove 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
-_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-6/10 ###### Purging apt package cache ###################"
-echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+create_logline "Purging apt package cache"
 apt-get -qqy clean 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
-_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-7/10 ###### Emptying the trash ##########################"
-echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+create_logline "Emptying the trash"
 trash-empty 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
-_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-8/10 ###### Clearing user cache #########################"
+create_logline "Clearing user cache"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 find /home/* -type f \( -name '*.tmp' -o -name '*.temp' -o -name '*.swp' -o -name '*~' -o -name '*.bak' -o -name '..netrwhist' \) -delete 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
-_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-9/10 ###### Deleting old logs ###########################"
-echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+create_logline "Deleting old logs"
 find /var/log -name "*.log" -mtime +30 -a ! -name "SQLUpdate.log" -a ! -name "updated_days*" -a ! -name "qadirectsvcd*" -exec rm -f {} \;  2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
-_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp-10/10 ##### Purging TMP directories #####################"
-echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+create_logline "Purging TMP directories"
 # CRUNCHIFY_TMP_DIRS - List of directories to search
 CRUNCHIFY_TMP_DIRS="/tmp /var/tmp"
 # DEFAULT_FILE_AGE - # days ago (rounded up) that file was last accessed
@@ -72,6 +76,5 @@ find $CRUNCHIFY_TMP_DIRS -depth -type f -a -empty -print -delete 2>&1 | tee -a $
 find $CRUNCHIFY_TMP_DIRS -depth -type s -a -ctime $DEFAULT_SOCK_AGE -a -size 0 -print -delete 2>&1 | tee -a $PLAT_LOGFILE
 find $CRUNCHIFY_TMP_DIRS -depth -mindepth 1 -type d -a -empty -a ! -name 'lost+found' -print -delete 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
-_timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-_logline="########## $_timestamp ###### Maintenance complete #############################"
-echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
+create_logline "Maintenance Complete"
+###TODO### send email with log attached
