@@ -77,4 +77,6 @@ find $CRUNCHIFY_TMP_DIRS -depth -type s -a -ctime $DEFAULT_SOCK_AGE -a -size 0 -
 find $CRUNCHIFY_TMP_DIRS -depth -mindepth 1 -type d -a -empty -a ! -name 'lost+found' -print -delete 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
 create_logline "Maintenance Complete"
-###TODO### send email with log attached
+################################################################################
+### sending log by email
+lib/mail.sh
