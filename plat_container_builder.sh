@@ -112,3 +112,10 @@ case "$containertype" in
 esac
 
 print $systemrole
+
+
+
+
+
+### send email with log attached
+/etc/plat/mail.sh

@@ -5,7 +5,6 @@
 ## plat.sh                postinstall script                       VER1.0BETA ##
 ## License: GPL v3                         Please keep my name in the credits ##
 ################################################################################
-
 # Make sure only root can run this script
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 1>&2
@@ -13,7 +12,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
-PLAT_LOGFILE="/var/log/platPostInstall_$_now.log"
+PLAT_LOGFILE="/var/log/plat/PostInstall_$_now.log"
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "## Pegasus' Linux Administration Tools - Post Install Script         V1.0Beta ##" 2>&1 | tee -a $PLAT_LOGFILE
 echo "## (c) 2017 Mattijs Snepvangers    build 20171215       pegasus.ict@gmail.com ##" 2>&1 | tee -a $PLAT_LOGFILE
@@ -213,7 +212,7 @@ then
 fi
 ################################################################################
 create_logline "Building maintenance script"
-maintenancescript = "plat_maintenance.sh"
+maintenancescript = "maintenance.sh"
 cat maintenance/maintenance-header1.sh >> "$maintenancescript"
 echo "##                     built at $_timestamp                     ##" >> "$maintenancescript"
 sed -e 1d maintenance/maintenance-header2.sh >> "$maintenancescript"
@@ -230,14 +229,16 @@ then
 fi
 sed -e 1d maintenance/basic-body.sh >> "$maintenancescript"
 create_secline "Moving maintenance script to /etc/"
-mv "$maintenancescript" /etc/plat_maintenance.sh
-chmod 555 /etc/plat_maintenance.sh
-chown root:root /etc/plat_maintenance.sh
+mv "$maintenancescript" /etc/plat/maintenance.sh
+chmod 555 /etc/plat/maintenance.sh
+chown root:root /etc/plat/maintenance.sh
 if $role = "mainserver";
 then
-  echo -e "\n### Added by Pegs Linux Administration Tools ###\n0 * * 4 0 bash /etc/plat_maintenance.sh\n\n" >> /etc/crontab
+  echo -e "\n### Added by Pegs Linux Administration Tools ###\n0 * * 4 0 bash /etc/plat/maintenance.sh\n\n" >> /etc/crontab
 elif
-  echo -e "\n### Added by Pegs Linux Administration Tools ###\n@weekly\t10\tplat_maintenance\tbash /etc/plat_maintenance.sh\n### /PLAT ###\n" >> /etc/anacrontab
+  echo -e "\n### Added by Pegs Linux Administration Tools ###\n@weekly\t10\tplat_maintenance\tbash /etc/plat/maintenance.sh\n### /PLAT ###\n" >> /etc/anacrontab
 fi
 ################################################################################
 create_logline "DONE"
+### email with log attached
+/etc/plat/mail.sh

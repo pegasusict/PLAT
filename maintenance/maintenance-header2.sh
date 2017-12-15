@@ -7,7 +7,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
-PLAT_LOGFILE="/var/log/plat_maintenance_$_now.log"
+PLAT_LOGFILE="/var/log/plat/maintenance_$_now.log"
 
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "## Pegasus' Linux Administration Tools    -    Maintenance Script    V1.0Beta ##" 2>&1 | tee -a $PLAT_LOGFILE
