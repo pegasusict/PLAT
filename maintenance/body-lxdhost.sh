@@ -54,7 +54,7 @@ done
 _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
 _logline="########## $_timestamp-3/10 ###### Starting Maintenance scripts on containers ##"
 echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
-for (( i=0; i<${active_containers_found}; i++ ));
+for (( i=0; i<active_containers_found; i++ ));
 do
     lxc file push maintenance/plat_maintenance_container.sh ${activecontainers[$i]}/etc/plat_maintenance.sh
     lxc exec ${activecontainers[$i]} /etc/plat_maintenance.sh
