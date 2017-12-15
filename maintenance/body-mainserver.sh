@@ -18,7 +18,7 @@ echo $_logline 2>&1 | tee -a $PLAT_LOGFILE
 if [ $active_containers_found -gt 0 ];
 then
    echo "$active_containers_found active containers found:"
-   for (( i=0; i<${active_containers_found}; i++ ));
+   for (( i=0; i<active_containers_found; i++ ));
    do
       echo "-> ${activecontainers[$i]}"
    done
@@ -28,7 +28,7 @@ fi
 if [ $inactive_containers_found -gt 0 ];
 then
    echo "$inactive_containers_found inactive containers found:"
-   for (( i=0; i<${inactive_containers_found}; i++ ));
+   for (( i=0; i<inactive_containers_found; i++ ));
    do
       echo "-> ${inactivecontainers[$i]}"
    done
