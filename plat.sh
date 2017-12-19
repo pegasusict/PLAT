@@ -222,17 +222,17 @@ then
    fi
    sed -e 1d maintenance/body-lxdhost1.sh >> "$maintenancescript"
 fi
-sed -e 1d maintenance/basic-body.sh >> "$maintenancescript"
+sed -e 1d maintenance/body-basic.sh >> "$maintenancescript"
 chmod 555 /etc/plat/maintenance.sh
 chown root:root /etc/plat/maintenance.sh
 if [ $role = "mainserver" ];
 then
   echo -e "\n### Added by Pegs Linux Administration Tools ###\n0 * * 4 0 bash /etc/plat/maintenance.sh\n\n" >> /etc/crontab
-elif
+else
   echo -e "\n### Added by Pegs Linux Administration Tools ###\n@weekly\t10\tplat_maintenance\tbash /etc/plat/maintenance.sh\n### /PLAT ###\n" >> /etc/anacrontab
 fi
 ################################################################################
-create_logline "Building mahttps://unix.stackexchange.com/questions/134648/nested-case-why-must-be-put-after-possible-commands-and-not-directly-behiil script"
+create_logline "Building mail script"
 mailscript = "/etc/plat/mail.sh"
 cat mail/mail0.sh >> "$mailscript"
 echo "Which gmail account will I use to send the reports?"
