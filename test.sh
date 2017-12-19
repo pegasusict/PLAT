@@ -1,3 +1,4 @@
+#!/bin/bash
 create_logline "Building mail script"
 mailscript="/etc/plat/mail.sh"
 mkdir /etc/plat

@@ -45,7 +45,7 @@ check_sendmail
 
 /usr/bin/sendEmail -v -f ${From_Mail} \
                      -t ${To_Mail} -u "${Subject}" \
-                     -m `MSG` \
+                     -m ${MSG} \
                      -a "${Attachment}"
                      -xu "${Sndr_Uname}" \
                      -xp "${Sndr_Passwd}" \
