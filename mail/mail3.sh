@@ -28,17 +28,11 @@ Log_File="/var/log/plat_sendemail.log"
 # check sendmail dir exists or not if not check create it
 Log_dir="$(dirname ${Log_File})"
 
-
 if [ ! -d "${Log_dir}" ]; then
-
     mkdir "${Log_dir}"
-
 fi
 
-
-
 check_sendmail() {
-
     if [ ! -x "/usr/bin/sendEmail" ]; then
         echo "sendEmail not installed"
         echo "Installing sendEmail..."
@@ -59,3 +53,4 @@ check_sendmail
                      -s "${RELAY_SERVER}" \
                      -cc "${CC_TO}" \
                      -l "${Log_File}"
+}
