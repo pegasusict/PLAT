@@ -68,6 +68,7 @@ create_secline() {
 }
 
 getargs()
+###TODO### what to do with interfaces file?
 if [ $role = "mainserver" ];
 then
    cat lxdhost_interfaces.txt > /etc/network/interfaces
@@ -239,6 +240,22 @@ elif
   echo -e "\n### Added by Pegs Linux Administration Tools ###\n@weekly\t10\tplat_maintenance\tbash /etc/plat/maintenance.sh\n### /PLAT ###\n" >> /etc/anacrontab
 fi
 ################################################################################
+create_logline "Building mail script"
+mailscript = "/etc/plat/mail.sh"
+cat mail/mail0.sh >> "$mailscript"
+echo "Which gmail account will I use to send the reports?"
+read sender
+echo "From_Mail=\"$sender\"" >> mailscript
+cat mail/mail1.sh >> "$mailscript"
+echo "Which password goes with that account?"
+read PassWord
+echo "Sndr_Passwd=\"$PassWord\"" >> mailscript
+cat mail/mail2.sh >> "$mailscript"
+echo "To whom will the reports be sent?"
+read Recipient
+echo "To_Mail=\"$Recipient\"" >> mailscript
+cat mail/mail3.sh >> "$mailscript"
+################################################################################
 create_logline "DONE"
 ### email with log attached
-/etc/plat/mail.sh
+bash /etc/plat/mail.sh
