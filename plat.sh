@@ -155,7 +155,7 @@ create_logline "Updating apt cache"
 apt-get update 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
 create_logline "Installing updates"
-apt-get -qqy --allow-unauthenticated upgrade 2>&1 | tee -a $PLAT_LOGFILE
+apt-get --allow-unauthenticated upgrade 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
 create_logline "Installing extra packages"
 if [ "$systemrole[basic]" = true ];
