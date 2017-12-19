@@ -77,23 +77,19 @@ fi
 
 case "$role" in
 "ws" )
-  systemrole[basic] = true
   systemrole[ws] = true
   ;;
 "zeus" )
-  systemrole[basic] = true
   systemrole[ws] = true
   systemrole[lxdhost] = true
   systemrole[zeus] = true
   systemrole[nas] = true
   ;;
 "mainserver" )
-  systemrole[basic] = true
   systemrole[lxdhost] = true
   ;;
 "container" )
   systemrole[container] = true
-  systemrole[basic] = true
   case "$containertype" in
   "nas" )
     systemrole[nas] = true
@@ -110,25 +106,20 @@ case "$role" in
     systemrole[pxe] = true
     ;;
   esac
-*)
-  systemrole[basic] = true
-  ;;
 esac
+systemrole[basic] = true
 ################################################################################
 create_logline "Installing extra PPA's"
-if [ "$systemrole[basic]" = true ];
-then
-   create_secline "Copying Ubuntu sources and some extras"
-   cp apt/base.lst /etc/apt/sources.list.d/ 2>&1 | tee -a $PLAT_LOGFILE
-   create_secline "Adding GetDeb PPA key"
-   wget -q -O- http://archive.getdeb.net/getdeb-archive.key | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
-   create_secline "Adding VirtualBox PPA key"
-   wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
-   create_secline "Adding Webmin PPA key"
-   wget http://www.webmin.com/jcameron-key.asc -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
-   create_secline "Adding WebUpd8 PPA key"
-   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4C9D234C 2>&1 | tee -a $PLAT_LOGFILE
-fi
+create_secline "Copying Ubuntu sources and some extras"
+cp apt/base.lst /etc/apt/sources.list.d/ 2>&1 | tee -a $PLAT_LOGFILE
+create_secline "Adding GetDeb PPA key"
+wget -q -O- http://archive.getdeb.net/getdeb-archive.key | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
+create_secline "Adding VirtualBox PPA key"
+wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
+create_secline "Adding Webmin PPA key"
+wget http://www.webmin.com/jcameron-key.asc -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
+create_secline "Adding WebUpd8 PPA key"
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4C9D234C 2>&1 | tee -a $PLAT_LOGFILE
 if [ "$systemrole[ws]" = true ];
 then
    create_secline "Copying extra PPA's"
