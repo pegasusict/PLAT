@@ -208,6 +208,7 @@ fi
 create_logline "Building maintenance script"
 mkdir /etc/plat
 maintenancescript="/etc/plat/maintenance.sh"
+rm $maintenancescript 2>&1 | tee -a $PEGS_LOGFILE
 cat maintenance/maintenance-header1.sh >> "$maintenancescript"
 echo "##                     built at $_timestamp                     ##" >> "$maintenancescript"
 sed -e 1d maintenance/maintenance-header2.sh >> "$maintenancescript"
@@ -235,7 +236,7 @@ fi
 create_logline "Building mail script"
 mailscript="/etc/plat/mail.sh"
 mkdir /etc/plat
-touch $mailscript
+rm $mailscript 2>&1 | tee -a $PEGS_LOGFILE
 cat mail/mail0.sh >> "$mailscript"
 echo "Which gmail account will I use to send the reports?"
 read sender
