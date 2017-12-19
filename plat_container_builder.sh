@@ -16,6 +16,7 @@ declare -r FALSE=1
 ################################################################################
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 PLAT_LOGFILE="/var/log/plat/ContainerBuilder_$_now.log"
+touch $PLAT_LOGFILE
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "## Pegasus' Linux Administration Tools - Container Builder           V1.0Beta ##" 2>&1 | tee -a $PLAT_LOGFILE
 echo "## (c) 2017 Mattijs Snepvangers    build 20171214       pegasus.ict@gmail.com ##" 2>&1 | tee -a $PLAT_LOGFILE
