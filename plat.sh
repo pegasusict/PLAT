@@ -108,11 +108,11 @@ case "$role" in
     ;;
   esac
 esac
-systemrole[basic] = true
+systemrole[basic]=true
 ################################################################################
 create_logline "Installing extra PPA's"
 create_secline "Copying Ubuntu sources and some extras"
-cp apt/base.lst /etc/apt/sources.list.d/ 2>&1 | tee -a $PLAT_LOGFILE
+cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | tee -a $PLAT_LOGFILE
 create_secline "Adding GetDeb PPA key"
 wget -q -O- http://archive.getdeb.net/getdeb-archive.key | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
 create_secline "Adding VirtualBox PPA key"
@@ -124,7 +124,7 @@ apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4C9D234C 2>&1 | tee -a 
 if [ "$systemrole[ws]" = true ];
 then
    create_secline "Copying extra PPA's"
-   cp apt/base.lst /etc/apt/sources.list.d/ 2>&1 | tee -a $PLAT_LOGFILE
+   cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | tee -a $PLAT_LOGFILE
    create_secline "Adding FreeCad PPA"
    add-apt-repository ppa:freecad-maintainers/freecad-stable
    create_secline "Adding GIMP PPA key"
