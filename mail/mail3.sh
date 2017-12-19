@@ -1,4 +1,4 @@
-
+#!/usr/bin/bash
 # Define CC to (Note: for multiple CC use ,(comma) as seperator )
 CC_TO="pegasus.ict+plat@gmail.com"
 
