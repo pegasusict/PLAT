@@ -155,7 +155,7 @@ create_logline "Updating apt cache"
 apt-get update 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
 create_logline "Installing updates"
-apt-get --allow-unauthenticated upgrade 2>&1 | tee -a $PLAT_LOGFILE
+apt-get --allow-unauthenticated upgrade -y 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
 create_logline "Installing extra packages"
 if [ "$systemrole[basic]" = true ];
@@ -189,7 +189,7 @@ create_secline "Installing TeamViewer"
 wget -nv https://download.teamviewer.com/download/teamviewer_i386.deb 2>&1 | tee -a $PLAT_LOGFILE
 gdebi -n teamviewer_i386.deb 2>&1 | tee -a $PLAT_LOGFILE
 rm teamviewer_i386.deb 2>&1 | tee -a $PLAT_LOGFILE
-apt-get install -f 2>&1 | tee -a $PLAT_LOGFILE
+apt-get install -fy 2>&1 | tee -a $PLAT_LOGFILE
 
 if $systemrole = "zeus";
 then
