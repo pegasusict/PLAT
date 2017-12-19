@@ -114,9 +114,9 @@ create_logline "Installing extra PPA's"
 create_secline "Copying Ubuntu sources and some extras"
 cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | tee -a $PLAT_LOGFILE
 create_secline "Adding GetDeb PPA key"
-wget -q -O- http://archive.getdeb.net/getdeb-archive.key | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
+wget -O- http://archive.getdeb.net/getdeb-archive.key | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
 create_secline "Adding VirtualBox PPA key"
-wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
+wget http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
 create_secline "Adding Webmin PPA key"
 wget http://www.webmin.com/jcameron-key.asc -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
 create_secline "Adding WebUpd8 PPA key"
@@ -132,19 +132,18 @@ then
    create_secline "Adding Gnome3 Extras PPA"
    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B1510FD 2>&1 | tee -a $PLAT_LOGFILE
    create_secline "Adding Google Chrome PPA"
-   wget -q https://dl.google.com/linux/linux_signing_key.pub -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
+   wget https://dl.google.com/linux/linux_signing_key.pub -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
    create_secline "Adding Highly Explosive (Tools for Photographers) PPA"
    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93330B78 2>&1 | tee -a $PLAT_LOGFILE
    create_secline "Adding MKVToolnix PPA"
-   wget -q http://www.bunkus.org/gpg-pub-moritzbunkus.txt -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
+   wget http://www.bunkus.org/gpg-pub-moritzbunkus.txt -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
    create_secline "Adding Opera (Beta) PPA"
    wget -O - http://deb.opera.com/archive.key | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
    create_secline "Adding OwnCloud Desktop PPA"
-   wget -q http://download.opensuse.org/repositories/isv:ownCloud:community/xUbuntu_16.04/Release.key -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
+   wget http://download.opensuse.org/repositories/isv:ownCloud:community/xUbuntu_16.04/Release.key -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
    create_secline "Adding Wine PPA"
    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 883E8688397576B6C509DF495A9A06AEF9CB8DB0 2>&1 | tee -a $PLAT_LOGFILE
 fi
-
 if [ "$systemrole[nas]" = true ];
 then
    create_secline "Adding Syncthing PPA"
@@ -248,7 +247,7 @@ echo "Sndr_Passwd=\"$PassWord\"" >> "$mailscript"
 sed -e 1d mail/mail2.sh >> "$mailscript"
 echo "To whom will the reports be sent?"
 read Recipient
-echo "To_Mail=\"$Recipient\"" >> mailscript
+echo "To_Mail=\"$Recipient\"" >> "$mailscript"
 sed -e 1d mail/mail3.sh >> "$mailscript"
 ################################################################################
 create_logline "DONE"
