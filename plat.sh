@@ -152,10 +152,10 @@ then
 fi
 ################################################################################
 create_logline "Updating apt cache"
-apt-get update 2>&1 | tee -a $PLAT_LOGFILE
+apt-get update -q 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
 create_logline "Installing updates"
-apt-get --allow-unauthenticated upgrade -y 2>&1 | tee -a $PLAT_LOGFILE
+apt-get --allow-unauthenticated upgrade -qy 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
 create_logline "Installing extra packages"
 if [ "$systemrole[basic]" = true ];
@@ -187,7 +187,7 @@ fi
 create_logline "Installing extra software"
 create_secline "Installing TeamViewer"
 wget -nv https://download.teamviewer.com/download/teamviewer_i386.deb 2>&1 | tee -a $PLAT_LOGFILE
-gdebi -n teamviewer_i386.deb 2>&1 | tee -a $PLAT_LOGFILE
+dpkg -i teamviewer_i386.deb 2>&1 | tee -a $PLAT_LOGFILE
 rm teamviewer_i386.deb 2>&1 | tee -a $PLAT_LOGFILE
 apt-get install -fy 2>&1 | tee -a $PLAT_LOGFILE
 
@@ -195,18 +195,19 @@ if $systemrole = "zeus";
 then
   create_secline "Installing StarUML & GitKraken"
   wget -nv http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
-  gdebi -n libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
+  dpkg -i libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
   rm libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
   wget -nv http://staruml.io/download/release/v2.8.0/StarUML-v2.8.0-64-bit.deb 2>&1 | tee -a $PEGS_LOGFILE
-  gdebi -n StarUML-v2.8.0-64-bit.deb 2>&1 | tee -a $PEGS_LOGFILE
+  dpkg -i StarUML-v2.8.0-64-bit.deb 2>&1 | tee -a $PEGS_LOGFILE
   rm StarUML-v2.8.0-64-bit.deb 2>&1 | tee -a $PEGS_LOGFILE
   wget https://release.gitkraken.com/linux/gitkraken-amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
-  gdebi -n gitkraken-amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
+  dpkg -i gitkraken-amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
   rm gitkraken-amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
 fi
 ################################################################################
 create_logline "Building maintenance script"
-maintenancescript = "maintenance.sh"
+mkdir /etc/plat
+maintenancescript="/etc/plat/maintenance.sh"
 cat maintenance/maintenance-header1.sh >> "$maintenancescript"
 echo "##                     built at $_timestamp                     ##" >> "$maintenancescript"
 sed -e 1d maintenance/maintenance-header2.sh >> "$maintenancescript"
@@ -222,8 +223,6 @@ then
    sed -e 1d maintenance/body-lxdhost1.sh >> "$maintenancescript"
 fi
 sed -e 1d maintenance/basic-body.sh >> "$maintenancescript"
-create_secline "Moving maintenance script to /etc/"
-mv "$maintenancescript" /etc/plat/maintenance.sh
 chmod 555 /etc/plat/maintenance.sh
 chown root:root /etc/plat/maintenance.sh
 if $role = "mainserver";
