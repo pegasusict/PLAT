@@ -191,7 +191,7 @@ dpkg -i teamviewer_i386.deb 2>&1 | tee -a $PLAT_LOGFILE
 rm teamviewer_i386.deb 2>&1 | tee -a $PLAT_LOGFILE
 apt-get install -fy 2>&1 | tee -a $PLAT_LOGFILE
 
-if $systemrole = "zeus";
+if [ $systemrole = "zeus" ];
 then
   create_secline "Installing StarUML & GitKraken"
   wget -nv http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
@@ -213,10 +213,10 @@ echo "##                     built at $_timestamp                     ##" >> "$m
 sed -e 1d maintenance/maintenance-header2.sh >> "$maintenancescript"
 echo "##                     built at $_timestamp                     ##" >> "$maintenancescript"
 sed -e 1d maintenance/maintenance-header3.sh >> "$maintenancescript"
-if $systemrole = "lxdhost";
+if [ $systemrole = "lxdhost" ];
 then
    sed -e 1d maintenance/body-lxdhost0.sh >> "$maintenancescript"
-   if $role = "mainserver";
+   if [ $role == "mainserver" ];
    then
      sed -e 1d maintenance/backup2tape.sh >> "$maintenancescript"
    fi
@@ -225,14 +225,14 @@ fi
 sed -e 1d maintenance/basic-body.sh >> "$maintenancescript"
 chmod 555 /etc/plat/maintenance.sh
 chown root:root /etc/plat/maintenance.sh
-if $role = "mainserver";
+if [ $role = "mainserver" ];
 then
   echo -e "\n### Added by Pegs Linux Administration Tools ###\n0 * * 4 0 bash /etc/plat/maintenance.sh\n\n" >> /etc/crontab
 elif
   echo -e "\n### Added by Pegs Linux Administration Tools ###\n@weekly\t10\tplat_maintenance\tbash /etc/plat/maintenance.sh\n### /PLAT ###\n" >> /etc/anacrontab
 fi
 ################################################################################
-create_logline "Building mail script"
+create_logline "Building mahttps://unix.stackexchange.com/questions/134648/nested-case-why-must-be-put-after-possible-commands-and-not-directly-behiil script"
 mailscript = "/etc/plat/mail.sh"
 cat mail/mail0.sh >> "$mailscript"
 echo "Which gmail account will I use to send the reports?"
