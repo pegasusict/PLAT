@@ -222,13 +222,13 @@ then
    fi
    sed -e 1d maintenance/body-lxdhost1.sh >> "$maintenancescript"
 fi
-sed -e 1d maintenance/basic-body.sh >> "$maintenancescript"
+sed -e 1d maintenance/body-basic.sh >> "$maintenancescript"
 chmod 555 /etc/plat/maintenance.sh
 chown root:root /etc/plat/maintenance.sh
 if [ $role = "mainserver" ];
 then
   echo -e "\n### Added by Pegs Linux Administration Tools ###\n0 * * 4 0 bash /etc/plat/maintenance.sh\n\n" >> /etc/crontab
-elif
+else
   echo -e "\n### Added by Pegs Linux Administration Tools ###\n@weekly\t10\tplat_maintenance\tbash /etc/plat/maintenance.sh\n### /PLAT ###\n" >> /etc/anacrontab
 fi
 ################################################################################
