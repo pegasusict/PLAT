@@ -13,7 +13,7 @@ fi
 
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 PLAT_LOGFILE="/var/log/plat/PostInstall_$_now.log"
-touch $PLAT_LOGFILE
+echo "" >> $PLAT_LOGFILE
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "## Pegasus' Linux Administration Tools - Post Install Script         V1.0Beta ##" 2>&1 | tee -a $PLAT_LOGFILE
 echo "## (c) 2017 Mattijs Snepvangers    build 20171215       pegasus.ict@gmail.com ##" 2>&1 | tee -a $PLAT_LOGFILE
@@ -76,43 +76,43 @@ then
 fi
 
 case "$role" in
-   "ws" )
-      systemrole[basic] = true
-      systemrole[ws] = true
-      ;;
-   "zeus" )
-      systemrole[basic] = true
-      systemrole[ws] = true
-      systemrole[lxdhost] = true
-      systemrole[zeus] = true
-      systemrole[nas] = true
-      ;;
-   "mainserver" )
-      systemrole[basic] = true
-      systemrole[lxdhost] = true
-      ;;
-   "container" )
-      systemrole[container] = true
-      systemrole[basic] = true
-      case "$containertype" in
-         "nas" )
-            systemrole[nas] = true
-            ;;
-         "web" )
-            systemrole[nas] = true
-            systemrole[web] = true
-            ;;
-         "x11" )
-            systemrole[ws] = true
-            ;;
-         "pxe" )
-            systemrole[nas] = true
-            systemrole[pxe] = true
-            ;;
-      esac
-   * )
-      systemrole[basic] = true
-      ;;
+"ws" )
+  systemrole[basic] = true
+  systemrole[ws] = true
+  ;;
+"zeus" )
+  systemrole[basic] = true
+  systemrole[ws] = true
+  systemrole[lxdhost] = true
+  systemrole[zeus] = true
+  systemrole[nas] = true
+  ;;
+"mainserver" )
+  systemrole[basic] = true
+  systemrole[lxdhost] = true
+  ;;
+"container" )
+  systemrole[container] = true
+  systemrole[basic] = true
+  case "$containertype" in
+  "nas" )
+    systemrole[nas] = true
+    ;;
+  "web" )
+    systemrole[nas] = true
+    systemrole[web] = true
+    ;;
+  "x11" )
+    systemrole[ws] = true
+    ;;
+  "pxe" )
+    systemrole[nas] = true
+    systemrole[pxe] = true
+    ;;
+  esac
+*)
+  systemrole[basic] = true
+  ;;
 esac
 ################################################################################
 create_logline "Installing extra PPA's"
