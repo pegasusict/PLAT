@@ -1,19 +1,33 @@
-#!/bin/env python3
-################################################################################
-## Pegasus' Linux Administration Tools        build201801--       VER2.0ALPHA ##
-## (C)2017 Mattijs Snepvangers                          pegasus.ict@gmail.com ##
-## plat.py                postinstall script                      VER2.0ALPHA ##
-## License: GPL v3                         Please keep my name in the credits ##
-################################################################################
+#!/usr/bin/env python3
+"""
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+* Pegasus' Linux Administration Tools      Build 20180104       VER 2.0 ALPHA *
+* (C)2017 Mattijs Snepvangers                           pegasus.ict@gmail.com *
+* plat.py                                  Main Script          VER 0.0 ALPHA *
+* License: GPL v3                          Please keep my name in the credits *
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+"""
+
+
 # Make sure only root can run this script
 if os.geteuid() != 0:
     exit("You need to have root privileges to run this script.\nExiting.")
 
 ### defining constants
+PKGVERSION = "2.0 ALPHA"
+PKGACCRONYM = "PLAT"
+PKGNAME = "Pegasus' Linux Administration Tools"
+MYNAME = "Main Script"
+MYFNAME = "plat.py"
 MYVERSION = "2.0 ALPHA"
 MYBUILD = "20180104"
+AUTHORNAME = "Mattijs Snepvangers"
+AUTHOREMAIL = "pegasus.ict@gmail.com"
+LICENSE = "GPL v3"
 
-import lib.logger
+### enable logging
+import lib.logger as logger
+my_logger = logger.logger
 
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 logfile="/var/log/plat/PostInstall_$_now.log"
