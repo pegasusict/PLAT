@@ -8,4 +8,18 @@
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 """
 
-CLASS logger
+class logger :
+    """logging system
+
+    """
+    def __init__(self):
+        import logging
+        logging.basicConfig(filename='/var/log/PLAT/%(asctime)s.log',
+                            format='%(asctime)s %(levelname)s:%(message)s',
+                            level=logging.DEBUG)
+
+    def newlogline(self, message, loglevel):
+        loglevels = ("debug", "info", "warning", "error", "critical")
+        if loglevel not in loglevels:
+            raise Error("loglevel incorrect")
+        else:

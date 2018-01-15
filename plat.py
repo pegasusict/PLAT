@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-* Pegasus' Linux Administration Tools      Build 20180104       VER 2.0 ALPHA *
+* Pegasus' Linux Administration Tools      Build 20180115       VER 2.0 ALPHA *
 * (C)2017 Mattijs Snepvangers                           pegasus.ict@gmail.com *
 * plat.py                                  Main Script          VER 0.0 ALPHA *
 * License: GPL v3                          Please keep my name in the credits *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 """
-
 
 # Make sure only root can run this script
 if os.geteuid() != 0:
@@ -28,6 +27,9 @@ LICENSE = "GPL v3"
 ### enable logging
 import lib.logger as logger
 my_logger = logger.logger
+###############################################################################
+
+
 
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 logfile="/var/log/plat/PostInstall_$_now.log"
