@@ -20,9 +20,9 @@ class MyLogger :
 
     @classmethod
     def logentry(self, message, loglevel):
-    """Method to create the correct logging message
+        """Method to create the correct logging message
 
-    """
+        """
         loglevels = ("debug", "info", "warning", "error", "critical")
         if loglevel == "debug":
             logging.debug(message)
