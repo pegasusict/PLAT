@@ -39,14 +39,17 @@ class MyLogger :
             raise Error(TypeError, "loglevel incorrect")
 
     @classmethod
-    def __get_the_time(self)
+    def __get_the_time(self):
+        """get timestamp inc milliseconds
+
+        """
         self.the_time = asctime()
 
     @classmethod
     def dummy_method(self):
-    """dummy method to fool pylint
+        """dummy method to fool pylint
 
-    """
+        """
         pass
 def main():
     """testfunction for this module"""
