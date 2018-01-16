@@ -25,6 +25,7 @@ AUTHOREMAIL = "pegasus.ict@gmail.com"
 LICENSE = "GPL v3"
 
 ### enable logging
+import lib.logger
 
 ### start logfile, place header in logfile & on screen
 
@@ -58,8 +59,7 @@ LICENSE = "GPL v3"
 ### add maintenance to crontab/anacrontab
 
 ### Build mail script
-"""
-Which gmail account will I use to send the reports?
+"""Which gmail account will I use to send the reports?
 Which password goes with that account?
 To whom will the reports be sent?
 """
