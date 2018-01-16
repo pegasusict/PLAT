@@ -25,17 +25,18 @@ AUTHOREMAIL = "pegasus.ict@gmail.com"
 LICENSE = "GPL v3"
 
 ### enable logging
-import lib.logger
+#import lib.logger
 
 ### start logfile, place header in logfile & on screen
 
 ### parse arguments
-"""
-           -r or --role tells the script what kind of system we are dealing with.
-              Valid options: basic, ws, zeus, mainserver, container
-           -c or --containertype tells the script what kind of container we are working on.
-              Valid options are: basic, nas, web, x11, pxe
-"""
+
+def argparser():
+    """-r or --role tells the script what kind of system we are dealing with.
+    Valid options: basic, ws, zeus, mainserver, container
+    -c or --containertype tells the script what kind of container we are working on.
+    Valid options are: basic, nas, web, x11, pxe"""
+    pass
 
 ### update interfaces file if systemrole is mainserver
 
@@ -59,10 +60,12 @@ import lib.logger
 ### add maintenance to crontab/anacrontab
 
 ### Build mail script
-"""Which gmail account will I use to send the reports?
-Which password goes with that account?
-To whom will the reports be sent?
-"""
+def build_mail_script():
+    """Which gmail account will I use to send the reports?
+    Which password goes with that account?
+    To whom will the reports be sent?
+    """
+    pass
 
 ### place mailscript in /usr/bin/plat
 
