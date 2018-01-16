@@ -43,6 +43,7 @@ class MyLogger :
         """get timestamp inc milliseconds
 
         """
+        ###TODO### add option for timestamp stripped of special chars if needed (filename)
         self.the_time = asctime()
 
     @classmethod
