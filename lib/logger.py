@@ -22,4 +22,11 @@ class logger :
         loglevels = ("debug", "info", "warning", "error", "critical")
         if loglevel not in loglevels:
             raise Error("loglevel incorrect")
-        else:
+
+def main():
+    """testfunction for this module"""
+    pass
+
+# standard boilerplate
+if __name__ == '__main__':
+    main()
