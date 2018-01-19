@@ -23,7 +23,7 @@ class MyLogger :
         """Method to create the correct logging message
 
         """
-        loglevels = ("debug", "info", "warning", "error", "critical")
+        #loglevels = ("debug", "info", "warning", "error", "critical")
         if loglevel == "debug":
             logging.debug(message)
         elif loglevel == "info":
