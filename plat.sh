@@ -5,12 +5,17 @@
 ## plat.sh                postinstall script                       VER1.0BETA ##
 ## License: GPL v3                         Please keep my name in the credits ##
 ################################################################################
+
+# Making sure this script is run by bash to prevent mishaps
+if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then
+    bash "$0" "$@"
+    exit "$?"
+fi
 # Make sure only root can run this script
-if [[$EUID -ne 0]]; then
+if [[ $EUID -ne 0  ]]; then
    echo "This script must be run as root" 1>&2
    exit 1
 fi
-
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 PLAT_LOGFILE="/var/log/plat/PostInstall_$_now.log"
 mkdir /var/log/plat
@@ -22,7 +27,7 @@ echo "##########################################################################
 echo "" 2>&1 | tee -a $PLAT_LOGFILE
 ######## defining functions
 getargs() {
-   TEMP=`getopt -o hr:c: --long help,role:,containertype: -n "$FUNCNAME" -- "$@"`
+   TEMP=`getopt -o dhr:c: --long debug,help,role:,containertype: -n "$FUNCNAME" -- "$@"`
    if [ $? != 0 ] ; then return 1 ; fi
    eval set -- "$TEMP";
    local format='%s\n' escape='-E' line='-n' script clear='tput sgr0';
@@ -37,7 +42,9 @@ getargs() {
               Valid options: basic, ws, zeus, mainserver, container
            -c or --containertype tells the script what kind of container we are working on.
               Valid options are: basic, nas, web, x11, pxe
-		EOF
+           -d or --debug prints all messages
+           -h or --help prints this message
+EOF
 ###TODO### re indent EOF when done if needed
          return;
       };
@@ -123,8 +130,6 @@ create_secline "Adding WebUpd8 PPA key"
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4C9D234C 2>&1 | tee -a $PLAT_LOGFILE
 if [ "$systemrole[ws]" = true ];
 then
-   create_secline "Copying extra PPA's"
-   cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | tee -a $PLAT_LOGFILE
    create_secline "Adding FreeCad PPA"
    add-apt-repository ppa:freecad-maintainers/freecad-stable
    create_secline "Adding GIMP PPA key"
@@ -180,7 +185,7 @@ fi
 if [ "$systemrole[pxe]" = true ];
 then
    apt-get -qqy --allow-unauthenticated install atftpd 2>&1 | tee -a $PLAT_LOGFILE  2>&1
-###check### what about: cobbler
+###CHECK### what about: cobbler
 fi
 ################################################################################
 create_logline "Installing extra software"
@@ -192,13 +197,14 @@ apt-get install -fy 2>&1 | tee -a $PLAT_LOGFILE
 
 if [ $systemrole = "zeus" ];
 then
-  create_secline "Installing StarUML & GitKraken"
+  create_secline "Installing StarUML"
   wget -nv http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
   dpkg -i libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
   rm libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
   wget -nv http://staruml.io/download/release/v2.8.0/StarUML-v2.8.0-64-bit.deb 2>&1 | tee -a $PEGS_LOGFILE
   dpkg -i StarUML-v2.8.0-64-bit.deb 2>&1 | tee -a $PEGS_LOGFILE
   rm StarUML-v2.8.0-64-bit.deb 2>&1 | tee -a $PEGS_LOGFILE
+  create_secline "Installing GitKraken"
   wget https://release.gitkraken.com/linux/gitkraken-amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
   dpkg -i gitkraken-amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
   rm gitkraken-amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
@@ -249,6 +255,11 @@ echo "To whom will the reports be sent?"
 read Recipient
 echo "To_Mail=\"$Recipient\"" >> "$mailscript"
 sed -e 1d mail/mail3.sh >> "$mailscript"
+################################################################################
+create_logline "sheduling reboot if required"
+if [ -f /var/run/reboot-required ]; then
+  shutdown -r 23:30
+fi
 ################################################################################
 create_logline "DONE"
 ### email with log attached

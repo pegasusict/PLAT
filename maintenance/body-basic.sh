@@ -37,6 +37,11 @@ find $CRUNCHIFY_TMP_DIRS -depth -type f -a -empty -print -delete 2>&1 | tee -a $
 find $CRUNCHIFY_TMP_DIRS -depth -type s -a -ctime $DEFAULT_SOCK_AGE -a -size 0 -print -delete 2>&1 | tee -a $PLAT_LOGFILE
 find $CRUNCHIFY_TMP_DIRS -depth -mindepth 1 -type d -a -empty -a ! -name 'lost+found' -print -delete 2>&1 | tee -a $PLAT_LOGFILE
 ################################################################################
+create_logline "sheduling reboot if required"
+if [ -f /var/run/reboot-required ]; then
+  shutdown -r 23:30
+fi
+################################################################################
 create_logline "Maintenance Complete"
 ### send email with log attached
 /etc/plat/mail.sh
