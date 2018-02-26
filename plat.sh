@@ -37,7 +37,7 @@ getargs() {
               Valid options: basic, ws, zeus, mainserver, container
            -c or --containertype tells the script what kind of container we are working on.
               Valid options are: basic, nas, web, x11, pxe
-EOF
+		EOF
 ###TODO### re indent EOF when done if needed
          return;
       };
