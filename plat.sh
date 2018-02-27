@@ -1,11 +1,12 @@
 #!/bin/bash
 ################################################################################
-## Pegasus' Linux Administration Tools        build20171215        VER1.0BETA ##
-## (C)2017 Mattijs Snepvangers                          pegasus.ict@gmail.com ##
-## plat.sh                postinstall script                       VER1.0BETA ##
+## Pegasus' Linux Administration Tools        build20171215      VER1.1.0BETA ##
+## (C)2017-2018 Mattijs Snepvangers                     pegasus.ict@gmail.com ##
+## plat.sh                postinstall script                     VER1.1.0BETA ##
 ## License: GPL v3                         Please keep my name in the credits ##
 ################################################################################
-
+PROGRAM=$(basename $0)
+VERSION="1.1.0BETA"
 # When was this script called
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 # Making sure this script is run by bash to prevent mishaps
@@ -13,88 +14,64 @@ if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 # Make sure only root can run this script
 if [[ $EUID -ne 0  ]]; then echo "This script must be run as root" ; exit 1 ; fi
 # DEBUG is off by default
-DEBUG = false
+DEBUG=true
 # define logfile name & creating log path
-logdir = "/var/log/plat"
+logdir="/var/log/plat"
 if [ ! -d "$logdir" ] ; then mkdir "$logdir" ; fi
 PLAT_LOGFILE="$logdir/PostInstall_$_now.log"
 # defining functions
 getargs() {
-   TEMP=`getopt -o hdr:c: --long help,debug,role:,containertype: -n "$FUNCNAME" -- "$@"`
-   if [ $? != 0 ] ; then return 1 ; fi
-   eval set -- "$TEMP"
-   local format='%s\n' escape='-E' line='-n' script clear='tput sgr0'
-   while true; do
-		case "$1" in
-			-h|--help) cat <<-EOF
-         USAGE:
+    version() {
+        echo -e "\n$PROGRAM $VERSION - Mattijs Snepvangers"
+    }   
+    usage() {
+        version
+        cat <<EOT
+             USAGE: $PROGRAM -h | -r <systemrole> [ -c <containertype> ] [ -d ]
 
-         OPTIONS
+             OPTIONS
 
-           -r or --role tells the script what kind of system we are dealing with.
-              Valid options: basic, ws, zeus, mainserver, container
-           -c or --containertype tells the script what kind of container we are working on.
-              Valid options are: basic, nas, web, x11, pxe
-           -d or --debug prints all messages
-           -h or --help prints this message
-EOF
-         return
-		shift; break;
-			-d|--debug) DEBUG=true; shift;;
-			-r|--role)
-				case "${2}" in
-					"ws" )
-					  systemrole[ws] = true
-					  ;;
-					"zeus" )
-					  systemrole[ws] = true
-					  systemrole[lxdhost] = true
-					  systemrole[zeus] = true
-					  systemrole[nas] = true
-					  ;;
-					"mainserver" )
-					  role = "mainserver"
-					  systemrole[lxdhost] = true
-					  ;;
-					"container" )
-					  systemrole[container] = true
-					  ;;
-				esac; shift 2;;
-			-c|--containertype) 
-				case "${2}" in
-				  "nas" )
-					systemrole[nas] = true
-					;;
-				  "web" )
-					systemrole[nas] = true
-					systemrole[web] = true
-					;;
-				  "x11" )
-					systemrole[ws] = true
-					;;
-				  "pxe" )
-					systemrole[nas] = true
-					systemrole[pxe] = true
-					;;
-				esac; shift 2;;
-		esac
-   done
-   tput -S <<<"$script"
-   $clear
-   echo "DEBUG: $DEBUG"
+               -r or --role tells the script what kind of system we are dealing with.
+                  Valid options: basic, ws, poseidon, mainserver, container << REQUIRED >>
+               -c or --containertype tells the script what kind of container we are working on.
+                  Valid options are: basic, nas, web, x11, pxe << REQUIRED if -r=container >>
+               -d or --debug prints all loglines to screen
+               -h or --help prints this message
+
+              The options can be used in any order
+EOT
+        exit 3
+    }  
+    OPTIONS=$(getopt -n $0 -o hdr:c: --long help,debug,role:,containertype: -n "$FUNCNAME" -- "$@")
+    [[ $? -ne 0 ]] && usage
+    eval set -- "$OPTIONS"
+    local format='%s\n' escape='-E' line='-n' script clear='tput sgr0'
+    while true; do
+        case "$1" in
+			-h|--help 			) usage;;
+            -d|--debug			) DEBUG=true; echo "DEBUG enabled";;
+            -r|--role 			) echo "checking systemrole"; checkrole $2; shift ;; 
+            -c|--containertype	) echo "checking for containertype"; checkcontainer $2; shift ;;
+        esac
+        shift
+    done
+    echo "arguments parsed"
+	tput -S <<<"$script"
+	$clear
+	echo "DEBUG: $DEBUG"
 }
 sof() {
-	### ScreenOrFile
-	### if DEBUG = TRUE, output is to screen and file, else only to file
-	if [ "$DEBUG" = true ]
-	then
-	  echo $1 2>&1 | tee -a $PLAT_LOGFILE      
-	else
-	  echo $1 2>&1 >> $PLAT_LOGFILE
-	fi
+    ### ScreenOrFile
+    ### if DEBUG = TRUE, output is to screen and file, else only to file
+#   if [ "$DEBUG" = true ]
+#   then
+      echo $1 2>&1 | tee -a $PLAT_LOGFILE      
+#   else
+#     echo $1 2>&1 >> $PLAT_LOGFILE
+#   fi
 }
 create_logline() {
-	_subject="$1"
+    _subject="$1"
     _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
     _log_line="$_timestamp ## $_subject #"
     imax=80
@@ -102,34 +79,70 @@ create_logline() {
     sof $_log_line
 }
 create_secline() {
-	_log_line="# $1 #"
-	imax=78
-	for (( i=${#_log_line}; i<imax; i+=2 )) ; do _log_line="#$_log_line#" ; done
-	sof $_log_line
+    _subject
+    _sec_line="# $_subject #"
+    imax=78
+    for (( i=${#_sec_line}; i<imax; i+=2 )) ; do _sec_line="#$_sec_line#" ; done
+    sof $_sec_line
 }
 add_line_to_file() {
-	LINE_TO_ADD = $1
-	TARGET_FILE = $2
-	if [ grep -qsFx "$LINE_TO_ADD" "$TARGET_FILE" ] ; then
-		sof "line already exists, leaving it undisturbed"
-	else
-		if [ -w "$TARGET_FILE" ] ; then
-			printf "%s\n" "$LINE_TO_ADD" >> "$TARGET_FILE"
-			sof "$TARGET_FILE has been updated"
-		else
-			sof "$TARGET_FILE not writeable"
-			exit 1
-		fi
-	fi
+    LINE_TO_ADD = $1
+    TARGET_FILE = $2
+    if [ grep -qsFx "$LINE_TO_ADD" "$TARGET_FILE" ] ; then
+        sof "line already exists, leaving it undisturbed"
+    else
+        if [ -w "$TARGET_FILE" ] ; then
+            printf "%s\n" "$LINE_TO_ADD" >> "$TARGET_FILE"
+            sof "$TARGET_FILE has been updated"
+        else
+            sof "$TARGET_FILE not writeable"
+            exit 1
+        fi
+    fi
+}
+checkrole() {
+	case "$role" in
+		"ws" 			)	systemrole[ws]=true
+							echo "role=ws";;
+		"poseidon" 		)	systemrole[ws]=true
+							systemrole[lxdhost]=true
+							systemrole[poseidon]=true
+							systemrole[nas]=true
+							echo "role=poseidon";;
+		"mainserver"	)	echo "role=mainserver"
+							role="mainserver"
+							systemrole[lxdhost]=true;;
+		"container" 	)	echo "role=container"
+							systemrole[container]=true;;
+		*				)	echo "unknown systemrole, exiting..."
+							exit 1;;
+	esac
+}
+checkcontainer() {
+	case "$containertype" in
+		"nas"	)	systemrole[nas] = true
+					echo "container=nas";;
+		"web" 	)	systemrole[nas] = true
+					systemrole[web] = true
+					echo "container=web";;
+		"x11"	)	systemrole[ws] = true
+					echo "container=x11";;
+		"pxe"	)	systemrole[nas] = true
+					systemrole[pxe] = true
+					echo "container=pxe";;
+		*		)	echo "Unknown containertype, exiting..."; exit 1;;
+	esac;
 }
 
+echo "processing arguments"
 getargs
-
+echo "arguments processed"
 sof "################################################################################"
 sof "## Pegasus' Linux Administration Tools - Post Install Script         V1.0Beta ##"
 sof "## (c) 2017 Mattijs Snepvangers    build 20171215       pegasus.ict@gmail.com ##"
 sof "################################################################################"
 sof ""
+
 ########################################################################
 create_logline "Injecting interfaces file into mainserver config"
 if [ $role = "mainserver" ]
@@ -188,7 +201,7 @@ if [ "$systemrole[ws]" = true ] ; then
    apt-get -qqy --allow-unauthenticated install synaptic tilda/
    audacious samba wine-stable playonlinux winetricks 2>&1 | sof
 fi
-if [ "$systemrole[zeus]" = true ] ; then
+if [ "$systemrole[poseidon]" = true ] ; then
    apt-get -qqy --allow-unauthenticated install plank picard audacity/
    calibre fastboot adb fslint gadmin-proftpd geany* gprename lame/
    masscan forensics-all forensics-extra forensics-extra-gui/
@@ -212,7 +225,7 @@ wget -nv https://download.teamviewer.com/download/teamviewer_i386.deb 2>&1 | sof
 dpkg -i teamviewer_i386.deb 2>&1 | sof
 rm teamviewer_i386.deb 2>&1 | sof
 apt-get install -fy 2>&1 | sof
-if [ $systemrole = "zeus" ]
+if [ $systemrole = "poseidon" ]
 then
   create_secline "Installing StarUML"
   wget -nv http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | sof
@@ -231,8 +244,8 @@ create_logline "Building maintenance script"
 mkdir /etc/plat 2>&1 | sof
 maintenancescript="/etc/plat/maintenance.sh"
 if [ -f "$maintenancescript" ] ; then
-	rm $maintenancescript 2>&1 | sof
-	create_secline "Removed old maintenance script."
+    rm $maintenancescript 2>&1 | sof
+    create_secline "Removed old maintenance script."
 cat maintenance/maintenance-header1.sh >> "$maintenancescript"
 echo "##                     built at $_timestamp                     ##" >> "$maintenancescript"
 sed -e 1d maintenance/maintenance-header2.sh >> "$maintenancescript"
@@ -251,11 +264,11 @@ chown root:root /etc/plat/maintenance.sh 2>&1 | sof
 ######
 create_secline "adding maintenancescript to sheduler"
 if [ $role = "mainserver" ] ; then
-	LINE_TO_ADD="\n### Added by Pegs Linux Administration Tools ###\n0 * * 4 0 bash /etc/plat/maintenance.sh\n\n"
-	TARGET_FILE="/etc/crontab"
+    LINE_TO_ADD="\n### Added by Pegs Linux Administration Tools ###\n0 * * 4 0 bash /etc/plat/maintenance.sh\n\n"
+    TARGET_FILE="/etc/crontab"
 else
-	LINE_TO_ADD="\n### Added by Pegs Linux Administration Tools ###\n@weekly\t10\tplat_maintenance\tbash /etc/plat/maintenance.sh\n### /PLAT ###\n"
-	TARGET_FILE="/etc/anacrontab"
+    LINE_TO_ADD="\n### Added by Pegs Linux Administration Tools ###\n@weekly\t10\tplat_maintenance\tbash /etc/plat/maintenance.sh\n### /PLAT ###\n"
+    TARGET_FILE="/etc/anacrontab"
 fi
 add_line_to_file $LINE_TO_ADD $TARGET_FILE
 ################################################################################
@@ -279,7 +292,7 @@ sed -e 1d mail/mail3.sh >> "$mailscript"
 ################################################################################
 create_logline "sheduling reboot if required"
 if [ -f /var/run/reboot-required ]; then
-	create_logline "REBOOT REQUIRED"
+    create_logline "REBOOT REQUIRED"
     shutdown -r 23:30  2>&1 | sof
 fi
 ################################################################################
