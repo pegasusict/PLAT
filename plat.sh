@@ -9,27 +9,24 @@
 # When was this script called
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 # Making sure this script is run by bash to prevent mishaps
-if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then
-    bash "$0" "$@"
-    exit "$?"
-fi
+if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 # Make sure only root can run this script
-if [[ $EUID -ne 0  ]]; then
-   echo "This script must be run as root" 1>&2
-   exit 1
-fi
-### define logfile name & creating log path
-mkdir /var/log/plat  2>&1
-PLAT_LOGFILE="/var/log/plat/PostInstall_$_now.log"
-######## defining functions
+if [[ $EUID -ne 0  ]]; then echo "This script must be run as root" ; exit 1 ; fi
+# DEBUG is off by default
+DEBUG = false
+# define logfile name & creating log path
+logdir = "/var/log/plat"
+if [ ! -d "$logdir" ] ; then mkdir "$logdir" ; fi
+PLAT_LOGFILE="$logdir/PostInstall_$_now.log"
+# defining functions
 getargs() {
-   TEMP=`getopt -o dhr:c: --long debug,help,role:,containertype: -n "$FUNCNAME" -- "$@"`
+   TEMP=`getopt -o hdr:c: --long help,debug,role:,containertype: -n "$FUNCNAME" -- "$@"`
    if [ $? != 0 ] ; then return 1 ; fi
-   eval set -- "$TEMP";
-   local format='%s\n' escape='-E' line='-n' script clear='tput sgr0';
-   while [[ ${1:0:1} == - ]]; do
-      [[ $1 =~ ^-h|--help ]] && {
-         cat <<-EOF
+   eval set -- "$TEMP"
+   local format='%s\n' escape='-E' line='-n' script clear='tput sgr0'
+   while true; do
+		case "$1" in
+			-h|--help) cat <<-EOF
          USAGE:
 
          OPTIONS
@@ -41,95 +38,105 @@ getargs() {
            -d or --debug prints all messages
            -h or --help prints this message
 EOF
-         return;
-      };
-      [[ $1 == -- ]] && { shift; break; };
-      [[ $1 =~ ^-d|--debug$ ]] && { debug="true"; shift; continue; };
-      [[ $1 =~ ^-r|--role$ ]] && { role="${2}"; shift 2; continue; };
-      [[ $1 =~ ^-c|--containertype$ ]] && { containertype="${2}"; shift 2; continue; };
-      break;
+         return
+		shift; break;
+			-d|--debug) DEBUG=true; shift;;
+			-r|--role)
+				case "${2}" in
+					"ws" )
+					  systemrole[ws] = true
+					  ;;
+					"zeus" )
+					  systemrole[ws] = true
+					  systemrole[lxdhost] = true
+					  systemrole[zeus] = true
+					  systemrole[nas] = true
+					  ;;
+					"mainserver" )
+					  role = "mainserver"
+					  systemrole[lxdhost] = true
+					  ;;
+					"container" )
+					  systemrole[container] = true
+					  ;;
+				esac; shift 2;;
+			-c|--containertype) 
+				case "${2}" in
+				  "nas" )
+					systemrole[nas] = true
+					;;
+				  "web" )
+					systemrole[nas] = true
+					systemrole[web] = true
+					;;
+				  "x11" )
+					systemrole[ws] = true
+					;;
+				  "pxe" )
+					systemrole[nas] = true
+					systemrole[pxe] = true
+					;;
+				esac; shift 2;;
+		esac
    done
-   tput -S <<<"$script";
-   $clear;
+   tput -S <<<"$script"
+   $clear
+   echo "DEBUG: $DEBUG"
 }
 sof() {
-   if [[ $debug != "true" ]];
-   then
-      echo "debugging is off"
-      echo $1 2>&1 >> $PLAT_LOGFILE
-   else
-      echo "debugging is on"
-      echo $1 2>&1 | tee -a $PLAT_LOGFILE
-   fi
+	### ScreenOrFile
+	### if DEBUG = TRUE, output is to screen and file, else only to file
+	if [ "$DEBUG" = true ]
+	then
+	  echo $1 2>&1 | tee -a $PLAT_LOGFILE      
+	else
+	  echo $1 2>&1 >> $PLAT_LOGFILE
+	fi
 }
 create_logline() {
-   _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
-   _log_line="$_timestamp ## $1 #"
-   imax=80
-   for (( i=${#_log_line}; i<imax; i++ ))
-   do
-       _log_line+="#"
-   done
-   echo $_log_line 2>&1 | tee -a $PLAT_LOGFILE
+	_subject="$1"
+    _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
+    _log_line="$_timestamp ## $_subject #"
+    imax=80
+    for (( i=${#_log_line}; i<imax; i++ )) ; do _log_line+="#" ; done
+    sof $_log_line
 }
 create_secline() {
-   _log_line="# $1 #"
-   imax=78
-   for (( i=${#_log_line}; i<imax; i+=2 ))
-   do
-       _log_line="#$_log_line#"
-   done
-   echo $_log_line 2>&1 | tee -a $PLAT_LOGFILE
+	_log_line="# $1 #"
+	imax=78
+	for (( i=${#_log_line}; i<imax; i+=2 )) ; do _log_line="#$_log_line#" ; done
+	sof $_log_line
+}
+add_line_to_file() {
+	LINE_TO_ADD = $1
+	TARGET_FILE = $2
+	if [ grep -qsFx "$LINE_TO_ADD" "$TARGET_FILE" ] ; then
+		sof "line already exists, leaving it undisturbed"
+	else
+		if [ -w "$TARGET_FILE" ] ; then
+			printf "%s\n" "$LINE_TO_ADD" >> "$TARGET_FILE"
+			sof "$TARGET_FILE has been updated"
+		else
+			sof "$TARGET_FILE not writeable"
+			exit 1
+		fi
+	fi
 }
 
-getargs()
-echo "" >> $PLAT_LOGFILE
-echo "################################################################################" 2>&1 | sof
-echo "## Pegasus' Linux Administration Tools - Post Install Script         V1.0Beta ##" 2>&1 | sof
-echo "## (c) 2017 Mattijs Snepvangers    build 20171215       pegasus.ict@gmail.com ##" 2>&1 | sof
-echo "################################################################################" 2>&1 | sof
-echo "" 2>&1 | sof
-#######################################################################
+getargs
+
+sof "################################################################################"
+sof "## Pegasus' Linux Administration Tools - Post Install Script         V1.0Beta ##"
+sof "## (c) 2017 Mattijs Snepvangers    build 20171215       pegasus.ict@gmail.com ##"
+sof "################################################################################"
+sof ""
+########################################################################
 create_logline "Injecting interfaces file into mainserver config"
-if [ $role = "mainserver" ];
+if [ $role = "mainserver" ]
 then
    cat lxdhost_interfaces.txt > /etc/network/interfaces
 fi
-#######################################################################
-case "$role" in
-"ws" )
-  systemrole[ws] = true
-  ;;
-"zeus" )
-  systemrole[ws] = true
-  systemrole[lxdhost] = true
-  systemrole[zeus] = true
-  systemrole[nas] = true
-  ;;
-"mainserver" )
-  systemrole[lxdhost] = true
-  ;;
-"container" )
-  systemrole[container] = true
-  case "$containertype" in
-  "nas" )
-    systemrole[nas] = true
-    ;;
-  "web" )
-    systemrole[nas] = true
-    systemrole[web] = true
-    ;;
-  "x11" )
-    systemrole[ws] = true
-    ;;
-  "pxe" )
-    systemrole[nas] = true
-    systemrole[pxe] = true
-    ;;
-  esac
-esac
-systemrole[basic]=true
-################################################################################
+########################################################################
 create_logline "Installing extra PPA's"
 create_secline "Copying Ubuntu sources and some extras"
 cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | sof
@@ -141,8 +148,7 @@ create_secline "Adding Webmin PPA key"
 wget http://www.webmin.com/jcameron-key.asc -O- | apt-key add - 2>&1 | sof
 create_secline "Adding WebUpd8 PPA key"
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4C9D234C 2>&1 | sof
-if [ "$systemrole[ws]" = true ];
-then
+if [ "$systemrole[ws]" = true ] ; then
    create_secline "Adding FreeCad PPA"
    add-apt-repository ppa:freecad-maintainers/freecad-stable | sof
    create_secline "Adding GIMP PPA key"
@@ -162,41 +168,40 @@ then
    create_secline "Adding Wine PPA"
    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 883E8688397576B6C509DF495A9A06AEF9CB8DB0 2>&1 | sof
 fi
-if [ "$systemrole[nas]" = true ];
-then
+if [ "$systemrole[nas]" = true ] ; then
    create_secline "Adding Syncthing PPA"
    curl -s https://syncthing.net/release-key.txt | apt-key add - 2>&1 | sof
 fi
-################################################################################
+########################################################################
+create_logline "removing duplicate lines from source lists"
+perl -i -ne 'print if ! $a{$_}++' "/etc/apt/sources.list /etc/apt/sources.list.d/*" 2>&1 | sof
+########################################################################
 create_logline "Updating apt cache"
 apt-get update -q 2>&1 | sof
-################################################################################
+########################################################################
 create_logline "Installing updates"
 apt-get --allow-unauthenticated upgrade -qy 2>&1 | sof
-################################################################################
+########################################################################
 create_logline "Installing extra packages"
-if [ "$systemrole[basic]" = true ];
-then
-   apt-get -qqy --allow-unauthenticated install mc trash-cli 2>&1 | sof
+apt-get -qqy --allow-unauthenticated install mc trash-cli 2>&1 | sof
+if [ "$systemrole[ws]" = true ] ; then
+   apt-get -qqy --allow-unauthenticated install synaptic tilda/
+   audacious samba wine-stable playonlinux winetricks 2>&1 | sof
 fi
-if [ "$systemrole[ws]" = true ];
-then
-   apt-get -qqy --allow-unauthenticated install synaptic tilda audacious samba wine-stable playonlinux winetricks 2>&1 | sof
+if [ "$systemrole[zeus]" = true ] ; then
+   apt-get -qqy --allow-unauthenticated install plank picard audacity/
+   calibre fastboot adb fslint gadmin-proftpd geany* gprename lame/
+   masscan forensics-all forensics-extra forensics-extra-gui/
+   forensics-full chromium-browser gparted 2>&1 | sof
 fi
-if [ "$systemrole[zeus]" = true ];
-then
-   apt-get -qqy --allow-unauthenticated install plank picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted 2>&1 | sof
+if [ "$systemrole[web]" = true ] ; then
+   apt-get -qqy --allow-unauthenticated install apache2 phpmyadmin/
+   mysql-server mytop proftpd 2>&1 | sof
 fi
-if [ "$systemrole[web]" = true ];
-then
-   apt-get -qqy --allow-unauthenticated install apache2 phpmyadmin mysql-server mytop proftpd 2>&1 | sof
-fi
-if [ "$systemrole[nas]" = true ];
-then
+if [ "$systemrole[nas]" = true ] ; then
    apt-get -qqy --allow-unauthenticated install samba 2>&1 | sof
 fi
-if [ "$systemrole[pxe]" = true ];
-then
+if [ "$systemrole[pxe]" = true ] ; then
    apt-get -qqy --allow-unauthenticated install atftpd 2>&1 | sof
 ###CHECK### what about: cobbler
 fi
@@ -207,8 +212,7 @@ wget -nv https://download.teamviewer.com/download/teamviewer_i386.deb 2>&1 | sof
 dpkg -i teamviewer_i386.deb 2>&1 | sof
 rm teamviewer_i386.deb 2>&1 | sof
 apt-get install -fy 2>&1 | sof
-
-if [ $systemrole = "zeus" ];
+if [ $systemrole = "zeus" ]
 then
   create_secline "Installing StarUML"
   wget -nv http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | sof
@@ -226,17 +230,17 @@ fi
 create_logline "Building maintenance script"
 mkdir /etc/plat 2>&1 | sof
 maintenancescript="/etc/plat/maintenance.sh"
-rm $maintenancescript 2>&1 | sof
+if [ -f "$maintenancescript" ] ; then
+	rm $maintenancescript 2>&1 | sof
+	create_secline "Removed old maintenance script."
 cat maintenance/maintenance-header1.sh >> "$maintenancescript"
 echo "##                     built at $_timestamp                     ##" >> "$maintenancescript"
 sed -e 1d maintenance/maintenance-header2.sh >> "$maintenancescript"
 echo "##                     built at $_timestamp                     ##" >> "$maintenancescript"
 sed -e 1d maintenance/maintenance-header3.sh >> "$maintenancescript"
-if [ $systemrole = "lxdhost" ];
-then
+if [ $systemrole = "lxdhost" ] ; then
    sed -e 1d maintenance/body-lxdhost0.sh >> "$maintenancescript"
-   if [ $role == "mainserver" ];
-   then
+   if [ $role == "mainserver" ] ; then
      sed -e 1d maintenance/backup2tape.sh >> "$maintenancescript"
    fi
    sed -e 1d maintenance/body-lxdhost1.sh >> "$maintenancescript"
@@ -244,12 +248,16 @@ fi
 sed -e 1d maintenance/body-basic.sh >> "$maintenancescript"
 chmod 555 /etc/plat/maintenance.sh 2>&1 | sof
 chown root:root /etc/plat/maintenance.sh 2>&1 | sof
-if [ $role = "mainserver" ];
-then
-  echo -e "\n### Added by Pegs Linux Administration Tools ###\n0 * * 4 0 bash /etc/plat/maintenance.sh\n\n" >> /etc/crontab
+######
+create_secline "adding maintenancescript to sheduler"
+if [ $role = "mainserver" ] ; then
+	LINE_TO_ADD="\n### Added by Pegs Linux Administration Tools ###\n0 * * 4 0 bash /etc/plat/maintenance.sh\n\n"
+	TARGET_FILE="/etc/crontab"
 else
-  echo -e "\n### Added by Pegs Linux Administration Tools ###\n@weekly\t10\tplat_maintenance\tbash /etc/plat/maintenance.sh\n### /PLAT ###\n" >> /etc/anacrontab
+	LINE_TO_ADD="\n### Added by Pegs Linux Administration Tools ###\n@weekly\t10\tplat_maintenance\tbash /etc/plat/maintenance.sh\n### /PLAT ###\n"
+	TARGET_FILE="/etc/anacrontab"
 fi
+add_line_to_file $LINE_TO_ADD $TARGET_FILE
 ################################################################################
 create_logline "Building mail script"
 mailscript="/etc/plat/mail.sh"
@@ -271,9 +279,9 @@ sed -e 1d mail/mail3.sh >> "$mailscript"
 ################################################################################
 create_logline "sheduling reboot if required"
 if [ -f /var/run/reboot-required ]; then
-  shutdown -r 23:30  2>&1 | sof
+	create_logline "REBOOT REQUIRED"
+    shutdown -r 23:30  2>&1 | sof
 fi
 ################################################################################
-create_logline "DONE"
-### email with log attached
-bash /etc/plat/mail.sh  2>&1 | sof
+create_logline "DONE, emailing log(s)"
+bash /etc/plat/mail.sh
