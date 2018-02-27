@@ -5,6 +5,12 @@
 ## container_builder.sh        container builder                   VER0.6BETA ##
 ## License: GPL v3                         Please keep my name in the credits ##
 ################################################################################
+
+# Making sure this script is run by bash to prevent mishaps
+if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then
+    bash "$0" "$@"
+    exit "$?"
+fi
 # Make sure only root can run this script
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 1>&2
@@ -20,7 +26,7 @@ mkdir '/var/log/plat'
 touch $PLAT_LOGFILE
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "## Pegasus' Linux Administration Tools - Container Builder           V1.0Beta ##" 2>&1 | tee -a $PLAT_LOGFILE
-echo "## (c) 2017 Mattijs Snepvangers    build 20171214       pegasus.ict@gmail.com ##" 2>&1 | tee -a $PLAT_LOGFILE
+echo "## (c) 2017 Mattijs Snepvangers    build 20180226       pegasus.ict@gmail.com ##" 2>&1 | tee -a $PLAT_LOGFILE
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "" 2>&1 | tee -a $PLAT_LOGFILE
 
@@ -86,7 +92,6 @@ I'm sorry, the name you proposed is invalid, please enter a valid name:
     > name may not start or end with a dash "-"
     > name may not start with a digit "0-9""
 EOF
-###TODO### re indent EOF when done if needed
       return $FALSE
    else
       return $TRUE
@@ -114,10 +119,6 @@ case "$containertype" in
 esac
 
 print $systemrole
-
-
-
-
 
 ### send email with log attached
 /etc/plat/mail.sh

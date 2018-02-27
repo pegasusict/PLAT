@@ -6,6 +6,8 @@
 ## License: GPL v3                         Please keep my name in the credits ##
 ################################################################################
 
+# When was this script called
+_now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 # Making sure this script is run by bash to prevent mishaps
 if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then
     bash "$0" "$@"
@@ -16,15 +18,9 @@ if [[ $EUID -ne 0  ]]; then
    echo "This script must be run as root" 1>&2
    exit 1
 fi
-_now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
+### define logfile name & creating log path
+mkdir /var/log/plat  2>&1
 PLAT_LOGFILE="/var/log/plat/PostInstall_$_now.log"
-mkdir /var/log/plat
-echo "" >> $PLAT_LOGFILE
-echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-echo "## Pegasus' Linux Administration Tools - Post Install Script         V1.0Beta ##" 2>&1 | tee -a $PLAT_LOGFILE
-echo "## (c) 2017 Mattijs Snepvangers    build 20171215       pegasus.ict@gmail.com ##" 2>&1 | tee -a $PLAT_LOGFILE
-echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
-echo "" 2>&1 | tee -a $PLAT_LOGFILE
 ######## defining functions
 getargs() {
    TEMP=`getopt -o dhr:c: --long debug,help,role:,containertype: -n "$FUNCNAME" -- "$@"`
@@ -45,16 +41,26 @@ getargs() {
            -d or --debug prints all messages
            -h or --help prints this message
 EOF
-###TODO### re indent EOF when done if needed
          return;
       };
       [[ $1 == -- ]] && { shift; break; };
+      [[ $1 =~ ^-d|--debug$ ]] && { debug="true"; shift; continue; };
       [[ $1 =~ ^-r|--role$ ]] && { role="${2}"; shift 2; continue; };
       [[ $1 =~ ^-c|--containertype$ ]] && { containertype="${2}"; shift 2; continue; };
       break;
    done
    tput -S <<<"$script";
    $clear;
+}
+sof() {
+   if [[ $debug != "true" ]];
+   then
+      echo "debugging is off"
+      echo $1 2>&1 >> $PLAT_LOGFILE
+   else
+      echo "debugging is on"
+      echo $1 2>&1 | tee -a $PLAT_LOGFILE
+   fi
 }
 create_logline() {
    _timestamp=$(date +"%Y-%m-%d_%H.%M.%S,%3N")
@@ -77,12 +83,19 @@ create_secline() {
 }
 
 getargs()
-###TODO### what to do with interfaces file?
+echo "" >> $PLAT_LOGFILE
+echo "################################################################################" 2>&1 | sof
+echo "## Pegasus' Linux Administration Tools - Post Install Script         V1.0Beta ##" 2>&1 | sof
+echo "## (c) 2017 Mattijs Snepvangers    build 20171215       pegasus.ict@gmail.com ##" 2>&1 | sof
+echo "################################################################################" 2>&1 | sof
+echo "" 2>&1 | sof
+#######################################################################
+create_logline "Injecting interfaces file into mainserver config"
 if [ $role = "mainserver" ];
 then
    cat lxdhost_interfaces.txt > /etc/network/interfaces
 fi
-
+#######################################################################
 case "$role" in
 "ws" )
   systemrole[ws] = true
@@ -119,101 +132,101 @@ systemrole[basic]=true
 ################################################################################
 create_logline "Installing extra PPA's"
 create_secline "Copying Ubuntu sources and some extras"
-cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | tee -a $PLAT_LOGFILE
+cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | sof
 create_secline "Adding GetDeb PPA key"
-wget -O- http://archive.getdeb.net/getdeb-archive.key | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
+wget -O- http://archive.getdeb.net/getdeb-archive.key | apt-key add - 2>&1 | sof
 create_secline "Adding VirtualBox PPA key"
-wget http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
+wget http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc -O- | apt-key add - 2>&1 | sof
 create_secline "Adding Webmin PPA key"
-wget http://www.webmin.com/jcameron-key.asc -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
+wget http://www.webmin.com/jcameron-key.asc -O- | apt-key add - 2>&1 | sof
 create_secline "Adding WebUpd8 PPA key"
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4C9D234C 2>&1 | tee -a $PLAT_LOGFILE
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4C9D234C 2>&1 | sof
 if [ "$systemrole[ws]" = true ];
 then
    create_secline "Adding FreeCad PPA"
-   add-apt-repository ppa:freecad-maintainers/freecad-stable
+   add-apt-repository ppa:freecad-maintainers/freecad-stable | sof
    create_secline "Adding GIMP PPA key"
-   apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 614C4B38 2>&1 | tee -a $PLAT_LOGFILE
+   apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 614C4B38 2>&1 | sof
    create_secline "Adding Gnome3 Extras PPA"
-   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B1510FD 2>&1 | tee -a $PLAT_LOGFILE
+   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B1510FD 2>&1 | sof
    create_secline "Adding Google Chrome PPA"
-   wget https://dl.google.com/linux/linux_signing_key.pub -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
+   wget https://dl.google.com/linux/linux_signing_key.pub -O- | apt-key add - 2>&1 | sof
    create_secline "Adding Highly Explosive (Tools for Photographers) PPA"
-   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93330B78 2>&1 | tee -a $PLAT_LOGFILE
+   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93330B78 2>&1 | sof
    create_secline "Adding MKVToolnix PPA"
-   wget http://www.bunkus.org/gpg-pub-moritzbunkus.txt -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
+   wget http://www.bunkus.org/gpg-pub-moritzbunkus.txt -O- | apt-key add - 2>&1 | sof
    create_secline "Adding Opera (Beta) PPA"
-   wget -O - http://deb.opera.com/archive.key | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
+   wget -O - http://deb.opera.com/archive.key | apt-key add - 2>&1 | sof
    create_secline "Adding OwnCloud Desktop PPA"
-   wget http://download.opensuse.org/repositories/isv:ownCloud:community/xUbuntu_16.04/Release.key -O- | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
+   wget http://download.opensuse.org/repositories/isv:ownCloud:community/xUbuntu_16.04/Release.key -O- | apt-key add - 2>&1 | sof
    create_secline "Adding Wine PPA"
-   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 883E8688397576B6C509DF495A9A06AEF9CB8DB0 2>&1 | tee -a $PLAT_LOGFILE
+   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 883E8688397576B6C509DF495A9A06AEF9CB8DB0 2>&1 | sof
 fi
 if [ "$systemrole[nas]" = true ];
 then
    create_secline "Adding Syncthing PPA"
-   curl -s https://syncthing.net/release-key.txt | apt-key add - 2>&1 | tee -a $PLAT_LOGFILE
+   curl -s https://syncthing.net/release-key.txt | apt-key add - 2>&1 | sof
 fi
 ################################################################################
 create_logline "Updating apt cache"
-apt-get update -q 2>&1 | tee -a $PLAT_LOGFILE
+apt-get update -q 2>&1 | sof
 ################################################################################
 create_logline "Installing updates"
-apt-get --allow-unauthenticated upgrade -qy 2>&1 | tee -a $PLAT_LOGFILE
+apt-get --allow-unauthenticated upgrade -qy 2>&1 | sof
 ################################################################################
 create_logline "Installing extra packages"
 if [ "$systemrole[basic]" = true ];
 then
-   apt-get -qqy --allow-unauthenticated install mc trash-cli 2>&1 | tee -a $PLAT_LOGFILE  2>&1
+   apt-get -qqy --allow-unauthenticated install mc trash-cli 2>&1 | sof
 fi
 if [ "$systemrole[ws]" = true ];
 then
-   apt-get -qqy --allow-unauthenticated install synaptic tilda audacious samba wine-stable playonlinux winetricks 2>&1 | tee -a $PLAT_LOGFILE  2>&1
+   apt-get -qqy --allow-unauthenticated install synaptic tilda audacious samba wine-stable playonlinux winetricks 2>&1 | sof
 fi
 if [ "$systemrole[zeus]" = true ];
 then
-   apt-get -qqy --allow-unauthenticated install plank picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted 2>&1 | tee -a $PLAT_LOGFILE
+   apt-get -qqy --allow-unauthenticated install plank picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted 2>&1 | sof
 fi
 if [ "$systemrole[web]" = true ];
 then
-   apt-get -qqy --allow-unauthenticated install apache2 phpmyadmin mysql-server mytop proftpd 2>&1 | tee -a $PLAT_LOGFILE  2>&1
+   apt-get -qqy --allow-unauthenticated install apache2 phpmyadmin mysql-server mytop proftpd 2>&1 | sof
 fi
 if [ "$systemrole[nas]" = true ];
 then
-   apt-get -qqy --allow-unauthenticated install samba 2>&1 | tee -a $PLAT_LOGFILE  2>&1
+   apt-get -qqy --allow-unauthenticated install samba 2>&1 | sof
 fi
 if [ "$systemrole[pxe]" = true ];
 then
-   apt-get -qqy --allow-unauthenticated install atftpd 2>&1 | tee -a $PLAT_LOGFILE  2>&1
+   apt-get -qqy --allow-unauthenticated install atftpd 2>&1 | sof
 ###CHECK### what about: cobbler
 fi
 ################################################################################
 create_logline "Installing extra software"
 create_secline "Installing TeamViewer"
-wget -nv https://download.teamviewer.com/download/teamviewer_i386.deb 2>&1 | tee -a $PLAT_LOGFILE
-dpkg -i teamviewer_i386.deb 2>&1 | tee -a $PLAT_LOGFILE
-rm teamviewer_i386.deb 2>&1 | tee -a $PLAT_LOGFILE
-apt-get install -fy 2>&1 | tee -a $PLAT_LOGFILE
+wget -nv https://download.teamviewer.com/download/teamviewer_i386.deb 2>&1 | sof
+dpkg -i teamviewer_i386.deb 2>&1 | sof
+rm teamviewer_i386.deb 2>&1 | sof
+apt-get install -fy 2>&1 | sof
 
 if [ $systemrole = "zeus" ];
 then
   create_secline "Installing StarUML"
-  wget -nv http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
-  dpkg -i libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
-  rm libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
-  wget -nv http://staruml.io/download/release/v2.8.0/StarUML-v2.8.0-64-bit.deb 2>&1 | tee -a $PEGS_LOGFILE
-  dpkg -i StarUML-v2.8.0-64-bit.deb 2>&1 | tee -a $PEGS_LOGFILE
-  rm StarUML-v2.8.0-64-bit.deb 2>&1 | tee -a $PEGS_LOGFILE
+  wget -nv http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | sof
+  dpkg -i libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | sof
+  rm libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | sof
+  wget -nv http://staruml.io/download/release/v2.8.0/StarUML-v2.8.0-64-bit.deb 2>&1 | sof
+  dpkg -i StarUML-v2.8.0-64-bit.deb 2>&1 | sof
+  rm StarUML-v2.8.0-64-bit.deb 2>&1 | sof
   create_secline "Installing GitKraken"
-  wget https://release.gitkraken.com/linux/gitkraken-amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
-  dpkg -i gitkraken-amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
-  rm gitkraken-amd64.deb 2>&1 | tee -a $PEGS_LOGFILE
+  wget https://release.gitkraken.com/linux/gitkraken-amd64.deb 2>&1 | sof
+  dpkg -i gitkraken-amd64.deb 2>&1 | sof
+  rm gitkraken-amd64.deb 2>&1 | sof
 fi
 ################################################################################
 create_logline "Building maintenance script"
-mkdir /etc/plat
+mkdir /etc/plat 2>&1 | sof
 maintenancescript="/etc/plat/maintenance.sh"
-rm $maintenancescript 2>&1 | tee -a $PEGS_LOGFILE
+rm $maintenancescript 2>&1 | sof
 cat maintenance/maintenance-header1.sh >> "$maintenancescript"
 echo "##                     built at $_timestamp                     ##" >> "$maintenancescript"
 sed -e 1d maintenance/maintenance-header2.sh >> "$maintenancescript"
@@ -229,8 +242,8 @@ then
    sed -e 1d maintenance/body-lxdhost1.sh >> "$maintenancescript"
 fi
 sed -e 1d maintenance/body-basic.sh >> "$maintenancescript"
-chmod 555 /etc/plat/maintenance.sh
-chown root:root /etc/plat/maintenance.sh
+chmod 555 /etc/plat/maintenance.sh 2>&1 | sof
+chown root:root /etc/plat/maintenance.sh 2>&1 | sof
 if [ $role = "mainserver" ];
 then
   echo -e "\n### Added by Pegs Linux Administration Tools ###\n0 * * 4 0 bash /etc/plat/maintenance.sh\n\n" >> /etc/crontab
@@ -241,7 +254,7 @@ fi
 create_logline "Building mail script"
 mailscript="/etc/plat/mail.sh"
 mkdir /etc/plat
-rm $mailscript 2>&1 | tee -a $PEGS_LOGFILE
+rm $mailscript 2>&1 | sof
 cat mail/mail0.sh >> "$mailscript"
 echo "Which gmail account will I use to send the reports?"
 read sender
@@ -258,9 +271,9 @@ sed -e 1d mail/mail3.sh >> "$mailscript"
 ################################################################################
 create_logline "sheduling reboot if required"
 if [ -f /var/run/reboot-required ]; then
-  shutdown -r 23:30
+  shutdown -r 23:30  2>&1 | sof
 fi
 ################################################################################
 create_logline "DONE"
 ### email with log attached
-bash /etc/plat/mail.sh
+bash /etc/plat/mail.sh  2>&1 | sof
