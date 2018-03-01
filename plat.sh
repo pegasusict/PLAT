@@ -13,8 +13,6 @@ _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 # Make sure only root can run this script
 if [[ $EUID -ne 0  ]]; then echo "This script must be run as root" ; exit 1 ; fi
-# DEBUG is off by default
-DEBUG=true
 # define logfile name & creating log path
 logdir="/var/log/plat"
 if [ ! -d "$logdir" ] ; then mkdir "$logdir" ; fi
@@ -42,28 +40,40 @@ getargs() {
 EOT
         exit 3
     }  
-    OPTIONS=$(getopt -n $0 -o hdr:c: --long help,debug,role:,containertype: -n "$FUNCNAME" -- "$@")
-    [[ $? -ne 0 ]] && usage
-    eval set -- "$OPTIONS"
-    local format='%s\n' escape='-E' line='-n' script clear='tput sgr0'
+    echo "arguments are: $*"
+    getopt --test > /dev/null
+	if [[ $? -ne 4 ]]; then
+		echo "I’m sorry, `getopt --test` failed in this environment."
+		exit 1
+	fi
+	OPTIONS="hdr:c:"
+	LONG_OPTIONS="help,debug,role:,containertype:"
+    PARSED=$(getopt -o $OPTIONS --long $LONG_OPTIONS -n "$0" -- "$@")
+    if [ $? -ne 0 ] ; then usage ; fi
+    echo "$PARSED"
+    eval set -- "$PARSED"
+    echo "$PARSED"
+    #local format='%s\n' escape='-E' line='-n' script clear='tput sgr0'
+    DEBUG=false
     while true; do
         case "$1" in
-			-h|--help 			) usage;;
-            -d|--debug			) DEBUG=true; echo "DEBUG enabled";;
-            -r|--role 			) echo "checking systemrole"; checkrole $2; shift ;; 
-            -c|--containertype	) echo "checking for containertype"; checkcontainer $2; shift ;;
+			-h|--help 			) usage ; shift ;;
+            -d|--debug			) DEBUG=true ; echo "DEBUG enabled"; shift ;;
+            -r|--role 			) echo "checking systemrole"; checkrole $2; shift 2 ;; 
+            -c|--containertype	) echo "checking for containertype"; checkcontainer $2; shift 2 ;;
+            -- ) shift; break ;;
+            * ) break ;;
         esac
-        shift
     done
     echo "arguments parsed"
-	tput -S <<<"$script"
+	#tput -S <<<"$script"
 	$clear
 	echo "DEBUG: $DEBUG"
 }
 sof() {
     ### ScreenOrFile
-    ### if DEBUG = TRUE, output is to screen and file, else only to file
-#   if [ "$DEBUG" = true ]
+    ### if DEBUG = true, output is to screen and file, else only to file
+#   if [ $DEBUG = true ]
 #   then
       echo $1 2>&1 | tee -a $PLAT_LOGFILE      
 #   else
@@ -79,7 +89,7 @@ create_logline() {
     sof $_log_line
 }
 create_secline() {
-    _subject
+    _subject="$1"
     _sec_line="# $_subject #"
     imax=78
     for (( i=${#_sec_line}; i<imax; i+=2 )) ; do _sec_line="#$_sec_line#" ; done
