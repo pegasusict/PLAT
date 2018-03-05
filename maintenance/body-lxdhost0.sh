@@ -15,7 +15,7 @@ then
    create_secline "$active_containers_found active containers found:"
    for (( i=0; i<active_containers_found; i++ ));
    do
-      echo "-> ${activecontainers[$i]}"
+      create_secline "-> ${activecontainers[$i]}"
    done
 else
    create_secline "No active containers found"
@@ -25,20 +25,20 @@ then
    create_secline "$inactive_containers_found inactive containers found:"
    for (( i=0; i<inactive_containers_found; i++ ));
    do
-      echo "-> ${inactivecontainers[$i]}"
+      create_secline "-> ${inactivecontainers[$i]}"
    done
 else
    create_secline "No inactive containers found"
 fi
 ################################################################################
 create_logline "Creating Snapshots"
-for (( i=0; i<active_containers_found; i++ ));
+for (( i=0; i<active_containers_found; i++ ))
 do
-    lxc pause ${activecontainers[$i]}
-    lxc snapshot "${activecontainers[$i]}" "${activecontainers[$i]}_$_timestamp"
+	lxc pause ${activecontainers[$i]};
+	lxc snapshot "${activecontainers[$i]}" "${activecontainers[$i]}_$(getthetime)"
     lxc start ${activecontainers[$i]}
 done
 for (( i=0; i<inactive_containers_found; i++ ))
 do
-    lxc snapshot "${inactivecontainers[$i]}" "${inactivecontainers[$i]}_$_timestamp"
+	lxc snapshot "${inactivecontainers[$i]}" "${inactivecontainers[$i]}_$(getthetime)"
 done

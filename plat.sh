@@ -9,12 +9,13 @@ SCRIPT_TITLE="POST INSTALL"
 SCRIPT=$(basename "$0")
 VERSION_MAJOR=0
 VERSION_MINOR=8
-VERSION_PATCH=38
+VERSION_PATCH=72
 VERSION_STATE="ALPHA"
-VERSION_BUILD=20180301
+VERSION_BUILD=20180305
 ###############################################################################
 PROGRAM="$PROGRAM_SUITE - $SCRIPT"
-VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE build VERSION_BUILD"
+SHORTVERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
+VERSION="Ver$SHORTVERSION build $VERSION_BUILD"
 ###############################################################################
 # When was this script called
 _now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
@@ -24,9 +25,12 @@ if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 if [[ $EUID -ne 0  ]]; then echo "This script must be run as root" ; exit 1 ; fi
 # set default values
 Verbosity=2
+tmpage=2
+garbageage=7
+logage=30
 ask_for_email_stuff="yes"
 ###################### defining functions #####################################
-getthetime(){ return $(date +"%Y-%m-%d_%H.%M.%S.%3N") ; }
+getthetime(){ echo $(date +"%Y-%m-%d_%H.%M.%S.%3N") ; }
 cr_dir() { targetdir=$1; if [ ! -d "$targetdir" ] ; then mkdir "$targetdir" ; fi ; }
 getargs() {
     getopt --test > /dev/null
@@ -34,8 +38,8 @@ getargs() {
 		echo "I’m sorry, `getopt --test` failed in this environment."
 		exit 1
 	fi
-	OPTIONS="hv:r:c:S:P:R:"
-	LONG_OPTIONS="help,verbosity:,role:,containertype:emailsender:emailpass:emailreciever:"
+	OPTIONS="hv:r:c:g:l:t:S:P:R:"
+	LONG_OPTIONS="help,verbosity:,role:,containertype:garbageage:logage:tmpage:emailsender:emailpass:emailreciever:"
     PARSED=$(getopt -o $OPTIONS --long $LONG_OPTIONS -n "$0" -- "$@")
     if [ $? -ne 0 ] ; then usage ; fi
     eval set -- "$PARSED"
@@ -45,6 +49,9 @@ getargs() {
             -v|--verbosity		) setverbosity $2 ; shift 2 ;;
             -r|--role 			) checkrole $2; shift 2 ;; 
             -c|--containertype	) checkcontainer $2; shift 2 ;;
+            -g|--garbageage		) gabageage=$2; shift 2 ;;
+            -l|--logage			) logage=$2; shift 2 ;;
+            -t|--tmpage			) tmpage=$2; shift 2 ;;
             -S|--emailsender	) EmailSender=$2; shift 2 ;;
             -P|--emailpass		) EmailPassword=$2; shift 2 ;;
             -R|--emailrecipient ) EmailRecipient=$2; shift 2 ;;
@@ -52,26 +59,28 @@ getargs() {
             * ) break ;;
         esac
     done
-	$clear
 }
-version() { echo -e "\n$PROGRAM $VERSION - Mattijs Snepvangers"; }   
+version() { echo -e "\n$PROGRAM $VERSION - (c) 2018 Mattijs Snepvangers"; }   
 usage() {
 	version
 	cat <<EOT
-		 USAGE: sudo bash $SCRIPT.sh -h
+		 USAGE: sudo bash $SCRIPT -h
 				or
-				sudo bash $SCRIPT.sh -r <systemrole> [ -c <containertype> ] [ -v INT ] [ -S <emailsender> -P <emailpassword> -R <emailsrecipient(s)> ]
+			sudo bash $SCRIPT -r <systemrole> [ -c <containertype> ] [ -v INT ] [ -g <garbageage> ] [ -l <logage> ] [ -t <tmpage> ] [ -S <emailsender> -P <emailpassword> -R <emailsrecipient(s)> ]
 
 		 OPTIONS
 
 		   -r or --role tells the script what kind of system we are dealing with.
-			  Valid options: basic, ws, poseidon, mainserver, container << REQUIRED >>
+			  Valid options: ws, poseidon, mainserver, container << REQUIRED >>
 		   -c or --containertype tells the script what kind of container we are working on.
 			  Valid options are: basic, nas, web, x11, pxe << REQUIRED if -r=container >>
-		   -v or --verbosity defines the amount of chatter. 0=silent, 3=debug. default = 1
-		   -S or emailsender defines the gmail account used for sending the logs 
-		   -P or emailpass defines the password for that account
-		   -R or emailrecipient defines the recipient(s) of those emails
+		   -v or --verbosity defines the amount of chatter. 0=CRITICAL, 1=WARNING, 2=INFO, 3=VERBOSE, 4=DEBUG. default=2
+		   -g or --garbageage defines the age (in days) of garbage (trashbins & temp files) being cleaned, default=7
+		   -l or --logage defines the age (in days) of logs to be purged, default=30
+		   -t or --tmpage define how long temp files should be untouched before they are deleted, default=2
+		   -S or --emailsender defines the gmail account used for sending the logs 
+		   -P or --emailpass defines the password for that account
+		   -R or --emailrecipient defines the recipient(s) of those emails
 		   -h or --help prints this message
 
 		  The options can be used in any order
@@ -97,7 +106,6 @@ opr() {
 		then echo "$message" | tee -a $PLAT_LOGFILE
 		else echo "$message" >> $PLAT_LOGFILE
 	fi
-	###TODO### create CLI argument for logfile verbosity ???
 }
 opr0() { opr 0 "$1"; } ### CRITICAL
 opr1() { opr 1 "$1"; } ### WARNING
@@ -106,57 +114,53 @@ opr3() { opr 3 "$1"; } ### VERBOSE
 opr4() { opr 4 "$1"; } ### DEBUG
 create_logline() { ### INFO MESSAGES with timestamp
     _subject="$1"
-    _now=getthetime
-    _log_line="$_now ## $_subject #"
+    _log_line="$(getthetime) ## $_subject #"
     imax=80
-    for (( i=${#_log_line}; i<imax; i++ )) ; do _log_line+="#" ; done
+    for (( i=${#_log_line}; i<$imax; i++ )) ; do _log_line+="#" ; done
     opr2 "$_log_line"
 }
 create_secline() { ### VERBOSE MESSAGES
-    _subject="$1"
+    _subject="$1 - line $LINENO"
     _sec_line="# $_subject #"
     imax=78
-    for (( i=${#_sec_line}; i<imax; i+=2 )) ; do _sec_line="#$_sec_line#" ; done
+    for (( i=${#_sec_line}; i<$imax; i+=2 )) ; do _sec_line="#$_sec_line#" ; done
     opr3 "$_sec_line"
 }
-###TODO### DEBUGLINE GENERATOR - needs to give the linenumber of the requesting subroutine
 add_line_to_file() {
     LINE_TO_ADD = $1
     TARGET_FILE = $2
-    if [ grep -qsFx "$LINE_TO_ADD" "$TARGET_FILE" ] ; then
-        opr4 "line already exists, leaving it undisturbed"
+    if [ grep -qsFx "$LINE_TO_ADD" "$TARGET_FILE" ] ; then opr4 "line already exists, leaving it undisturbed"
     else
-        if [ -w "$TARGET_FILE" ] ; then
-            printf "%s\n" "$LINE_TO_ADD" >> "$TARGET_FILE"
-            opr3 "$TARGET_FILE has been updated"
-        else
-            opr1 "WARNING: $TARGET_FILE not writeable"
-            opr1 "Line '$LINE_TO_ADD' could not be added"
+        if [ -w "$TARGET_FILE" ] ; then printf "%s\n" "$LINE_TO_ADD" >> "$TARGET_FILE"; opr3 "$TARGET_FILE has been updated"
+        else opr1 "WARNING: $TARGET_FILE not writeable: Line '$LINE_TO_ADD' could not be added"
         fi
     fi
 }
 checkrole() {
-	role=$1
-	case "$role" in
+	_role=$1
+	case "$_role" in
 		"ws"			)	systemrole[ws]=true
 							opr3 "role=ws";;
 		"poseidon" 		)	systemrole[ws]=true
+							systemrole[server]=true
 							systemrole[lxdhost]=true
 							systemrole[poseidon]=true
 							systemrole[nas]=true
 							opr3 "role=poseidon";;
 		"mainserver"	)	opr3 "role=mainserver"
+							systemrole[server]=true
 							systemrole[mainserver]=true
 							systemrole[lxdhost]=true;;
 		"container"		)	opr3 "role=container"
+							systemrole[server]=true
 							systemrole[container]=true;;
 		*				)	opr0 "CRITICAL: Unknown systemrole $role, exiting..."
 							exit 1;;
 	esac
 }
 checkcontainer() {
-	container=$1
-	case "$container" in
+	_container=$1
+	case "$_container" in
 		"nas"	)	systemrole[nas] = true
 					opr3 "container=nas";;
 		"web" 	)	systemrole[nas] = true
@@ -182,13 +186,13 @@ add_ppa(){
 	esac
 }
 insert_timestamp() {
-	_now=getthetime
 	targetfile=$1
-	echo "##                     built at $_now                     ##" >> "$targetfile"
+	echo "##                     built at $(getthetime)                     ##" >> "$targetfile"
 }
 download() { wget -q -a "$PLAT_LOGFILE" -nv $1; }
-###
-# "define logfile name & create log path"
+install() { dpkg -i $1 2>&1 | opr4; }
+apt-inst() { apt-get -qqy --allow-unauthenticated install "$@" 2>&1 | opr4; }
+### "define logfile name & create log path"
 logdir="/var/log/plat"
 cr_dir $logdir
 PLAT_LOGFILE="$logdir/PostInstall_$_now.log"
@@ -196,14 +200,17 @@ PLAT_LOGFILE="$logdir/PostInstall_$_now.log"
 getargs "$@"
 ###
 opr2 "################################################################################"
-opr2 "## Pegasus' Linux Administration Tools - Post Install Script         V1.0Beta ##"
-opr2 "## (c) 2017 Mattijs Snepvangers    build 20171215       pegasus.ict@gmail.com ##"
+opr2 "## Pegasus' Linux Administration Tools - Post Install Script  Ver$SHORTVERSION ##"
+opr2 "## (c)2017-2018 Mattijs Snepvangers  build $VERSION_BUILD     pegasus.ict@gmail.com ##"
 opr2 "################################################################################"
 opr 10 ""
-if [ ${#role} -le 1 ]; then opr0 "CRITICAL: no systemrole defined, exiting..."; exit 1 ; fi
+if [ ${#systemrole} -le 1 ]; then opr0 "CRITICAL: no systemrole defined, exiting..."; exit 1 ; fi
 ########################################################################
-create_logline "Injecting interfaces file into mainserver network config"
-if [ $role="mainserver" ] ; then cat lxdhost_interfaces.txt > /etc/network/interfaces ; fi
+if [ $systemrole[mainserver] = true ]
+then
+	create_logline "Injecting interfaces file into mainserver network config"
+	cat lxdhost_interfaces.txt > /etc/network/interfaces
+fi
 ########################################################################
 create_logline "Installing extra PPA's"
 create_secline "Copying Ubuntu sources and some extras"; cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | opr4
@@ -230,58 +237,56 @@ create_logline "removing duplicate lines from source lists"; perl -i -ne 'print 
 create_logline "Updating apt cache"; apt-get update -q 2>&1 | opr4
 create_logline "Installing updates"; apt-get --allow-unauthenticated upgrade -qy 2>&1 | opr4
 ######
-create_logline "Installing extra packages"; apt-get -qqy --allow-unauthenticated install mc trash-cli 2>&1 | opr4
-if [ "$systemrole[ws]" = true ] ; 		then apt-get -qqy --allow-unauthenticated install synaptic tilda audacious samba wine-stable playonlinux winetricks 2>&1 | opr4 ; fi
-if [ "$systemrole[poseidon]" = true ] ; then apt-get -qqy --allow-unauthenticated install plank picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted 2>&1 | opr4 ; fi
-if [ "$systemrole[web]" = true ] ;		then apt-get -qqy --allow-unauthenticated install apache2 phpmyadmin mysql-server mytop proftpd 2>&1 | opr4 ; fi
-if [ "$systemrole[nas]" = true ] ;		then apt-get -qqy --allow-unauthenticated install samba 2>&1 | opr4 ; fi
-if [ "$systemrole[pxe]" = true ] ;		then apt-get -qqy --allow-unauthenticated install atftpd 2>&1 | opr4 ; fi
-   ###CHECK### what about: cobbler
+create_logline "Installing extra packages";  apt-inst mc trash-cli snapd git
+if [ "$systemrole[ws]" = true ] ; 		then apt-inst synaptic tilda audacious samba wine-stable playonlinux winetricks; fi
+if [ "$systemrole[poseidon]" = true ] ; then apt-inst picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted ; fi
+if [ "$systemrole[web]" = true ] ;		then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
+if [ "$systemrole[nas]" = true ] ;		then apt-inst samba nfsd proftpd ; fi
+if [ "$systemrole[pxe]" = true ] ;		then apt-inst atftpd ; fi
+if [ "$systemrole[lxdhost]" = true ] ;	then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
+if [ "$systemrole[server]" = true ] ;	then apt-inst ssh-server screen; fi
 ################################################################################
 create_logline "Installing extra software"
 create_secline "Installing TeamViewer"
 download "https://download.teamviewer.com/download/teamviewer_i386.deb"
-dpkg -i teamviewer_i386.deb 2>&1 | opr4
-
+install teamviewer_i386.deb
 apt-get install -fy 2>&1 | opr4
 if [ $systemrole = "poseidon" ]
 then
   create_secline "Installing StarUML"
   download "http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb"
-  dpkg -i libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb 2>&1 | opr4
+  install libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb
   download "http://staruml.io/download/release/v2.8.0/StarUML-v2.8.0-64-bit.deb"
-  dpkg -i StarUML-v2.8.0-64-bit.deb 2>&1 | opr4
+  install StarUML-v2.8.0-64-bit.deb
   create_secline "Installing GitKraken"
   download "https://release.gitkraken.com/linux/gitkraken-amd64.deb"
-  dpkg -i gitkraken-amd64.deb 2>&1 | opr4
+  install gitkraken-amd64.deb
 fi
 rm *.deb 2>&1 | opr4
 ################################################################################
 create_logline "Building maintenance script"
 cr_dir "/etc/plat"
 maintenancescript="/etc/plat/maintenance.sh"
-if [ -f "$maintenancescript" ] ; then
-    rm $maintenancescript 2>&1 | opr4
-    opr4 "Removed old maintenance script."
-fi
-cat maintenance/maintenance-header1.sh >> "$maintenancescript"
-insert_timestamp "$maintenancescript"
-sed -e 1d maintenance/maintenance-header2.sh >> "$maintenancescript"
-insert_timestamp "$maintenancescript"
+if [ -f "$maintenancescript" ] ; then rm $maintenancescript 2>&1 | opr4; opr4 "Removed old maintenance script."; fi
+cat maintenance/maintenance-header0.sh > "$maintenancescript"
+echo "## Pegasus' Linux Administration Tools - Post Install Script  Ver$SHORTVERSION ##" >> "$maintenancescript"
+sed -e 1d maintenance/maintenance-header1.sh >> "$maintenancescript" ; insert_timestamp "$maintenancescript"
+sed -e 1d maintenance/maintenance-header2.sh >> "$maintenancescript" ; insert_timestamp "$maintenancescript"
 sed -e 1d maintenance/maintenance-header3.sh >> "$maintenancescript"
-if [ $systemrole = "lxdhost" ] ; then
-   sed -e 1d maintenance/body-lxdhost0.sh >> "$maintenancescript"
-   if [ $role == "mainserver" ] ; then
-     sed -e 1d maintenance/backup2tape.sh >> "$maintenancescript"
-   fi
-   sed -e 1d maintenance/body-lxdhost1.sh >> "$maintenancescript"
+echo "garbageage=$garbageage" >> "$maintenancescript"
+echo "logage=$logage" >> "$maintenancescript"
+if [ $systemrole = "lxdhost" ]
+	then sed -e 1d maintenance/body-lxdhost0.sh >> "$maintenancescript"
+	if [ $role == "mainserver" ]
+		then sed -e 1d maintenance/backup2tape.sh >> "$maintenancescript"; fi
+	sed -e 1d maintenance/body-lxdhost1.sh >> "$maintenancescript"
 fi
 sed -e 1d maintenance/body-basic.sh >> "$maintenancescript"
-chmod 555 /etc/plat/maintenance.sh 2>&1 | opr4
-chown root:root /etc/plat/maintenance.sh 2>&1 | opr4
+chmod 555 "$maintenancescript" 2>&1 | opr4;chown root:root "$maintenancescript" 2>&1 | opr4
 ######
 create_secline "adding maintenancescript to sheduler"
-if [ $role = "mainserver" ] ; then
+if [ $role = "mainserver" ]
+then
     LINE_TO_ADD="\n### Added by Pegs Linux Administration Tools ###\n0 * * 4 0 bash /etc/plat/maintenance.sh\n\n"
     TARGET_FILE="/etc/crontab"
 else
@@ -294,31 +299,16 @@ create_logline "Building mail script"
 if [[ ${#EmailSender} -ge 10 ] && [ ${#EmailPassword} -ge 8 ] && [ ${#EmailRecipient} -ge 10 ]]; then ask_for_email_stuff="no"; fi
 mailscript="/etc/plat/mail.sh"
 cr_dir "/etc/plat"
-if [ -f "$mail" ] ; then
-    rm $mail 2>&1 | opr4
-    create_secline "Removed old mail script."
-fi
+if [ -f "$mail" ] ; then rm $mail 2>&1 | opr4; create_secline "Removed old mail script.";fi
 cat mail/mail0.sh >> "$mailscript"
 insert_timestamp "$mailscript"
 sed -e 1d mail/mail1.sh >> "$mailscript"
-if [ "$ask_for_email_stuff" = "yes" ]
-	echo "Which gmail account will I use to send the reports? (other providers are not supported for now)"
-	read EmailSender
-fi
-echo "# Define sender's detail  email ID" >> "$mailscript"
-echo "From_Mail=\"$EmailSender\"" >> "$mailscript"
-if [ "$ask_for_email_stuff" = "yes" ]
-	echo "Which password goes with that account?"
-	read EmailPassword
-fi
-echo "# Define sender's password" >> "$mailscript"
-echo "Sndr_Passwd=\"$EmailPassword\"" >> "$mailscript"
-if [ "$ask_for_email_stuff" = "yes" ]
-	echo "To whom will the reports be sent?"
-	read EmailRecipient
-fi
-echo "# Define recipient(s)" >> "$mailscript"
-echo "To_Mail=\"Email$Recipient\"" >> "$mailscript"
+if [ "$ask_for_email_stuff" = "yes" ];echo "Which gmail account will I use to send the reports? (other providers are not supported for now)";read EmailSender;fi
+echo "# Define sender's detail  email ID" >> "$mailscript"; echo "From_Mail=\"$EmailSender\"" >> "$mailscript"
+if [ "$ask_for_email_stuff" = "yes" ];then echo "Which password goes with that account?"; read EmailPassword; fi
+echo "# Define sender's password" >> "$mailscript"; echo "Sndr_Passwd=\"$EmailPassword\"" >> "$mailscript"
+if [ "$ask_for_email_stuff" = "yes" ];echo "To whom will the reports be sent?";	read EmailRecipient;fi
+echo "# Define recipient(s)" >> "$mailscript"; echo "To_Mail=\"Email$Recipient\"" >> "$mailscript"
 sed -e 1d mail/mail2.sh >> "$mailscript"
 ################################################################################
 create_logline "sheduling reboot if required"

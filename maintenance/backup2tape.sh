@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################################################################
 create_logline "Full System Backup to tape"
-mt -f /dev/st0 rewind 2>&1 | tee -a $PLAT_LOGFILE
+mt -f /dev/st0 rewind 2>&1 >> $PLAT_LOGFILE
 oldpwd=$(pwd)
 cd /
 sudo tar -cpzf /dev/st0
@@ -16,6 +16,6 @@ sudo tar -cpzf /dev/st0
 –exclude=/tmp/*
 –exclude=/var/cache/apt/*
 –exclude="$PLAT_LOGFILE" /
- 2>&1 | tee -a $PLAT_LOGFILE
- mt -f /dev/st0 offline
- cd $oldpwd
+2>&1 >> $PLAT_LOGFILE
+mt -f /dev/st0 offline
+cd $oldpwd
