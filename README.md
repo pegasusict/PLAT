@@ -1,5 +1,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8c5640df6d7c480d8532efd5063c93e8)](https://www.codacy.com/app/pegasus.ict/plat?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pegasusict/plat&amp;utm_campaign=Badge_Grade)
 
+<<< despite multiple attempts, github appearently does not allow you to align your documents properly....>>>
+
 # PLAT
 Pegasus' Linux Administration Tools is a set of bash scripts that make life easier for the lazy/newbie user
 on Ubuntu
