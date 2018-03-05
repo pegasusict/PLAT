@@ -1,7 +1,5 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8c5640df6d7c480d8532efd5063c93e8)](https://www.codacy.com/app/pegasus.ict/plat?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pegasusict/plat&amp;utm_campaign=Badge_Grade)
 
-<<< despite multiple attempts, github appearently does not allow you to align your documents properly....>>>
-
 # PLAT
 Pegasus' Linux Administration Tools is a set of bash scripts that make life easier for the lazy/newbie user
 on Ubuntu
@@ -46,43 +44,43 @@ Constructive criticism and suggestions are very welcome!
 ---
 
 		All versions:	Edit/add repos & ppas appropriate to systemrole, remove duplicate lines
-						Install trash-cli, mc, teamviewer, git, snapd
-						apt-get update, upgrade, auto-remove, autoclean
-						email report(s)
+				Install trash-cli, mc, teamviewer, git, snapd
+				apt-get update, upgrade, auto-remove, autoclean
+				email report(s)
 
-        ws: 			Adds maintenance script to anacrontab weekly
-						Installs synaptic, tilda, audacious, samba, wine-stable, playonlinux, winetricks
+		ws:		Adds maintenance script to anacrontab weekly
+				Installs synaptic, tilda, audacious, samba, wine-stable, playonlinux, winetricks
 
-		poseidon:		Adds maintenance script to anacrontab weekly
-						Installs staruml, gitkraken, picard, audacity, calibre, fastboot, adb, fslint,
-						gadmin-proftpd, geany, gprename, lame, masscan, forensics-all, forensics-extra,
-						forensics-extra-gui, forensics-full, chromium-browser, gparted, ssh-server, screen,
-						synaptic, tilda, audacious, samba, wine-stable, playonlinux, winetricks
+		poseidon:	Adds maintenance script to anacrontab weekly
+				Installs staruml, gitkraken, picard, audacity, calibre, fastboot, adb, fslint,
+				gadmin-proftpd, geany, gprename, lame, masscan, forensics-all, forensics-extra,
+				forensics-extra-gui, forensics-full, chromium-browser, gparted, ssh-server, screen,
+				synaptic, tilda, audacious, samba, wine-stable, playonlinux, winetricks
 
-		lxdhost:		Installs python3-crontab, lxc, lxcfs, lxd, lxd-tools, bridge-utils, xfsutils-linux,
-						criu, apt-cacher-ng, ssh-server, screen
-						replaces /etc/network/interfaces with lxdinterfaces file included in this package,
-						restarts network to incorporate bridge,
-						adds maintenance_lxdhost script to crontab,
-						places container_maintenance file on server
+		lxdhost:	Installs python3-crontab, lxc, lxcfs, lxd, lxd-tools, bridge-utils, xfsutils-linux,
+				criu, apt-cacher-ng, ssh-server, screen
+				replaces /etc/network/interfaces with lxdinterfaces file included in this package,
+				restarts network to incorporate bridge,
+				adds maintenance_lxdhost script to crontab,
+				places container_maintenance file on server
 
 		containers:
-			web:		Installs apache2, phpmyadmin, mysqld, mytop, samba, proftpd, webmin, ssh-server, screen
-			nas:		Installs samba, nfs, proftpd, ssh-server, screen
-			pxe:		Installs atftpd, ssh-server, screen
-			X11:		Installs ldm, ssh-server, screen
-			Basic:		Installs ssh-server, screen
+			web:	Installs apache2, phpmyadmin, mysqld, mytop, samba, proftpd, webmin, ssh-server, screen
+			nas:	Installs samba, nfs, proftpd, ssh-server, screen
+			pxe:	Installs atftpd, ssh-server, screen
+			X11:	Installs ldm, ssh-server, screen
+			Basic:	Installs ssh-server, screen
 
 ---
 **Maintenance scripts:**
 
 	Maintenance scripts are purpose built by post-install script
 	All versions:	apt-get update, upgrade, auto-remove, autoclean
-					remove 7+ day old trash files, remove temp-files which haven't been accessed in the
-					past 2+ days, remove 30+ days old logs
+			remove 7+ day old trash files, remove temp-files which haven't been accessed in the
+			past 2+ days, remove 30+ days old logs
 	Poseidon/lxdhost: also handles maintenance of containers, first creates snapshots, then maintenance
 	Mainserver: also handles maintenance of containers, first creates snapshots, then tape backup, then
-				maintenance
+			maintenance
 
 ---
 **Mail functionality**
