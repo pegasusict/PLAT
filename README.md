@@ -17,7 +17,7 @@ Constructive criticism and suggestions are very welcome!
 	Pegasus' Linux Administration Tools - plat.sh Ver0.8.63-ALPHA build 20180305 - (c) 2018 Mattijs Snepvangers
 		USAGE:	sudo bash plat.sh -h
 					or
-`				sudo bash plat.sh -r <systemrole> [ -c <containertype> ] [ -v INT ]
+			sudo bash plat.sh -r <systemrole> [ -c <containertype> ] [ -v INT ]
 				[ -g <garbageage> ] [ -l <logage> ] [ -t <tmpage> ] [ -S <emailsender>
 				-P <emailpassword> -R <emailsrecipient(s)> ]
 
