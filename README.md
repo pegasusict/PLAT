@@ -41,6 +41,7 @@ Constructive criticism and suggestions are very welcome!
 		  The options can be used in any order
 
 ==============================================================================
+
         All versions: edit/add repos & ppas appropriate to systemrole, remove duplicate lines
                       Install trash-cli, mc, teamviewer, git, snapd
                       apt-get update, upgrade, auto-remove, autoclean
