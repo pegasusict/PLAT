@@ -5,7 +5,8 @@ Pegasus' Linux Administration Tools is a set of bash scripts that make life easi
 on Ubuntu
 ---
 20180305 Update:
-Most of the issues should be gone now, I've added tonnes of functionality based on and/or inspired by feedback I recieved through various channels.
+Most of the issues should be gone now, I've added tonnes of functionality based on and/or inspired by 
+feedback I recieved through various channels.
 Constructive criticism and suggestions are very welcome!
 
 ===============================================================================
@@ -15,7 +16,8 @@ Constructive criticism and suggestions are very welcome!
        Pegasus' Linux Administration Tools - plat.sh Ver0.8.63-ALPHA build 20180305 - (c) 2018 Mattijs Snepvangers
 		 USAGE: sudo bash plat.sh -h
 				or
-			    sudo bash plat.sh -r <systemrole> [ -c <containertype> ] [ -v INT ] [ -g <garbageage> ] [ -l <logage> ] [ -t <tmpage> ] [ -S <emailsender> -P <emailpassword> -R <emailsrecipient(s)> ]
+			    sudo bash plat.sh -r <systemrole> [ -c <containertype> ] [ -v INT ] [ -g <garbageage> ]
+			       [ -l <logage> ] [ -t <tmpage> ] [ -S <emailsender> -P <emailpassword> -R <emailsrecipient(s)> ]
 
 		 OPTIONS
 
