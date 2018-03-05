@@ -13,11 +13,12 @@ Constructive criticism and suggestions are very welcome!
 
 **Post-Install script:**
 
-       Pegasus' Linux Administration Tools - plat.sh Ver0.8.63-ALPHA build 20180305 - (c) 2018 Mattijs Snepvangers
+       Pegasus' Linux Administration Tools - plat.sh Ver0.8.63-ALPHA build 20180305 - (c)2018 Mattijs Snepvangers
 		 USAGE: sudo bash plat.sh -h
 				or
-			    sudo bash plat.sh -r <systemrole> [ -c <containertype> ] [ -v INT ] [ -g <garbageage> ]
-			       [ -l <logage> ] [ -t <tmpage> ] [ -S <emailsender> -P <emailpassword> -R <emailsrecipient(s)> ]
+			    sudo bash plat.sh -r <systemrole> [ -c <containertype> ] [ -v INT ]
+			    	[ -g <garbageage> ] [ -l <logage> ] [ -t <tmpage> ] [ -S <emailsender>
+				-P <emailpassword> -R <emailsrecipient(s)> ]
 
 		 OPTIONS
 
@@ -25,10 +26,13 @@ Constructive criticism and suggestions are very welcome!
 			  Valid options: ws, poseidon, mainserver, container << REQUIRED >>
 		   -c or --containertype tells the script what kind of container we are working on.
 			  Valid options are: basic, nas, web, x11, pxe << REQUIRED if -r=container >>
-		   -v or --verbosity defines the amount of chatter. 0=CRITICAL, 1=WARNING, 2=INFO, 3=VERBOSE, 4=DEBUG. default=2
-		   -g or --garbageage defines the age (in days) of garbage (trashbins & temp files) being cleaned, default=7
+		   -v or --verbosity defines the amount of chatter. 0=CRITICAL, 1=WARNING, 2=INFO, 3=VERBOSE,
+		   			4=DEBUG. default=2
+		   -g or --garbageage defines the age (in days) of garbage (trashbins & temp files) being 
+		   			cleaned, default=7
 		   -l or --logage defines the age (in days) of logs to be purged, default=30
-		   -t or --tmpage define how long temp files should be untouched before they are deleted, default=2
+		   -t or --tmpage define how long temp files should be untouched before they are deleted,
+		   			default=2
 		   -S or --emailsender defines the gmail account used for sending the logs 
 		   -P or --emailpass defines the password for that account
 		   -R or --emailrecipient defines the recipient(s) of those emails
@@ -46,13 +50,13 @@ Constructive criticism and suggestions are very welcome!
             installs synaptic, tilda, audacious, samba, wine-stable, playonlinux, winetricks
 
         poseidon:    Adds maintenance script to anacrontab weekly
-                     Installs staruml, gitkraken, picard, audacity, calibre, fastboot, adb, fslint, gadmin-proftpd,
-                     geany, gprename, lame, masscan, forensics-all, forensics-extra, forensics-extra-gui,
-                     forensics-full, chromium-browser, gparted, ssh-server, screen, synaptic, tilda, audacious,
-                     samba, wine-stable, playonlinux, winetricks
+                     Installs staruml, gitkraken, picard, audacity, calibre, fastboot, adb, fslint,
+		      gadmin-proftpd, geany, gprename, lame, masscan, forensics-all, forensics-extra,
+		      forensics-extra-gui, forensics-full, chromium-browser, gparted, ssh-server, screen,
+		      synaptic, tilda, audacious, samba, wine-stable, playonlinux, winetricks
 
-        lxdhost:     Installs python3-crontab, lxc, lxcfs, lxd, lxd-tools, bridge-utils, xfsutils-linux, criu,
-                     apt-cacher-ng, ssh-server, screen
+        lxdhost:     Installs python3-crontab, lxc, lxcfs, lxd, lxd-tools, bridge-utils, xfsutils-linux,
+			criu, apt-cacher-ng, ssh-server, screen
                      replaces /etc/network/interfaces with lxdinterfaces file included in this package,
                      restarts network to incorporate bridge,
                      adds maintenance_lxdhost script to crontab,
@@ -70,14 +74,16 @@ Constructive criticism and suggestions are very welcome!
 
         Maintenance scripts are purpose built by post-install script
         All versions: apt-get update, upgrade, auto-remove, autoclean
-                      remove 7+ day old trash files, remove temp-files which haven't been accessed in the past 2+ days
+                      remove 7+ day old trash files, remove temp-files which haven't been accessed in the
+		      past 2+ days
                       remove 30+ days old logs
         Poseidon/lxdhost: also handles maintenance of containers, first creates snapshots, then maintenance
-        Mainserver: also handles maintenance of containers, first creates snapshots, then tape backup, then maintenance
+        Mainserver: also handles maintenance of containers, first creates snapshots, then tape backup, then
+			maintenance
 
 
 **Mail functionality**
 
         After running the Post Install script and after each run of the maintenance scripts,
-        an email containing the logs is automatically sent to the given address(es) using the given credentials.
-        For now the focus of the mail client is on Gmail.
+        an email containing the logs is automatically sent to the given address(es) using the given
+	credentials. For now the focus of the mail client lies on Gmail.
