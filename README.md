@@ -9,7 +9,8 @@ Most of the issues should be gone now, I've added tonnes of functionality based 
 feedback I recieved through various channels.
 Constructive criticism and suggestions are very welcome!
 
-===============================================================================
+---
+---
 
 **Post-Install script:**
 
@@ -40,7 +41,7 @@ Constructive criticism and suggestions are very welcome!
 
 		  The options can be used in any order
 
-==============================================================================
+---
 
         All versions: edit/add repos & ppas appropriate to systemrole, remove duplicate lines
                       Install trash-cli, mc, teamviewer, git, snapd
@@ -70,7 +71,7 @@ Constructive criticism and suggestions are very welcome!
               X11:   Installs ldm, ssh-server, screen
               Basic: Installs ssh-server, screen
 
-
+---
 **Maintenance scripts:**
 
         Maintenance scripts are purpose built by post-install script
@@ -82,7 +83,7 @@ Constructive criticism and suggestions are very welcome!
         Mainserver: also handles maintenance of containers, first creates snapshots, then tape backup, then
 			maintenance
 
-
+---
 **Mail functionality**
 
         After running the Post Install script and after each run of the maintenance scripts,
