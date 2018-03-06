@@ -4,21 +4,26 @@
 ## (C)2017-2018 Mattijs Snepvangers                    pegasus.ict@gmail.com ##
 ## License: GPL v3                        Please keep my name in the credits ##
 ###############################################################################
+START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 PROGRAM_SUITE="Pegasus' Linux Administration Tools"
-SCRIPT_TITLE="POST INSTALL"
+SCRIPT_TITLE="Post Install Script"
+$MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
+$EMAIl_SCRIPT_TITLE="Email Script"
 SCRIPT=$(basename "$0")
+MAINTAINER="Mattijs Snepvangers"
+EMAIL="pegasus.ict@gmail.com"
 VERSION_MAJOR=0
-VERSION_MINOR=8
-VERSION_PATCH=72
-VERSION_STATE="ALPHA"
-VERSION_BUILD=20180305
+VERSION_MINOR=10
+VERSION_PATCH=3
+VERSION_STATE="ALPHA " # needs to be 6 chars for alignment <ALPHA |BETA  |STABLE>
+VERSION_BUILD=20180306
+CURR_YEAR=$(date +"%Y")
+TODAY=$(date +"%d-%m-%Y")
 ###############################################################################
 PROGRAM="$PROGRAM_SUITE - $SCRIPT"
 SHORTVERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
 VERSION="Ver$SHORTVERSION build $VERSION_BUILD"
 ###############################################################################
-# When was this script called
-_now=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 # Making sure this script is run by bash to prevent mishaps
 if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 # Make sure only root can run this script
@@ -30,8 +35,89 @@ garbageage=7
 logage=30
 ask_for_email_stuff="yes"
 ###################### defining functions #####################################
-getthetime(){ echo $(date +"%Y-%m-%d_%H.%M.%S.%3N") ; }
+apt-inst() { apt-get -qqy --allow-unauthenticated install "$@" 2>&1 | opr4; }
+add_line_to_file() {
+    LINE_TO_ADD = $1
+    TARGET_FILE = $2
+    if [ grep -qsFx "$LINE_TO_ADD" "$TARGET_FILE" ] ; then opr4 "line already exists, leaving it undisturbed"
+    else
+        if [ -w "$TARGET_FILE" ] ; then printf "%s\n" "$LINE_TO_ADD" >> "$TARGET_FILE"; opr3 "$TARGET_FILE has been updated"
+        else opr1 "WARNING: $TARGET_FILE not writeable: Line '$LINE_TO_ADD' could not be added"
+        fi
+    fi
+}
+add_to_maintenance() { add_to_script "$maintenancescript" $1 ; }
+add_to_mail() { add_to_script "$mailscript" $1 ; }
+add_ppa(){
+	method=$1; url=$2; key=$3
+	case method in
+		"wget"		)	wget -q -a "$PLAT_LOGFILE" $url -O- | apt-key add - ;;
+		"apt-key"	)	apt-key adv --keyserver $url --recv-keys $key 2>&1 | opr3 ;;
+		"aar"		)	add-apt-repository $url | opr3 ;;
+	esac
+}
+add_to_script() {
+	targetscript=$1
+	line=$2
+	cat "$line" >> $targetscript
+}
+checkcontainer() {
+	_container=$1
+	case "$_container" in
+		"nas"	)	systemrole[nas] = true
+					opr3 "container=nas";;
+		"web" 	)	systemrole[nas] = true
+					systemrole[web] = true
+					opr3 "container=web";;
+		"x11"	)	systemrole[ws] = true
+					opr3 "container=x11";;
+		"pxe"	)	systemrole[nas] = true
+					systemrole[pxe] = true
+					opr3 "container=pxe";;
+		"basic"	)	systemrole[basic]=true;
+					opr3 "container=basic";;
+		*		)	opr0 "ERROR: Unknown containertype $container, exiting...";
+					exit 1;;
+	esac;
+}
+checkrole() {
+	_role=$1
+	case "$_role" in
+		"ws"			)	systemrole[ws]=true
+							opr3 "role=ws";;
+		"poseidon" 		)	systemrole[ws]=true
+							systemrole[server]=true
+							systemrole[lxdhost]=true
+							systemrole[poseidon]=true
+							systemrole[nas]=true
+							opr3 "role=poseidon";;
+		"mainserver"	)	opr3 "role=mainserver"
+							systemrole[server]=true
+							systemrole[mainserver]=true
+							systemrole[lxdhost]=true;;
+		"container"		)	opr3 "role=container"
+							systemrole[server]=true
+							systemrole[container]=true;;
+		*				)	opr0 "CRITICAL: Unknown systemrole $role, exiting..."
+							exit 1;;
+	esac
+}
 cr_dir() { targetdir=$1; if [ ! -d "$targetdir" ] ; then mkdir "$targetdir" ; fi ; }
+create_logline() { ### INFO MESSAGES with timestamp
+    _subject="$1"
+    _log_line="$(getthetime) ## $_subject #"
+    imax=80
+    for (( i=${#_log_line}; i<$imax; i++ )) ; do _log_line+="#" ; done
+    opr2 "$_log_line"
+}
+create_secline() { ### VERBOSE MESSAGES
+    _subject="$1 - line $LINENO"
+    _sec_line="# $_subject #"
+    imax=78
+    for (( i=${#_sec_line}; i<$imax; i+=2 )) ; do _sec_line="#$_sec_line#" ; done
+    opr3 "$_sec_line"
+}
+download() { wget -q -a "$PLAT_LOGFILE" -nv $1; }
 getargs() {
     getopt --test > /dev/null
 	if [[ $? -ne 4 ]]; then
@@ -60,7 +146,37 @@ getargs() {
         esac
     done
 }
-version() { echo -e "\n$PROGRAM $VERSION - (c) 2018 Mattijs Snepvangers"; }   
+getthetime(){ echo $(date +"%Y-%m-%d_%H.%M.%S.%3N") ; }
+insert_timestamp() {
+	targetfile=$1
+	echo "##                     built at $(getthetime)                     ##" >> "$targetfile"
+}
+install() { dpkg -i $1 2>&1 | opr4; }
+opr() {
+    ### OutPutRouter ###
+    # decides what to print on screen based on $Verbosity level
+    # usage: opr <verbosity level> <message>
+    importance=$1
+    message=$2
+    if [ $importance -le $Verbosity ]
+		then echo "$message" | tee -a $PLAT_LOGFILE
+		else echo "$message" >> $PLAT_LOGFILE
+	fi
+}
+opr0() { opr 0 "$1"; } ### CRITICAL
+opr1() { opr 1 "$1"; } ### WARNING
+opr2() { opr 2 "$1"; } ### INFO
+opr3() { opr 3 "$1"; } ### VERBOSE
+opr4() { opr 4 "$1"; } ### DEBUG
+setverbosity() {
+	case $1 in
+		0	)	Verbosity=0;;	### Be vewy, vewy quiet... Will only show Critical errors which result in untimely exiting of the script
+		1	)	Verbosity=1;;	# Will only show warnings that don't endanger the basic functioning of the program
+		2	)	Verbosity=2;;	# Just give us the highlights, please - will tell what phase is taking place
+		3	)	Verbosity=3;;	# Let me know what youre doing, every step of the way
+		4	)	Verbosity=4;;	# I want it all, your thoughts and dreams too!!!
+	esac
+}
 usage() {
 	version
 	cat <<EOT
@@ -87,123 +203,21 @@ usage() {
 EOT
 	exit 3
 }  
-setverbosity() {
-	case $1 in
-		0	)	Verbosity=0;;	### Be vewy, vewy quiet... Will only show Critical errors which result in untimely exiting of the script
-		1	)	Verbosity=1;;	# Will only show warnings that don't endanger the basic functioning of the program
-		2	)	Verbosity=2;;	# Just give us the highlights, please - will tell what phase is taking place
-		3	)	Verbosity=3;;	# Let me know what youre doing, every step of the way
-		4	)	Verbosity=4;;	# I want it all, your thoughts and dreams too!!!
-	esac
-}
-opr() {
-    ### OutPutRouter ###
-    # decides what to print on screen based on $Verbosity level
-    # usage: opr <verbosity level> <message>
-    importance=$1
-    message=$2
-    if [ $importance -le $Verbosity ]
-		then echo "$message" | tee -a $PLAT_LOGFILE
-		else echo "$message" >> $PLAT_LOGFILE
-	fi
-}
-opr0() { opr 0 "$1"; } ### CRITICAL
-opr1() { opr 1 "$1"; } ### WARNING
-opr2() { opr 2 "$1"; } ### INFO
-opr3() { opr 3 "$1"; } ### VERBOSE
-opr4() { opr 4 "$1"; } ### DEBUG
-create_logline() { ### INFO MESSAGES with timestamp
-    _subject="$1"
-    _log_line="$(getthetime) ## $_subject #"
-    imax=80
-    for (( i=${#_log_line}; i<$imax; i++ )) ; do _log_line+="#" ; done
-    opr2 "$_log_line"
-}
-create_secline() { ### VERBOSE MESSAGES
-    _subject="$1 - line $LINENO"
-    _sec_line="# $_subject #"
-    imax=78
-    for (( i=${#_sec_line}; i<$imax; i+=2 )) ; do _sec_line="#$_sec_line#" ; done
-    opr3 "$_sec_line"
-}
-add_line_to_file() {
-    LINE_TO_ADD = $1
-    TARGET_FILE = $2
-    if [ grep -qsFx "$LINE_TO_ADD" "$TARGET_FILE" ] ; then opr4 "line already exists, leaving it undisturbed"
-    else
-        if [ -w "$TARGET_FILE" ] ; then printf "%s\n" "$LINE_TO_ADD" >> "$TARGET_FILE"; opr3 "$TARGET_FILE has been updated"
-        else opr1 "WARNING: $TARGET_FILE not writeable: Line '$LINE_TO_ADD' could not be added"
-        fi
-    fi
-}
-checkrole() {
-	_role=$1
-	case "$_role" in
-		"ws"			)	systemrole[ws]=true
-							opr3 "role=ws";;
-		"poseidon" 		)	systemrole[ws]=true
-							systemrole[server]=true
-							systemrole[lxdhost]=true
-							systemrole[poseidon]=true
-							systemrole[nas]=true
-							opr3 "role=poseidon";;
-		"mainserver"	)	opr3 "role=mainserver"
-							systemrole[server]=true
-							systemrole[mainserver]=true
-							systemrole[lxdhost]=true;;
-		"container"		)	opr3 "role=container"
-							systemrole[server]=true
-							systemrole[container]=true;;
-		*				)	opr0 "CRITICAL: Unknown systemrole $role, exiting..."
-							exit 1;;
-	esac
-}
-checkcontainer() {
-	_container=$1
-	case "$_container" in
-		"nas"	)	systemrole[nas] = true
-					opr3 "container=nas";;
-		"web" 	)	systemrole[nas] = true
-					systemrole[web] = true
-					opr3 "container=web";;
-		"x11"	)	systemrole[ws] = true
-					opr3 "container=x11";;
-		"pxe"	)	systemrole[nas] = true
-					systemrole[pxe] = true
-					opr3 "container=pxe";;
-		"basic"	)	systemrole[basic]=true;
-					opr3 "container=basic";;
-		*		)	opr0 "ERROR: Unknown containertype $container, exiting...";
-					exit 1;;
-	esac;
-}
-add_ppa(){
-	method=$1; url=$2; key=$3
-	case method in
-		"wget"		)	wget -q -a "$PLAT_LOGFILE" $url -O- | apt-key add - ;;
-		"apt-key"	)	apt-key adv --keyserver $url --recv-keys $key 2>&1 | opr3 ;;
-		"aar"		)	add-apt-repository $url | opr3 ;;
-	esac
-}
-insert_timestamp() {
-	targetfile=$1
-	echo "##                     built at $(getthetime)                     ##" >> "$targetfile"
-}
-download() { wget -q -a "$PLAT_LOGFILE" -nv $1; }
-install() { dpkg -i $1 2>&1 | opr4; }
-apt-inst() { apt-get -qqy --allow-unauthenticated install "$@" 2>&1 | opr4; }
+version() { echo -e "\n$PROGRAM $VERSION - (c)$CURR_YEAR $MAINTAINER"; }   
 ### "define logfile name & create log path"
 logdir="/var/log/plat"
 cr_dir $logdir
-PLAT_LOGFILE="$logdir/PostInstall_$_now.log"
+PLAT_LOGFILE="$logdir/PostInstall_$START_TIME.log"
 ###
 getargs "$@"
 ###
-opr2 "################################################################################"
-opr2 "## Pegasus' Linux Administration Tools - Post Install Script  Ver$SHORTVERSION ##"
-opr2 "## (c)2017-2018 Mattijs Snepvangers  build $VERSION_BUILD     pegasus.ict@gmail.com ##"
-opr2 "################################################################################"
-opr 10 ""
+opr2 <<EOT
+################################################################################
+## $PROGRAM_SUITE - $SCRIPT_TITLE  Ver$SHORTVERSION ##
+## (c)2017-$CURR_YEAR $MAINTAINER  build $VERSION_BUILD     $EMAIL ##
+################################################################################
+
+EOT
 if [ ${#systemrole} -le 1 ]; then opr0 "CRITICAL: no systemrole defined, exiting..."; exit 1 ; fi
 ########################################################################
 if [ $systemrole[mainserver] = true ]
@@ -268,29 +282,46 @@ create_logline "Building maintenance script"
 cr_dir "/etc/plat"
 maintenancescript="/etc/plat/maintenance.sh"
 if [ -f "$maintenancescript" ] ; then rm $maintenancescript 2>&1 | opr4; opr4 "Removed old maintenance script."; fi
-cat maintenance/maintenance-header0.sh > "$maintenancescript"
-echo "## Pegasus' Linux Administration Tools - Post Install Script  Ver$SHORTVERSION ##" >> "$maintenancescript"
-sed -e 1d maintenance/maintenance-header1.sh >> "$maintenancescript" ; insert_timestamp "$maintenancescript"
-sed -e 1d maintenance/maintenance-header2.sh >> "$maintenancescript" ; insert_timestamp "$maintenancescript"
+add_to_maintenance <<EOT
+#!/usr/bin/bash
+################################################################################
+## $PROGRAM_SUITE - $MAINTENANCE_SCRIPT_TITLE   Ver$SHORTVERSION ##
+## (c)2017-$CURR_YEAR $MAINTAINER  build $VERSION_BUILD     $EMAIL ##
+## This maintenance script is dynamically built        Last build: $TODAY ##
+## License: GPL v3                         Please keep my name in the credits ##
+################################################################################
+
+EOT
+sed -e 1d maintenance/maintenance-header2.sh >> "$maintenancescript"
 sed -e 1d maintenance/maintenance-header3.sh >> "$maintenancescript"
-echo "garbageage=$garbageage" >> "$maintenancescript"
-echo "logage=$logage" >> "$maintenancescript"
-if [ $systemrole = "lxdhost" ]
+add_to_maintenance <<EOT
+tolog <<EOH
+################################################################################
+## $PROGRAM_SUITE - $MAINTENANCE_SCRIPT_TITLE   Ver$SHORTVERSION ##
+## (c)2017-$CURR_YEAR $MAINTAINER  build $VERSION_BUILD     $EMAIL ##
+## This maintenance script is dynamically built        Last build: $TODAY ##
+## License: GPL v3                         Please keep my name in the credits ##
+################################################################################
+
+EOH
+EOT
+add_to_maintenance "garbageage=$garbageage"
+add_to_maintenance "logage=$logage"
+if [ $systemrole[lxdhost] = true ]
 	then sed -e 1d maintenance/body-lxdhost0.sh >> "$maintenancescript"
-	if [ $role == "mainserver" ]
-		then sed -e 1d maintenance/backup2tape.sh >> "$maintenancescript"; fi
+	if [ $systemrole[mainserver] = true ]; then sed -e 1d maintenance/backup2tape.sh >> "$maintenancescript"; fi
 	sed -e 1d maintenance/body-lxdhost1.sh >> "$maintenancescript"
 fi
 sed -e 1d maintenance/body-basic.sh >> "$maintenancescript"
-chmod 555 "$maintenancescript" 2>&1 | opr4;chown root:root "$maintenancescript" 2>&1 | opr4
-######
+chmod 555 "$maintenancescript" 2>&1 | opr4 ; chown root:root "$maintenancescript" 2>&1 | opr4
+###
 create_secline "adding maintenancescript to sheduler"
-if [ $role = "mainserver" ]
+if [ $systemrole[mainserver] = true ]
 then
-    LINE_TO_ADD="\n### Added by Pegs Linux Administration Tools ###\n0 * * 4 0 bash /etc/plat/maintenance.sh\n\n"
+    LINE_TO_ADD="\n### Added by $PROGRAM_SUITE ###\n0 * * 4 0 bash /etc/plat/maintenance.sh\n\n"
     TARGET_FILE="/etc/crontab"
 else
-    LINE_TO_ADD="\n### Added by Pegs Linux Administration Tools ###\n@weekly\t10\tplat_maintenance\tbash /etc/plat/maintenance.sh\n### /PLAT ###\n"
+    LINE_TO_ADD="\n### Added by $PROGRAM_SUITE ###\n@weekly\t10\tplat_maintenance\tbash /etc/plat/maintenance.sh\n"
     TARGET_FILE="/etc/anacrontab"
 fi
 add_line_to_file "$LINE_TO_ADD" "$TARGET_FILE"
@@ -300,19 +331,46 @@ if [[ ${#EmailSender} -ge 10 ] && [ ${#EmailPassword} -ge 8 ] && [ ${#EmailRecip
 mailscript="/etc/plat/mail.sh"
 cr_dir "/etc/plat"
 if [ -f "$mail" ] ; then rm $mail 2>&1 | opr4; create_secline "Removed old mail script.";fi
-cat mail/mail0.sh >> "$mailscript"
-insert_timestamp "$mailscript"
+add_to_mail <<EOT
+#!/usr/bin/bash
+################################################################################
+## $PROGRAM_SUITE   -   $MAIL_SCRIPT_TITLE      Ver$SHORTVERSION ##
+## (c)2017-$CURR_YEAR $MAINTAINER  build $VERSION_BUILD     $EMAIL ##
+## This mail script is dynamically built               Last build: $TODAY ##
+## License: GPL v3                         Please keep my name in the credits ##
+################################################################################
+
+EOT
 sed -e 1d mail/mail1.sh >> "$mailscript"
-if [ "$ask_for_email_stuff" = "yes" ];echo "Which gmail account will I use to send the reports? (other providers are not supported for now)";read EmailSender;fi
+if [ "$ask_for_email_stuff" = "yes" ];then echo "Which gmail account will I use to send the reports? (other providers are not supported for now)";read EmailSender;fi
 echo "# Define sender's detail  email ID" >> "$mailscript"; echo "From_Mail=\"$EmailSender\"" >> "$mailscript"
 if [ "$ask_for_email_stuff" = "yes" ];then echo "Which password goes with that account?"; read EmailPassword; fi
 echo "# Define sender's password" >> "$mailscript"; echo "Sndr_Passwd=\"$EmailPassword\"" >> "$mailscript"
-if [ "$ask_for_email_stuff" = "yes" ];echo "To whom will the reports be sent?";	read EmailRecipient;fi
+if [ "$ask_for_email_stuff" = "yes" ];then echo "To whom will the reports be sent?"; read EmailRecipient;fi
 echo "# Define recipient(s)" >> "$mailscript"; echo "To_Mail=\"Email$Recipient\"" >> "$mailscript"
+add_to_mail <<EOT
+CC_TO="$EMAIL"
+RELAY_SERVER="smtp.gmail.com:587"
+SUBJECT="$PROGRAM_SUITE mailservice"
+MSG() {
+cat <<EOF
+L.S.,
+
+This is an automated email from your server/workstation $(HOST).
+You will find the logfile(s) attached to this email.
+
+kind regards,
+
+$PROGRAM_SUITE
+
+EOF
+}
+EOT
 sed -e 1d mail/mail2.sh >> "$mailscript"
 ################################################################################
-create_logline "sheduling reboot if required"
+create_logline "checking for reboot requirement"
 if [ -f /var/run/reboot-required ]; then create_logline "REBOOT REQUIRED"; shutdown -r 23:30  2>&1 | opr2; fi
 ################################################################################
-create_logline "DONE, emailing log(s)"
+create_logline "DONE, emailing log"
 bash /etc/plat/mail.sh
+###TODO### make update mechanism using git for maintenancefiles?
