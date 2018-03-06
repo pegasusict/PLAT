@@ -1,4 +1,5 @@
 #!/bin/bash
+#### DEFINING FUNCTIONS ########################################################
 create_logline() {
 	_loglinetitle=$1
 	_log_line="$(getthetime) ## $loglinetitle #"

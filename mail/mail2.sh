@@ -4,9 +4,9 @@ today=$(date +"%Y-%m-%d")
 Attachment="/var/log/plat/$today*.*"
 
 # store logging information in below log file
-Log_File="/var/log/plat/sendemail$today.log"
+Log_File="/var/log/plat/sendemail_$today.log"
 
-# check sendmail dir exists or not if not check create it
+# check sendmail dir exists. else create it
 Log_dir="$(dirname ${Log_File})"
 if [ ! -d "${Log_dir}" ]; then mkdir "${Log_dir}"; fi
 
