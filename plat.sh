@@ -15,7 +15,7 @@ MAINTAINER="Mattijs Snepvangers"
 MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 VERSION_MAJOR=0
 VERSION_MINOR=10
-VERSION_PATCH=72
+VERSION_PATCH=126
 VERSION_STATE="ALPHA " # needs to be 6 chars for alignment <ALPHA |BETA  |STABLE>
 VERSION_BUILD=20180308
 CURR_YEAR=$(date +"%Y")
@@ -36,10 +36,15 @@ TMPAGE=2
 GARBAGEAGE=7
 LOGAGE=30
 ASK_FOR_EMAIL_STUFF=true
+SYSTEMROLE_BASIC=false			;		SYSTEMROLE_WS=false
+SYSTEMROLE_POSEIDON=false		;		SYSTEMROLE_SERVER=false
+SYSTEMROLE_LXDHOST=false		;		SYSTEMROLE_NAS=false
+SYSTEMROLE_MAINSERVER=false 	;		SYSTEMROLE_CONTAINER=false
+SYSTEMROLE_WEB=false			;		SYSTEMROLE_PXE=false
 ###################### defining functions #####################################
 add_to_script() {
 	TARGETSCRIPT=$1 ; IS_LINE=$2 ; MESSAGE=$3
-	if [ $IS_LINE ]
+	if [ $IS_LINE = true ]
 	then echo $MESSAGE >> $TARGETSCRIPT
 	else cat $MESSAGE >> $TARGETSCRIPT
 	fi
@@ -94,10 +99,10 @@ EOH
 EOT
 	add_to_script "$SCRIPT" true "GARBAGEAGE=$GARBAGEAGE"
 	add_to_script "$SCRIPT" true "LOGAGE=$LOGAGE"
-	if [[ $SYSTEMROLE[lxdhost] ]]
+	if [[ $SYSTEMROLE_LXDHOST ]]
 	then
 		sed -e 1d maintenance/body-lxdhost0.sh >> "$SCRIPT"
-		if [ $SYSTEMROLE[MAINSERVER]=true ] ; then sed -e 1d maintenance/backup2tape.sh >> "$SCRIPT" ; fi
+		if [[ $SYSTEMROLE_MAINSERVER ]] ; then sed -e 1d maintenance/backup2tape.sh >> "$SCRIPT" ; fi
 		sed -e 1d maintenance/body-lxdhost1.sh >> "$SCRIPT"
 	fi
 	sed -e 1d maintenance/body-basic.sh >> "$SCRIPT"
@@ -106,45 +111,43 @@ EOT
 checkcontainer() {
 	_CONTAINER=$1
 	case "$_CONTAINER" in
-		"nas"	)	SYSTEMROLE[NAS] = true
+		"nas"	)	SYSTEMROLE_NAS=true
 					opr3 "container=nas";;
-		"web" 	)	SYSTEMROLE[NAS] = true
-					SYSTEMROLE[WEB] = true
+		"web" 	)	SYSTEMROLE_NAS=true
+					SYSTEMROLE_WEB=true
 					opr3 "container=web";;
-		"x11"	)	SYSTEMROLE[WS] = true
+		"x11"	)	SYSTEMROLE_WS=true
 					opr3 "container=x11";;
-		"pxe"	)	SYSTEMROLE[NAS] = true
-					SYSTEMROLE[PXE] = true
+		"pxe"	)	SYSTEMROLE_NAS=true
+					SYSTEMROLE_PXE=true
 					opr3 "container=pxe";;
-		"basic"	)	SYSTEMROLE[BASIC]=true;
+		"basic"	)	SYSTEMROLE_BASIC=true;
 					opr3 "container=basic";;
 		*		)	opr0 "ERROR: Unknown containertype $CONTAINER, exiting...";
 					exit 1;;
 	esac;
-	printf '%s\n' "${SYSTEMROLE[@]}" | opr4
 }
 checkrole() {
 	_ROLE=$1
 	case "$_ROLE" in
-		"ws"			)	SYSTEMROLE[WS]=true
+		"ws"			)	SYSTEMROLE_WS=true
 							opr3 "role=ws";;
-		"poseidon" 		)	SYSTEMROLE[WS]=true
-							SYSTEMROLE[SERVER]=true
-							SYSTEMROLE[LXDHOST]=true
-							SYSTEMROLE[POSEIDON]=true
-							SYSTEMROLE[NAS]=true
+		"poseidon" 		)	SYSTEMROLE_WS=true
+							SYSTEMROLE_SERVER=true
+							SYSTEMROLE_LXDHOST=true
+							SYSTEMROLE_POSEIDON=true
+							SYSTEMROLE_NAS=true
 							opr3 "role=poseidon";;
 		"mainserver"	)	opr3 "role=mainserver"
-							SYSTEMROLE[SERVER]=true
-							SYSTEMROLE[MAINSERVER]=true
-							SYSTEMROLE[LXDHOST]=true;;
+							SYSTEMROLE_SERVER=true
+							SYSTEMROLE_MAINSERVER=true
+							SYSTEMROLE_LXDHOST=true;;
 		"container"		)	opr3 "role=container"
-							SYSTEMROLE[SERVER]=true
-							SYSTEMROLE[CONTAINER]=true;;
+							SYSTEMROLE_SERVER=true
+							SYSTEMROLE_CONTAINER=true;;
 		*				)	opr0 "CRITICAL: Unknown systemrole $ROLE, exiting..."
 							exit 1;;
 	esac
-	printf '%s\n' "${SYSTEMROLE[@]}" | opr4
 }
 cr_dir() { TARGETDIR=$1; if [ ! -d "$TARGETDIR" ] ; then mkdir "$TARGETDIR" ; fi ; }
 create_logline() { ### INFO MESSAGES with timestamp
@@ -260,9 +263,8 @@ opr2 <<EOT
 ################################################################################
 
 EOT
-if [ ${#SYSTEMROLE} -le 1 ]; then opr0 "CRITICAL: no systemrole defined, exiting..."; exit 1 ; fi
 ################################################################################
-if [ $SYSTEMROLE[MAINSERVER] = true ]
+if [[ $SYSTEMROLE_MAINSERVER == true ]]
 then
 	create_logline "Injecting interfaces file into mainserver network config"
 	cat lxdhost_interfaces.txt > /etc/network/interfaces
@@ -274,7 +276,7 @@ create_secline "Adding GetDeb PPA key";				add_ppa "wget" "http://archive.getdeb
 create_secline "Adding VirtualBox PPA key";			add_ppa "wget" "http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc"
 create_secline "Adding Webmin PPA key";				add_ppa "wget" "http://www.webmin.com/jcameron-key.asc"
 create_secline "Adding WebUpd8 PPA key";			add_ppa "apt-key" "keyserver.ubuntu.com" "4C9D234C"
-if [ "$SYSTEMROLE[WS]" = true ] ; then
+if [[ $SYSTEMROLE_WS == true ]] ; then
    create_secline "Adding FreeCad PPA";				add_ppa "aar" "ppa:freecad-maintainers/freecad-stable"
    create_secline "Adding GIMP PPA key";			add_ppa "apt-key" "keyserver.ubuntu.com" "614C4B38"
    create_secline "Adding Gnome3 Extras PPA";		add_ppa "apt-key" "keyserver.ubuntu.com" "3B1510FD"
@@ -285,7 +287,7 @@ if [ "$SYSTEMROLE[WS]" = true ] ; then
    create_secline "Adding OwnCloud Desktop PPA";	add_ppa "wget" "http://download.opensuse.org/repositories/isv:ownCloud:community/xUbuntu_16.04/Release.key"
    create_secline "Adding Wine PPA"; 				add_ppa "apt-key" "keyserver.ubuntu.com" "883E8688397576B6C509DF495A9A06AEF9CB8DB0"
 fi
-if [ "$SYSTEMROLE[NAS]" = true ] ; then
+if [[ $SYSTEMROLE_NAS == true ]] ; then
    create_secline "Adding Syncthing PPA"; 			add_ppa "wget" "https://syncthing.net/release-key.txt"
 fi
 ################################################################################
@@ -294,20 +296,20 @@ create_logline "Updating apt cache"; apt-get update -q 2>&1 | opr4
 create_logline "Installing updates"; apt-get --allow-unauthenticated upgrade -qy 2>&1 | opr4
 ######
 create_logline "Installing extra packages";  apt-inst mc trash-cli snapd git
-if [ "$SYSTEMROLE[WS]" = true ] ; 		then apt-inst synaptic tilda audacious samba wine-stable playonlinux winetricks; fi
-if [ "$SYSTEMROLE[POSEIDON]" = true ] ; then apt-inst picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted ; fi
-if [ "$SYSTEMROLE[WEB]" = true ] ;		then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
-if [ "$SYSTEMROLE[NAS]" = true ] ;		then apt-inst samba nfsd proftpd ; fi
-if [ "$SYSTEMROLE[PXE]" = true ] ;		then apt-inst atftpd ; fi
-if [ "$SYSTEMROLE[LXDHOST]" = true ] ;	then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
-if [ "$SYSTEMROLE[SERVER]" = true ] ;	then apt-inst ssh-server screen; fi
+if [[ $SYSTEMROLE_WS == true ]] ; 		then apt-inst synaptic tilda audacious samba wine-stable playonlinux winetricks; fi
+if [[ $SYSTEMROLE_POSEIDON == true ]] ; then apt-inst picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted ; fi
+if [[ $SYSTEMROLE_WEB == true ]] ;		then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
+if [[ $SYSTEMROLE_NAS == true ]] ;		then apt-inst samba nfsd proftpd ; fi
+if [[ $SYSTEMROLE_PXE == true ]] ;		then apt-inst atftpd ; fi
+if [[ $SYSTEMROLE_LXDHOST == true ]] ;	then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
+if [[ $SYSTEMROLE_SERVER == true ]] ;	then apt-inst ssh-server screen; fi
 ################################################################################
 create_logline "Installing extra software"
 create_secline "Installing TeamViewer"
 download "https://download.teamviewer.com/download/teamviewer_i386.deb"
 install teamviewer_i386.deb
 apt-get install -fy 2>&1 | opr4
-if [ $SYSTEMROLE[POSEIDON] ]
+if [[ $SYSTEMROLE_POSEIDON == true ]]
 then
   create_secline "Installing StarUML"
   download "http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb"
@@ -325,14 +327,14 @@ create_logline "Building maintenance script"
 cr_dir "/etc/plat"
 MAINTENANCE_SCRIPT="/etc/plat/maintenance.sh"
 build_maintenance_script "$MAINTENANCE_SCRIPT"
-if [ $SYSTEMROLE[LXDHOST]=true ]
+if [[ $SYSTEMROLE_LXDHOST == true ]]
 then
 	MAINTENANCE_SCRIPT="/etc/plat/maintenance_container.sh"
 	build_maintenance_script "$MAINTENANCE_SCRIPT"
 fi
 ################################################################################
 create_secline "adding $MAINTENANCE_SCRIPT to sheduler"
-if [ $SYSTEMROLE[MAINSERVER] ]
+if [[ $SYSTEMROLE_MAINSERVER == true ]]
 then
     LINE_TO_ADD="\n0 * * 4 0 bash $MAINTENANCE_SCRIPT"
     CRON_FILE="/etc/crontab"
@@ -358,11 +360,11 @@ add_to_script "$MAIL_SCRIPT" false <<EOT
 ################################################################################
 EOT
 sed -e 1d mail/mail1.sh >> "$MAIL_SCRIPT"
-if [ $ASK_FOR_EMAIL_STUFF ] ; then echo "Which gmail account will I use to send the reports? (other providers are not supported for now)" ; read EMAILSENDER ; fi
+if [[ $ASK_FOR_EMAIL_STUFF == true ]] ; then echo "Which gmail account will I use to send the reports? (other providers are not supported for now)" ; read EMAILSENDER ; fi
 echo "# Define sender's detail  email ID" >> "$MAIL_SCRIPT"; echo "FROM_MAIL=\"$EMAILSENDER\"" >> "$MAIL_SCRIPT"
-if [ $ASK_FOR_EMAIL_STUFF ] ; then echo "Which password goes with that account?" ; read EMAILPASSWORD ; fi
+if [[ $ASK_FOR_EMAIL_STUFF == true ]] ; then echo "Which password goes with that account?" ; read EMAILPASSWORD ; fi
 echo "# Define sender's password" >> "$MAIL_SCRIPT"; echo "SENDER_PASSWORD=\"$EMAILPASSWORD\"" >> "$MAIL_SCRIPT"
-if [ $ASK_FOR_EMAIL_STUFF ] ; then echo "To whom will the reports be sent?" ; read EMAILRECIPIENT ; fi
+if [[ $ASK_FOR_EMAIL_STUFF == true ]] ; then echo "To whom will the reports be sent?" ; read EMAILRECIPIENT ; fi
 echo "# Define recipient(s)" >> "$MAIL_SCRIPT" ; echo "TO_MAIL=\"$EMAILRECIPIENT\"" >> "$MAIL_SCRIPT"
 echo "# Attachment(s)" >> "$MAIL_SCRIPT" ; echo "ATTACHMENT=\"\$1\"" >> "$MAIL_SCRIPT"
 add_to_script "$MAIL_SCRIPT" false <<EOT
