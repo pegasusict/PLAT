@@ -30,36 +30,39 @@ if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 # Make sure only root can run this script
 if [[ $EUID -ne 0  ]]; then echo "This script must be run as root" ; exit 1 ; fi
 # set default values
-Verbosity=2
-tmpage=2
-garbageage=7
-logage=30
-ask_for_email_stuff="yes"
+VERBOSITY=2
+TMPAGE=2
+GARBAGEAGE=7
+LOGAGE=30
+ASK_FOR_EMAIL_STUFF=true
 ###################### defining functions #####################################
 apt-inst() { apt-get -qqy --allow-unauthenticated install "$@" 2>&1 | opr4; }
 add_line_to_file() {
-    LINE_TO_ADD=$1
+	LINE_TO_ADD=$1
     TARGET_FILE=$2
-    if [ grep -qsFx "$LINE_TO_ADD" "$TARGET_FILE" ] ; then opr4 "line already exists, leaving it undisturbed"
-    else
-        if [ -w "$TARGET_FILE" ] ; then printf "$LINE_TO_ADD" >> "$TARGET_FILE"; opr3 "$TARGET_FILE has been updated"
-        else opr1 "CRITICAL: $TARGET_FILE not writeable: Line could not be added"; exit 1
-        fi
-    fi
+    line_exists() { grep -qsFx "$LINE_TO_ADD" $TARGET_FILE; }
+    add_line() {
+		if [ -w "$TARGET_FILE" ] ; then printf "%s\n" "$LINE_TO_ADD" >> "$TARGET_FILE"; opr3 "$TARGET_FILE has been updated"
+		else opr1 "CRITICAL: $TARGET_FILE not writeable: Line could not be added"; exit 1
+		fi
+	}
+	if [ $(line_exists) ] ; then opr4 "line already exists, leaving it undisturbed"
+	else add_line
+	fi
 }
 add_to_mail() { add_to_script "$MAIL_SCRIPT" $1 ; }
 add_ppa(){
-	method=$1; url=$2; key=$3
+	METHOD=$1; URL=$2; KEY=$3
 	case method in
-		"wget"		)	wget -q -a "$PLAT_LOGFILE" $url -O- | apt-key add - ;;
-		"apt-key"	)	apt-key adv --keyserver $url --recv-keys $key 2>&1 | opr3 ;;
-		"aar"		)	add-apt-repository $url | opr3 ;;
+		"wget"		)	wget -q -a "$PLAT_LOGFILE" $URL -O- | apt-key add - ;;
+		"apt-key"	)	apt-key adv --keyserver $URL --recv-keys $KEY 2>&1 | opr3 ;;
+		"aar"		)	add-apt-repository $URL | opr3 ;;
 	esac
 }
 add_to_script() {
-	targetscript=$1
-	line=$2
-	echo $line >> $targetscript
+	TARGETSCRIPT=$1
+	LINE=$2
+	echo $LINE >> $TARGETSCRIPT
 }
 build_maintenance_script() {
 	SCRIPT=$1
@@ -87,72 +90,74 @@ EOT
 
 EOH
 EOT
-	add_to_maintenance "garbageage=$garbageage"
-	add_to_maintenance "logage=$logage"
-	if [[ -z ${$IS_CONTAINER:+x} ]] && [[ ${$systemrole[lxdhost]:+x} ]]
+	add_to_maintenance "GARBAGEAGE=$GARBAGEAGE"
+	add_to_maintenance "LOGAGE=$LOGAGE"
+	if [[ $IS_CONTAINER ]] && [[ $SYSTEMROLE[lxdhost] ]]
 	then
 		sed -e 1d maintenance/body-lxdhost0.sh >> "$SCRIPT"
-		if [ $systemrole[mainserver] = true ] ; then sed -e 1d maintenance/backup2tape.sh >> "$SCRIPT" ; fi
+		if [ $SYSTEMROLE[MAINSERVER]=true ] ; then sed -e 1d maintenance/backup2tape.sh >> "$SCRIPT" ; fi
 		sed -e 1d maintenance/body-lxdhost1.sh >> "$SCRIPT"
 	fi
 	sed -e 1d maintenance/body-basic.sh >> "$SCRIPT"
 	chmod 555 "$SCRIPT" 2>&1 | opr4 ; chown root:root "$SCRIPT" 2>&1 | opr4
 }
 checkcontainer() {
-	_container=$1
-	case "$_container" in
-		"nas"	)	systemrole[nas] = true
+	_CONTAINER=$1
+	case "$_CONTAINER" in
+		"nas"	)	SYSTEMROLE[NAS] = true
 					opr3 "container=nas";;
-		"web" 	)	systemrole[nas] = true
-					systemrole[web] = true
+		"web" 	)	SYSTEMROLE[NAS] = true
+					SYSTEMROLE[WEB] = true
 					opr3 "container=web";;
-		"x11"	)	systemrole[ws] = true
+		"x11"	)	SYSTEMROLE[WS] = true
 					opr3 "container=x11";;
-		"pxe"	)	systemrole[nas] = true
-					systemrole[pxe] = true
+		"pxe"	)	SYSTEMROLE[NAS] = true
+					SYSTEMROLE[PXE] = true
 					opr3 "container=pxe";;
-		"basic"	)	systemrole[basic]=true;
+		"basic"	)	SYSTEMROLE[BASIC]=true;
 					opr3 "container=basic";;
-		*		)	opr0 "ERROR: Unknown containertype $container, exiting...";
+		*		)	opr0 "ERROR: Unknown containertype $CONTAINER, exiting...";
 					exit 1;;
 	esac;
 }
 checkrole() {
-	_role=$1
-	case "$_role" in
-		"ws"			)	systemrole[ws]=true
+	_ROLE=$1
+	case "$_ROLE" in
+		"ws"			)	SYSTEMROLE[WS]=true
 							opr3 "role=ws";;
-		"poseidon" 		)	systemrole[ws]=true
-							systemrole[server]=true
-							systemrole[lxdhost]=true
-							systemrole[poseidon]=true
-							systemrole[nas]=true
+		"poseidon" 		)	SYSTEMROLE[WS]=true
+							SYSTEMROLE[SERVER]=true
+							SYSTEMROLE[LXDHOST]=true
+							SYSTEMROLE[POSEIDON]=true
+							SYSTEMROLE[NAS]=true
 							opr3 "role=poseidon";;
 		"mainserver"	)	opr3 "role=mainserver"
-							systemrole[server]=true
-							systemrole[mainserver]=true
-							systemrole[lxdhost]=true;;
+							SYSTEMROLE[SERVER]=true
+							SYSTEMROLE[MAINSERVER]=true
+							SYSTEMROLE[LXDHOST]=true;;
 		"container"		)	opr3 "role=container"
-							systemrole[server]=true
-							systemrole[container]=true;;
-		*				)	opr0 "CRITICAL: Unknown systemrole $role, exiting..."
+							SYSTEMROLE[SERVER]=true
+							SYSTEMROLE[CONTAINER]=true;;
+		*				)	opr0 "CRITICAL: Unknown systemrole $ROLE, exiting..."
 							exit 1;;
 	esac
 }
-cr_dir() { targetdir=$1; if [ ! -d "$targetdir" ] ; then mkdir "$targetdir" ; fi ; }
+cr_dir() { TARGETDIR=$1; if [ ! -d "$TARGETDIR" ] ; then mkdir "$TARGETDIR" ; fi ; }
 create_logline() { ### INFO MESSAGES with timestamp
-    _subject="$1"
-    _log_line="$(getthetime) ## $_subject #"
-    imax=80
-    for (( i=${#_log_line}; i<$imax; i++ )) ; do _log_line+="#" ; done
-    opr2 "$_log_line"
+    _SUBJECT="$1"
+    _LOG_LINE="$(getthetime) ## $_SUBJECT #"
+    IMAX=80
+    for (( i=${#_LOG_LINE}; i<$IMAX; i++ )) ; do _LOG_LINE+="#" ; done
+    opr2 "$_LOG_LINE"
 }
 create_secline() { ### VERBOSE MESSAGES
-    _subject=$1
-    _sec_line="# $_subject #"
-    imax=78
-    for (( i=${#_sec_line}; i<$imax; i+=2 )) ; do _sec_line="#$_sec_line#" ; done
-    opr3 "$_sec_line"
+    _SUBJECT=$1
+    _SEC_LINE="# $_SUBJECT #"
+	MAXWIDTH=78
+	IMAX=$MAXWIDTH-1
+    for (( i=${#_SEC_LINE}; i<IMAX; i+=2 )) ; do _SEC_LINE="#$_SEC_LINE#" ; done
+	for (( i=${#_SEC_LINE}; i<MAXWIDTH; i++ )) ; do _SEC_LINE="$_SEC_LINE#" ; done
+	opr3 " $_SEC_LINE"
 }
 download() { wget -q -a "$PLAT_LOGFILE" -nv $1; }
 getargs() {
@@ -172,12 +177,12 @@ getargs() {
             -v|--verbosity		) setverbosity $2 ; shift 2 ;;
             -r|--role 			) checkrole $2; shift 2 ;; 
             -c|--containertype	) checkcontainer $2; shift 2 ;;
-            -g|--garbageage		) gabageage=$2; shift 2 ;;
-            -l|--logage			) logage=$2; shift 2 ;;
-            -t|--tmpage			) tmpage=$2; shift 2 ;;
-            -S|--emailsender	) EmailSender=$2; shift 2 ;;
-            -P|--emailpass		) EmailPassword=$2; shift 2 ;;
-            -R|--emailrecipient ) EmailRecipient=$2; shift 2 ;;
+            -g|--garbageage		) GABAGEAGE=$2; shift 2 ;;
+            -l|--logage			) LOGAGE=$2; shift 2 ;;
+            -t|--tmpage			) TMPAGE=$2; shift 2 ;;
+            -S|--emailsender	) EMAILSENDER=$2; shift 2 ;;
+            -P|--emailpass		) EMAILPASSWORD=$2; shift 2 ;;
+            -R|--emailrecipient ) EMAILRECIPIENT=$2; shift 2 ;;
             -- ) shift; break ;;
             * ) break ;;
         esac
@@ -187,13 +192,13 @@ getthetime(){ echo $(date +"%Y-%m-%d_%H.%M.%S.%3N") ; }
 install() { dpkg -i $1 2>&1 | opr4; }
 opr() {
     ### OutPutRouter ###
-    # decides what to print on screen based on $Verbosity level
+    # decides what to print on screen based on $VERBOSITY level
     # usage: opr <verbosity level> <message>
-    importance=$1
-    message=$2
-    if [ $importance -le $Verbosity ]
-		then echo "$message" | tee -a $PLAT_LOGFILE
-		else echo "$message" >> $PLAT_LOGFILE
+    IMPORTANCE=$1
+    MESSAGE=$2
+    if [ $IMPORTANCE -le $VERBOSITY ]
+		then echo "$MESSAGE" | tee -a $PLAT_LOGFILE
+		else echo "$MESSAGE" >> $PLAT_LOGFILE
 	fi
 }
 opr0() { opr 0 "$1"; } ### CRITICAL
@@ -203,11 +208,11 @@ opr3() { opr 3 "$1"; } ### VERBOSE
 opr4() { opr 4 "$1"; } ### DEBUG
 setverbosity() {
 	case $1 in
-		0	)	Verbosity=0;;	### Be vewy, vewy quiet... Will only show Critical errors which result in untimely exiting of the script
-		1	)	Verbosity=1;;	# Will only show warnings that don't endanger the basic functioning of the program
-		2	)	Verbosity=2;;	# Just give us the highlights, please - will tell what phase is taking place
-		3	)	Verbosity=3;;	# Let me know what youre doing, every step of the way
-		4	)	Verbosity=4;;	# I want it all, your thoughts and dreams too!!!
+		0	)	VERBOSITY=0;;	### Be vewy, vewy quiet... Will only show Critical errors which result in untimely exiting of the script
+		1	)	VERBOSITY=1;;	# Will only show warnings that don't endanger the basic functioning of the program
+		2	)	VERBOSITY=2;;	# Just give us the highlights, please - will tell what phase is taking place
+		3	)	VERBOSITY=3;;	# Let me know what youre doing, every step of the way
+		4	)	VERBOSITY=4;;	# I want it all, your thoughts and dreams too!!!
 	esac
 }
 usage() {
@@ -238,9 +243,9 @@ EOT
 }  
 version() { echo -e "\n$PROGRAM $VERSION - (c)$CURR_YEAR $MAINTAINER"; }   
 ### "define logfile name & create log path"
-logdir="/var/log/plat"
-cr_dir $logdir
-PLAT_LOGFILE="$logdir/PostInstall_$START_TIME.log"
+LOGDIR="/var/log/plat"
+cr_dir $LOGDIR
+PLAT_LOGFILE="$LOGDIR/PostInstall_$START_TIME.log"
 ###
 getargs "$@"
 ###
@@ -251,9 +256,9 @@ opr2 <<EOT
 ################################################################################
 
 EOT
-if [ ${#systemrole} -le 1 ]; then opr0 "CRITICAL: no systemrole defined, exiting..."; exit 1 ; fi
+if [ ${#SYSTEMROLE} -le 1 ]; then opr0 "CRITICAL: no systemrole defined, exiting..."; exit 1 ; fi
 ################################################################################
-if [ $systemrole[mainserver] = true ]
+if [ $SYSTEMROLE[MAINSERVER] = true ]
 then
 	create_logline "Injecting interfaces file into mainserver network config"
 	cat lxdhost_interfaces.txt > /etc/network/interfaces
@@ -265,7 +270,7 @@ create_secline "Adding GetDeb PPA key";				add_ppa "wget" "http://archive.getdeb
 create_secline "Adding VirtualBox PPA key";			add_ppa "wget" "http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc"
 create_secline "Adding Webmin PPA key";				add_ppa "wget" "http://www.webmin.com/jcameron-key.asc"
 create_secline "Adding WebUpd8 PPA key";			add_ppa "apt-key" "keyserver.ubuntu.com" "4C9D234C"
-if [ "$systemrole[ws]" = true ] ; then
+if [ "$SYSTEMROLE[WS]" = true ] ; then
    create_secline "Adding FreeCad PPA";				add_ppa "aar" "ppa:freecad-maintainers/freecad-stable"
    create_secline "Adding GIMP PPA key";			add_ppa "apt-key" "keyserver.ubuntu.com" "614C4B38"
    create_secline "Adding Gnome3 Extras PPA";		add_ppa "apt-key" "keyserver.ubuntu.com" "3B1510FD"
@@ -276,7 +281,7 @@ if [ "$systemrole[ws]" = true ] ; then
    create_secline "Adding OwnCloud Desktop PPA";	add_ppa "wget" "http://download.opensuse.org/repositories/isv:ownCloud:community/xUbuntu_16.04/Release.key"
    create_secline "Adding Wine PPA"; 				add_ppa "apt-key" "keyserver.ubuntu.com" "883E8688397576B6C509DF495A9A06AEF9CB8DB0"
 fi
-if [ "$systemrole[nas]" = true ] ; then
+if [ "$SYSTEMROLE[NAS]" = true ] ; then
    create_secline "Adding Syncthing PPA"; 			add_ppa "wget" "https://syncthing.net/release-key.txt"
 fi
 ################################################################################
@@ -285,20 +290,20 @@ create_logline "Updating apt cache"; apt-get update -q 2>&1 | opr4
 create_logline "Installing updates"; apt-get --allow-unauthenticated upgrade -qy 2>&1 | opr4
 ######
 create_logline "Installing extra packages";  apt-inst mc trash-cli snapd git
-if [ "$systemrole[ws]" = true ] ; 		then apt-inst synaptic tilda audacious samba wine-stable playonlinux winetricks; fi
-if [ "$systemrole[poseidon]" = true ] ; then apt-inst picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted ; fi
-if [ "$systemrole[web]" = true ] ;		then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
-if [ "$systemrole[nas]" = true ] ;		then apt-inst samba nfsd proftpd ; fi
-if [ "$systemrole[pxe]" = true ] ;		then apt-inst atftpd ; fi
-if [ "$systemrole[lxdhost]" = true ] ;	then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
-if [ "$systemrole[server]" = true ] ;	then apt-inst ssh-server screen; fi
+if [ "$SYSTEMROLE[WS]" = true ] ; 		then apt-inst synaptic tilda audacious samba wine-stable playonlinux winetricks; fi
+if [ "$SYSTEMROLE[POSEIDON]" = true ] ; then apt-inst picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted ; fi
+if [ "$SYSTEMROLE[WEB]" = true ] ;		then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
+if [ "$SYSTEMROLE[NAS]" = true ] ;		then apt-inst samba nfsd proftpd ; fi
+if [ "$SYSTEMROLE[PXE]" = true ] ;		then apt-inst atftpd ; fi
+if [ "$SYSTEMROLE[LXDHOST]" = true ] ;	then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
+if [ "$SYSTEMROLE[SERVER]" = true ] ;	then apt-inst ssh-server screen; fi
 ################################################################################
 create_logline "Installing extra software"
 create_secline "Installing TeamViewer"
 download "https://download.teamviewer.com/download/teamviewer_i386.deb"
 install teamviewer_i386.deb
 apt-get install -fy 2>&1 | opr4
-if [ $systemrole = "poseidon" ]
+if [ $SYSTEMROLE[POSEIDON] ]
 then
   create_secline "Installing StarUML"
   download "http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb"
@@ -314,28 +319,29 @@ rm *.deb 2>&1 | opr4
 create_logline "Building maintenance script"
 cr_dir "/etc/plat"
 MAINTENANCE_SCRIPT="/etc/plat/maintenance.sh"
-build_maintenance_script "$MAINTENANCE_SCRIPT"
-if [ $systemrole[lxdhost]=true ]
+build_maintenance_script "$MAINTENANCE_SCRIPT" false
+if [ $SYSTEMROLE[LXDHOST]=true ]
 then
 	MAINTENANCE_SCRIPT="/etc/plat/maintenance_container.sh"
 	build_maintenance_script "$MAINTENANCE_SCRIPT" true
 fi
 ################################################################################
 create_secline "adding $MAINTENANCE_SCRIPT to sheduler"
-if [ $systemrole[mainserver] = true ]
+if [ $SYSTEMROLE[MAINSERVER] = true ]
 then
-    LINE_TO_ADD="\n0 * * 4 0 bash $MAINTENANCE_SCRIPT\n"
+    LINE_TO_ADD="\n0 * * 4 0 bash $MAINTENANCE_SCRIPT"
     TARGET_FILE="/etc/crontab"
 else
-    LINE_TO_ADD="\n@weekly\t10\tplat_maintenance\tbash $MAINTENANCE_SCRIPT\n"
+    LINE_TO_ADD="\n@weekly\t10\tplat_maintenance\tbash $MAINTENANCE_SCRIPT"
     TARGET_FILE="/etc/anacrontab"
 fi
 add_line_to_file $LINE_TO_ADD $TARGET_FILE
 ################################################################################
 create_logline "Building mail script"
-if [ ${#EmailSender} -ge 10 ] && [ ${#EmailPassword} -ge 8 ] && [ ${#EmailRecipient} -ge 10 ] ; then ask_for_email_stuff="no" ; fi
+CC_TO="pegasus.ict+plat@gmail.com"
+if [ ${#EMAILSENDER} -ge 10 ] && [ ${#EMAILPASSWORD} -ge 8 ] && [ ${#EMAILRECIPIENT} -ge 10 ] ; then ask_for_email_stuff=false ; fi
 MAIL_SCRIPT="/etc/plat/mail.sh"
-if [ -f "$mail" ] ; then rm $mail 2>&1 | opr4; create_secline "Removed old mail script." ; fi
+if [ -f "$MAIL_SCRIPT" ] ; then rm $MAIL_SCRIPT 2>&1 | opr4; create_secline "Removed old mail script." ; fi
 add_to_mail <<EOT
 #!/usr/bin/bash
 ################################################################################
@@ -347,15 +353,16 @@ add_to_mail <<EOT
 
 EOT
 sed -e 1d mail/mail1.sh >> "$MAIL_SCRIPT"
-if [ "$ask_for_email_stuff" = "yes" ] ; then echo "Which gmail account will I use to send the reports? (other providers are not supported for now)" ; read EmailSender ; fi
-echo "# Define sender's detail  email ID" >> "$MAIL_SCRIPT"; echo "From_Mail=\"$EmailSender\"" >> "$MAIL_SCRIPT"
-if [ "$ask_for_email_stuff" = "yes" ] ; then echo "Which password goes with that account?" ; read EmailPassword ; fi
-echo "# Define sender's password" >> "$MAIL_SCRIPT"; echo "Sndr_Passwd=\"$EmailPassword\"" >> "$MAIL_SCRIPT"
-if [ "$ask_for_email_stuff" = "yes" ] ; then echo "To whom will the reports be sent?" ; read EmailRecipient ; fi
-echo "# Define recipient(s)" >> "$MAIL_SCRIPT" ; echo "To_Mail=\"$EmailRecipient\"" >> "$MAIL_SCRIPT"
+if [ $ASK_FOR_EMAIL_STUFF ] ; then echo "Which gmail account will I use to send the reports? (other providers are not supported for now)" ; read EMAILSENDER ; fi
+echo "# Define sender's detail  email ID" >> "$MAIL_SCRIPT"; echo "FROM_MAIL=\"$EMAILSENDER\"" >> "$MAIL_SCRIPT"
+if [ $ASK_FOR_EMAIL_STUFF ] ; then echo "Which password goes with that account?" ; read EMAILPASSWORD ; fi
+echo "# Define sender's password" >> "$MAIL_SCRIPT"; echo "SENDER_PASSWORD=\"$EMAILPASSWORD\"" >> "$MAIL_SCRIPT"
+if [ $ASK_FOR_EMAIL_STUFF ] ; then echo "To whom will the reports be sent?" ; read EMAILRECIPIENT ; fi
+echo "# Define recipient(s)" >> "$MAIL_SCRIPT" ; echo "TO_MAIL=\"$EMAILRECIPIENT\"" >> "$MAIL_SCRIPT"
+echo "# Attachment(s)" >> "$MAIL_SCRIPT" ; echo "ATTACHMENT=\"$LOGS\"" >> "$MAIL_SCRIPT"
 add_to_mail <<EOT
-CC_TO="$EMAIL"
-RELAY_SERVER="smtp.gmail.com:587"
+CC_TO="$CC_TO"
+MAIL_SERVER="smtp.gmail.com:587"
 SUBJECT="$PROGRAM_SUITE mailservice"
 MSG() {
 cat <<EOF
@@ -377,5 +384,5 @@ create_logline "checking for reboot requirement"
 if [ -f /var/run/reboot-required ] ; then create_logline "REBOOT REQUIRED" ; shutdown -r 23:30  2>&1 | opr2 ; fi
 ################################################################################
 create_logline "DONE, emailing log"
-bash /etc/plat/mail.sh
-###TODO### make update mechanism using git for maintenancefiles?
+bash "$MAIL_SCRIPT"
+###TODO### make update mechanism using git for maintenance files?
