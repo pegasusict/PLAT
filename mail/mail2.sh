@@ -11,9 +11,7 @@ if [ ! -x "/usr/bin/sendEmail" ]; then
 	sleep 1s
 	apt install sendemail libnet-smtp-tls-perl -y
 fi
-
 #sending the email
-
 /usr/bin/sendEmail -v -f ${FROM_MAIL} -t ${TO_MAIL} -cc "${CC_TO}" \
 					-u "${SUBJECT}" -m ${MSG} -a "${ATTACHMENT}" \
                     -xu ${FROM_MAIL} -xp "${SENDER_PASSWORD}" \

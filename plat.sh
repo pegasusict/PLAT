@@ -5,18 +5,19 @@
 ## License: GPL v3                        Please keep my name in the credits ##
 ###############################################################################
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
+echo "$START_TIME ## Starting PostInstall Process #######################"
 PROGRAM_SUITE="Pegasus' Linux Administration Tools"
 SCRIPT_TITLE="Post Install Script"
 MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
-EMAIl_SCRIPT_TITLE="Email Script"
+MAIl_SCRIPT_TITLE="Email Script"
 SCRIPT=$(basename "$0")
 MAINTAINER="Mattijs Snepvangers"
-EMAIL="pegasus.ict@gmail.com"
+MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 VERSION_MAJOR=0
 VERSION_MINOR=10
-VERSION_PATCH=49
+VERSION_PATCH=72
 VERSION_STATE="ALPHA " # needs to be 6 chars for alignment <ALPHA |BETA  |STABLE>
-VERSION_BUILD=20180306
+VERSION_BUILD=20180308
 CURR_YEAR=$(date +"%Y")
 TODAY=$(date +"%d-%m-%Y")
 COMPUTER_NAME=$(uname -n)
@@ -36,21 +37,30 @@ GARBAGEAGE=7
 LOGAGE=30
 ASK_FOR_EMAIL_STUFF=true
 ###################### defining functions #####################################
-apt-inst() { apt-get -qqy --allow-unauthenticated install "$@" 2>&1 | opr4; }
-add_line_to_file() {
-	LINE_TO_ADD=$1
-    TARGET_FILE=$2
-    line_exists() { grep -qsFx "$LINE_TO_ADD" $TARGET_FILE; }
+add_to_script() {
+	TARGETSCRIPT=$1 ; IS_LINE=$2 ; MESSAGE=$3
+	if [ $IS_LINE ]
+	then echo $MESSAGE >> $TARGETSCRIPT
+	else cat $MESSAGE >> $TARGETSCRIPT
+	fi
+}
+add_line_to_cron() {
+	LINE_TO_ADD="$1"
+	echo "LINE_TO_ADD: $LINE_TO_ADD"
+    CRONTAB="$2"
+    echo "CRONTAB: $CRONTAB"
+    line_exists() { grep -qsFx "$LINE_TO_ADD" "$TARGET_FILE" ; }
     add_line() {
-		if [ -w "$TARGET_FILE" ] ; then printf "%s\n" "$LINE_TO_ADD" >> "$TARGET_FILE"; opr3 "$TARGET_FILE has been updated"
-		else opr1 "CRITICAL: $TARGET_FILE not writeable: Line could not be added"; exit 1
+		if [ -w "$TARGET_FILE" ]
+		then printf "%s\n" "$LINE_TO_ADD" >> "$TARGET_FILE" ; opr3 "$TARGET_FILE has been updated"
+		else opr1 "CRITICAL: $TARGET_FILE not writeable: Line could not be added" ; exit 1
 		fi
 	}
-	if [ $(line_exists) ] ; then opr4 "line already exists, leaving it undisturbed"
+	if [ $(line_exists) ]
+	then opr4 "line already exists, leaving it undisturbed"
 	else add_line
 	fi
 }
-add_to_mail() { add_to_script "$MAIL_SCRIPT" $1 ; }
 add_ppa(){
 	METHOD=$1; URL=$2; KEY=$3
 	case method in
@@ -59,40 +69,32 @@ add_ppa(){
 		"aar"		)	add-apt-repository $URL | opr3 ;;
 	esac
 }
-add_to_script() {
-	TARGETSCRIPT=$1
-	LINE=$2
-	echo $LINE >> $TARGETSCRIPT
-}
+apt-inst() { apt-get -qqy --allow-unauthenticated install "$@" 2>&1 | opr4; }
 build_maintenance_script() {
 	SCRIPT=$1
-	IS_CONTAINER=$2
-	add_to_maintenance() { add_to_script "$SCRIPT" $1 ; }
-		if [ -f "$SCRIPT" ] ; then rm "$SCRIPT" 2>&1 | opr4; opr4 "Removed old maintenance script."; fi
-	add_to_maintenance <<EOT
+	if [ -f "$SCRIPT" ] ; then rm "$SCRIPT" 2>&1 | opr4; opr4 "Removed old maintenance script."; fi
+	add_to_script "$SCRIPT" false <<EOT
 	#!/usr/bin/bash
-	################################################################################
-	## $PROGRAM_SUITE - $MAINTENANCE_SCRIPT_TITLE   Ver$SHORTVERSION ##
-	## (c)2017-$CURR_YEAR $MAINTAINER  build $VERSION_BUILD     $EMAIL ##
-	## This maintenance script is dynamically built        Last build: $TODAY ##
-	## License: GPL v3                         Please keep my name in the credits ##
-	################################################################################
-
+################################################################################
+# $PROGRAM_SUITE - $MAINTENANCE_SCRIPT_TITLE   Ver$SHORTVERSION #
+# (c)2017-$CURR_YEAR $MAINTAINER    build $VERSION_BUILD     $EMAIL #
+# This maintenance script is dynamically built          Last build: $TODAY #
+# License: GPL v3                           Please keep my name in the credits #
+################################################################################
 EOT
 	sed -e 1d maintenance/maintenance-subheader.sh >> "$SCRIPT"
 	sed -e 1d maintenance/maintenance-functions.sh >> "$SCRIPT"
-	add_to_maintenance <<EOT
-	tolog <<EOH
-	################################################################################
-	# $PROGRAM_SUITE  -  $MAINTENANCE_SCRIPT_TITLE   Ver$SHORTVERSION #
-	# (c)2017-$CURR_YEAR $MAINTAINER    build $VERSION_BUILD     $EMAIL #
-	################################################################################
-
+	add_to_script "$SCRIPT" false <<EOT
+tolog <<EOH
+################################################################################
+# $PROGRAM_SUITE  -  $MAINTENANCE_SCRIPT_TITLE   Ver$SHORTVERSION #
+# (c)2017-$CURR_YEAR $MAINTAINER    build $VERSION_BUILD     $EMAIL #
+################################################################################
 EOH
 EOT
-	add_to_maintenance "GARBAGEAGE=$GARBAGEAGE"
-	add_to_maintenance "LOGAGE=$LOGAGE"
-	if [[ $IS_CONTAINER ]] && [[ $SYSTEMROLE[lxdhost] ]]
+	add_to_script "$SCRIPT" true "GARBAGEAGE=$GARBAGEAGE"
+	add_to_script "$SCRIPT" true "LOGAGE=$LOGAGE"
+	if [[ $SYSTEMROLE[lxdhost] ]]
 	then
 		sed -e 1d maintenance/body-lxdhost0.sh >> "$SCRIPT"
 		if [ $SYSTEMROLE[MAINSERVER]=true ] ; then sed -e 1d maintenance/backup2tape.sh >> "$SCRIPT" ; fi
@@ -119,6 +121,7 @@ checkcontainer() {
 		*		)	opr0 "ERROR: Unknown containertype $CONTAINER, exiting...";
 					exit 1;;
 	esac;
+	printf '%s\n' "${SYSTEMROLE[@]}" | opr4
 }
 checkrole() {
 	_ROLE=$1
@@ -141,6 +144,7 @@ checkrole() {
 		*				)	opr0 "CRITICAL: Unknown systemrole $ROLE, exiting..."
 							exit 1;;
 	esac
+	printf '%s\n' "${SYSTEMROLE[@]}" | opr4
 }
 cr_dir() { TARGETDIR=$1; if [ ! -d "$TARGETDIR" ] ; then mkdir "$TARGETDIR" ; fi ; }
 create_logline() { ### INFO MESSAGES with timestamp
@@ -252,7 +256,7 @@ getargs "$@"
 opr2 <<EOT
 ################################################################################
 ## $PROGRAM_SUITE - $SCRIPT_TITLE  Ver$SHORTVERSION ##
-## (c)2017-$CURR_YEAR $MAINTAINER  build $VERSION_BUILD     $EMAIL ##
+## (c)2017-$CURR_YEAR $MAINTAINER  build $VERSION_BUILD     $MAINTAINER_EMAIL ##
 ################################################################################
 
 EOT
@@ -308,7 +312,8 @@ then
   create_secline "Installing StarUML"
   download "http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb"
   install libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb
-  download "http://staruml.io/download/release/v2.8.0/StarUML-v2.8.0-64-bit.deb"
+  
+  download "http://staruml.io/download/release/v2.8.1/StarUML-v2.8.1-64-bit.deb"
   install StarUML-v2.8.0-64-bit.deb
   create_secline "Installing GitKraken"
   download "https://release.gitkraken.com/linux/gitkraken-amd64.deb"
@@ -319,38 +324,38 @@ rm *.deb 2>&1 | opr4
 create_logline "Building maintenance script"
 cr_dir "/etc/plat"
 MAINTENANCE_SCRIPT="/etc/plat/maintenance.sh"
-build_maintenance_script "$MAINTENANCE_SCRIPT" false
+build_maintenance_script "$MAINTENANCE_SCRIPT"
 if [ $SYSTEMROLE[LXDHOST]=true ]
 then
 	MAINTENANCE_SCRIPT="/etc/plat/maintenance_container.sh"
-	build_maintenance_script "$MAINTENANCE_SCRIPT" true
+	build_maintenance_script "$MAINTENANCE_SCRIPT"
 fi
 ################################################################################
 create_secline "adding $MAINTENANCE_SCRIPT to sheduler"
-if [ $SYSTEMROLE[MAINSERVER] = true ]
+if [ $SYSTEMROLE[MAINSERVER] ]
 then
     LINE_TO_ADD="\n0 * * 4 0 bash $MAINTENANCE_SCRIPT"
-    TARGET_FILE="/etc/crontab"
+    CRON_FILE="/etc/crontab"
 else
     LINE_TO_ADD="\n@weekly\t10\tplat_maintenance\tbash $MAINTENANCE_SCRIPT"
-    TARGET_FILE="/etc/anacrontab"
+    CRON_FILE="/etc/anacrontab"
 fi
-add_line_to_file $LINE_TO_ADD $TARGET_FILE
+add_line_to_cron $LINE_TO_ADD $CRON_FILE
 ################################################################################
 create_logline "Building mail script"
 CC_TO="pegasus.ict+plat@gmail.com"
+MAIL_SERVER="smtp.gmail.com:587"
 if [ ${#EMAILSENDER} -ge 10 ] && [ ${#EMAILPASSWORD} -ge 8 ] && [ ${#EMAILRECIPIENT} -ge 10 ] ; then ask_for_email_stuff=false ; fi
 MAIL_SCRIPT="/etc/plat/mail.sh"
 if [ -f "$MAIL_SCRIPT" ] ; then rm $MAIL_SCRIPT 2>&1 | opr4; create_secline "Removed old mail script." ; fi
-add_to_mail <<EOT
+add_to_script "$MAIL_SCRIPT" false <<EOT
 #!/usr/bin/bash
 ################################################################################
 ## $PROGRAM_SUITE   -   $MAIL_SCRIPT_TITLE      Ver$SHORTVERSION ##
 ## (c)2017-$CURR_YEAR $MAINTAINER  build $VERSION_BUILD     $EMAIL ##
-## This mail script is dynamically built               Last build: $TODAY ##
+## This mail script is dynamically built                    Build: $TODAY ##
 ## License: GPL v3                         Please keep my name in the credits ##
 ################################################################################
-
 EOT
 sed -e 1d mail/mail1.sh >> "$MAIL_SCRIPT"
 if [ $ASK_FOR_EMAIL_STUFF ] ; then echo "Which gmail account will I use to send the reports? (other providers are not supported for now)" ; read EMAILSENDER ; fi
@@ -359,16 +364,16 @@ if [ $ASK_FOR_EMAIL_STUFF ] ; then echo "Which password goes with that account?"
 echo "# Define sender's password" >> "$MAIL_SCRIPT"; echo "SENDER_PASSWORD=\"$EMAILPASSWORD\"" >> "$MAIL_SCRIPT"
 if [ $ASK_FOR_EMAIL_STUFF ] ; then echo "To whom will the reports be sent?" ; read EMAILRECIPIENT ; fi
 echo "# Define recipient(s)" >> "$MAIL_SCRIPT" ; echo "TO_MAIL=\"$EMAILRECIPIENT\"" >> "$MAIL_SCRIPT"
-echo "# Attachment(s)" >> "$MAIL_SCRIPT" ; echo "ATTACHMENT=\"$LOGS\"" >> "$MAIL_SCRIPT"
-add_to_mail <<EOT
+echo "# Attachment(s)" >> "$MAIL_SCRIPT" ; echo "ATTACHMENT=\"\$1\"" >> "$MAIL_SCRIPT"
+add_to_script "$MAIL_SCRIPT" false <<EOT
 CC_TO="$CC_TO"
-MAIL_SERVER="smtp.gmail.com:587"
+MAIL_SERVER="$MAIL_SERVER"
 SUBJECT="$PROGRAM_SUITE mailservice"
 MSG() {
 cat <<EOF
 L.S.,
 
-This is an automated email from your computer named $COMPUTER_NAME.
+This is an automated email from your computer $COMPUTER_NAME.
 You will find the logfile(s) attached to this email.
 
 kind regards,
@@ -384,5 +389,5 @@ create_logline "checking for reboot requirement"
 if [ -f /var/run/reboot-required ] ; then create_logline "REBOOT REQUIRED" ; shutdown -r 23:30  2>&1 | opr2 ; fi
 ################################################################################
 create_logline "DONE, emailing log"
-bash "$MAIL_SCRIPT"
+bash "$MAIL_SCRIPT" "$PLAT_LOGFILE"
 ###TODO### make update mechanism using git for maintenance files?
