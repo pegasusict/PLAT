@@ -19,4 +19,4 @@ create_secline() {
 	tolog $_sec_line
 }
 getthetime(){ echo $(date +"%Y-%m-%d_%H.%M.%S.%3N") ; }
-tolog() { echo $1 >> "$PLAT_LOGFILE" ; }
+tolog() { echo $1 >> "$LOGFILE" ; }

@@ -19,4 +19,4 @@ if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 # Make sure only root can run this script
 if [[ $EUID -ne 0  ]]; then echo "This script must be run as root" ; exit 1 ; fi
 ###### DEFINE LOGFILE ##########################################################
-PLAT_LOGFILE="/var/log/plat/maintenance_$START_TIME.log"
+LOGFILE="/var/log/plat/maintenance_$START_TIME.log"

@@ -13,20 +13,12 @@ inactive_containers_found=${#inactivecontainers[@]}
 if [ $active_containers_found -gt 0 ];
 then
 	create_secline "$active_containers_found active containers found:"
-	for (( i=0; i<active_containers_found; i++ ))
-	do
-		create_secline "-> ${activecontainers[$i]}"
-	done
-else
-   create_secline "No active containers found"
+	for (( i=0; i<active_containers_found; i++ )) ; do create_secline "-> ${activecontainers[$i]}" ; done
+else create_secline "No active containers found"
 fi
 if [ $inactive_containers_found -gt 0 ];
-then
-   create_secline "$inactive_containers_found inactive containers found:"
-   for (( i=0; i<inactive_containers_found; i++ ));
-   do
-      create_secline "-> ${inactivecontainers[$i]}"
-   done
+then create_secline "$inactive_containers_found inactive containers found:"
+   for (( i=0; i<inactive_containers_found; i++ )) ; do create_secline "-> ${inactivecontainers[$i]}" ; done
 else
    create_secline "No inactive containers found"
 fi
