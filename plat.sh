@@ -16,7 +16,7 @@ MAINTAINER="Mattijs Snepvangers"
 MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 VERSION_MAJOR=0
 VERSION_MINOR=10
-VERSION_PATCH=199
+VERSION_PATCH=200
 VERSION_STATE="ALPHA " # needs to be 6 chars for alignment <ALPHA |BETA  |STABLE>
 VERSION_BUILD=20180309
 ###############################################################################
@@ -24,35 +24,6 @@ PROGRAM="$PROGRAM_SUITE - $SCRIPT"
 SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
 VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
 ###############################################################################
-# If we're not in the base directory of the script, let's go there to prevent
-#+ stuff going haywire
-opr4 "Let's find out where we're at..."
-EXEC_PATH="${BASH_SOURCE[0]}"
-while [ -h "$EXEC_PATH" ]; do # resolve $EXEC_PATH until the file is no longer a symlink
-  TARGET="$(readlink "$EXEC_PATH")"
-  if [[ $TARGET == /* ]]; then
-    opr4 "EXEC_PATH '$EXEC_PATH' is an absolute symlink to '$TARGET'"
-    EXEC_PATH="$TARGET"
-  else
-    DIR="$( dirname "$EXEC_PATH" )"
-    opr4 "EXEC_PATH '$EXEC_PATH' is a relative symlink to '$TARGET' (relative to '$DIR')"
-    EXEC_PATH="$DIR/$TARGET" # if $EXEC_PATH was a relative symlink, we need to resolve it relative to the path where the symlink file was located
-  fi
-done
-echo "THIS_SCRIPT=$(basename $EXEC_PATH)
-BASE_DIR=$(dirname "$EXEC_PATH")
- is '$EXEC_PATH'"
-RDIR="$( dirname "$EXEC_PATH" )"
-DIR="$( cd -P "$( dirname "$EXEC_PATH" )" && pwd )"
-if [ "$DIR" != "$RDIR" ]; then
-  echo "DIR '$RDIR' resolves to '$DIR'"
-fi
-echo "DIR is '$DIR'"
-
-THIS_SCRIPT=$(basename $EXEC_PATH)
-BASE_DIR=$(dirname "$EXEC_PATH")
-if [[ $(pwd) != "$BASE_DIR" ]] ; then cd "$BASE_DIR" ; fi
-
 # Making sure this script is run by bash to prevent mishaps
 if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 # Make sure only root can run this script
@@ -164,7 +135,6 @@ checkcontainer() {
 		"basic"	)	SYSTEMROLE_BASIC=true;
 					opr3 "container=basic";;
 		"router")	opr3 "container=router"
-					SYSTEMROLE_SERVER=true
 					SYSTEMROLE_ROUTER=true;;
 		*		)	opr0 "ERROR: Unknown containertype $CONTAINER, exiting...";
 					exit 1;;
@@ -283,11 +253,44 @@ EOT
 	exit 3
 }  
 version() { echo -e "\n$PROGRAM $VERSION - (c)$CURR_YEAR $MAINTAINER"; }   
+# If we're not in the base directory of the script, let's go there to prevent stuff from going haywire
+opr4 "Let's find out where we're at..."
+EXEC_PATH="${BASH_SOURCE[0]}"
+while [ -h "$EXEC_PATH" ]; do # resolve $EXEC_PATH until the file is no longer a symlink
+  TARGET="$(readlink "$EXEC_PATH")"
+  if [[ $TARGET == /* ]]; then
+    opr4 "EXEC_PATH '$EXEC_PATH' is an absolute symlink to '$TARGET'"
+    EXEC_PATH="$TARGET"
+  else
+    DIR="$(dirname "$EXEC_PATH")"
+    opr4 "EXEC_PATH '$EXEC_PATH' is a relative symlink to '$TARGET' (relative to '$DIR')"
+    EXEC_PATH="$DIR/$TARGET" # if $EXEC_PATH was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+  fi
+done
+opr4 "THIS_SCRIPT=$(basename $EXEC_PATH)
+BASE_DIR=$(dirname "$EXEC_PATH")
+ is '$EXEC_PATH'"
+RDIR="$(dirname "$EXEC_PATH" )"
+DIR="$(cd -P "$( dirname "$EXEC_PATH" )" && pwd )"
+if [ "$DIR" != "$RDIR" ]; then opr4 "DIR '$RDIR' resolves to '$DIR'" ; fi
+opr4 "DIR is '$DIR'"
+THIS_SCRIPT=$(basename $EXEC_PATH) ; BASE_DIR=$(dirname "$EXEC_PATH")
+if [[ $(pwd) != "$BASE_DIR" ]] ; then cd "$BASE_DIR" ; fi
 ### create directories if needed
 cr_dir $LOGDIR ; cr_dir $SCRIPT_DIR
 ###
 getargs "$@"
 ###
+# check whether systemrole_container has been checked and if yes,
+#+ nas,web,ws,pxe,basic or router have been checked
+if [[ $SYSTEMROLE_CONTAINER == true ]] ; then
+	if [[ $SYSTEMROLE_NAS == true ]] || [[ $SYSTEMROLE_WEB == true ]] || [[ $SYSTEMROLE_WS == true ]] || [[ $SYSTEMROLE_NAS == true ]] || [[ $SYSTEMROLE_PXE == true ]] || [[ $SYSTEMROLE_BASIC == true ]] || [[ $SYSTEMROLE_ROUTER == true ]]
+		then # we're good :-)
+		else # somebody SNAFU'd
+			opr0 "CRITICAL: no container role has been designated"
+			exit 1
+	fi
+fi
 opr2 <<EOT
 ################################################################################
 ## $PROGRAM_SUITE - $SCRIPT_TITLE  Ver$SHORTVERSION ##
