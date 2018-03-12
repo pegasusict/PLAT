@@ -9,6 +9,8 @@ echo "$START_TIME ## Starting PostInstall Process #######################"
 ################### PROGRAM INFO ##############################################
 PROGRAM_SUITE="Pegasus' Linux Administration Tools"
 SCRIPT_TITLE="Post Install Script"
+THIS_SCRIPT=$0
+BASE_DIR="$(readlink -f "$0")"
 MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
 CONTAINER_SCRIPT_TITLE="Container Maintenance Script"
 #MAIL_SCRIPT_TITLE="Email Script"
@@ -16,7 +18,7 @@ MAINTAINER="Mattijs Snepvangers"
 MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 VERSION_MAJOR=0
 VERSION_MINOR=10
-VERSION_PATCH=180
+VERSION_PATCH=192
 VERSION_STATE="ALPHA " # needs to be 6 chars for alignment <ALPHA |BETA  |STABLE>
 VERSION_BUILD=20180309
 ###############################################################################
@@ -24,14 +26,16 @@ PROGRAM="$PROGRAM_SUITE - $SCRIPT"
 SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
 VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
 ###############################################################################
+# If we're not in the base directory of the script, let's go there to prevent
+#+ stuff going haywire
+if [[ $(pwd) -ne BASE_DIR ]] ; then cd $BASE_DIR ; fi
 # Making sure this script is run by bash to prevent mishaps
 if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 # Make sure only root can run this script
 if [[ $EUID -ne 0  ]]; then echo "This script must be run as root" ; exit 1 ; fi
 # set default values
-CURR_YEAR=$(date +"%Y")			;		TODAY=$(date +"%d-%m-%Y")
-#COMPUTER_NAME=$(uname -n)		;
-VERBOSITY=2
+CURR_YEAR=$(date +"%Y")			;		TODAY=$(date +"%d-%m-%Y")	;	VERBOSITY=2
+#COMPUTER_NAME=$(uname -n)
 TMP_AGE=2						;		GARBAGE_AGE=7				;	LOG_AGE=30
 #ASK_FOR_EMAIL_STUFF=true		;		
 SYSTEMROLE_BASIC=false			;		SYSTEMROLE_WS=false
@@ -56,7 +60,7 @@ add_to_script() {
 add_line_to_cron() {
 	CRONTAB=$2
 	LINE_TO_ADD=$1
-	echo "LINE_TO_ADD: $LINE_TO_ADD" ; echo "CRONTAB: $CRONTAB"
+	opr4 "LINE_TO_ADD: $LINE_TO_ADD" ; opr4 "CRONTAB: $CRONTAB"
     line_exists() { grep -qsFx "$LINE_TO_ADD" "$TARGET_FILE" ; }
     add_line() {
 		if [ -w "$CRONTAB" ]
@@ -268,11 +272,7 @@ opr2 <<EOT
 
 EOT
 ################################################################################
-if [[ $SYSTEMROLE_MAINSERVER == true ]]
-then
-	create_logline "Injecting interfaces file into network config"
-	cat lxdhost_interfaces.txt > /etc/network/interfaces
-fi
+if [[ $SYSTEMROLE_MAINSERVER == true ]] ; then ; create_logline "Injecting interfaces file into network config" ; cat lxdhost_interfaces.txt > /etc/network/interfaces ; fi
 ################################################################################
 create_logline "Installing extra PPA's"
 create_secline "Copying Ubuntu sources and some extras"; cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | opr4
@@ -291,9 +291,7 @@ if [[ $SYSTEMROLE_WS == true ]] ; then
    create_secline "Adding OwnCloud Desktop PPA";	add_ppa "wget" "http://download.opensuse.org/repositories/isv:ownCloud:community/xUbuntu_16.04/Release.key"
    create_secline "Adding Wine PPA"; 				add_ppa "apt-key" "keyserver.ubuntu.com" "883E8688397576B6C509DF495A9A06AEF9CB8DB0"
 fi
-if [[ $SYSTEMROLE_NAS == true ]] ; then
-   create_secline "Adding Syncthing PPA"; 			add_ppa "wget" "https://syncthing.net/release-key.txt"
-fi
+if [[ $SYSTEMROLE_NAS == true ]] ; then create_secline "Adding Syncthing PPA" ; add_ppa "wget" "https://syncthing.net/release-key.txt" ; fi
 ################################################################################
 create_logline "removing duplicate lines from source lists"; perl -i -ne 'print if ! $a{$_}++' "/etc/apt/sources.list /etc/apt/sources.list.d/*" 2>&1 | opr4
 create_logline "Updating apt cache"; apt-get update -q 2>&1 | opr4
@@ -340,9 +338,6 @@ fi
 add_line_to_cron "$LINE_TO_ADD" "$CRON_FILE"
 ################################################################################
 create_logline "checking for reboot requirement"
-if [ -f /var/run/reboot-required ]
-	then create_logline "REBOOT REQUIRED" ; shutdown -r 23:30  2>&1 | opr2
-	else opr2 "No reboot required"
-fi
+if [ -f /var/run/reboot-required ]; then create_logline "REBOOT REQUIRED" ; shutdown -r 23:30  2>&1 | opr2 ; else opr2 "No reboot required" ; fi
 ################################################################################
 ###TODO### make update mechanism using git for maintenance files?
