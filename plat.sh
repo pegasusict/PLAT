@@ -10,13 +10,13 @@ echo "$START_TIME ## Starting PostInstall Process #######################"
 PROGRAM_SUITE="Pegasus' Linux Administration Tools"
 SCRIPT_TITLE="Post Install Script"
 MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
-MAIL_SCRIPT_TITLE="Email Script"
+#MAIL_SCRIPT_TITLE="Email Script"
 POST_INSTALL_SCRIPT=$(basename "$0")
 MAINTAINER="Mattijs Snepvangers"
 MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 VERSION_MAJOR=0
 VERSION_MINOR=10
-VERSION_PATCH=161
+VERSION_PATCH=165
 VERSION_STATE="ALPHA " # needs to be 6 chars for alignment <ALPHA |BETA  |STABLE>
 VERSION_BUILD=20180309
 ###############################################################################
@@ -32,7 +32,7 @@ if [[ $EUID -ne 0  ]]; then echo "This script must be run as root" ; exit 1 ; fi
 CURR_YEAR=$(date +"%Y")			;		TODAY=$(date +"%d-%m-%Y")
 COMPUTER_NAME=$(uname -n)		;		VERBOSITY=2
 TMP_AGE=2						;		GARBAGE_AGE=7				;	LOG_AGE=30
-ASK_FOR_EMAIL_STUFF=true		;		
+#ASK_FOR_EMAIL_STUFF=true		;		
 SYSTEMROLE_BASIC=false			;		SYSTEMROLE_WS=false
 SYSTEMROLE_POSEIDON=false		;		SYSTEMROLE_SERVER=false
 SYSTEMROLE_LXDHOST=false		;		SYSTEMROLE_NAS=false
@@ -42,7 +42,8 @@ LOGDIR="/var/log/plat"			;		SCRIPT_DIR="/etc/plat"
 LOGFILE="$LOGDIR/PostInstall_$START_TIME.log"
 MAINTENANCE_SCRIPT="$SCRIPT_DIR/maintenance.sh"
 CONTAINER_SCRIPT="$SCRIPT_DIR/maintenance_container.sh"
-MAIL_SCRIPT="$SCRIPT_DIR/mail.sh"
+#MAIL_SCRIPT="$SCRIPT_DIR/mail.sh"
+#EMAIL_SENDER=false;	EMAIL_RECIPIENT=false;	EMAIL_PASSWORD=false
 ###################### defining functions #####################################
 add_to_script() {
 	TARGET_SCRIPT=$1 ; IS_LINE=$2 ; MESSAGE=$3
@@ -181,9 +182,9 @@ getargs() {
             -g|--garbageage		) GABAGE_AGE=$2; shift 2 ;;
             -l|--logage			) LOG_AGE=$2; shift 2 ;;
             -t|--tmpage			) TMP_AGE=$2; shift 2 ;;
-            -S|--emailsender	) EMAIL_SENDER=$2; shift 2 ;;
-            -P|--emailpass		) EMAIL_PASSWORD=$2; shift 2 ;;
-            -R|--emailrecipient ) EMAIL_RECIPIENT=$2; shift 2 ;;
+            #-S|--emailsender	) EMAIL_SENDER=$2; shift 2 ;;
+            #-P|--emailpass		) EMAIL_PASSWORD=$2; shift 2 ;;
+            #-R|--emailrecipient ) EMAIL_RECIPIENT=$2; shift 2 ;;
             -- ) shift; break ;;
             * ) break ;;
         esac
@@ -220,7 +221,7 @@ usage() {
 	cat <<EOT
 		 USAGE: sudo bash $SCRIPT -h
 				or
-			sudo bash $SCRIPT -r <systemrole> [ -c <containertype> ] [ -v INT ] [ -g <garbageage> ] [ -l <logage> ] [ -t <tmpage> ] [ -S <emailsender> -P <emailpassword> -R <emailsrecipient(s)> ]
+			sudo bash $SCRIPT -r <systemrole> [ -c <containertype> ] [ -v INT ] [ -g <garbageage> ] [ -l <logage> ] [ -t <tmpage> ]
 
 		 OPTIONS
 
@@ -232,9 +233,6 @@ usage() {
 		   -g or --garbageage defines the age (in days) of garbage (trashbins & temp files) being cleaned, default=7
 		   -l or --logage defines the age (in days) of logs to be purged, default=30
 		   -t or --tmpage define how long temp files should be untouched before they are deleted, default=2
-		   -S or --emailsender defines the gmail account used for sending the logs 
-		   -P or --emailpass defines the password for that account
-		   -R or --emailrecipient defines the recipient(s) of those emails
 		   -h or --help prints this message
 
 		  The options can be used in any order
@@ -324,59 +322,7 @@ if [[ $SYSTEMROLE_MAINSERVER == true ]]
 fi
 add_line_to_cron $LINE_TO_ADD $CRON_FILE
 ################################################################################
-pip install --upgrade google-api-python-client
-
-
-
-
-create_logline "Building mail script"
-CC_TO="pegasus.ict+plat@gmail.com"
-MAIL_SERVER="smtp.gmail.com:587"
-if [ ${#EMAIL_SENDER} -ge 10 ] && [ ${#EMAIL_PASSWORD} -ge 8 ] && [ ${#EMAIL_RECIPIENT} -ge 10 ]
-	then ask_for_email_stuff=false
-fi
-if [ -f "$MAIL_SCRIPT" ] ; then rm $MAIL_SCRIPT 2>&1 | opr4; create_secline "Removed old mail script." ; fi
-add_to_script "$MAIL_SCRIPT" false <<EOT
-#!/usr/bin/bash
-################################################################################
-## $PROGRAM_SUITE   -   $MAIL_SCRIPT_TITLE      Ver$SHORT_VERSION ##
-## (c)2017-$CURR_YEAR $MAINTAINER  build $VERSION_BUILD     $MAINTAINER_EMAIL ##
-## This mail script is dynamically built                    Built: $TODAY ##
-## License: GPL v3                         Please keep my name in the credits ##
-################################################################################
-EOT
-sed -e 1d mail/mail1.sh >> "$MAIL_SCRIPT"
-if [[ $ASK_FOR_EMAIL_STUFF == true ]] ; then echo "Which gmail account will I use to send the reports? (other providers are not supported for now)" ; read EMAIL_SENDER ; fi
-echo "# Define sender's detail  email ID" >> "$MAIL_SCRIPT"; echo "FROM_MAIL=\"$EMAIL_SENDER\"" >> "$MAIL_SCRIPT"
-if [[ $ASK_FOR_EMAIL_STUFF == true ]] ; then echo "Which password goes with that account?" ; read EMAIL_PASSWORD ; fi
-echo "# Define sender's password" >> "$MAIL_SCRIPT"; echo "SENDER_PASSWORD=\"$EMAIL_PASSWORD\"" >> "$MAIL_SCRIPT"
-if [[ $ASK_FOR_EMAIL_STUFF == true ]] ; then echo "To whom will the reports be sent?" ; read EMAIL_RECIPIENT ; fi
-echo "# Define recipient(s)" >> "$MAIL_SCRIPT" ; echo "TO_MAIL=\"$EMAIL_RECIPIENT\"" >> "$MAIL_SCRIPT"
-echo "# Attachment(s)" >> "$MAIL_SCRIPT" ; echo "ATTACHMENT=\"\$1\"" >> "$MAIL_SCRIPT"
-add_to_script "$MAIL_SCRIPT" false <<EOT
-CC_TO="$CC_TO"
-MAIL_SERVER="$MAIL_SERVER"
-SUBJECT="$PROGRAM_SUITE emailservice"
-MSG() {
-cat <<EOF
-L.S.,
-
-This is an automated email from your computer $COMPUTER_NAME.
-You will find the logfile attached to this email.
-
-kind regards,
-
-$PROGRAM_SUITE
-
-EOF
-}
-EOT
-sed -e 1d mail/mail2.sh >> "$MAIL_SCRIPT"
-chmod 555 "$SCRIPT_DIR/*" 2>&1 | opr4 ; chown root:root "$SCRIPT_DIR/*" 2>&1 | opr4
-################################################################################
 create_logline "checking for reboot requirement"
 if [ -f /var/run/reboot-required ] ; then create_logline "REBOOT REQUIRED" ; shutdown -r 23:30  2>&1 | opr2 ; fi
 ################################################################################
-create_logline "DONE, emailing log"
-bash "$MAIL_SCRIPT" "$LOGFILE"
 ###TODO### make update mechanism using git for maintenance files?

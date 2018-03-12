@@ -28,4 +28,4 @@ if [ -f /var/run/reboot-required ]; then shutdown -r 23:30 ; fi
 ###
 create_logline "Maintenance Complete"
 ### send email with log attached
-bash /etc/plat/mail.sh
+#bash /etc/plat/mail.sh

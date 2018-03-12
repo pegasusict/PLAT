@@ -1,10 +1,7 @@
-
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Script performed to send login_activity.txt file to a user
 
 import smtplib
-
 from datetime import date
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
@@ -14,12 +11,12 @@ from email import encoders
 # Send The Log File Before Erasing #
 
 msg = MIMEMultipart()
-msg['From'] = 'someone@gmail.com'
-recipients = 'bob.dupont@gmail.com'
-msg['Subject'] = 'Login Activity' 
+msg['From'] = 'mattijs@ictlab.info'
+recipients = 'mattijs@ictlab.info'
+msg['Subject'] = 'PostInstall Log' 
 message = 'Hi! \n Please find the logs for the : {}/{}/{}.'.format(date.today().day, date.today().month, date.today().year)
 
-filename = "login_activity.txt"
+filename = "PostInstall"
 attachment = open("/home/ubuntu/login_activity.txt", "rb")
  
 part = MIMEBase('application', 'octet-stream')
