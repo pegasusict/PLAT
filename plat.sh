@@ -16,7 +16,7 @@ MAINTAINER="Mattijs Snepvangers"
 MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 VERSION_MAJOR=0
 VERSION_MINOR=10
-VERSION_PATCH=165
+VERSION_PATCH=166
 VERSION_STATE="ALPHA " # needs to be 6 chars for alignment <ALPHA |BETA  |STABLE>
 VERSION_BUILD=20180309
 ###############################################################################
@@ -53,7 +53,8 @@ add_to_script() {
 	fi
 }
 add_line_to_cron() {
-	LINE_TO_ADD=$1 ;     CRONTAB=$2
+	CRONTAB=$2
+	LINE_TO_ADD=$1
 	echo "LINE_TO_ADD: $LINE_TO_ADD" ; echo "CRONTAB: $CRONTAB"
     line_exists() { grep -qsFx "$LINE_TO_ADD" "$TARGET_FILE" ; }
     add_line() {
@@ -317,10 +318,10 @@ if [[ $SYSTEMROLE_LXDHOST == true ]] ; then build_maintenance_script "$CONTAINER
 ################################################################################
 create_secline "adding $MAINTENANCE_SCRIPT to sheduler"
 if [[ $SYSTEMROLE_MAINSERVER == true ]]
-	then LINE_TO_ADD="\n0 * * 4 0 bash $MAINTENANCE_SCRIPT" ; CRON_FILE="/etc/crontab" ; opr4 "using cron"
-	else LINE_TO_ADD="\n@weekly\t10\tplat_maintenance\tbash $MAINTENANCE_SCRIPT" ; CRON_FILE="/etc/anacrontab" ; opr4 "using anacron"
+	then CRON_FILE="/etc/crontab" ; LINE_TO_ADD="\n0 * * 4 0 bash $MAINTENANCE_SCRIPT" ; opr4 "using cron"
+	else CRON_FILE="/etc/anacrontab" ; LINE_TO_ADD="\n@weekly\t10\tplat_maintenance\tbash $MAINTENANCE_SCRIPT" ; opr4 "using anacron"
 fi
-add_line_to_cron $LINE_TO_ADD $CRON_FILE
+add_line_to_cron "$LINE_TO_ADD" "$CRON_FILE"
 ################################################################################
 create_logline "checking for reboot requirement"
 if [ -f /var/run/reboot-required ] ; then create_logline "REBOOT REQUIRED" ; shutdown -r 23:30  2>&1 | opr2 ; fi
