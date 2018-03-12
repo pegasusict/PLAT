@@ -178,7 +178,8 @@ create_secline() { ### VERBOSE MESSAGES
 }
 download() { wget -q -a "$LOGFILE" -nv $1; }
 getargs() {
-    if [[ $(getopt --test > /dev/null) -ne 4 ]]; then
+	getopt --test > /dev/null
+    if [[ $? -ne 4 ]]; then
 		echo "I’m sorry, `getopt --test` failed in this environment."
 		exit 1
 	fi
