@@ -28,7 +28,7 @@ VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
 ###############################################################################
 # If we're not in the base directory of the script, let's go there to prevent
 #+ stuff going haywire
-if [[ $(pwd) -ne "$BASE_DIR" ]] ; then cd "$BASE_DIR" ; fi
+if [[ $(pwd) != "$BASE_DIR" ]] ; then cd "$BASE_DIR" ; fi
 # Making sure this script is run by bash to prevent mishaps
 if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 # Make sure only root can run this script
