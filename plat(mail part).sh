@@ -1,3 +1,4 @@
+#!/usr/bin/bash
 usage() {
 	version
 	cat <<EOT

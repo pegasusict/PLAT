@@ -12,12 +12,11 @@ SCRIPT_TITLE="Post Install Script"
 MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
 CONTAINER_SCRIPT_TITLE="Container Maintenance Script"
 #MAIL_SCRIPT_TITLE="Email Script"
-POST_INSTALL_SCRIPT=$(basename "$0")
 MAINTAINER="Mattijs Snepvangers"
 MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 VERSION_MAJOR=0
 VERSION_MINOR=10
-VERSION_PATCH=170
+VERSION_PATCH=180
 VERSION_STATE="ALPHA " # needs to be 6 chars for alignment <ALPHA |BETA  |STABLE>
 VERSION_BUILD=20180309
 ###############################################################################
@@ -31,7 +30,8 @@ if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 if [[ $EUID -ne 0  ]]; then echo "This script must be run as root" ; exit 1 ; fi
 # set default values
 CURR_YEAR=$(date +"%Y")			;		TODAY=$(date +"%d-%m-%Y")
-COMPUTER_NAME=$(uname -n)		;		VERBOSITY=2
+#COMPUTER_NAME=$(uname -n)		;
+VERBOSITY=2
 TMP_AGE=2						;		GARBAGE_AGE=7				;	LOG_AGE=30
 #ASK_FOR_EMAIL_STUFF=true		;		
 SYSTEMROLE_BASIC=false			;		SYSTEMROLE_WS=false
@@ -71,7 +71,7 @@ add_line_to_cron() {
 }
 add_ppa(){
 	METHOD=$1; URL=$2; KEY=$3
-	case method in
+	case $METHOD in
 		"wget"		)	wget -q -a "$LOGFILE" $URL -O- | apt-key add - ;;
 		"apt-key"	)	apt-key adv --keyserver $URL --recv-keys $KEY 2>&1 | opr3 ;;
 		"aar"		)	add-apt-repository $URL | opr3 ;;
@@ -109,11 +109,12 @@ EOH
 EOT
 	add_to_script "$_SCRIPT" true "GARBAGE_AGE=$GARBAGE_AGE"
 	add_to_script "$_SCRIPT" true "LOG_AGE=$LOG_AGE"
-	if [[ $SYSTEMROLE_LXDHOST == true ]]
-	then
-		sed -e 1d maintenance/body-lxdhost0.sh >> "$_SCRIPT"
-		if [[ $SYSTEMROLE_MAINSERVER == true ]] ; then sed -e 1d maintenance/backup2tape.sh >> "$_SCRIPT" ; fi
-		sed -e 1d maintenance/body-lxdhost1.sh >> "$_SCRIPT"
+	if [[ $SYSTEMROLE_CONTAINER == false ]] && [[ $_SCRIPT == $MAINTENANCE_SCRIPT ]]
+		if [[ $SYSTEMROLE_LXDHOST == true ]] ; then
+			sed -e 1d maintenance/body-lxdhost0.sh >> "$_SCRIPT"
+			if [[ $SYSTEMROLE_MAINSERVER == true ]] ; then sed -e 1d maintenance/backup2tape.sh >> "$_SCRIPT" ; fi
+			sed -e 1d maintenance/body-lxdhost1.sh >> "$_SCRIPT"
+		fi
 	fi
 	sed -e 1d maintenance/body-basic.sh >> "$_SCRIPT"
 }
@@ -132,6 +133,9 @@ checkcontainer() {
 					opr3 "container=pxe";;
 		"basic"	)	SYSTEMROLE_BASIC=true;
 					opr3 "container=basic";;
+		"router")	opr3 "container=router"
+					SYSTEMROLE_SERVER=true
+					SYSTEMROLE_ROUTER=true
 		*		)	opr0 "ERROR: Unknown containertype $CONTAINER, exiting...";
 					exit 1;;
 	esac;
@@ -161,7 +165,7 @@ checkrole() {
 cr_dir() { TARGET_DIR=$1; if [ ! -d "$TARGET_DIR" ] ; then mkdir "$TARGET_DIR" ; fi ; }
 create_logline() { ### INFO MESSAGES with timestamp
     _SUBJECT="$1" ; _LOG_LINE="$(get_timestamp) ## $_SUBJECT #" ; MAX_WIDTH=80
-    for (( i=${#_LOG_LINE}; i<$MAX_WIDTH; i++ )) ; do _LOG_LINE+="#" ; done
+    for (( i=${#_LOG_LINE}; i<MAX_WIDTH; i++ )) ; do _LOG_LINE+="#" ; done
     opr2 "$_LOG_LINE"
 }
 create_secline() { ### VERBOSE MESSAGES
@@ -172,8 +176,7 @@ create_secline() { ### VERBOSE MESSAGES
 }
 download() { wget -q -a "$LOGFILE" -nv $1; }
 getargs() {
-    getopt --test > /dev/null
-	if [[ $? -ne 4 ]]; then
+    if [[ $(getopt --test > /dev/null) -ne 4 ]]; then
 		echo "I’m sorry, `getopt --test` failed in this environment."
 		exit 1
 	fi
@@ -237,7 +240,7 @@ usage() {
 		   -r or --role tells the script what kind of system we are dealing with.
 			  Valid options: ws, poseidon, mainserver, container << REQUIRED >>
 		   -c or --containertype tells the script what kind of container we are working on.
-			  Valid options are: basic, nas, web, x11, pxe << REQUIRED if -r=container >>
+			  Valid options are: basic, nas, web, x11, pxe, router << REQUIRED if -r=container >>
 		   -v or --verbosity defines the amount of chatter. 0=CRITICAL, 1=WARNING, 2=INFO, 3=VERBOSE, 4=DEBUG. default=2
 		   -g or --garbageage defines the age (in days) of garbage (trashbins & temp files) being cleaned, default=7
 		   -l or --logage defines the age (in days) of logs to be purged, default=30
@@ -301,6 +304,8 @@ if [[ $SYSTEMROLE_NAS == true ]] ;		then apt-inst samba nfsd proftpd ; fi
 if [[ $SYSTEMROLE_PXE == true ]] ;		then apt-inst atftpd ; fi
 if [[ $SYSTEMROLE_LXDHOST == true ]] ;	then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
 if [[ $SYSTEMROLE_SERVER == true ]] ;	then apt-inst ssh-server screen; fi
+if [[ $SYSTEMROLE_BASIC == true ]] ;	then echo "" ; fi
+if [[ $SYSTEMROLE_ROUTER == true ]];	then apt-inst bridge-utils webmin ufw; fi
 ################################################################################
 create_logline "Installing extra software"
 create_secline "Installing TeamViewer"
