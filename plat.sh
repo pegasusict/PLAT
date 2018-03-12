@@ -137,7 +137,7 @@ checkcontainer() {
 					opr3 "container=basic";;
 		"router")	opr3 "container=router"
 					SYSTEMROLE_SERVER=true
-					SYSTEMROLE_ROUTER=true
+					SYSTEMROLE_ROUTER=true;;
 		*		)	opr0 "ERROR: Unknown containertype $CONTAINER, exiting...";
 					exit 1;;
 	esac;
