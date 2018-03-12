@@ -16,7 +16,7 @@ MAINTAINER="Mattijs Snepvangers"
 MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 VERSION_MAJOR=0
 VERSION_MINOR=10
-VERSION_PATCH=194
+VERSION_PATCH=199
 VERSION_STATE="ALPHA " # needs to be 6 chars for alignment <ALPHA |BETA  |STABLE>
 VERSION_BUILD=20180309
 ###############################################################################
@@ -26,15 +26,16 @@ VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
 ###############################################################################
 # If we're not in the base directory of the script, let's go there to prevent
 #+ stuff going haywire
+opr4 "Let's find out where we're at..."
 EXEC_PATH="${BASH_SOURCE[0]}"
 while [ -h "$EXEC_PATH" ]; do # resolve $EXEC_PATH until the file is no longer a symlink
   TARGET="$(readlink "$EXEC_PATH")"
   if [[ $TARGET == /* ]]; then
-    echo "EXEC_PATH '$EXEC_PATH' is an absolute symlink to '$TARGET'"
+    opr4 "EXEC_PATH '$EXEC_PATH' is an absolute symlink to '$TARGET'"
     EXEC_PATH="$TARGET"
   else
     DIR="$( dirname "$EXEC_PATH" )"
-    echo "EXEC_PATH '$EXEC_PATH' is a relative symlink to '$TARGET' (relative to '$DIR')"
+    opr4 "EXEC_PATH '$EXEC_PATH' is a relative symlink to '$TARGET' (relative to '$DIR')"
     EXEC_PATH="$DIR/$TARGET" # if $EXEC_PATH was a relative symlink, we need to resolve it relative to the path where the symlink file was located
   fi
 done
@@ -50,8 +51,6 @@ echo "DIR is '$DIR'"
 
 THIS_SCRIPT=$(basename $EXEC_PATH)
 BASE_DIR=$(dirname "$EXEC_PATH")
-
-
 if [[ $(pwd) != "$BASE_DIR" ]] ; then cd "$BASE_DIR" ; fi
 
 # Making sure this script is run by bash to prevent mishaps
@@ -355,12 +354,15 @@ create_logline "Building maintenance script"
 build_maintenance_script "$MAINTENANCE_SCRIPT"
 if [[ $SYSTEMROLE_LXDHOST == true ]] ; then build_maintenance_script "$CONTAINER_SCRIPT" ; fi
 ################################################################################
-create_secline "adding $MAINTENANCE_SCRIPT to sheduler"
-if [[ $SYSTEMROLE_MAINSERVER == true ]]
-	then CRON_FILE="/etc/crontab" ; LINE_TO_ADD="\n0 * * 4 0 bash $MAINTENANCE_SCRIPT" ; opr4 "using cron"
-	else CRON_FILE="/etc/anacrontab" ; LINE_TO_ADD="\n@weekly\t10\tplat_maintenance\tbash $MAINTENANCE_SCRIPT" ; opr4 "using anacron"
+if [[ $SYSTEMROLE_CONTAINER == true ]] ; then create_secline "NOT adding $MAINTENANCE_SCRIPT to sheduler"
+else
+	create_secline "adding $MAINTENANCE_SCRIPT to sheduler"
+	if [[ $SYSTEMROLE_MAINSERVER == true ]]
+		then CRON_FILE="/etc/crontab" ; LINE_TO_ADD="\n0 * * 4 0 bash $MAINTENANCE_SCRIPT" ; opr4 "using cron"
+		else CRON_FILE="/etc/anacrontab" ; LINE_TO_ADD="\n@weekly\t10\tplat_maintenance\tbash $MAINTENANCE_SCRIPT" ; opr4 "using anacron"
+	fi
+	add_line_to_cron "$LINE_TO_ADD" "$CRON_FILE"
 fi
-add_line_to_cron "$LINE_TO_ADD" "$CRON_FILE"
 ################################################################################
 create_logline "checking for reboot requirement"
 if [ -f /var/run/reboot-required ]; then create_logline "REBOOT REQUIRED" ; shutdown -r 23:30  2>&1 | opr2 ; else opr2 "No reboot required" ; fi
