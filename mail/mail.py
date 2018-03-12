@@ -1,5 +1,6 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/python3
+"""Send an email message from the user's account.
+"""
 
 import smtplib
 from datetime import date
@@ -9,35 +10,31 @@ from email.MIMEBase import MIMEBase
 from email import encoders
 
 # Send The Log File Before Erasing #
+ATTACHEDFILE="/var/log/plat/PostInstall*.log"
+MSG = MIMEMultipart()
+MSG['From'] = 'mattijs@ictlab.info'
+RECIPIENTS = 'mattijs@ictlab.info'
+MSG['Subject'] = 'PostInstall Log'
+MESSAGE = 'Hi! \n Please find the logs for {}-{}-{}.'.format(date.today().day, date.today().month, date.today().year)
 
-msg = MIMEMultipart()
-msg['From'] = 'mattijs@ictlab.info'
-recipients = 'mattijs@ictlab.info'
-msg['Subject'] = 'PostInstall Log' 
-message = 'Hi! \n Please find the logs for the : {}/{}/{}.'.format(date.today().day, date.today().month, date.today().year)
+FILENAME = "PostInstall"
+ATTACHMENT = open(ATTACHEDFILE, "rb")
+PART = MIMEBase('application', 'octet-stream')
+PART.set_payload((ATTACHMENT).read())
+encoders.encode_base64(PART)
+PART.add_header('Content-Disposition', "attachment; filename= {}".format(FILENAME))
+MSG.attach(PART)
 
-filename = "PostInstall"
-attachment = open("/home/ubuntu/login_activity.txt", "rb")
- 
-part = MIMEBase('application', 'octet-stream')
-part.set_payload((attachment).read())
-encoders.encode_base64(part)
-part.add_header('Content-Disposition', "attachment; filename= {}".format(filename))
- 
-msg.attach(part)
-
-msg.attach(MIMEText(message))
-mailserver = smtplib.SMTP('smtp.gmail.com', 587) # using gmail SMTP server
-mailserver.ehlo()
-mailserver.starttls()
-mailserver.ehlo()
-mailserver.login('login', 'password')
-mailserver.sendmail(msg['From'], recipients, msg.as_string())
-mailserver.quit()
-
+MSG.attach(MIMEText(MESSAGE))
+MAILSERVER = smtplib.SMTP('smtp.gmail.com', 587) # using gmail SMTP server
+MAILSERVER.ehlo()
+MAILSERVER.starttls()
+MAILSERVER.ehlo()
+MAILSERVER.login('login', 'password')
+MAILSERVER.sendmail(MSG['From'], RECIPIENTS, MSG.as_string())
+MAILSERVER.quit()
 
 # Erase File logs #
-
 with open('/home/ubuntu/login_activity.txt', 'w') as file:
-	file.write('')
+    file.write('')
 file.close()

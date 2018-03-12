@@ -10,13 +10,14 @@ echo "$START_TIME ## Starting PostInstall Process #######################"
 PROGRAM_SUITE="Pegasus' Linux Administration Tools"
 SCRIPT_TITLE="Post Install Script"
 MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
+CONTAINER_SCRIPT_TITLE="Container Maintenance Script"
 #MAIL_SCRIPT_TITLE="Email Script"
 POST_INSTALL_SCRIPT=$(basename "$0")
 MAINTAINER="Mattijs Snepvangers"
 MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 VERSION_MAJOR=0
 VERSION_MINOR=10
-VERSION_PATCH=166
+VERSION_PATCH=170
 VERSION_STATE="ALPHA " # needs to be 6 chars for alignment <ALPHA |BETA  |STABLE>
 VERSION_BUILD=20180309
 ###############################################################################
@@ -79,23 +80,30 @@ add_ppa(){
 apt-inst() { apt-get -qqy --allow-unauthenticated install "$@" 2>&1 | opr4; }
 build_maintenance_script() {
 	_SCRIPT=$1
+	if [[ $_SCRIPT == $MAINTENANCE_SCRIPT ]]
+		then _SCRIPT_TITLE="$MAINTENANCE_SCRIPT_TITLE"
+		else _SCRIPT_TITLE="$CONTAINER_SCRIPT_TITLE"
+	fi
 	if [ -f "$_SCRIPT" ] ; then rm "$_SCRIPT" 2>&1 | opr4; opr4 "Removed old maintenance script."; fi
 	add_to_script "$_SCRIPT" false <<EOT
-	#!/usr/bin/bash
+#!/usr/bin/bash
 ################################################################################
-# $PROGRAM_SUITE - $MAINTENANCE_SCRIPT_TITLE   Ver$SHORTVERSION #
-# (c)2017-$CURR_YEAR $MAINTAINER    build $VERSION_BUILD     $EMAIL #
+# $PROGRAM_SUITE - $_SCRIPT_TITLE   Ver$SHORT_VERSION #
+# (c)2017-$CURR_YEAR $MAINTAINER    build $VERSION_BUILD     $MAINTAINER_EMAIL #
 # This maintenance script is dynamically built          Last build: $TODAY #
 # License: GPL v3                           Please keep my name in the credits #
 ################################################################################
 EOT
-	sed -e 1d maintenance/maintenance-subheader.sh >> "$_SCRIPT"
+	sed -e 1d maintenance/maintenance-subheader1.sh >> "$_SCRIPT"
+	add_to_script "$_SCRIPT" true "SCRIPT_TITLE=\"$_SCRIPT_TITLE\""
+	sed -e 1d maintenance/maintenance-subheader2.sh >> "$_SCRIPT"
 	sed -e 1d maintenance/maintenance-functions.sh >> "$_SCRIPT"
 	add_to_script "$_SCRIPT" false <<EOT
 tolog <<EOH
 ################################################################################
-# $PROGRAM_SUITE  -  $MAINTENANCE_SCRIPT_TITLE   Ver$SHORTVERSION #
-# (c)2017-$CURR_YEAR $MAINTAINER    build $VERSION_BUILD     $EMAIL #
+# $PROGRAM_SUITE - $_SCRIPT_TITLE     Ver$SHORT_VERSION #
+# (c)2017-$CURR_YEAR $MAINTAINER    build $VERSION_BUILD     $MAINTAINER_EMAIL #
+# This maintenance script is dynamically built          Last build: $TODAY #
 ################################################################################
 EOH
 EOT
@@ -324,6 +332,9 @@ fi
 add_line_to_cron "$LINE_TO_ADD" "$CRON_FILE"
 ################################################################################
 create_logline "checking for reboot requirement"
-if [ -f /var/run/reboot-required ] ; then create_logline "REBOOT REQUIRED" ; shutdown -r 23:30  2>&1 | opr2 ; fi
+if [ -f /var/run/reboot-required ]
+	then create_logline "REBOOT REQUIRED" ; shutdown -r 23:30  2>&1 | opr2
+	else opr2 "No reboot required"
+fi
 ################################################################################
 ###TODO### make update mechanism using git for maintenance files?
