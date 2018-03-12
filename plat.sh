@@ -18,7 +18,7 @@ MAINTAINER="Mattijs Snepvangers"
 MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 VERSION_MAJOR=0
 VERSION_MINOR=10
-VERSION_PATCH=192
+VERSION_PATCH=194
 VERSION_STATE="ALPHA " # needs to be 6 chars for alignment <ALPHA |BETA  |STABLE>
 VERSION_BUILD=20180309
 ###############################################################################
@@ -28,7 +28,7 @@ VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
 ###############################################################################
 # If we're not in the base directory of the script, let's go there to prevent
 #+ stuff going haywire
-if [[ $(pwd) -ne BASE_DIR ]] ; then cd $BASE_DIR ; fi
+if [[ $(pwd) -ne "$BASE_DIR" ]] ; then cd "$BASE_DIR" ; fi
 # Making sure this script is run by bash to prevent mishaps
 if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 # Make sure only root can run this script
@@ -272,7 +272,7 @@ opr2 <<EOT
 
 EOT
 ################################################################################
-if [[ $SYSTEMROLE_MAINSERVER == true ]] ; then ; create_logline "Injecting interfaces file into network config" ; cat lxdhost_interfaces.txt > /etc/network/interfaces ; fi
+if [[ $SYSTEMROLE_MAINSERVER == true ]] ; then create_logline "Injecting interfaces file into network config" ; cat lxdhost_interfaces.txt > /etc/network/interfaces ; fi
 ################################################################################
 create_logline "Installing extra PPA's"
 create_secline "Copying Ubuntu sources and some extras"; cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | opr4
