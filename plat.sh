@@ -109,6 +109,7 @@ EOH
 EOT
 	add_to_script "$_SCRIPT" true "GARBAGE_AGE=$GARBAGE_AGE"
 	add_to_script "$_SCRIPT" true "LOG_AGE=$LOG_AGE"
+	add_to_script "$_SCRIPT" true "TMP_AGE=$TMP_AGE"
 	if [[ $SYSTEMROLE_CONTAINER == false ]] && [[ $_SCRIPT == $MAINTENANCE_SCRIPT ]]
 		if [[ $SYSTEMROLE_LXDHOST == true ]] ; then
 			sed -e 1d maintenance/body-lxdhost0.sh >> "$_SCRIPT"
