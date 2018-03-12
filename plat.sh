@@ -9,8 +9,6 @@ echo "$START_TIME ## Starting PostInstall Process #######################"
 ################### PROGRAM INFO ##############################################
 PROGRAM_SUITE="Pegasus' Linux Administration Tools"
 SCRIPT_TITLE="Post Install Script"
-THIS_SCRIPT=$0
-BASE_DIR="$(readlink -f "$0")"
 MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
 CONTAINER_SCRIPT_TITLE="Container Maintenance Script"
 #MAIL_SCRIPT_TITLE="Email Script"
@@ -28,7 +26,34 @@ VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
 ###############################################################################
 # If we're not in the base directory of the script, let's go there to prevent
 #+ stuff going haywire
+EXEC_PATH="${BASH_SOURCE[0]}"
+while [ -h "$EXEC_PATH" ]; do # resolve $EXEC_PATH until the file is no longer a symlink
+  TARGET="$(readlink "$EXEC_PATH")"
+  if [[ $TARGET == /* ]]; then
+    echo "EXEC_PATH '$EXEC_PATH' is an absolute symlink to '$TARGET'"
+    EXEC_PATH="$TARGET"
+  else
+    DIR="$( dirname "$EXEC_PATH" )"
+    echo "EXEC_PATH '$EXEC_PATH' is a relative symlink to '$TARGET' (relative to '$DIR')"
+    EXEC_PATH="$DIR/$TARGET" # if $EXEC_PATH was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+  fi
+done
+echo "THIS_SCRIPT=$(basename $EXEC_PATH)
+BASE_DIR=$(dirname "$EXEC_PATH")
+ is '$EXEC_PATH'"
+RDIR="$( dirname "$EXEC_PATH" )"
+DIR="$( cd -P "$( dirname "$EXEC_PATH" )" && pwd )"
+if [ "$DIR" != "$RDIR" ]; then
+  echo "DIR '$RDIR' resolves to '$DIR'"
+fi
+echo "DIR is '$DIR'"
+
+THIS_SCRIPT=$(basename $EXEC_PATH)
+BASE_DIR=$(dirname "$EXEC_PATH")
+
+
 if [[ $(pwd) != "$BASE_DIR" ]] ; then cd "$BASE_DIR" ; fi
+
 # Making sure this script is run by bash to prevent mishaps
 if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 # Make sure only root can run this script
