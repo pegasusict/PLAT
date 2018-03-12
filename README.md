@@ -1,25 +1,30 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8c5640df6d7c480d8532efd5063c93e8)](https://www.codacy.com/app/pegasus.ict/plat?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pegasusict/plat&amp;utm_campaign=Badge_Grade)
 
 # PLAT
-Pegasus' Linux Administration Tools is a set of bash scripts that make life easier for the lazy/newbie user
-on Ubuntu
+Pegasus' Linux Administration Tools is a set of bash scripts that make life easier for the lazy/newbie user on Ubuntu
+
 ---
-20180305 Update:
+*NEWS*
+
+> 20180312 update:
+Issue #2 & commit e468f7d22e550d860deda08dc2c4d0def20d797a
+Email functionality broken, has been removed for now, will be added again with a later release.
+All references to the email funtionality have been commented out or moved to a temporary file.
+---
+> 20180305 Update:
 Most of the issues should be gone now, I've added tonnes of functionality based on and/or inspired by 
 feedback I recieved through various channels.
 Constructive criticism and suggestions are very welcome!
-
 ---
 ---
 
 **Post-Install script:**
 
-	Pegasus' Linux Administration Tools - plat.sh Ver0.8.63-ALPHA build 20180305 - (c) 2018 Mattijs Snepvangers
+     Pegasus' Linux Administration Tools - plat.sh Ver0.8.63-ALPHA build 20180305 - (c) 2018 Mattijs Snepvangers
 		USAGE:	sudo bash plat.sh -h
 					or
 			sudo bash plat.sh -r <systemrole> [ -c <containertype> ] [ -v INT ]
-				[ -g <garbageage> ] [ -l <logage> ] [ -t <tmpage> ] [ -S <emailsender>
-				-P <emailpassword> -R <emailsrecipient(s)> ]
+				[ -g <garbageage> ] [ -l <logage> ] [ -t <tmpage> ]
 
 		 OPTIONS
 
@@ -34,9 +39,6 @@ Constructive criticism and suggestions are very welcome!
 		   -l or --logage defines the age (in days) of logs to be purged, default=30
 		   -t or --tmpage define how long temp files should be untouched before they are deleted,
 		   			default=2
-		   -S or --emailsender defines the gmail account used for sending the logs 
-		   -P or --emailpass defines the password for that account
-		   -R or --emailrecipient defines the recipient(s) of those emails
 		   -h or --help prints this message
 
 		  	The options can be used in any order
@@ -46,7 +48,6 @@ Constructive criticism and suggestions are very welcome!
 		All versions:	Edit/add repos & ppas appropriate to systemrole, remove duplicate lines
 				Install trash-cli, mc, teamviewer, git, snapd
 				apt-get update, upgrade, auto-remove, autoclean
-				email report(s)
 
 		ws:		Adds maintenance script to anacrontab weekly
 				Installs synaptic, tilda, audacious, samba, wine-stable, playonlinux, winetricks
@@ -65,7 +66,8 @@ Constructive criticism and suggestions are very welcome!
 				places container_maintenance file on server
 
 		containers:
-			web:	Installs apache2, phpmyadmin, mysqld, mytop, samba, proftpd, webmin, ssh-server, screen
+			web:	Installs apache2, phpmyadmin, mysqld, mytop, samba, proftpd, webmin, ssh-server,
+				screen
 			nas:	Installs samba, nfs, proftpd, ssh-server, screen
 			pxe:	Installs atftpd, ssh-server, screen
 			X11:	Installs ldm, ssh-server, screen
@@ -83,7 +85,7 @@ Constructive criticism and suggestions are very welcome!
 			maintenance
 
 ---
-**Mail functionality**
+**Mail functionality** (removed for now)
 
 	After running the Post Install script and after each run of the maintenance scripts, an email containing
 	the logs is automatically sent to the given address(es) using the given credentials.
