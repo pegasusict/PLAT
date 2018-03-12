@@ -2,24 +2,25 @@
 
 # PLAT
 Pegasus' Linux Administration Tools is a set of bash scripts that make life easier for the lazy/newbie user on Ubuntu
+
 ---
-**NEWS**
-20180312 update:
+*NEWS*
+
+> 20180312 update:
 Issue #2 & commit e468f7d22e550d860deda08dc2c4d0def20d797a
 Email functionality broken, has been removed for now, will be added again with a later release.
 All references to the email funtionality have been commented out or moved to a temporary file.
 ---
-20180305 Update:
+> 20180305 Update:
 Most of the issues should be gone now, I've added tonnes of functionality based on and/or inspired by 
 feedback I recieved through various channels.
 Constructive criticism and suggestions are very welcome!
-
 ---
 ---
 
 **Post-Install script:**
 
-	Pegasus' Linux Administration Tools - plat.sh Ver0.8.63-ALPHA build 20180305 - (c) 2018 Mattijs Snepvangers
+     Pegasus' Linux Administration Tools - plat.sh Ver0.8.63-ALPHA build 20180305 - (c) 2018 Mattijs Snepvangers
 		USAGE:	sudo bash plat.sh -h
 					or
 			sudo bash plat.sh -r <systemrole> [ -c <containertype> ] [ -v INT ]
@@ -65,7 +66,8 @@ Constructive criticism and suggestions are very welcome!
 				places container_maintenance file on server
 
 		containers:
-			web:	Installs apache2, phpmyadmin, mysqld, mytop, samba, proftpd, webmin, ssh-server, screen
+			web:	Installs apache2, phpmyadmin, mysqld, mytop, samba, proftpd, webmin, ssh-server,
+				screen
 			nas:	Installs samba, nfs, proftpd, ssh-server, screen
 			pxe:	Installs atftpd, ssh-server, screen
 			X11:	Installs ldm, ssh-server, screen
