@@ -1,4 +1,4 @@
- Frome the app:
+ From the app:
  ---
  Pegasus' Linux Administration Tools - plat.sh Ver1.0.0-BETA build 20180313 - (c) 2018 Mattijs Snepvangers
  
