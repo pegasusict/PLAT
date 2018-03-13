@@ -2,9 +2,21 @@
 
 # PLAT
 Pegasus' Linux Administration Tools is a set of bash scripts that make life easier for the lazy/newbie user on Ubuntu
+PLAT is a suite of scripts which help with tedious repetitive tasks which make up a large portion of Linux administration.
+Currently there's a Post Install script which, as the name suggests, is run right after installing Linux on a computer.
+This script:	-	adds apt lines to /etc/sources.list,
+				-	adds ppa's incl keys,
+				-	does an apt update/upgrade/auto-remove/clean cycle,
+				-	installs extra packages and software,
+				-	generates maintenance script and adds this to cron(server) or anacron(workstation)
+				-	in case of a lxc host generates a container maintenance script as well
+
+More information can be found after the news updates.
 
 ---
 *NEWS*
+
+**20180313 UPDATE: The BASH version is now V1.0.0-BETA**
 
 > 20180312 update:
 Issue #2 & commit e468f7d22e550d860deda08dc2c4d0def20d797a
@@ -20,7 +32,7 @@ Constructive criticism and suggestions are very welcome!
 
 **Post-Install script:**
 
-     Pegasus' Linux Administration Tools - plat.sh Ver0.8.63-ALPHA build 20180305 - (c) 2018 Mattijs Snepvangers
+     Pegasus' Linux Administration Tools - plat.sh Ver1.0.0-BETA build 20180313 - (c) 2018 Mattijs Snepvangers
 		USAGE:	sudo bash plat.sh -h
 					or
 			sudo bash plat.sh -r <systemrole> [ -c <containertype> ] [ -v INT ]
@@ -52,22 +64,23 @@ Constructive criticism and suggestions are very welcome!
 		ws:		Adds maintenance script to anacrontab weekly
 				Installs synaptic, tilda, audacious, samba, wine-stable, playonlinux, winetricks
 
-		poseidon:	Adds maintenance script to anacrontab weekly
+		poseidon:
+				Adds maintenance script to anacrontab weekly
 				Installs staruml, gitkraken, picard, audacity, calibre, fastboot, adb, fslint,
 				gadmin-proftpd, geany, gprename, lame, masscan, forensics-all, forensics-extra,
 				forensics-extra-gui, forensics-full, chromium-browser, gparted, ssh-server, screen,
 				synaptic, tilda, audacious, samba, wine-stable, playonlinux, winetricks
 
-		lxdhost:	Installs python3-crontab, lxc, lxcfs, lxd, lxd-tools, bridge-utils, xfsutils-linux,
+		lxchost:	Installs python3-crontab, lxc, lxcfs, lxd, lxd-tools, bridge-utils, xfsutils-linux,
 				criu, apt-cacher-ng, ssh-server, screen
-				replaces /etc/network/interfaces with lxdinterfaces file included in this package,
+				replaces /etc/network/interfaces with lxcinterfaces file included in this package,
 				restarts network to incorporate bridge,
-				adds maintenance_lxdhost script to crontab,
+				adds maintenance,
 				places container_maintenance file on server
 
 		containers:
 			web:	Installs apache2, phpmyadmin, mysqld, mytop, samba, proftpd, webmin, ssh-server,
-				screen
+						screen
 			nas:	Installs samba, nfs, proftpd, ssh-server, screen
 			pxe:	Installs atftpd, ssh-server, screen
 			X11:	Installs ldm, ssh-server, screen

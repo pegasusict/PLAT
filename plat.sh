@@ -14,11 +14,11 @@ CONTAINER_SCRIPT_TITLE="Container Maintenance Script"
 #MAIL_SCRIPT_TITLE="Email Script"
 MAINTAINER="Mattijs Snepvangers"
 MAINTAINER_EMAIL="pegasus.ict@gmail.com"
-VERSION_MAJOR=0
-VERSION_MINOR=10
-VERSION_PATCH=200
-VERSION_STATE="ALPHA " # needs to be 6 chars for alignment <ALPHA |BETA  |STABLE>
-VERSION_BUILD=20180309
+VERSION_MAJOR=1
+VERSION_MINOR=0
+VERSION_PATCH=0
+VERSION_STATE="BETA"
+VERSION_BUILD=201803013
 ###############################################################################
 PROGRAM="$PROGRAM_SUITE - $SCRIPT"
 SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
@@ -35,7 +35,7 @@ TMP_AGE=2						;		GARBAGE_AGE=7				;	LOG_AGE=30
 #ASK_FOR_EMAIL_STUFF=true		;		
 SYSTEMROLE_BASIC=false			;		SYSTEMROLE_WS=false
 SYSTEMROLE_POSEIDON=false		;		SYSTEMROLE_SERVER=false
-SYSTEMROLE_LXDHOST=false		;		SYSTEMROLE_NAS=false
+SYSTEMROLE_LXCHOST=false		;		SYSTEMROLE_NAS=false
 SYSTEMROLE_MAINSERVER=false 	;		SYSTEMROLE_CONTAINER=false
 SYSTEMROLE_WEB=false			;		SYSTEMROLE_PXE=false
 LOGDIR="/var/log/plat"			;		SCRIPT_DIR="/etc/plat"
@@ -111,10 +111,10 @@ EOT
 	add_to_script "$_SCRIPT" true "TMP_AGE=$TMP_AGE"
 	if [[ $SYSTEMROLE_CONTAINER == false ]] ; then if [[ $_SCRIPT == $MAINTENANCE_SCRIPT ]]
 	then
-		if [[ $SYSTEMROLE_LXDHOST == true ]] ; then
-			sed -e 1d maintenance/body-lxdhost0.sh >> "$_SCRIPT"
+		if [[ $SYSTEMROLE_LXCHOST == true ]] ; then
+			sed -e 1d maintenance/body-lxchost0.sh >> "$_SCRIPT"
 			if [[ $SYSTEMROLE_MAINSERVER == true ]] ; then sed -e 1d maintenance/backup2tape.sh >> "$_SCRIPT" ; fi
-			sed -e 1d maintenance/body-lxdhost1.sh >> "$_SCRIPT"
+			sed -e 1d maintenance/body-lxchost1.sh >> "$_SCRIPT"
 		fi
 	fi; fi
 	sed -e 1d maintenance/body-basic.sh >> "$_SCRIPT"
@@ -147,14 +147,14 @@ checkrole() {
 							opr3 "role=ws";;
 		"poseidon" 		)	SYSTEMROLE_WS=true
 							SYSTEMROLE_SERVER=true
-							SYSTEMROLE_LXDHOST=true
+							SYSTEMROLE_LXCHOST=true
 							SYSTEMROLE_POSEIDON=true
 							SYSTEMROLE_NAS=true
 							opr3 "role=poseidon";;
 		"mainserver"	)	opr3 "role=mainserver"
 							SYSTEMROLE_SERVER=true
 							SYSTEMROLE_MAINSERVER=true
-							SYSTEMROLE_LXDHOST=true;;
+							SYSTEMROLE_LXCHOST=true;;
 		"container"		)	opr3 "role=container"
 							SYSTEMROLE_SERVER=true
 							SYSTEMROLE_CONTAINER=true;;
@@ -299,7 +299,7 @@ opr2 <<EOT
 
 EOT
 ################################################################################
-if [[ $SYSTEMROLE_MAINSERVER == true ]] ; then create_logline "Injecting interfaces file into network config" ; cat lxdhost_interfaces.txt > /etc/network/interfaces ; fi
+if [[ $SYSTEMROLE_MAINSERVER == true ]] ; then create_logline "Injecting interfaces file into network config" ; cat lxchost_interfaces.txt > /etc/network/interfaces ; fi
 ################################################################################
 create_logline "Installing extra PPA's"
 create_secline "Copying Ubuntu sources and some extras"; cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | opr4
@@ -330,7 +330,7 @@ if [[ $SYSTEMROLE_POSEIDON == true ]] ; then apt-inst picard audacity calibre fa
 if [[ $SYSTEMROLE_WEB == true ]] ;		then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
 if [[ $SYSTEMROLE_NAS == true ]] ;		then apt-inst samba nfsd proftpd ; fi
 if [[ $SYSTEMROLE_PXE == true ]] ;		then apt-inst atftpd ; fi
-if [[ $SYSTEMROLE_LXDHOST == true ]] ;	then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
+if [[ $SYSTEMROLE_LXCHOST == true ]] ;	then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
 if [[ $SYSTEMROLE_SERVER == true ]] ;	then apt-inst ssh-server screen; fi
 if [[ $SYSTEMROLE_BASIC == true ]] ;	then echo "" ; fi
 if [[ $SYSTEMROLE_ROUTER == true ]];	then apt-inst bridge-utils webmin ufw; fi
@@ -355,7 +355,7 @@ rm *.deb 2>&1 | opr4
 ################################################################################
 create_logline "Building maintenance script"
 build_maintenance_script "$MAINTENANCE_SCRIPT"
-if [[ $SYSTEMROLE_LXDHOST == true ]] ; then build_maintenance_script "$CONTAINER_SCRIPT" ; fi
+if [[ $SYSTEMROLE_LXCHOST == true ]] ; then build_maintenance_script "$CONTAINER_SCRIPT" ; fi
 ################################################################################
 if [[ $SYSTEMROLE_CONTAINER == true ]] ; then create_secline "NOT adding $MAINTENANCE_SCRIPT to sheduler"
 else
