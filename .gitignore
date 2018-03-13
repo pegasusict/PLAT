@@ -1,14 +1,4 @@
 
 *.geany
 
-argbash-2\.5\.0/
-
-client_secret\.json
-
-*.*~
-
-My notes/LXD 2\.0 blog by stephane graber/
-
-My notes/
-
-mail/python_gmail_api_client_secret\.json
+*/*client_secret\.json
