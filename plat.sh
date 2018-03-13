@@ -15,9 +15,9 @@ CONTAINER_SCRIPT_TITLE="Container Maintenance Script"
 MAINTAINER="Mattijs Snepvangers"
 MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 VERSION_MAJOR=0
-VERSION_MINOR=10
-VERSION_PATCH=200
-VERSION_STATE="ALPHA " # needs to be 6 chars for alignment <ALPHA |BETA  |STABLE>
+VERSION_MINOR=1
+VERSION_PATCH=0
+VERSION_STATE="BETA"
 VERSION_BUILD=20180309
 ###############################################################################
 PROGRAM="$PROGRAM_SUITE - $SCRIPT"
