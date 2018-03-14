@@ -1,8 +1,8 @@
 #!/bin/bash
 ###############################################################################
-## Pegasus' Linux Administration Tools                    postinstall script ##
-## (C)2017-2018 Mattijs Snepvangers                    pegasus.ict@gmail.com ##
-## License: GPL v3                        Please keep my name in the credits ##
+# Pegasus' Linux Administration Tools                      postinstall script #
+# (C)2017-2018 Mattijs Snepvangers                      pegasus.ict@gmail.com #
+# License: GPL v3                          Please keep my name in the credits #
 ###############################################################################
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 echo "$START_TIME ## Starting PostInstall Process #######################"
@@ -11,12 +11,11 @@ PROGRAM_SUITE="Pegasus' Linux Administration Tools"
 SCRIPT_TITLE="Post Install Script"
 MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
 CONTAINER_SCRIPT_TITLE="Container Maintenance Script"
-#MAIL_SCRIPT_TITLE="Email Script"
 MAINTAINER="Mattijs Snepvangers"
 MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 VERSION_MAJOR=1
 VERSION_MINOR=0
-VERSION_PATCH=0
+VERSION_PATCH=3
 VERSION_STATE="BETA"
 VERSION_BUILD=201803013
 ###############################################################################
@@ -30,9 +29,7 @@ if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 if [[ $EUID -ne 0  ]]; then echo "This script must be run as root" ; exit 1 ; fi
 # set default values
 CURR_YEAR=$(date +"%Y")			;		TODAY=$(date +"%d-%m-%Y")	;	VERBOSITY=2
-#COMPUTER_NAME=$(uname -n)
 TMP_AGE=2						;		GARBAGE_AGE=7				;	LOG_AGE=30
-#ASK_FOR_EMAIL_STUFF=true		;		
 SYSTEMROLE_BASIC=false			;		SYSTEMROLE_WS=false
 SYSTEMROLE_POSEIDON=false		;		SYSTEMROLE_SERVER=false
 SYSTEMROLE_LXCHOST=false		;		SYSTEMROLE_NAS=false
@@ -42,8 +39,10 @@ LOGDIR="/var/log/plat"			;		SCRIPT_DIR="/etc/plat"
 LOGFILE="$LOGDIR/PostInstall_$START_TIME.log"
 MAINTENANCE_SCRIPT="$SCRIPT_DIR/maintenance.sh"
 CONTAINER_SCRIPT="$SCRIPT_DIR/maintenance_container.sh"
-#MAIL_SCRIPT="$SCRIPT_DIR/mail.sh"
+#MAIL_SCRIPT="$SCRIPT_DIR/mail.sh"	;	MAIL_SCRIPT_TITLE="Email Script"
+#ASK_FOR_EMAIL_STUFF=true
 #EMAIL_SENDER=false;	EMAIL_RECIPIENT=false;	EMAIL_PASSWORD=false
+#COMPUTER_NAME=$(uname -n)
 ###################### defining functions #####################################
 add_to_script() {
 	TARGET_SCRIPT=$1 ; IS_LINE=$2 ; MESSAGE=$3
@@ -178,7 +177,7 @@ download() { wget -q -a "$LOGFILE" -nv $1; }
 getargs() {
 	getopt --test > /dev/null
     if [[ $? -ne 4 ]]; then
-		echo "I’m sorry, `getopt --test` failed in this environment."
+		echo "I’m sorry, \"getopt --test\" failed in this environment."
 		exit 1
 	fi
 	OPTIONS="hv:r:c:g:l:t:S:P:R:"
@@ -369,5 +368,4 @@ fi
 ################################################################################
 create_logline "checking for reboot requirement"
 if [ -f /var/run/reboot-required ]; then create_logline "REBOOT REQUIRED" ; shutdown -r 23:30  2>&1 | opr2 ; else opr2 "No reboot required" ; fi
-################################################################################
-###TODO### make update mechanism using git for maintenance files?
+#####
