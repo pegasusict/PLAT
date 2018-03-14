@@ -1,4 +1,4 @@
 
 *.geany
 
-*/*client_secret\.json
+*secret\.json
