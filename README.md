@@ -4,19 +4,20 @@
 Pegasus' Linux Administration Tools is a set of bash scripts that make life easier for the lazy/newbie user on Ubuntu
 PLAT is a suite of scripts which help with tedious repetitive tasks which make up a large portion of Linux administration.
 Currently there's a Post Install script which, as the name suggests, is run right after installing Linux on a computer.
-This script:	-	adds apt lines to /etc/sources.list,
-				-	adds ppa's incl keys,
-				-	does an apt update/upgrade/auto-remove/clean cycle,
-				-	installs extra packages and software,
-				-	generates maintenance script and adds this to cron(server) or anacron(workstation)
-				-	in case of a lxc host generates a container maintenance script as well
+This script:
+ - [x] adds apt lines to /etc/sources.list,
+ - [x] adds ppa's incl keys,
+ - [x] does an apt update/upgrade/auto-remove/clean cycle,
+ - [x] installs extra packages and software,
+ - [x] generates maintenance script and adds this to cron(server) or anacron(workstation)
+ - [x] in case of a lxc host generates a container maintenance script as well
 
 More information can be found after the news updates.
 
 ---
 *NEWS*
 
-**20180313 UPDATE: The BASH version is now V1.0.0-BETA**
+ :sparkles: **20180313 UPDATE: The BASH version is now V1.0.0-BETA** :tada: 
 
 > 20180312 update:
 Issue #2 & commit e468f7d22e550d860deda08dc2c4d0def20d797a
