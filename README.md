@@ -17,7 +17,7 @@ More information can be found after the news updates.
 ---
 *NEWS*
 
- :sparkles: **20180313 UPDATE: The BASH version is now V1.0.0-BETA** :tada: 
+ **20180313 UPDATE: The BASH version is now V1.0.0-BETA**
 
 > 20180312 update:
 Issue #2 & commit e468f7d22e550d860deda08dc2c4d0def20d797a
