@@ -150,14 +150,14 @@ secure_wp(){
 	echo "add_filter( 'auto_update_plugin', '__return_true' );" >> wp-config.php
 	echo "add_filter( 'auto_update_theme', '__return_true' );" >> wp-config.php
 	echo "define('DISALLOW_FILE_EDIT', true);" >> wp-config.php
-	sed -i "s/define('AUTH_KEY',\s*'put your unique phrase here');/define('AUTH_KEY', '`pwgen -1 -s 64`');/" wp-config.php
-	sed -i "s/define('SECURE_AUTH_KEY',\s*'put your unique phrase here');/define('SECURE_AUTH_KEY', '`pwgen -1 -s 64`');/" wp-config.php
-	sed -i "s/define('LOGGED_IN_KEY',\s*'put your unique phrase here');/define('LOGGED_IN_KEY', '`pwgen -1 -s 64`');/" wp-config.php
-	sed -i "s/define('NONCE_KEY',\s*'put your unique phrase here');/define('NONCE_KEY', '`pwgen -1 -s 64`');/" wp-config.php
-	sed -i "s/define('AUTH_SALT',\s*'put your unique phrase here');/define('AUTH_SALT', '`pwgen -1 -s 64`');/" wp-config.php
-	sed -i "s/define('SECURE_AUTH_SALT',\s*'put your unique phrase here');/define('SECURE_AUTH_SALT', '`pwgen -1 -s 64`');/" wp-config.php
-	sed -i "s/define('LOGGED_IN_SALT',\s*'put your unique phrase here');/define('LOGGED_IN_SALT', '`pwgen -1 -s 64`');/" wp-config.php
-	sed -i "s/define('NONCE_SALT',\s*'put your unique phrase here');/define('NONCE_SALT', '`pwgen -1 -s 64`');/" wp-config.php
+	sed -i "s/define('AUTH_KEY',\s*'put your unique phrase here');/define('AUTH_KEY', '$(pwgen -1 -s 64)');/" wp-config.php
+	sed -i "s/define('SECURE_AUTH_KEY',\s*'put your unique phrase here');/define('SECURE_AUTH_KEY', '$(pwgen -1 -s 64)');/" wp-config.php
+	sed -i "s/define('LOGGED_IN_KEY',\s*'put your unique phrase here');/define('LOGGED_IN_KEY', '$(pwgen -1 -s 64)');/" wp-config.php
+	sed -i "s/define('NONCE_KEY',\s*'put your unique phrase here');/define('NONCE_KEY', '$(pwgen -1 -s 64)');/" wp-config.php
+	sed -i "s/define('AUTH_SALT',\s*'put your unique phrase here');/define('AUTH_SALT', '$(pwgen -1 -s 64)');/" wp-config.php
+	sed -i "s/define('SECURE_AUTH_SALT',\s*'put your unique phrase here');/define('SECURE_AUTH_SALT', '$(pwgen -1 -s 64)');/" wp-config.php
+	sed -i "s/define('LOGGED_IN_SALT',\s*'put your unique phrase here');/define('LOGGED_IN_SALT', '$(pwgen -1 -s 64)');/" wp-config.php
+	sed -i "s/define('NONCE_SALT',\s*'put your unique phrase here');/define('NONCE_SALT', '$(pwgen -1 -s 64)');/" wp-config.php
 	mv $WP_PATH/public/wp-config.php $WP_PATH/wp-config.php
 	chown -R root:root $WP_PATH
 	chown -R $USER $WP_PATH/public/
