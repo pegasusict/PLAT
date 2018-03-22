@@ -51,7 +51,7 @@ add_to_script() {
 	else cat $MESSAGE >> $TARGET_SCRIPT
 	fi
 }
-add_line_to_cron() {
+add_line_to_file() {
 	CRONTAB=$2
 	LINE_TO_ADD=$1
 	opr4 "LINE_TO_ADD: $LINE_TO_ADD" ; opr4 "CRONTAB: $CRONTAB"
@@ -161,7 +161,7 @@ checkrole() {
 							exit 1;;
 	esac
 }
-cr_dir() { TARGET_DIR=$1; if [ ! -d "$TARGET_DIR" ] ; then mkdir "$TARGET_DIR" ; fi ; }
+create_dir() { TARGET_DIR=$1; if [ ! -d "$TARGET_DIR" ] ; then mkdir "$TARGET_DIR" ; fi ; }
 create_logline() { ### INFO MESSAGES with timestamp
     _SUBJECT="$1" ; _LOG_LINE="$(get_timestamp) ## $_SUBJECT #" ; MAX_WIDTH=80
     for (( i=${#_LOG_LINE}; i<MAX_WIDTH; i++ )) ; do _LOG_LINE+="#" ; done
@@ -276,7 +276,7 @@ opr4 "DIR is '$DIR'"
 THIS_SCRIPT=$(basename $EXEC_PATH) ; BASE_DIR=$(dirname "$EXEC_PATH")
 if [[ $(pwd) != "$BASE_DIR" ]] ; then cd "$BASE_DIR" ; fi
 ### create directories if needed
-cr_dir $LOGDIR ; cr_dir $SCRIPT_DIR
+create_dir $LOGDIR ; create_dir $SCRIPT_DIR
 ###
 getargs "$@"
 ###
@@ -363,7 +363,7 @@ else
 		then CRON_FILE="/etc/crontab" ; LINE_TO_ADD="\n0 * * 4 0 bash $MAINTENANCE_SCRIPT" ; opr4 "using cron"
 		else CRON_FILE="/etc/anacrontab" ; LINE_TO_ADD="\n@weekly\t10\tplat_maintenance\tbash $MAINTENANCE_SCRIPT" ; opr4 "using anacron"
 	fi
-	add_line_to_cron "$LINE_TO_ADD" "$CRON_FILE"
+	add_line_to_file "$LINE_TO_ADD" "$CRON_FILE"
 fi
 ################################################################################
 create_logline "checking for reboot requirement"
