@@ -40,9 +40,9 @@ config::get ()
   local val="${__config["$1.$2"]}"
 
   if [ "$3" ]; then
-    [ "$val" ] && echo "$val" || echo "$3"
+    if [ "$val" ] ; then echo "$val" ; else echo "$3"
   else
-    [ "$val" ] && echo "$val" || err::trace "Configuration key " \
+    if [ "$val" ] ; then echo "$val" ; else err::trace "Configuration key " \
                                             "$2 in table $1 not found"
   fi
 }
