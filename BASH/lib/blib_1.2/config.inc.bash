@@ -42,8 +42,7 @@ config::get ()
   if [ "$3" ]; then
     if [ "$val" ] ; then echo "$val" ; else echo "$3"
   else
-    if [ "$val" ] ; then echo "$val" ; else err::trace "Configuration key " \
-                                            "$2 in table $1 not found"
+    if [ "$val" ] ; then echo "$val" ; else err::trace "Configuration key $2 in table $1 not found"
   fi
 }
 
