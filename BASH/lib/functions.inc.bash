@@ -12,9 +12,9 @@
 # MAINTAINER_EMAIL="pegasus.ict@gmail.com"            #
 # VERSION_MAJOR=0                                     #
 # VERSION_MINOR=5                                     #
-# VERSION_PATCH=10                                    #
+# VERSION_PATCH=11                                    #
 # VERSION_STATE="ALPHA"                               #
-# VERSION_BUILD=201803029                             #
+# VERSION_BUILD=20180409                              #
 #######################################################
 
 ### Basic program ##############################################################

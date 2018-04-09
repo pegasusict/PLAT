@@ -14,16 +14,16 @@ echo "$START_TIME ## Starting PostInstall Process #######################"
 init() {
 	################### PROGRAM INFO ##############################################
 	PROGRAM_SUITE="Pegasus' Linux Administration Tools"
-	SCRIPT="${${basename "${BASH_SOURCE[0]}"}%.*}"
+	SCRIPT="${${basename "${BASH_SOURCE[0]}"}%.*}" ###CHECK###
 	SCRIPT_TITLE="Post Install Script"
 	MAINTAINER="Mattijs Snepvangers"
 	MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 	COPYRIGHT="(c)2017-$(date +"%Y")"
 	VERSION_MAJOR=1
-	VERSION_MINOR=3
-	VERSION_PATCH=17
+	VERSION_MINOR=4
+	VERSION_PATCH=2
 	VERSION_STATE="BETA"
-	VERSION_BUILD=20180405
+	VERSION_BUILD=20180409
 	LICENSE="GPL v3"
 	###############################################################################
 	PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
@@ -36,7 +36,7 @@ init() {
 	VERBOSITY=2 ; TMP_AGE=2 ; GARBAGE_AGE=7 ; LOG_AGE=30 ; LOG_DIR="/var/log/plat"
 	LOG_FILE="$LOGDIR/PostInstall_$START_TIME.log"
 	###################### importing functions ####################################
-	source "$LIB_DIR$LIB"
+	source "$LIB"
 	source "$LIB_DIR$PI_LIB"
 	header
 	source "$LIB_DIR$INI_PRSR"
