@@ -1,6 +1,6 @@
 #!/bin/bash
 ################################################################################
-create_logline "Scanning for containers"
+info_line "Scanning for containers"
 active_containers=$(lxc list -c ns | grep -i running)
 inactive_containers=$(lxc list -c ns | grep -i stopped)
 active_containers=$(echo "$active_containers" | grep -Po "\b[a-zA-Z][-a-zA-Z0-9]{0,61}[a-zA-Z0-9](?=\s*\| RUNNING)")

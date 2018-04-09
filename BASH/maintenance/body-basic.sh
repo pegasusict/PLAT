@@ -1,31 +1,37 @@
 #!/bin/bash
 ### APT ########################################################################
-create_logline "Updating apt cache" ;						apt-get -qqy update 2>&1 | tee -a $LOGFILE
-create_logline "Updating installed packages" ;				apt-get -qqy --allow-unauthenticated upgrade 2>&1 | tee -a $LOGFILE
-create_logline "Cleaning up obsolete packages" ;			apt-get -qqy autoremove 2>&1 | tee -a $LOGFILE
-create_logline "Removing old/obsolete apt package cache" ;	apt-get -qqy clean 2>&1 | tee -a $LOGFILE
+info_line "Updating apt cache"                  ;	apt-get -qqy update 2>&1 | dbg_line
+info_line "Updating installed packages"         ;	apt-get -qqy --allow-unauthenticated upgrade 2>&1 | dbg_line
+info_line "Cleaning up obsolete packages"       ;	apt-get -qqy autoremove 2>&1 | dbg_line
+info_line "Clearing old/obsolete package cache" ;	apt-get -qqy clean 2>&1 | dbg_line
 ### GARBAGE ####################################################################
-create_logline "Removing files from trash older than $garbageage days"
-trash-empty "$garbageage" 2>&1 | tee -a $LOGFILE
+info_line "Taking out the trash."
+verb_line "Removing files from trash older than $GARBAGE_AGE days"
+trash-empty "$GARBAGE_AGE" 2>&1 dbg_line
 ###
-create_logline "Clearing user cache"
-echo $_logline 2>&1 | tee -a $LOGFILE
-find /home/* -type f \( -name '*.tmp' -o -name '*.temp' -o -name '*.swp' -o -name '*~' -o -name '*.bak' -o -name '..netrwhist' \) -delete 2>&1 | tee -a $LOGFILE
+verb_line "Clearing user cache"
+find /home/* -type f \( -name '*.tmp' -o -name '*.temp' -o -name '*.swp' -o -name '*~' -o -name '*.bak' -o -name '..netrwhist' \) -delete 2>&1 | dbg_line
 ###
-create_logline "Deleting logs older than $logage"
-find /var/log -name "*.log" -mtime +"$logage" -a ! -name "SQLUpdate.log" -a ! -name "updated_days*" -a ! -name "qadirectsvcd*" -exec rm -f {} \;  2>&1 | tee -a $LOGFILE
+verb_line "Deleting logs older than $LOG_AGE"
+find /var/log -name "*.log" -mtime +"$LOG_AGE" -a ! -name "SQLUpdate.log" -a ! -name "updated_days*" -a ! -name "qadirectsvcd*" -exec rm -f {} \;  dbg_line
 ###
-create_logline "Purging TMP dirs of files unchanged for at least $garbageage days"
+verb_line "Purging TMP dirs of files unchanged for at least $TMP_AGE days"
 CRUNCHIFY_TMP_DIRS="/tmp /var/tmp"	# List of directories to search
-find $CRUNCHIFY_TMP_DIRS -depth -type f -a -ctime $garbageage -print -delete 2>&1 | tee -a $LOGFILE
-find $CRUNCHIFY_TMP_DIRS -depth -type l -a -ctime $garbageage -print -delete 2>&1 | tee -a $LOGFILE
-find $CRUNCHIFY_TMP_DIRS -depth -type f -a -empty -print -delete 2>&1 | tee -a $LOGFILE
-find $CRUNCHIFY_TMP_DIRS -depth -type s -a -ctime $garbageage -a -size 0 -print -delete 2>&1 | tee -a $LOGFILE
-find $CRUNCHIFY_TMP_DIRS -depth -mindepth 1 -type d -a -empty -a ! -name 'lost+found' -print -delete 2>&1 | tee -a $LOGFILE
+find $CRUNCHIFY_TMP_DIRS -depth -type f -a -ctime $TMP_AGE -print -delete 2>&1 dbg_line
+find $CRUNCHIFY_TMP_DIRS -depth -type l -a -ctime $TMP_AGE -print -delete 2>&1 dbg_line
+find $CRUNCHIFY_TMP_DIRS -depth -type f -a -empty -print -delete 2>&1 dbg_line
+find $CRUNCHIFY_TMP_DIRS -depth -type s -a -ctime $TMP_AGE -a -size 0 -print -delete 2>&1 dbg_line
+find $CRUNCHIFY_TMP_DIRS -depth -mindepth 1 -type d -a -empty -a ! -name 'lost+found' -print -delete 2>&1 dbg_line
 ################################################################################
-create_logline "sheduling reboot if required"
-if [ -f /var/run/reboot-required ]; then shutdown -r 23:30 ; fi
+info_line "checking for reboot requirement"
+if [ -f /var/run/reboot-required ]
+then
+	info_line "REBOOT REQUIRED, sheduled for $REBOOT_TIME"
+	shutdown -r $REBOOT_TIME  2>&1 | info_line
+else
+	info_line "No reboot required"
+fi
 ###
-create_logline "Maintenance Complete"
+info_line "Maintenance Complete"
 ### send email with log attached
 #bash /etc/plat/mail.sh
