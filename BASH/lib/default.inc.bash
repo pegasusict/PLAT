@@ -20,25 +20,24 @@
 ### FUNCTIONS ###
 create_constants() {
 	# declare extensions & dirs
-	declare -r INI_EXT=".ini"
-	declare -r LIB_EXT=".inc.bash"
-	declare -r LIB_DIR="lib/"
+	declare -gr INI_EXT=".ini"
+	declare -gr LIB_EXT=".inc.bash"
+	declare -gr LIB_DIR="lib/"
 	# declare ini & dedicated function lib
-	declare -r INI_FILE="$SCRIPT$INI_EXT"
-	declare -r LIB_FILE="functions$LIB_EXT"
-	declare -r LIB="$LIB_DIR$LIBFILE"
+	declare -gr INI_FILE="$SCRIPT$INI_EXT"
+	declare -gr LIB_FILE="functions$LIB_EXT"
+	declare -gr LIB="$LIB_DIR$LIBFILE"
 	# blib coupling
-	declare -r BLIB_VER="1.2"
-	declare -r BLIB_DIR="$LIB_DIRblib_$BLIB_VER/"
+	declare -gr BLIB_VER="1.2"
+	declare -gr BLIB_DIR="$LIB_DIRblib_$BLIB_VER/"
 	# ini parser
-	declare -r INI_PRSR_FILE="ini_parser$LIB_EXT"
+	declare -gr INI_PRSR_FILE="ini_parser$LIB_EXT"
 	# today's date
-	declare -r TODAY=$(date +"%d-%m-%Y")
+	declare -gr TODAY=$(date +"%d-%m-%Y")
 }
 import_libs() {
 	source "$LIB"
 	source "$LIB_DIR$INI_PRSR"
-	
 }
 ### MAIN ###
 create_constants

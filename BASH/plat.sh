@@ -13,25 +13,25 @@ echo "$START_TIME ## Starting PostInstall Process #######################"
 ### FUNCTIONS ###
 init() {
 	################### PROGRAM INFO ##############################################
-	PROGRAM_SUITE="Pegasus' Linux Administration Tools"
-	SCRIPT="${${basename "${BASH_SOURCE[0]}"}%.*}" ###CHECK###
-	SCRIPT_TITLE="Post Install Script"
-	MAINTAINER="Mattijs Snepvangers"
-	MAINTAINER_EMAIL="pegasus.ict@gmail.com"
-	COPYRIGHT="(c)2017-$(date +"%Y")"
-	VERSION_MAJOR=1
-	VERSION_MINOR=4
-	VERSION_PATCH=2
-	VERSION_STATE="BETA"
-	VERSION_BUILD=20180409
-	LICENSE="GPL v3"
+	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
+	declare -gr SCRIPT="${${basename "${BASH_SOURCE[0]}"}%.*}" ###CHECK###
+	declare -gr SCRIPT_TITLE="Post Install Script"
+	declare -gr MAINTAINER="Mattijs Snepvangers"
+	declare -gr MAINTAINER_EMAIL="pegasus.ict@gmail.com"
+	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
+	declare -gr VERSION_MAJOR=1
+	declare -gr VERSION_MINOR=4
+	declare -gr VERSION_PATCH=4
+	declare -gr VERSION_STATE="BETA"
+	declare -gr VERSION_BUILD=20180409
+	declare -gr LICENSE="GPL v3"
 	###############################################################################
-	PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
-	SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
-	VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
+	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
+	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
+	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
 	### define CONSTANTS ##########################################################
-	source lib/default.inc.bash
-	declare -r PI_LIB="$LIB_DIRpostinstall-$LIB_FILE"
+	source "lib/default.inc.bash"
+	declare -gr PI_LIB="$LIB_DIRpostinstall-$LIB_FILE"
 	### set default values ########################################################
 	VERBOSITY=2 ; TMP_AGE=2 ; GARBAGE_AGE=7 ; LOG_AGE=30 ; LOG_DIR="/var/log/plat"
 	create_dir $LOG_DIR
@@ -170,5 +170,5 @@ main() {
 
 ###########
 
-init
+init "$@"
 main
