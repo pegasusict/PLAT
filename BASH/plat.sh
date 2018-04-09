@@ -14,16 +14,16 @@ echo "$START_TIME ## Starting PostInstall Process #######################"
 init() {
 	################### PROGRAM INFO ##############################################
 	PROGRAM_SUITE="Pegasus' Linux Administration Tools"
-	SCRIPT="${${basename "${BASH_SOURCE[0]}"}%.*}"
+	SCRIPT="${${basename "${BASH_SOURCE[0]}"}%.*}" ###CHECK###
 	SCRIPT_TITLE="Post Install Script"
 	MAINTAINER="Mattijs Snepvangers"
 	MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 	COPYRIGHT="(c)2017-$(date +"%Y")"
 	VERSION_MAJOR=1
-	VERSION_MINOR=3
-	VERSION_PATCH=17
+	VERSION_MINOR=4
+	VERSION_PATCH=2
 	VERSION_STATE="BETA"
-	VERSION_BUILD=20180405
+	VERSION_BUILD=20180409
 	LICENSE="GPL v3"
 	###############################################################################
 	PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
@@ -31,17 +31,15 @@ init() {
 	VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
 	### define CONSTANTS ##########################################################
 	source lib/default.inc.bash
-	declare -r PI_LIB_FILE="postinstall-$LIB_FILE"
+	declare -r PI_LIB="$LIB_DIRpostinstall-$LIB_FILE"
 	### set default values ########################################################
 	VERBOSITY=2 ; TMP_AGE=2 ; GARBAGE_AGE=7 ; LOG_AGE=30 ; LOG_DIR="/var/log/plat"
+	create_dir $LOG_DIR
 	LOG_FILE="$LOGDIR/PostInstall_$START_TIME.log"
 	###################### importing functions ####################################
-	source "$LIB_DIR$LIB"
-	source "$LIB_DIR$PI_LIB"
+	source "$PI_LIB"
 	header
-	source "$LIB_DIR$INI_PRSR"
 	### create directories if needed
-	create_dir $LOG_DIR
 	create_dir $TARGET_SCRIPT_DIR
 	###
 	goto_base_dir

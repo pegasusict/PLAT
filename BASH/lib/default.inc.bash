@@ -12,9 +12,9 @@
 # MAINTAINER_EMAIL="pegasus.ict@gmail.com"            #
 # VERSION_MAJOR=0                                     #
 # VERSION_MINOR=0                                     #
-# VERSION_PATCH=10                                    #
+# VERSION_PATCH=11                                    #
 # VERSION_STATE="PRE-ALPHA"                           #
-# VERSION_BUILD=20180406                              #
+# VERSION_BUILD=20180409                              #
 #######################################################
 
 ### FUNCTIONS ###
@@ -26,6 +26,7 @@ create_constants() {
 	# declare ini & dedicated function lib
 	declare -r INI_FILE="$SCRIPT$INI_EXT"
 	declare -r LIB_FILE="functions$LIB_EXT"
+	declare -r LIB="$LIB_DIR$LIBFILE"
 	# blib coupling
 	declare -r BLIB_VER="1.2"
 	declare -r BLIB_DIR="$LIB_DIRblib_$BLIB_VER/"
@@ -34,6 +35,11 @@ create_constants() {
 	# today's date
 	declare -r TODAY=$(date +"%d-%m-%Y")
 }
-
+import_libs() {
+	source "$LIB"
+	source "$LIB_DIR$INI_PRSR"
+	
+}
 ### MAIN ###
 create_constants
+import_libs
