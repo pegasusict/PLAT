@@ -29,7 +29,7 @@ echo "## Pegasus' Linux Administration Tools - Container Builder           V1.0B
 echo "## (c) 2017 Mattijs Snepvangers    build 20180226       pegasus.ict@gmail.com ##" 2>&1 | tee -a $PLAT_LOGFILE
 echo "################################################################################" 2>&1 | tee -a $PLAT_LOGFILE
 echo "" 2>&1 | tee -a $PLAT_LOGFILE
-
+source lib/default.inc.bash
 getargs() {
    TEMP=`getopt -o hn:c: --long help,name:,containertype: -n "$FUNCNAME" -- "$@"`
    if [ $? != 0 ] ; then return 1 ; fi
@@ -61,7 +61,7 @@ EOF
 }
 
 ################################################################################
-getargs()
+getargs $@
 
 checkname() {
    filteredname=$(echo "$contname" | grep -Po "^[a-zA-Z][-a-zA-Z0-9]{0,61}[a-zA-Z0-9]$")
@@ -89,5 +89,30 @@ esac
 
 print $systemrole
 
+create_container() {
+	CONTAINER_NAME="$1"
+	CONTAINER_DISTRIBUTION="$2"
+	CONTAINER_VERSION="$3"
+	lxc launch "$CONTAINER_DISTRIBUTION":"$CONTAINER_VERSION" "$CONTAINER_NAME"
+}
+start_container() {
+	_CONTAINER_NAME=$1
+	lxc start $_CONTAINER_NAME
+}
+stop_container() {
+	_CONTAINER_NAME=$1
+	lxc stop $_CONTAINER_NAME
+}
+list_containers() {
+	lxc list
+}
+run_post_install() {
+	
+}
+run_in_container() {
+	_COMMAND=$1
+	_CONTAINER_NAME=$2
+	lxc exec $_CONTAINER_NAME -- $_COMMAND | dbg_line
+}
 ### send email with log attached
 /etc/plat/mail.sh

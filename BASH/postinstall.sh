@@ -21,9 +21,9 @@ init() {
 	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
 	declare -gr VERSION_MAJOR=1
 	declare -gr VERSION_MINOR=4
-	declare -gr VERSION_PATCH=4
+	declare -gr VERSION_PATCH=7
 	declare -gr VERSION_STATE="BETA"
-	declare -gr VERSION_BUILD=20180409
+	declare -gr VERSION_BUILD=20180410
 	declare -gr LICENSE="GPL v3"
 	###############################################################################
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
@@ -132,10 +132,10 @@ main() {
 	unset $OLD_PWD
 	####
 	info_line "Building maintenance script"
-	build_maintenance_script "$MAINTENANCE_SCRIPT"
+	build_maintenance_script "$MAINTENANCE_SCRIPT$MAINTENANCE_SCRIPT"
 	if [[ $SYSTEMROLE_LXCHOST == true ]]
 	then
-		build_maintenance_script "$CONTAINER_SCRIPT"
+		build_maintenance_script "$MAINTENANCE_SCRIPT$CONTAINER_SCRIPT"
 	fi
 	cp "$LIB_DIR$LIB" "$TARGET_SCRIPT_DIR$LIB_DIR"
 	####
@@ -146,7 +146,7 @@ main() {
 		if [[ $SYSTEMROLE_MAINSERVER == true ]]
 		then
 			CRON_FILE="/etc/crontab"
-			LINE_TO_ADD="\n0 * * 4 0 bash $MAINTENANCE_SCRIPT"
+			LINE_TO_ADD="\n0 6 * * 0 root bash $TARGET_SCRIPT_DIR$MAINTENANCE_SCRIPT #PLAT maintenance"
 			verb_line "using cron"
 		else
 			CRON_FILE="/etc/anacrontab"
