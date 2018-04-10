@@ -1,0 +1,14 @@
+#################################################################
+## Added by Pegasus' Linux Administration Tools       V1.0BETA ##
+## Please modify to incorporate your interfaces accordingly    ##
+#################################################################
+
+# The primary network interface
+auto $PHYS_NET_DEV
+iface $PHYS_NET_DEV inet static
+    address $IP4_ADDRESS
+    netmask $IP4_NETMASK
+    network $IP4_NETWORK
+    broadcast $IP4_BROADCAST
+    gateway $IP4_GATEWAY
+    dns-nameservers $IP4_DNS1 $IP4_DNS2 $IP4_DNS3
