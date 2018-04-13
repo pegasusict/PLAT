@@ -12,9 +12,9 @@
 # MAINTAINER_EMAIL="pegasus.ict@gmail.com"            #
 # VERSION_MAJOR=0                                     #
 # VERSION_MINOR=5                                     #
-# VERSION_PATCH=11                                    #
+# VERSION_PATCH=30                                    #
 # VERSION_STATE="ALPHA"                               #
-# VERSION_BUILD=20180409                              #
+# VERSION_BUILD=20180413                              #
 #######################################################
 
 ### Basic program ##############################################################
@@ -24,31 +24,31 @@ create_var() { ### sets $VAR to $VALUE
     _VALUE=$2
     declare -gu $_VAR=$_VALUE
 }
-create_indexed_array() { ### sets $ARRAY to $VALUE1 --- $VALUEn
-    # usage create_indexed_array $ARRAY $VALUE1 [$VALUE2 ...]
-    _ARRAY=$1
-    _ARGS=$@
-    for (( i=1 ; i<=_ARGS ; i++ ))
-    do
-        declare -ga $_ARRAY$[$i]=( ${_ARGS[$i]} ) ###CHECK###
-    done
-}
-create_associative_array() { ### fills $ARRAY with $KEY=$VALUE pair(s)
-    # usage create_associative_array $ARRAY $KEY1 $VALUE1 [KEY2 $VALUE2 ...]
-    _ARRAY=$1
-    _ARGS=$@
-    for (( i=1 ; i<=_ARGS ; i+2 ))
-    do
-        declare -gA $_ARRAY$=( [${_ARGS[$i]}]=${_ARGS[$i+1]} )
-    done
-}
+#create_indexed_array() { ### sets $ARRAY to $VALUE1 --- $VALUEn
+#    # usage create_indexed_array $ARRAY $VALUE1 [$VALUE2 ...]
+#    _ARRAY=$1
+#    _ARGS=$@
+#    for (( i=1 ; i<=_ARGS ; i++ ))
+#    do
+#        declare -ga $_ARRAY$[$i]=( ${_ARGS[$i]} ) ###CHECK###
+#    done
+#}
+#create_associative_array() { ### fills $ARRAY with $KEY=$VALUE pair(s)
+#    # usage create_associative_array $ARRAY $KEY1 $VALUE1 [KEY2 $VALUE2 ...]
+#    _ARRAY=$1
+#    _ARGS=$@
+#    for (( i=1 ; i<=_ARGS ; i+2 ))
+#    do
+#        declare -gA $_ARRAY$=( [${_ARGS[$i]}]=${_ARGS[$i+1]} )
+#    done
+#}
 get_screen_size() { ### gets terminal size and sets global vars
-					#+  SCREEN_HEIGHT and SCREEN_WIDTH
-	shopt -s checkwinsize
-	(:)
-	dbg_line "Found $LINES lines and $COLUMNS columns."
-	declare -g SCREEN_HEIGHT=${$LINES:-25 }
-	declare -g SCREEN_WIDTH=${$COLUMNS:-80 }
+                    #+  SCREEN_HEIGHT and SCREEN_WIDTH
+    shopt -s checkwinsize
+    (:)
+    dbg_line "Found $LINES lines and $COLUMNS columns."
+    declare -g SCREEN_HEIGHT=${$LINES:-25 }
+    declare -g SCREEN_WIDTH=${$COLUMNS:-80 }
 }
 get_timestamp() { ### returns something like 2018-03-23_13.37.59.123
     echo $(date +"%Y-%m-%d_%H.%M.%S.%3N")
@@ -63,48 +63,49 @@ version() {
 header() { ### generates a header
     # usage: header $CHAR $LEN
     # $CHAR defaults to # and $LEN defaults to 80
-    _CHAR=${$1:-#}
-    _LEN=${$2:-80}
-    _HEADER=$(make_line $_CHAR $_LEN)
-    _HEADER+=header_line $PROGRAM_SUITE $SCRIPT_TITLE $_CHAR $_LEN
-    _HEADER+=header_line $COPYRIGHT $MAINTAINER_EMAIL $_CHAR $_LEN
-    _HEADER+=header_line $SHORT_VERSION "Build $VERSION_BUILD" $_CHAR $_LEN
-    _HEADER+=header_line "License: $LICENSE" "Please keep my name in the credits" $_CHAR $_LEN
+    _CHAR=${1:-#}
+    _LEN=${2:-80}
+    _HEADER=$(make_line "$_CHAR" "$_LEN")
+    _HEADER+=$(header_line "$PROGRAM_SUITE" "$SCRIPT_TITLE" "$_CHAR" "$_LEN")
+    _HEADER+=$(header_line "$COPYRIGHT" "$MAINTAINER_EMAIL" "$_CHAR" "$_LEN")
+    _HEADER+=$(header_line "$SHORT_VERSION" "Build $VERSION_BUILD" "$_CHAR" "$_LEN")
+    _HEADER+=$(header_line "License: $LICENSE" "Please keep my name in the credits" "$_CHAR" "$_LEN")
     _HEADER+="\n$(make_line $_CHAR $_LEN)\n"
     cat "$_HEADER"
 }
 header_line() { ### generates a header-line
     # usage: header_line $PART1 $PART2 $CHAR $LEN $SPACER
     # $CHAR defaults to "#", $LEN to 80 and spacer to " "
-    _PART1="$1"
-    _PART2="$2"
-    _CHAR=${$3:-#}
-    _LEN=${$4:-}
-    _SPACER=${$5:- }
-    _HEADER_LINE="# $_PART1$_SPACER$_PART2 #"
+    local _PART1="$1"
+    local _PART2="$2"
+    local _CHAR=${3:-#}
+    local _LEN=${4:-}
+    local _SPACER=${5:- }
+    local _SPACERS=""
+    local _HEADER_LINE="# $_PART1$_SPACERS$_PART2 #"
     for (( i=${#_HEADER_LINE}; i<MAX_WIDTH; i++ ))
-        do _SPACER+=" "
+        do _SPACERS+=$_SPACER
     done
-    _HEADER_LINE="# $_PART1$_SPACER$_PART2 #"
-    printf "%s\n" $_HEADER_LINE
+    local _NEW_HEADER_LINE="# $_PART1$_SPACERS$_PART2 #"
+    printf "%s\n" "$_NEW_HEADER_LINE"
 }
 make_line() { ### generates a line
     # usage: make_line [$CHAR [$LEN [$LINE]]]
     # $CHAR defaults to "#" and $LEN defaults to 80
-    _CHAR=${$1:-#}
-    _LEN=${$2:-80}
-    _LINE=${$3:-#}
+    _CHAR=${1:-#}
+    _LEN=${2:-80}
+    _LINE=${3:-#}
     for (( i=${#_LINE}; i<_LEN; i++ ))
         do _LINE+=$CHAR
     done
-    printf "%s\n" $_LINE
+    printf "%s\n" "$_LINE"
 }
 
 ### LOGGING ####################################################################
 set_verbosity() { ### Set verbosity level
     case $1 in
         0   )   VERBOSITY=0;;   ### Be vewy, vewy quiet... /
-								#+ Will only show Critical errors which result in an untimely exiting of the script
+                                #+ Will only show Critical errors which result in an untimely exiting of the script
         1   )   VERBOSITY=1;;   # Will show errors that don't endanger the basic functioning of the program
         2   )   VERBOSITY=2;;   # Will show warnings
         3   )   VERBOSITY=3;;   # Just give us the highlights, please - will tell what phase is taking place
@@ -120,41 +121,43 @@ crit_line() { ### CRITICAL MESSAGES with timestamp
 }
 err_line() { ### ERROR MESSAGES with timestamp
     local _LOG_LINE="ERROR: $1"
-    logline 2 "$_LOGLINE"
+    log_line 2 "$_LOGLINE"
+    unset _LOG_LINE
 }
 info_line() { ### INFO MESSAGES with timestamp
     local _LOG_LINE="INFO: $1"
-    logline 3 "$_LOGLINE"
+    log_line 3 "$_LOGLINE"
+    unset _LOG_LINE
 }
 verb_line() { ### VERBOSE MESSAGES with timestamp
     local _LOG_LINE="VERBOSE: $1"
-    logline 4 "$_LOGLINE"
+    log_line 4 "$_LOGLINE"
+    unset _LOG_LINE
 }
 dbg_line() { ### DEBUG MESSAGES with timestamp
-	if [[ $VERBOSITY -ge 5 ]]
-	then
-		_LOG_LINE="DEBUG: $1"
-		log_line 5 "$_LOG_LINE"
-		unset _LOG_LINE
-	fi
+    if [[ $VERBOSITY -ge 5 ]]
+    then
+        _LOG_LINE="DEBUG: $1"
+        log_line 5 "$_LOG_LINE"
+        unset _LOG_LINE
+    fi
 }
 ###
-log_line() { # creates a nice logline and decides what to print on screen and 
-				#+ what to send to logfile based on VERBOSITY and IMPORTANCE levels
+log_line() { # creates a nice logline and decides what to print on screen and
+                #+ what to send to logfile based on VERBOSITY and IMPORTANCE levels
     # messages up to level 4 are sent to log
     # if verbosity = 5, all messages are printed on screen and sent to log incl debug
     # usage: opr <importance> <message>
     local _IMPORTANCE=$1
     local _MESSAGE="$(get_timestamp) # $2 #"
     local _WIDTH=$SCREEN_WIDTH
-    source $LIB_DIR/terminaloutput.sh
+    #source $LIB_DIRterminaloutput.inc.bash
     for (( i=${#_MESSAGE} ; i<_WIDTH ; i++ ))
         do _LOG_LINE+="#"
     done
-        if [ "$VERBOSITY" < 5 ]
-        then
-			case $IMPORTANCE in
-				
+    if [[ "$VERBOSITY" -lt 5 ]]
+    then
+    #    case $IMPORTANCE in
         if [ $IMPORTANCE -le $VERBOSITY ]
         then
             echo "$MESSAGE" | tee -a $LOGFILE
@@ -190,18 +193,19 @@ add_line_to_file() { ### Inserts line into file if it's not there yet
     fi
 }
 add_to_script() { #adds line or blob to script
-	local _TARGET_SCRIPT=$1
-	local _LINE_OR_BLOB=$2
-	local _MESSAGE=$3
-	if [ "$LINE_OR_BLOB" == line ]
-	then
-	    echo "$MESSAGE" >> "$TARGET_SCRIPT"
-	elif [ "$LINE_OR_BLOB" == blob ]
-	    cat "$MESSAGE" >> "$TARGET_SCRIPT"
-	else
-	    err_line "unknown value: $_LINE_OR_BLOB"
-	    exit 1
-	fi
+    local _TARGET_SCRIPT=$1
+    local _LINE_OR_BLOB=$2
+    local _MESSAGE=$3
+    if [ "$LINE_OR_BLOB" == line ]
+    then
+        echo "$MESSAGE" >> "$TARGET_SCRIPT"
+    elif [ "$LINE_OR_BLOB" == blob ]
+    then
+        cat "$MESSAGE" >> "$TARGET_SCRIPT"
+    else
+        err_line "unknown value: $_LINE_OR_BLOB"
+        exit 1
+    fi
 }
 create_dir() { ### Creates directory if it doesn't exist
     _TARGET_DIR=$1
@@ -233,7 +237,7 @@ file_exists() { ### Checks if file exists
     fi
 }
 goto_base_dir() { # If we're not in the base directory of the script,
-	#+ let's go there to prevent stuff from going haywire
+    #+ let's go there to prevent stuff from going haywire
     dbg_line "Let's find out where we're at..."
     EXEC_PATH="${BASH_SOURCE[0]}"
     while [ -h "$EXEC_PATH" ]
@@ -280,21 +284,21 @@ create_tmp() { ### usage: create_tmp $PREFIX
     TMP_FILE=""
     until [ -n "$TMP_DIR" -a ! -d "$TMP_DIR" ]
     do
-        TMP_DIR="/tmp/$_PREFIX.${RANDOM}${RANDOM}${RANDOM}" 
-    done 
-    mkdir -p -m 0700 $TMP_DIR || { 
+        TMP_DIR="/tmp/$_PREFIX.${RANDOM}${RANDOM}${RANDOM}"
+    done
+    mkdir -p -m 0700 $TMP_DIR || {
         echo "FATAL: Failed to create temp dir '$TMP_DIR': $?"
         exit 100
-    } 
-    TMP_FILE="$TMP_DIR/$_PREFIX.${RANDOM}${RANDOM}${RANDOM}" 
-    touch $TMP_FILE && chmod 0600 $TMP_FILE || { 
+    }
+    TMP_FILE="$TMP_DIR/$_PREFIX.${RANDOM}${RANDOM}${RANDOM}"
+    touch $TMP_FILE && chmod 0600 $TMP_FILE || {
         echo "FATAL: Failed to create temp file '$TMP_FILE': $?"
         exit 101
     }
-    # Do our best to clean up temp files no matter what 
-    # Note $temp_dir must be set before this, and must not change! 
-    declare -g CLEANUP="rm -rf $TMP_DIR" 
-    trap "$CLEANUP" ABRT EXIT HUP INT QUIT 
+    # Do our best to clean up temp files no matter what
+    # Note $temp_dir must be set before this, and must not change!
+    declare -g CLEANUP="rm -rf $TMP_DIR"
+    trap "$CLEANUP" ABRT EXIT HUP INT QUIT
 }
 
 ### apt & friends ##############################################################
