@@ -30,7 +30,7 @@ create_indexed_array() { ### sets $ARRAY to $VALUE1 --- $VALUEn
     _ARGS=$@
     for (( i=1 ; i<=_ARGS ; i++ ))
     do
-        declare -ga $_ARRAY$[$i]=( ${_ARGS[$i]} )
+        declare -ga $_ARRAY$[$i]=( ${_ARGS[$i]} ) ###CHECK###
     done
 }
 create_associative_array() { ### fills $ARRAY with $KEY=$VALUE pair(s)

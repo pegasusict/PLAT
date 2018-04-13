@@ -26,7 +26,7 @@ create_constants() {
 	# declare ini & dedicated function lib
 	declare -gr INI_FILE="$SCRIPT$INI_EXT"
 	declare -gr LIB_FILE="functions$LIB_EXT"
-	declare -gr LIB="$LIB_DIR$LIBFILE"
+	declare -gr LIB="$LIB_DIR$LIB_FILE"
 	# blib coupling
 	declare -gr BLIB_VER="1.2"
 	declare -gr BLIB_DIR="$LIB_DIRblib_$BLIB_VER/"
@@ -35,10 +35,7 @@ create_constants() {
 	# today's date
 	declare -gr TODAY=$(date +"%d-%m-%Y")
 }
-import_libs() {
-	source "$LIB"
-	source "$LIB_DIR$INI_PRSR"
-}
 ### MAIN ###
 create_constants
-import_libs
+source "$LIB"
+source "$LIB_DIR$INI_PRSR_FILE"

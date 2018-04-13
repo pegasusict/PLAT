@@ -1,0 +1,1 @@
+[[ -f secondary.sh ]] && . secondary.sh || VARIABLE="No file found"

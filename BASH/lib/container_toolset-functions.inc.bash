@@ -47,7 +47,7 @@ get_args() {
     done
 }
 
-build_maintenance_script() {
+build_maintenance_script() { ###TODO### convert to template
     local _SCRIPT=$1
     local _SCRIPT_INI="${_SCRIPT%.*}.ini"
     if [[ "$_SCRIPT" == "$MAINTENANCE_SCRIPT" ]]

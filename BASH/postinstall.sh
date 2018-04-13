@@ -14,37 +14,24 @@ echo "$START_TIME ## Starting PostInstall Process #######################"
 init() {
 	################### PROGRAM INFO ##############################################
 	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
-	declare -gr SCRIPT="${${basename "${BASH_SOURCE[0]}"}%.*}" ###CHECK###
+	declare -gr SCRIPT="${0##*/}" ###CHECK###
 	declare -gr SCRIPT_TITLE="Post Install Script"
 	declare -gr MAINTAINER="Mattijs Snepvangers"
 	declare -gr MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
 	declare -gr VERSION_MAJOR=1
 	declare -gr VERSION_MINOR=4
-	declare -gr VERSION_PATCH=7
+	declare -gr VERSION_PATCH=15
 	declare -gr VERSION_STATE="BETA"
-	declare -gr VERSION_BUILD=20180410
+	declare -gr VERSION_BUILD=20180413
 	declare -gr LICENSE="GPL v3"
 	###############################################################################
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
 	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
-	### define CONSTANTS ##########################################################
-	source "lib/default.inc.bash"
-	declare -gr PI_LIB="$LIB_DIRpostinstall-$LIB_FILE"
 	### set default values ########################################################
-	VERBOSITY=2 ; TMP_AGE=2 ; GARBAGE_AGE=7 ; LOG_AGE=30 ; LOG_DIR="/var/log/plat"
-	create_dir $LOG_DIR
-	LOG_FILE="$LOGDIR/PostInstall_$START_TIME.log"
-	###################### importing functions ####################################
-	source "$PI_LIB"
-	header
-	### create directories if needed
-	create_dir $TARGET_SCRIPT_DIR
-	###
-	goto_base_dir
-	parse_ini $INI_FILE
-	get_args "$@"
+	VERBOSITY=2 ; TMP_AGE=2 ; GARBAGE_AGE=7 ; LOG_AGE=30
+	LOG_DIR="/var/log/plat" ; LOG_FILE="$LOGDIR/PostInstall_$START_TIME.log"
 }
 
 main() {
@@ -169,6 +156,14 @@ main() {
 }
 
 ###########
-
-init "$@"
+init
+source "lib/default.inc.bash"
+create_dir "$LOG_DIR"
+declare -gr PI_LIB="$LIB_DIRpostinstall-$LIB_FILE"
+source "$PI_LIB"
+header
+goto_base_dir
+parse_ini $INI_FILE
+get_args "$@"
+create_dir $TARGET_SCRIPT_DIR
 main
