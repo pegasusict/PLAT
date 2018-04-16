@@ -12,7 +12,7 @@
 # MAINTAINER_EMAIL="pegasus.ict@gmail.com"            #
 # VERSION_MAJOR=0                                     #
 # VERSION_MINOR=5                                     #
-# VERSION_PATCH=45                                    #
+# VERSION_PATCH=47                                    #
 # VERSION_STATE="ALPHA"                               #
 # VERSION_BUILD=20180416                              #
 #######################################################
@@ -149,7 +149,7 @@ log_line() {	# creates a nice logline and decides what to print on screen and
 	local _LABEL=""
 	local _LINE=""
 	local _LOG_LINE_FILLER=""
-	source "$LIB_DIRterminaloutput.inc.bash"
+	source "$LIB_DIRterminaloutput$LIB_EXT"
 	case $IMPORTANCE in
 		1	)	_LABEL="CRITICAL";;
 		2	)	_LABEL="ERROR";;
