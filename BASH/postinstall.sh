@@ -21,9 +21,9 @@ init() {
 	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
 	declare -gr VERSION_MAJOR=1
 	declare -gr VERSION_MINOR=4
-	declare -gr VERSION_PATCH=16
-	declare -gr VERSION_STATE="BETA"
-	declare -gr VERSION_BUILD=20180413
+	declare -gr VERSION_PATCH=18
+	declare -gr VERSION_STATE="PRE-ALPHA"
+	declare -gr VERSION_BUILD=20180416
 	declare -gr LICENSE="GPL v3"
 	###############################################################################
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
@@ -157,11 +157,13 @@ main() {
 
 ###########
 init
-source "lib/default.inc.bash"
+FILE="lib/default.inc.bash"
+[[ -f $FILE ]] && . $FILE || crit_line "File $FILE not found!"
+unset $FILE
 create_dir "$LOG_DIR"
 #PI_LIB="$LIB_DIRpostinstall-$LIB_FILE"
 PI_LIB="lib/postinstall-functions.inc.bash"
-source "$PI_LIB"
+[[ -f $PI_LIB ]] && . $PI_LIB || crit_line "File $PI_LIB not found!"
 header
 goto_base_dir
 parse_ini $INI_FILE
