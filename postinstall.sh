@@ -30,7 +30,7 @@ init() {
 	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
 	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
 	### set default values ########################################################
-	VERBOSITY=2 ; TMP_AGE=2 ; GARBAGE_AGE=7 ; LOG_AGE=30
+	VERBOSITY=3 ; TMP_AGE=2 ; GARBAGE_AGE=7 ; LOG_AGE=30
 	LOG_DIR="/var/log/plat" ; LOG_FILE="$LOGDIR/PostInstall_$START_TIME.log"
 }
 
@@ -57,25 +57,25 @@ main() {
 	################################################################################
 	info_line "Installing extra PPA's"
 	verb_line "Copying Ubuntu sources and some extras"  ;   cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | err_line
-	verb_line "Adding GetDeb PPA key"           ;   add_ppa "wget" "http://archive.getdeb.net/getdeb-archive.key"
-	verb_line "Adding VirtualBox PPA key"       ;   add_ppa "wget" "http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc"
-	verb_line "Adding Webmin PPA key"           ;   add_ppa "wget" "http://www.webmin.com/jcameron-key.asc"
-	verb_line "Adding WebUpd8 PPA key"          ;   add_ppa "apt-key" "keyserver.ubuntu.com" "4C9D234C"
+	verb_line "Adding GetDeb PPA key"		   ;   add_ppa "wget" "http://archive.getdeb.net/getdeb-archive.key"
+	verb_line "Adding VirtualBox PPA key"	   ;   add_ppa "wget" "http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc"
+	verb_line "Adding Webmin PPA key"		   ;   add_ppa "wget" "http://www.webmin.com/jcameron-key.asc"
+	verb_line "Adding WebUpd8 PPA key"		  ;   add_ppa "apt-key" "keyserver.ubuntu.com" "4C9D234C"
 	if [[ $SYSTEMROLE_WS == true ]]
 	then
-	   verb_line "Adding FreeCad PPA"           ;   add_ppa "aar" "ppa:freecad-maintainers/freecad-stable"
-	   verb_line "Adding GIMP PPA key"          ;   add_ppa "apt-key" "keyserver.ubuntu.com" "614C4B38"
-	   verb_line "Adding Gnome3 Extras PPA"     ;   add_ppa "apt-key" "keyserver.ubuntu.com" "3B1510FD"
-	   verb_line "Adding Google Chrome PPA"     ;   add_ppa "wget" "https://dl.google.com/linux/linux_signing_key.pub"
+	   verb_line "Adding FreeCad PPA"		   ;   add_ppa "aar" "ppa:freecad-maintainers/freecad-stable"
+	   verb_line "Adding GIMP PPA key"		  ;   add_ppa "apt-key" "keyserver.ubuntu.com" "614C4B38"
+	   verb_line "Adding Gnome3 Extras PPA"	 ;   add_ppa "apt-key" "keyserver.ubuntu.com" "3B1510FD"
+	   verb_line "Adding Google Chrome PPA"	 ;   add_ppa "wget" "https://dl.google.com/linux/linux_signing_key.pub"
 	   verb_line "Adding Highly Explosive PPA"  ;   add_ppa "apt-key" "keyserver.ubuntu.com" "93330B78"
-	   verb_line "Adding MKVToolnix PPA"        ;   add_ppa "wget" "http://www.bunkus.org/gpg-pub-moritzbunkus.txt"
-	   verb_line "Adding Opera (Beta) PPA"      ;   add_ppa "wget" "http://deb.opera.com/archive.key"
+	   verb_line "Adding MKVToolnix PPA"		;   add_ppa "wget" "http://www.bunkus.org/gpg-pub-moritzbunkus.txt"
+	   verb_line "Adding Opera (Beta) PPA"	  ;   add_ppa "wget" "http://deb.opera.com/archive.key"
 	   verb_line "Adding OwnCloud Desktop PPA"  ;   add_ppa "wget" "http://download.opensuse.org/repositories/isv:ownCloud:community/xUbuntu_16.04/Release.key"
-	   verb_line "Adding Wine PPA"              ;   add_ppa "apt-key" "keyserver.ubuntu.com" "883E8688397576B6C509DF495A9A06AEF9CB8DB0"
+	   verb_line "Adding Wine PPA"			  ;   add_ppa "apt-key" "keyserver.ubuntu.com" "883E8688397576B6C509DF495A9A06AEF9CB8DB0"
 	fi
 	if  [[ $SYSTEMROLE_NAS == true ]]
 	then
-		verb_line "Adding Syncthing PPA"        ;   add_ppa "wget" "https://syncthing.net/release-key.txt"
+		verb_line "Adding Syncthing PPA"		;   add_ppa "wget" "https://syncthing.net/release-key.txt"
 	fi
 	################################################################################
 	info_line "removing duplicate lines from source lists"
@@ -86,15 +86,15 @@ main() {
 	apt-get --allow-unauthenticated upgrade -qy 2>&1 | dbg_line
 	######
 	info_line "Installing extra packages"   ;   apt-inst mc trash-cli snapd git
-	if [[ $SYSTEMROLE_WS == true ]]         ;   then apt-inst synaptic tilda audacious samba wine-stable playonlinux winetricks; fi
+	if [[ $SYSTEMROLE_WS == true ]]		 ;   then apt-inst synaptic tilda audacious samba wine-stable playonlinux winetricks; fi
 	if [[ $SYSTEMROLE_POSEIDON == true ]]   ;   then apt-inst picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted ; fi
-	if [[ $SYSTEMROLE_WEB == true ]]        ;   then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
-	if [[ $SYSTEMROLE_NAS == true ]]        ;   then apt-inst samba nfsd proftpd ; fi
-	if [[ $SYSTEMROLE_PXE == true ]]        ;   then apt-inst atftpd ; fi
-	if [[ $SYSTEMROLE_LXCHOST == true ]]    ;   then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
-	if [[ $SYSTEMROLE_SERVER == true ]]     ;   then apt-inst ssh-server screen webmin; fi
-	if [[ $SYSTEMROLE_BASIC == true ]]      ;   then echo "" ; fi
-	if [[ $SYSTEMROLE_ROUTER == true ]]     ;   then apt-inst bridge-utils ufw; fi
+	if [[ $SYSTEMROLE_WEB == true ]]		;   then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
+	if [[ $SYSTEMROLE_NAS == true ]]		;   then apt-inst samba nfsd proftpd ; fi
+	if [[ $SYSTEMROLE_PXE == true ]]		;   then apt-inst atftpd ; fi
+	if [[ $SYSTEMROLE_LXCHOST == true ]]	;   then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
+	if [[ $SYSTEMROLE_SERVER == true ]]	 ;   then apt-inst ssh-server screen webmin; fi
+	if [[ $SYSTEMROLE_BASIC == true ]]	  ;   then echo "" ; fi
+	if [[ $SYSTEMROLE_ROUTER == true ]]	 ;   then apt-inst bridge-utils ufw; fi
 	################################################################################
 	info_line "Installing extra software"
 	verb_line "Installing TeamViewer"
