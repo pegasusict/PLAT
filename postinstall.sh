@@ -1,14 +1,14 @@
 #!/bin/bash
-###############################################################################
-# Pegasus' Linux Administration Tools                      postinstall script #
-# (C)2017-2018 Mattijs Snepvangers                      pegasus.ict@gmail.com #
-# License: GPL v3                          Please keep my name in the credits #
-###############################################################################
+############################################################################
+# Pegasus' Linux Administration Tools #					postinstall script #
+# (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
+# License: GPL v3					  # Please keep my name in the credits #
+############################################################################
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 # Making sure this script is run by bash to prevent mishaps
 if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 # Make sure only root can run this script
-if [[ $EUID -ne 0  ]]; then echo "This script must be run as root" ; exit 1 ; fi
+if [[ $EUID -ne 0 ]]; then echo "This script must be run as root" ; exit 1 ; fi
 echo "$START_TIME ## Starting PostInstall Process #######################"
 ### FUNCTIONS ###
 init() {
@@ -21,7 +21,7 @@ init() {
 	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
 	declare -gr VERSION_MAJOR=1
 	declare -gr VERSION_MINOR=4
-	declare -gr VERSION_PATCH=20
+	declare -gr VERSION_PATCH=23
 	declare -gr VERSION_STATE="PRE-ALPHA"
 	declare -gr VERSION_BUILD=20180416
 	declare -gr LICENSE="GPL v3"
@@ -30,8 +30,8 @@ init() {
 	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
 	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
 	### set default values ########################################################
-	VERBOSITY=3 ; TMP_AGE=2 ; GARBAGE_AGE=7 ; LOG_AGE=30
-	LOG_DIR="/var/log/plat" ; LOG_FILE="$LOGDIR/PostInstall_$START_TIME.log"
+	VERBOSITY=3	;	TMP_AGE=2	;	GARBAGE_AGE=7	;	LOG_AGE=30
+	LOG_DIR="/var/log/plat"		;	LOG_FILE="$LOGDIR/PostInstall_$START_TIME.log"
 }
 
 main() {
@@ -42,7 +42,7 @@ main() {
 		dbg_line "SYSTEMROLE_CONTAINER was chosen, see if there's a containerrole as well"
 		if [[ $SYSTEMROLE_NAS == true ]] || [[ $SYSTEMROLE_WEB == true ]] || [[ $SYSTEMROLE_WS == true ]] || [[ $SYSTEMROLE_PXE == true ]] || [[ $SYSTEMROLE_BASIC == true ]] || [[ $SYSTEMROLE_ROUTER == true ]]
 			then
-				dbg_line  "a CONTAINER_ROLE has been chosen; we're good :-) "
+				dbg_line "a CONTAINER_ROLE has been chosen; we're good :-) "
 			else
 				crit_line "No container role has been designated"
 				exit 1
@@ -56,26 +56,26 @@ main() {
 	fi
 	################################################################################
 	info_line "Installing extra PPA's"
-	verb_line "Copying Ubuntu sources and some extras"  ;   cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | err_line
-	verb_line "Adding GetDeb PPA key"		   ;   add_ppa "wget" "http://archive.getdeb.net/getdeb-archive.key"
-	verb_line "Adding VirtualBox PPA key"	   ;   add_ppa "wget" "http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc"
-	verb_line "Adding Webmin PPA key"		   ;   add_ppa "wget" "http://www.webmin.com/jcameron-key.asc"
-	verb_line "Adding WebUpd8 PPA key"		  ;   add_ppa "apt-key" "keyserver.ubuntu.com" "4C9D234C"
+	verb_line "Copying Ubuntu sources and some extras"	;	cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | err_line
+	verb_line "Adding GetDeb PPA key"			;	add_ppa "wget" "http://archive.getdeb.net/getdeb-archive.key"
+	verb_line "Adding VirtualBox PPA key"		;	add_ppa "wget" "http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc"
+	verb_line "Adding Webmin PPA key"			;	add_ppa "wget" "http://www.webmin.com/jcameron-key.asc"
+	verb_line "Adding WebUpd8 PPA key"			;	add_ppa "apt-key" "keyserver.ubuntu.com" "4C9D234C"
 	if [[ $SYSTEMROLE_WS == true ]]
 	then
-	   verb_line "Adding FreeCad PPA"		   ;   add_ppa "aar" "ppa:freecad-maintainers/freecad-stable"
-	   verb_line "Adding GIMP PPA key"		  ;   add_ppa "apt-key" "keyserver.ubuntu.com" "614C4B38"
-	   verb_line "Adding Gnome3 Extras PPA"	 ;   add_ppa "apt-key" "keyserver.ubuntu.com" "3B1510FD"
-	   verb_line "Adding Google Chrome PPA"	 ;   add_ppa "wget" "https://dl.google.com/linux/linux_signing_key.pub"
-	   verb_line "Adding Highly Explosive PPA"  ;   add_ppa "apt-key" "keyserver.ubuntu.com" "93330B78"
-	   verb_line "Adding MKVToolnix PPA"		;   add_ppa "wget" "http://www.bunkus.org/gpg-pub-moritzbunkus.txt"
-	   verb_line "Adding Opera (Beta) PPA"	  ;   add_ppa "wget" "http://deb.opera.com/archive.key"
-	   verb_line "Adding OwnCloud Desktop PPA"  ;   add_ppa "wget" "http://download.opensuse.org/repositories/isv:ownCloud:community/xUbuntu_16.04/Release.key"
-	   verb_line "Adding Wine PPA"			  ;   add_ppa "apt-key" "keyserver.ubuntu.com" "883E8688397576B6C509DF495A9A06AEF9CB8DB0"
+		verb_line "Adding FreeCad PPA"			;	add_ppa "aar" "ppa:freecad-maintainers/freecad-stable"
+		verb_line "Adding GIMP PPA key"			;	add_ppa "apt-key" "keyserver.ubuntu.com" "614C4B38"
+		verb_line "Adding Gnome3 Extras PPA"	;	add_ppa "apt-key" "keyserver.ubuntu.com" "3B1510FD"
+		verb_line "Adding Google Chrome PPA"	;	add_ppa "wget" "https://dl.google.com/linux/linux_signing_key.pub"
+		verb_line "Adding Highly Explosive PPA"	;	add_ppa "apt-key" "keyserver.ubuntu.com" "93330B78"
+		verb_line "Adding MKVToolnix PPA"		;	add_ppa "wget" "http://www.bunkus.org/gpg-pub-moritzbunkus.txt"
+		verb_line "Adding Opera (Beta) PPA"		;	add_ppa "wget" "http://deb.opera.com/archive.key"
+		verb_line "Adding OwnCloud Desktop PPA"	;	add_ppa "wget" "http://download.opensuse.org/repositories/isv:ownCloud:community/xUbuntu_16.04/Release.key"
+		verb_line "Adding Wine PPA"				;	add_ppa "apt-key" "keyserver.ubuntu.com" "883E8688397576B6C509DF495A9A06AEF9CB8DB0"
 	fi
-	if  [[ $SYSTEMROLE_NAS == true ]]
+	if	[[ $SYSTEMROLE_NAS == true ]]
 	then
-		verb_line "Adding Syncthing PPA"		;   add_ppa "wget" "https://syncthing.net/release-key.txt"
+		verb_line "Adding Syncthing PPA"		;	add_ppa "wget" "https://syncthing.net/release-key.txt"
 	fi
 	################################################################################
 	info_line "removing duplicate lines from source lists"
@@ -85,16 +85,16 @@ main() {
 	info_line "Installing updates"
 	apt-get --allow-unauthenticated upgrade -qy 2>&1 | dbg_line
 	######
-	info_line "Installing extra packages"   ;   apt-inst mc trash-cli snapd git
-	if [[ $SYSTEMROLE_WS == true ]]		 ;   then apt-inst synaptic tilda audacious samba wine-stable playonlinux winetricks; fi
-	if [[ $SYSTEMROLE_POSEIDON == true ]]   ;   then apt-inst picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted ; fi
-	if [[ $SYSTEMROLE_WEB == true ]]		;   then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
-	if [[ $SYSTEMROLE_NAS == true ]]		;   then apt-inst samba nfsd proftpd ; fi
-	if [[ $SYSTEMROLE_PXE == true ]]		;   then apt-inst atftpd ; fi
-	if [[ $SYSTEMROLE_LXCHOST == true ]]	;   then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
-	if [[ $SYSTEMROLE_SERVER == true ]]	 ;   then apt-inst ssh-server screen webmin; fi
-	if [[ $SYSTEMROLE_BASIC == true ]]	  ;   then echo "" ; fi
-	if [[ $SYSTEMROLE_ROUTER == true ]]	 ;   then apt-inst bridge-utils ufw; fi
+	info_line "Installing extra packages"	;	apt-inst mc trash-cli snapd git
+	if [[ $SYSTEMROLE_WS == true ]]			;	then apt-inst synaptic tilda audacious samba wine-stable playonlinux winetricks; fi
+	if [[ $SYSTEMROLE_POSEIDON == true ]]	;	then apt-inst picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted ; fi
+	if [[ $SYSTEMROLE_WEB == true ]]		;	then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
+	if [[ $SYSTEMROLE_NAS == true ]]		;	then apt-inst samba nfsd proftpd ; fi
+	if [[ $SYSTEMROLE_PXE == true ]]		;	then apt-inst atftpd ; fi
+	if [[ $SYSTEMROLE_LXCHOST == true ]]	;	then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
+	if [[ $SYSTEMROLE_SERVER == true ]]		;	then apt-inst ssh-server screen webmin; fi
+	if [[ $SYSTEMROLE_BASIC == true ]]		;	then echo "" ; fi
+	if [[ $SYSTEMROLE_ROUTER == true ]]		;	then apt-inst bridge-utils ufw; fi
 	################################################################################
 	info_line "Installing extra software"
 	verb_line "Installing TeamViewer"
@@ -106,14 +106,14 @@ main() {
 	apt-get install -fy 2>&1 | verb_line
 	if [[ $SYSTEMROLE_POSEIDON == true ]]
 	then
-	  verb_line "Installing StarUML"
-	  download "http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb"
-	  install libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb
-	  download "http://staruml.io/download/release/v2.8.1/StarUML-v2.8.1-64-bit.deb"
-	  install StarUML-v2.8.0-64-bit.deb
-	  verb_line "Installing GitKraken"
-	  download "https://release.gitkraken.com/linux/gitkraken-amd64.deb"
-	  install gitkraken-amd64.deb
+		verb_line "Installing StarUML"
+		download "http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb"
+		install libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb
+		download "http://staruml.io/download/release/v2.8.1/StarUML-v2.8.1-64-bit.deb"
+		install StarUML-v2.8.0-64-bit.deb
+		verb_line "Installing GitKraken"
+		download "https://release.gitkraken.com/linux/gitkraken-amd64.deb"
+		install gitkraken-amd64.deb
 	fi
 	cd $OLD_PWD
 	unset $OLD_PWD
@@ -149,7 +149,7 @@ main() {
 	if [ -f /var/run/reboot-required ]
 	then
 		info_line "REBOOT REQUIRED, sheduled for $REBOOT_TIME"
-		shutdown -r $REBOOT_TIME  2>&1 | info_line
+		shutdown -r $REBOOT_TIME 2>&1 | info_line
 	else
 		info_line "No reboot required"
 	fi
