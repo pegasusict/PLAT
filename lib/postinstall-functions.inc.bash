@@ -12,9 +12,9 @@
 # MAINTAINER_EMAIL="pegasus.ict@gmail.com"            #
 # VERSION_MAJOR=0                                     #
 # VERSION_MINOR=1                                     #
-# VERSION_PATCH=30                                    #
+# VERSION_PATCH=33                                    #
 # VERSION_STATE="ALPHA"                               #
-# VERSION_BUILD=20180416                              #
+# VERSION_BUILD=20180419                              #
 #######################################################
 
 ### Basic program ##############################################################
@@ -46,6 +46,7 @@ get_args() {
 		esac
 	done
 }
+
 build_maintenance_script() { ###TODO### Convert to template
 	local _SCRIPT=$1
 	local _SCRIPT_INI="${_SCRIPT%.*}.ini"
@@ -122,28 +123,40 @@ build_maintenance_script() { ###TODO### Convert to template
 	fi
 	sed -e 1d maintenance/body-basic.sh >> "$_SCRIPT"
 }
+
 check_container() {
-	local _CONTAINER=$1
+	_CONTAINER=$1
 	case "$_CONTAINER" in
-		"nas"		) SYSTEMROLE_NAS=true ; dbg_line "container=nas" ;;
-		"web"		) SYSTEMROLE_NAS=true ; SYSTEMROLE_WEB=true ; dbg_line "container=web" ;;
-		"x11"		) SYSTEMROLE_WS=true  ; dbg_line "container=x11" ;;
-		"pxe"		) SYSTEMROLE_NAS=true ; SYSTEMROLE_PXE=true ; dbg_line "container=pxe" ;;
-		"basic"		) SYSTEMROLE_BASIC=true ; dbg_line "container=basic" ;;
-		"router"	) SYSTEMROLE_ROUTER=true ; dbg_line "container=router" ;;
-		*			) crit_line "CRITICAL: Unknown containertype $CONTAINER, exiting..." ; exit 1 ;;
+		"nas"		)	SYSTEMROLE_NAS=true		;	dbg_line "container=nas"	;;
+		"web"		)	SYSTEMROLE_NAS=true		;
+						SYSTEMROLE_WEB=true		;	dbg_line "container=web"	;;
+		"x11"		)	SYSTEMROLE_WS=true		;	dbg_line "container=x11"	;;
+		"pxe"		)	SYSTEMROLE_NAS=true		;
+						SYSTEMROLE_PXE=true		;	dbg_line "container=pxe"	;;
+		"basic"		)	SYSTEMROLE_BASIC=true	;	dbg_line "container=basic"	;;
+		"router"	)	SYSTEMROLE_ROUTER=true	;	dbg_line "container=router"	;;
+		*			)	crit_line "CRITICAL: Unknown containertype $CONTAINER, exiting..."	;	exit 1	;;
 	esac;
 }
+
 check_role() {
 	local _ROLE=$1
 	case "$_ROLE" in
-		"ws"			) SYSTEMROLE_WS=true ; dbg_line "role=ws";;
-		"poseidon"		) SYSTEMROLE_WS=true ; SYSTEMROLE_SERVER=true ; SYSTEMROLE_LXCHOST=true ; SYSTEMROLE_POSEIDON=true ; SYSTEMROLE_NAS=true ; dbg_line "role=poseidon";;
-		"mainserver"	) SYSTEMROLE_SERVER=true ; SYSTEMROLE_MAINSERVER=true ; SYSTEMROLE_LXCHOST=true ; dbg_line "role=mainserver" ;;
-		"container"		) SYSTEMROLE_SERVER=true ; SYSTEMROLE_CONTAINER=true ; dbg_line "role=container" ;;
-		*				) critline "CRITICAL: Unknown systemrole $ROLE, exiting..." ; exit 1;;
+		"ws"			)	SYSTEMROLE_WS=true			;	dbg_line "role=ws"			;;
+		"poseidon"		)	SYSTEMROLE_WS=true			;
+							SYSTEMROLE_SERVER=true		;
+							SYSTEMROLE_LXCHOST=true		;
+							SYSTEMROLE_POSEIDON=true	;
+							SYSTEMROLE_NAS=true			;	dbg_line "role=poseidon"	;;
+		"mainserver"	)	SYSTEMROLE_SERVER=true		;
+							SYSTEMROLE_MAINSERVER=true	;
+							SYSTEMROLE_LXCHOST=true		;	dbg_line "role=mainserver"	;;
+		"container"		)	SYSTEMROLE_SERVER=true		;
+							SYSTEMROLE_CONTAINER=true	;	dbg_line "role=container"	;;
+		*				)	critline "CRITICAL: Unknown systemrole $ROLE, exiting..."	;	exit 1;;
 	esac
 }
+
 usage() {
 	version
 	cat <<-EOT
@@ -164,6 +177,6 @@ usage() {
 		   -h or --help prints this message
 
 		  The options can be used in any order
-EOT
+		EOT
 	exit 3
 }

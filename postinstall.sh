@@ -29,9 +29,6 @@ init() {
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
 	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
-	### set default values ########################################################
-	VERBOSITY=3	;	TMP_AGE=2	;	GARBAGE_AGE=7	;	LOG_AGE=30
-	LOG_DIR="/var/log/plat"		;	LOG_FILE="$LOGDIR/PostInstall_$START_TIME.log"
 }
 
 main() {
