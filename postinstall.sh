@@ -21,16 +21,25 @@ init() {
 	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
 	declare -gr VERSION_MAJOR=1
 	declare -gr VERSION_MINOR=4
-	declare -gr VERSION_PATCH=23
+	declare -gr VERSION_PATCH=25
 	declare -gr VERSION_STATE="PRE-ALPHA"
-	declare -gr VERSION_BUILD=20180416
+	declare -gr VERSION_BUILD=20180424
 	declare -gr LICENSE="GPL v3"
 	###############################################################################
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
 	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
 }
-
+import() {
+	local _FILE="$1"
+	if [[ -f "$_FILE" ]]
+	then
+		source "$_FILE"
+	else
+		crit_line "File $_FILE not found!"
+		exit 1
+	fi
+}
 main() {
 	# check whether systemrole_container has been checked and if yes,
 	#+ nas,web,ws,pxe,basic or router have been checked
@@ -154,13 +163,9 @@ main() {
 
 ###########
 init
-FILE="lib/default.inc.bash"
-if [[ -f $FILE ]] ; then source $FILE ; else crit_line "File $FILE not found!" ; fi
-unset $FILE
+import "BASH_FUNC_LIB/default.inc.bash"
 create_dir "$LOG_DIR"
-#PI_LIB="$LIB_DIRpostinstall-$LIB_FILE"
-PI_LIB="lib/postinstall-functions.inc.bash"
-if [[ -f $PI_LIB ]] ; then source $PI_LIB ; else crit_line "File $PI_LIB not found!" ; fi
+import "lib/postinstall-functions.inc.bash"
 header
 goto_base_dir
 parse_ini $INI_FILE
