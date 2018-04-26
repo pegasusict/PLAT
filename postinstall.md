@@ -1,10 +1,10 @@
  From the app:
  ---
- Pegasus' Linux Administration Tools - plat.sh Ver1.0.0-BETA build 20180313 - (c) 2018 Mattijs Snepvangers
+ Pegasus' Linux Administration Tools - postinstall.sh Ver1.0.0-BETA build 20180313 - (c) 2018 Mattijs Snepvangers
  
-    USAGE:  sudo bash plat.sh -h
+    USAGE:  sudo bash postinstall.sh -h
                 or
-        sudo bash plat.sh -r <systemrole> [ -c <containertype> ] [ -v INT ]
+        sudo bash postinstall.sh -r <systemrole> [ -c <containertype> ] [ -v INT ]
             [ -g <garbageage> ] [ -l <logage> ] [ -t <tmpage> ]
 
      OPTIONS
@@ -24,3 +24,5 @@
 
         The options can be used in any order
       ---
+
+<updated: 26-04-2018>
