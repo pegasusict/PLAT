@@ -1,4 +1,4 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8c5640df6d7c480d8532efd5063c93e8)](https://www.codacy.com/app/pegasus.ict/plat?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pegasusict/plat&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6975700247d543379109da35892a2e73)](https://www.codacy.com/app/pegasus.ict/PLAT?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pegasusict/PLAT&amp;utm_campaign=Badge_Grade)
 
 # PLAT
 Pegasus' Linux Administration Tools is a set of bash scripts that make life easier for the "lazy" admin/new user on Ubuntu.
