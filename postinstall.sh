@@ -14,7 +14,8 @@ echo "$START_TIME ## Starting PostInstall Process #######################"
 init() {
 	################### PROGRAM INFO ##############################################
 	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
-	declare -gr SCRIPT="${0##*/}" ###CHECK###
+	declare -gr SCRIPT="${0##*/}"
+	declare -gr SCRIPT_DIR="${0%/*}"
 	declare -gr SCRIPT_TITLE="Post Install Script"
 	declare -gr MAINTAINER="Mattijs Snepvangers"
 	declare -gr MAINTAINER_EMAIL="pegasus.ict@gmail.com"
