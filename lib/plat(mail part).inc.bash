@@ -84,4 +84,4 @@ sed -e 1d mail/mail2.sh >> "$MAIL_SCRIPT"
 chmod 555 "$SCRIPT_DIR/*" 2>&1 | opr4 ; chown root:root "$SCRIPT_DIR/*" 2>&1 | opr4
 ################################################################################
 create_logline "DONE, emailing log"
-bash "$MAIL_SCRIPT" "$LOGFILE"
+bash "$MAIL_SCRIPT" "$LOG_FILE"

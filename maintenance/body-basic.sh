@@ -3,7 +3,7 @@
 info_line "Updating apt cache"                  ;	apt-get -qqy update 2>&1 | dbg_line
 info_line "Updating installed packages"         ;	apt-get -qqy --allow-unauthenticated upgrade 2>&1 | dbg_line
 info_line "Cleaning up obsolete packages"       ;	apt-get -qqy autoremove 2>&1 | dbg_line
-info_line "Clearing old/obsolete package cache" ;	apt-get -qqy clean 2>&1 | dbg_line
+info_line "Clearing old/obsolete package cache" ;	apt-get -qqy autoclean 2>&1 | dbg_line
 ### GARBAGE ####################################################################
 info_line "Taking out the trash."
 verb_line "Removing files from trash older than $GARBAGE_AGE days"
