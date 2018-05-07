@@ -51,7 +51,7 @@ add_to_script "$MAIL_SCRIPT" false <<EOT
 ## $PROGRAM_SUITE   -   $MAIL_SCRIPT_TITLE      Ver$SHORT_VERSION ##
 ## (c)2017-$CURR_YEAR $MAINTAINER  build $VERSION_BUILD     $MAINTAINER_EMAIL ##
 ## This mail script is dynamically built                    Built: $TODAY ##
-## License: GPL v3                         Please keep my name in the credits ##
+## License: MIT                            Please keep my name in the credits ##
 ################################################################################
 EOT
 sed -e 1d mail/mail1.sh >> "$MAIL_SCRIPT"

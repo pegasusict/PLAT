@@ -2,7 +2,7 @@
 ############################################################################
 # Pegasus' Linux Administration Tools #				  Pegasus' PLAT Tester #
 # (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
-# License: GPL v3					  #	Please keep my name in the credits #
+# License: MIT						  #	Please keep my name in the credits #
 ############################################################################
 
 #######################################################
@@ -15,11 +15,12 @@
 # VERSION_PATCH=0									  #
 # VERSION_STATE="PRE-ALPHA"							  #
 # VERSION_BUILD=20180507							  #
+# LICENSE="MIT"										  #
 #######################################################
 
 
 
-main_menu
+main_menu() {
 	echo PLAT Functionality Tester
 	echo
 	echo Main Menu
@@ -27,4 +28,9 @@ main_menu
 
 
 
-ANSWER=prompt "Which module would you like to test?\nIf you would like to test more than one, please separate the values with a space."
+	ANSWER=prompt "Which module would you like to test?\nIf you would like to test more than one, please separate the values with a space."
+
+
+
+
+}

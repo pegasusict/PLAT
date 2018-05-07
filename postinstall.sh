@@ -2,7 +2,7 @@
 ############################################################################
 # Pegasus' Linux Administration Tools #					postinstall script #
 # (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
-# License: GPL v3					  # Please keep my name in the credits #
+# License: MIT						  # Please keep my name in the credits #
 ############################################################################
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 # Making sure this script is run by bash to prevent mishaps
@@ -25,7 +25,7 @@ init() {
 	declare -gr VERSION_PATCH=25
 	declare -gr VERSION_STATE="PRE-ALPHA"
 	declare -gr VERSION_BUILD=20180424
-	declare -gr LICENSE="GPL v3"
+	declare -gr LICENSE="MIT"
 	###############################################################################
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"

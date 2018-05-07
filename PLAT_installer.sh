@@ -4,7 +4,7 @@ cat <<EOT
 # Pegasus' Linux Administration Tools #					PLAT install script #
 # https://github.com/pegasusict/PLAT/ #	 https://pegasusict.github.io/PLAT/ #
 # (C)2017-2018 Mattijs Snepvangers	  #				  pegasus.ict@gmail.com #
-# License: GPL v3					  #	 Please keep my name in the credits #
+# License: MIT						  #	 Please keep my name in the credits #
 #############################################################################
 EOT
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
@@ -35,7 +35,7 @@ init() {
 	declare -gr VERSION_PATCH=0
 	declare -gr VERSION_STATE="PRE-ALPHA"
 	declare -gr VERSION_BUILD=20180426
-	declare -gr LICENSE="GPL v3"
+	declare -gr LICENSE="MIT"
 	###############################################################################
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"

@@ -1,9 +1,9 @@
 #!/bin/bash
-############################################################################
-# Pegasus' Linux Administration Tools #      PostInstall Functions Library #
-# (C)2017-2018 Mattijs Snepvangers    #              pegasus.ict@gmail.com #
-# License: GPL v3                     # Please keep my name in the credits #
-############################################################################
+################################################################################
+# Pegasus' Linux Administration Tools	#		 PostInstall Functions Library #
+# (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
+# License: MIT							#	Please keep my name in the credits #
+################################################################################
 
 #######################################################
 # PROGRAM_SUITE="Pegasus' Linux Administration Tools" #
@@ -15,6 +15,7 @@
 # VERSION_PATCH=33                                    #
 # VERSION_STATE="ALPHA"                               #
 # VERSION_BUILD=20180419                              #
+# LICENSE="MIT"										  #
 #######################################################
 
 ### Basic program ##############################################################
