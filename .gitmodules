@@ -1,6 +1,3 @@
-[submodule "BASH_FUNC_LIB"]
-	path = BASH_FUNC_LIB
-	url = https://github.com/pegasusict/BASH_FUNC_LIB.git
 [submodule "PLAT_WordPressTools"]
 	path = PLAT_WordPressTools
 	url = https://github.com/pegasusict/PLAT_WordPressTools.git
@@ -13,3 +10,6 @@
 [submodule "PLAT_Manager"]
 	path = PLAT_Manager
 	url = https://github.com/pegasusict/PLAT_Manager.git
+[submodule "PBFL"]
+	path = PBFL
+	url = https://github.com/pegasusict/PBFL.git
