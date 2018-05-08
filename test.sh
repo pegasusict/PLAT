@@ -25,9 +25,6 @@ main_menu() {
 	echo
 	echo Main Menu
 	echo
-
-
-
 	ANSWER=prompt "Which module would you like to test?\nIf you would like to test more than one, please separate the values with a space."
 
 
