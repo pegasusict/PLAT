@@ -18,14 +18,15 @@
 # LICENSE="MIT"										  #
 #######################################################
 
-
-
 main_menu() {
-	echo PLAT Functionality Tester
-	echo
-	echo Main Menu
-	echo
-	ANSWER=prompt "Which module would you like to test?\nIf you would like to test more than one, please separate the values with a space."
+	local _TITLE="PLAT Functionality Tester - Main Menu"
+	local _MESSAGE="Which module would you like to test?"
+	local _HEIGHT=
+	local _WIDTH=
+	local _MENU_HEIGHT=
+	local -A _OPTIONS=([A]="All" [T]="Terminal Interaction" [FS]="FileSystem" [DB]="DataBase")
+	# fun: dialog_menu TITLE_str MESSAGE_str HEIGHT_int WIDTH_int MENU_HEIGHT_int OPTIONS_ass_array ANSWER_var
+	
 
 
 
