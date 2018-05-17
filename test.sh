@@ -1,4 +1,4 @@
-#!/bin/bash -p
+#!/bin/bash
 ############################################################################
 # Pegasus' Linux Administration Tools #				  Pegasus' PLAT Tester #
 # (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
