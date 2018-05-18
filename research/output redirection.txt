@@ -1,0 +1,5 @@
+send_to_screen_and_logs(){
+	_MESSAGE="$1"
+	_STD_LOG="$2"
+	_ERR_LOG="$3"
+	echo "$_MESSAGE" > >(tee -a "$_STD_LOG") 2> >(tee -a "$_ERR_LOG" >&2)
