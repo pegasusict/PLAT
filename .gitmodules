@@ -13,3 +13,6 @@
 [submodule "PBFL"]
 	path = PBFL
 	url = https://github.com/pegasusict/PBFL.git
+[submodule "plat_aptcacher"]
+	path = plat_aptcacher
+	url = https://github.com/pegasusict/plat_aptcacher

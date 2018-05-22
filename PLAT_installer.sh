@@ -32,9 +32,9 @@ init() {
 	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
 	declare -gr VERSION_MAJOR=0
 	declare -gr VERSION_MINOR=0
-	declare -gr VERSION_PATCH=0
+	declare -gr VERSION_PATCH=1
 	declare -gr VERSION_STATE="PRE-ALPHA"
-	declare -gr VERSION_BUILD=20180426
+	declare -gr VERSION_BUILD=20180522
 	declare -gr LICENSE="MIT"
 	###############################################################################
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
@@ -61,7 +61,7 @@ main(){
 	create_tmp "plat_inst"
 	cd "$TMP_DIR"
 	#download all repositories
-	for _REP in ("PLAT" "BASH_FUNC_LIB" "PLAT_WordPressTools" "PLAT_container_toolset")
+	for _REP in ("PLAT" "PBFL" "PLAT_WordPressTools" "PLAT_container_toolset")
 		git clone "$_BASE_URL$_REP$_EXT"
 	done
 	
