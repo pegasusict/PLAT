@@ -22,14 +22,24 @@ init() {
 	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
 	declare -gr VERSION_MAJOR=1
 	declare -gr VERSION_MINOR=4
-	declare -gr VERSION_PATCH=25
+	declare -gr VERSION_PATCH=28
 	declare -gr VERSION_STATE="PRE-ALPHA"
-	declare -gr VERSION_BUILD=20180424
+	declare -gr VERSION_BUILD=20180525
 	declare -gr LICENSE="MIT"
 	###############################################################################
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
 	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
+}
+prep() {
+	import "BASH_FUNC_LIB/default.inc.bash"
+	create_dir "$LOG_DIR"
+	import "lib/postinstall-functions.inc.bash"
+	header
+	goto_base_dir
+	parse_ini $INI_FILE
+	get_args $@
+	create_dir $TARGET_SCRIPT_DIR
 }
 import() {
 	local _FILE="$1"
@@ -164,13 +174,6 @@ main() {
 
 ###########
 init
-import "BASH_FUNC_LIB/default.inc.bash"
-create_dir "$LOG_DIR"
-import "lib/postinstall-functions.inc.bash"
-header
-goto_base_dir
-parse_ini $INI_FILE
-get_args "$@"
-create_dir $TARGET_SCRIPT_DIR
+prep $@
 
 main
