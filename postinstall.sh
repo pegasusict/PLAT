@@ -31,6 +31,7 @@ init() {
 	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
 	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
 }
+
 prep() {
 	import "BASH_FUNC_LIB/default.inc.bash"
 	create_dir "$LOG_DIR"
@@ -41,6 +42,7 @@ prep() {
 	get_args $@
 	create_dir $TARGET_SCRIPT_DIR
 }
+
 import() {
 	local _FILE="$1"
 	if [[ -f "$_FILE" ]]
@@ -51,6 +53,7 @@ import() {
 		exit 1
 	fi
 }
+
 main() {
 	# check whether systemrole_container has been checked and if yes,
 	#+ nas,web,ws,pxe,basic or router have been checked
