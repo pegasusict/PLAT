@@ -1,0 +1,28 @@
+Collapsing functions:
+
+===============================================================================
+
+#!/bin/bash
+# Using collapsing functions to turn debug messages on/off
+
+[ "--debug" = "$1" ] && dbg=echo || dbg=:
+
+
+# From now on if you use $dbg instead of echo, you can select if messages will be shown
+
+$dbg "This message will only be displayed if --debug is specified at the command line
+
+================================================================================
+
+chatter() {
+  if [[ $verbose ]]; then
+    chatter() {
+      echo "$@"
+    }
+    chatter "$@"
+  else
+    chatter() {
+      :
+    }
+  fi
+}
