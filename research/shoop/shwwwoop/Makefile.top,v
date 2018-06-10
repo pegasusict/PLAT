@@ -1,0 +1,93 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2001.04.29.18.22.51;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@initial import
+@
+text
+@## Makefile.top - top-level -*- Makefile -*- fragment for shwwwoop
+## Copyright (C) 2001 Gergely Nagy <8@@free.bsd.hu>
+##
+## This file is part of shwwwoop.
+##
+## shwwwoop is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+##
+## shwwwoop is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+##
+## $Id$
+
+top_srcdir	= .
+subdir		=
+
+SUBDIRS		= src utils
+doc_DATA	= AUTHORS COPYING NEWS README THANKS ChangeLog
+EXTRA_DIST	= INSTALL Rules.mk.in Makefile.top configure \
+		$(DEBIAN_FILES)
+
+DEBIAN_FILES	= 
+
+MAINTAINERCLEANFILES	= ChangeLog
+
+include $(top_srcdir)/Rules.mk
+
+all-local::
+
+bin-dist:
+	$(MAKE) install DESTDIR=`pwd`/$(PACKAGE)-$(VERSION).bin
+	$(TAR) $(TAR_OPTIONS) -cf - $(PACKAGE)-$(VERSION).bin | GZIP=$(GZIP_ENV) gzip -c \
+		> $(PACKAGE)-$(VERSION).bin.tar.gz
+	rm -rf $(PACKAGE)-$(VERSION).bin
+
+dist: dist-hook distdir
+	rm -f $(distdir)/config.status
+	$(TAR) $(TAR_OPTIONS) -cf - $(PACKAGE)-$(VERSION) | GZIP=$(GZIP_ENV) gzip -c \
+		> $(PACKAGE)-$(VERSION).tar.gz 
+	test -z "$(distdir)" || rm -rf $(distdir)
+
+dist-hook:
+	test -z "$(distdir)" || rm -rf $(distdir)
+
+distcheck: dist
+	gzip -dc $(PACKAGE)-$(VERSION).tar.gz | $(TAR) $(TAR_OPTIONS) -xf -
+	cd $(PACKAGE)-$(VERSION) && ./configure
+	$(MAKE) -C $(PACKAGE)-$(VERSION) all install dist DESTDIR=$(shell pwd)/$(PACKAGE)-$(VERSION)/=inst
+	rm -rf $(PACKAGE)-$(VERSION)
+	@@banner="$(PACKAGE)-$(VERSION).tar.gz is ready for distribution." ;\
+	dashes=`echo "$$banner" | sed -e s/./=/g`; \
+	echo "$$dashes" ;\
+	echo "$$banner" ;\
+	echo "$$dashes"
+
+distclean::
+	rm -f $(top_srcdir)/config.status $(top_srcdir)/Rules.mk
+
+ChangeLog:
+	$(top_srcdir)/utils/mkChangeLog $@@
+
+.PHONY:: bin-dist distcheck
+@

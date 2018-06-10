@@ -1,0 +1,429 @@
+head	1.20;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.20
+date	2000.02.03.04.54.11;	author doogie;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2000.02.02.17.51.36;	author doogie;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2000.02.02.10.42.51;	author doogie;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2000.02.02.10.38.52;	author doogie;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2000.02.02.10.34.58;	author doogie;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2000.02.02.10.30.31;	author doogie;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2000.02.02.10.28.28;	author doogie;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2000.02.02.10.26.19;	author doogie;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2000.02.02.10.24.08;	author doogie;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2000.02.02.10.22.17;	author doogie;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2000.02.02.10.21.07;	author doogie;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2000.02.02.10.20.05;	author doogie;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2000.02.02.10.19.17;	author doogie;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2000.02.02.10.16.44;	author doogie;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2000.02.02.10.13.13;	author doogie;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2000.02.02.10.09.57;	author doogie;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2000.02.02.10.05.56;	author doogie;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.02.01.19.54.57;	author doogie;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.01.31.09.08.48;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.31.08.50.26;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.20
+log
+@Remove <tr> and </tr>, so it looks just a teeny bit better.
+@
+text
+@<HTML>
+<HEAD>
+<TITLE>SourceForge: Welcome</TITLE>
+<LINK rel="stylesheet" href="http://sourceforge.net/sourceforge.css" type="text/css">
+</HEAD>
+
+<BODY bgcolor=#FFFFFF topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" marginheight="0" marginwidth="0">
+
+<!-- top strip -->
+<TABLE width="100%" border=0 cellspacing=0 cellpadding=2 bgcolor="737b9c">
+  <TR>
+    <TD><SPAN class=maintitlebar>&nbsp;&nbsp;
+      <A class=maintitlebar href="http://sourceforge.net/"><B>Home</B></A> | 
+      <A class=maintitlebar href="http://sourceforge.net/about.php"><B>About</B></A> | 
+      <A class=maintitlebar href="http://sourceforge.net/partners.php"><B>Partners</B></a> |
+      <A class=maintitlebar href="http://sourceforge.net/contact.php"><B>Contact Us</B></A> |
+      <A class=maintitlebar href="http://sourceforge.net/account/logout.php"><B>Logout</B></A></SPAN></TD>
+    </TD>
+  </TR>
+</TABLE>
+<!-- end top strip -->
+
+<!-- top title table -->
+<TABLE width="100%" border=0 cellspacing=0 cellpadding=0 bgcolor="" valign="center">
+  <TR valign="top" bgcolor="#eeeef8">
+    <TD>
+      <A href="http://sourceforge.net/"><IMG src="http://sourceforge.net/images/sflogo2-steel.png" vspace="0" border=0 width="215" height="105"></A>
+    </TD>
+    <TD width="99%"><!-- right of logo -->
+      <a href="http://www.valinux.com"><IMG src="http://sourceforge.net/images/va-btn-small-light.png" align="right" alt="VA Linux Systems" hspace="5" vspace="7" border=0 width="136" height="40"></A>
+    </TD><!-- right of logo -->
+  </TR>
+  <TR><TD bgcolor="#543a48" colspan=2><IMG src="http://sourceforge.net/images/blank.gif" height=2 vspace=0></TD></TR>
+</TABLE>
+<!-- end top title table -->
+
+<!-- center table -->
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="2" bgcolor="#FFFFFF" align="center">
+  <TR>
+    <TD>
+      <CENTER><BR>
+      <H1>Welcome to http://shoop.sourceforge.net/</H1>
+      <P>shoop is still a new project, and we are slowly getting things setup<BR>
+      Please check back soon for updates or visit 
+      <A href="http://sourceforge.net/project/?group_id=1981">shoop</a>'s
+      <a href="http://sourceforge.net/">SourceForge</a> info page</P><BR>
+      </CENTER>
+    </TD>
+  </TR>
+</TABLE>
+<table width="100%">
+<tr>
+<td><a href="http://cvs.sourceforge.net/cgi-bin/cvsweb.cgi/?cvsroot=shoop">Browse CVS</a></td>
+<td><a href="http://sourceforge.net/bugs/?group_id=1981">Browse Bug Reports</a></td>
+<td><a href="http://sourceforge.net/forum/?group_id=1981">Visit the Message Forums</a></td>
+<td><a href="http://sourceforge.net/patch/?group_id=1981">Look at Published Patches</a></td>
+<td><a href="http://sourceforge.net/survey/?group_id=1981">Would you like to take a survey?(with appologies to Warners)</a></td>
+<td><a href="ftp://shoop.sourceforge.net/pub/shoop">View the FTP Site</a></td>
+</tr>
+</table>
+<!-- end center table -->
+
+<!-- footer table -->
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="2" bgcolor="737b9c">
+  <TR>
+    <TD align="center"><FONT color="#ffffff"><SPAN class="titlebar">
+      All trademarks and copyrights on this page are properties of their respective owners.
+      The rest is copyright ©1999-2000 VA Linux Systems, Inc.</SPAN></FONT>
+    </TD>
+  </TR>
+</TABLE>
+
+<!-- end footer table -->
+</BODY>
+</HTML>
+<!-- bam! -->
+@
+
+
+1.19
+log
+@Basically duplicated a lot of the project page, to see what it would look
+like.
+@
+text
+@d51 1
+a51 1
+<table>
+a53 2
+</tr>
+<tr>
+a54 2
+</tr>
+<tr>
+a55 2
+</tr>
+<tr>
+a56 2
+</tr>
+<tr>
+a57 2
+</tr>
+<tr>
+@
+
+
+1.18
+log
+@An actual update to the contents.
+@
+text
+@d55 15
+@
+
+
+1.17
+log
+@foo?
+@
+text
+@d51 5
+@
+
+
+1.16
+log
+@I hope to god this is the final checkin.
+@
+text
+@d66 1
+@
+
+
+1.15
+log
+@cvs is no spring picnic.
+@
+text
+@a65 1
+<!-- doobie doobie doo shazzam closer -->
+@
+
+
+1.14
+log
+@shazzam!
+@
+text
+@d66 1
+a66 1
+<!-- doobie doobie doo shazzam-->
+@
+
+
+1.13
+log
+@doobie doobie doo
+@
+text
+@d66 1
+a66 1
+<!-- doobie doobie doo -->
+@
+
+
+1.12
+log
+@I think it works.
+@
+text
+@d66 1
+@
+
+
+1.11
+log
+@another test
+@
+text
+@d62 1
+a62 1
+<!-- end run -->
+@
+
+
+1.10
+log
+@grr
+@
+text
+@d62 1
+a62 1
+
+@
+
+
+1.9
+log
+@test
+@
+text
+@d62 1
+a62 1
+<!-- testing -->
+@
+
+
+1.8
+log
+@testing still
+@
+text
+@d62 1
+a62 1
+
+@
+
+
+1.7
+log
+@I will get this right sometime.
+@
+text
+@d62 1
+a62 1
+<!-- fooey -->
+@
+
+
+1.6
+log
+@Yet another test.
+@
+text
+@d62 1
+a62 1
+
+@
+
+
+1.5
+log
+@More cvspulse testing.
+@
+text
+@d62 1
+a62 1
+<!-- shoop shoop shoop -->
+@
+
+
+1.4
+log
+@Removed some embedded comments.  Mostly this is just a test of the cvspulse
+script.
+@
+text
+@d62 1
+a62 1
+
+@
+
+
+1.3
+log
+@Modified a few links.  no text changes.
+@
+text
+@a0 8
+<?php
+// Default Web Page for groups that haven't setup their page yet
+// Please replace this file with your own website
+//
+// $Id: index.php,v 1.2 2000/01/31 09:08:48 doogie Exp $
+//
+$headers = getallheaders();
+?>
+@
+
+
+1.2
+log
+@Changed the default messages(still has the same graphics and layout)
+@
+text
+@d5 1
+a5 1
+// $Id: index.php,v 1.1 2000/01/31 08:50:26 doogie Exp $
+d53 2
+a54 1
+      <A href="http://sourceforge.net/project/?group_id=1981">shoop's SourceForge info page</A></P><BR>
+@
+
+
+1.1
+log
+@initial checkin
+@
+text
+@d5 1
+a5 1
+// $Id: default_page.php,v 1.2 2000/01/07 18:11:56 precision Exp $
+d50 4
+a53 3
+      <H1>Welcome to http://<?php print $headers[Host]; ?>/</H1>
+      <P>We're Sorry but this Project hasn't yet uploaded their personal webpage yet.<BR>
+      Please check back soon for updates or visit <A href="http://sourceforge.net/">SourceForge</A></P><BR>
+d64 2
+a65 1
+      All trademarks and copyrights on this page are properties of their respective owners. Forum comments are owned by the poster. The rest is copyright ©1999-2000 VA Linux Systems, Inc.</SPAN></FONT>
+@
+

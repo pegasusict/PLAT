@@ -1,0 +1,100 @@
+head	1.3;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.3
+date	2001.02.03.18.46.16;	author doogie;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.02.13.02.47.35;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.02.12.12.07.59;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@Changed some dirs around, thanks to Gergely Nagy.
+@
+text
+@#!/usr/bin/make -f
+#
+# This makefile needs GNU make.
+#
+.EXPORT_ALL_VARIABLES:
+prefix=$(CURDIR)/debian/shoop
+
+FHS=1
+ifeq ($(FHS),1)
+	moddir=/usr/share/shoop/modules
+	docdir=/usr/share/doc/shoop
+	mandir=/usr/share/man
+else
+	moddir=/usr/lib/shoop/modules
+	docdir=/usr/doc/shoop
+	mandir=/usr/man
+endif
+bindir=/usr/share/shoop
+empdir=$(docdir)/examples
+
+MODULES_MSG=modules
+BINS_MSG=binary
+DOCS_MSG=documents
+EXAMPLES_MSG=examples
+MAN_MSG=man pages
+
+PKG=shoop
+PKG_VER=0.1
+
+unexport BINS MODULES DOCS EXAMPLES MANPAGES SUBDIRS
+
+@
+
+
+1.2
+log
+@Move clean target to Makefile.rules.  Create docs/modules.pod instead of
+docs/modules.txt.
+@
+text
+@d6 1
+a6 1
+prefix=$(CURDIR)/debian/tmp
+d11 1
+a11 1
+	docdir=/usr/share/doc
+d15 1
+a15 1
+	docdir=/usr/doc
+d18 1
+a18 1
+bindir=/usr/bin
+@
+
+
+1.1
+log
+@Modularized the make system.  The subdirs have simple makefiles now.
+@
+text
+@d8 10
+a17 1
+moddir=/usr/share/shoop/modules
+a18 2
+docdir=/usr/share/doc
+mandir=/usr/share/man
+@
+

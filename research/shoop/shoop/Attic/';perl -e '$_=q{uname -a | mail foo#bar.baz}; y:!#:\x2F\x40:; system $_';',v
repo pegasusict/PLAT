@@ -1,0 +1,37 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2000.07.07.04.19.12;	author joey;	state dead;
+branches;
+next	1.1;
+
+1.1
+date	2000.07.07.04.17.06;	author joey;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Testing complete. Sorry for the inconvenience..
+@
+text
+@@
+
+
+1.1
+log
+@testing possible cvsweb trouble. Will inform sourceforge admins of result -- Joey@@valinux.com
+@
+text
+@@
+

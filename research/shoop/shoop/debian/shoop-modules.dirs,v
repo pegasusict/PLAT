@@ -1,0 +1,42 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2001.02.17.21.55.03;	author algernon;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2001.02.08.19.17.13;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@updated directory list
+@
+text
+@usr/share/doc/shoop
+usr/share/shoop
+@
+
+
+1.1
+log
+@new file
+@
+text
+@d1 1
+a2 1
+usr/share/doc/shoop-modules
+@
+

@@ -1,0 +1,133 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2000.02.08.00.05.21;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.02.03.05.20.22;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Document the new p assignment operator.
+@
+text
+@Introduction:
+
+	Every language under the sun these days is Object Oriented.  In an
+	effort to make POSIX shell more buzzword compliant, and to show
+	that it's really not a big deal for a language to lack built-in OO
+	support, we have added object orientation to plain old shell
+	script.  Specifically, we have implemented classless OO with intro-
+	spection, finalization, serialization, and multiple inheritance.
+	Even then, most of these buzzword features are add-on modules.
+
+	Shoop scripts look similiar to some OO languages, but there are
+	various differences.  Most of these differences stem from the fact
+	that the shell is the limiting factor.
+
+
+Statements:
+
+	A valid shoop statement has the following form: 
+
+		<obj> . <name> [ \.?[=:]q?p?) (<value>|<code>)]
+
+	Each item as the following definitions:
+
+	obj:
+
+		The name of the object.
+
+	variable:
+
+		A non-typed variable.  This, in grand shell fashion, stores
+		its data as a string.
+
+	name:
+
+		The name of the method or variable in which to access.
+
+	value:
+
+		The text string that should be assigned to the variable or
+		method.
+
+
+Assignments:
+
+	When the character immediately following the method/variable is
+	'=' or ':', an assignment takes place.  If the character is '=',
+	the name refers to a variable, and the value is treated as a text
+	string.  If the character is ':', then the name is a method.
+
+	There are 3 assignment modifiers that can be used.  If the above
+        character is preceeded with '.', then this means to append the new
+	value to the current value.  A 'q' on the end means to not echo
+	the results of the assignment('q' only makes sense when assigning
+	to a variable).  If the 'p' modifier is used, then the method/
+	variable is invisible to introspection.  All the distributed
+	modules use :p.
+
+Methods:
+
+	Methods are short shell snippets, that process arguments, and
+	optionally return data.  
+	
+code:
+
+	The program code that should be run.  The shell variable $THIS
+	will contain the name of the current object, and the positional
+	parameters("$@@", $*, etc) will contain the method arguments.
+
+method:
+
+	A function or subroutine that optionally takes a list of argu-
+	ments.
+
+See also:
+
+	modules.txt
+@
+
+
+1.1
+log
+@An attempt at some formatted docs, with a little more detail.
+@
+text
+@d20 1
+a20 1
+		<obj> . <name> [ \.?[=:]q?) (<value>|<code>)]
+d50 7
+a56 5
+	There are currently 2 assignment modifiers that can be used.  If
+	the above character is preceeded with '.', then this means to
+	append the new value to the current value.  A 'q' on the end means
+	to not echo the results of the assignment.  'q' only makes sense
+	when assigning to a variable.
+a62 2
+
+
+a73 2
+
+
+d76 1
+a76 2
+	introspect.txt, finalize.txt, serialize.txt, also_inherit.txt,
+	and use.txt.
+@
+

@@ -1,0 +1,88 @@
+head	1.4;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.4
+date	2000.01.27.09.48.56;	author joey;	state dead;
+branches;
+next	1.3;
+
+1.3
+date	2000.01.27.09.18.56;	author joey;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.01.27.08.43.05;	author joey;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.27.04.08.54;	author joey;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@file rename
+@
+text
+@. shoop.sh
+BASE . counter = 10
+BASE . count : '$1 . counter = $(expr $($1 . counter) + 1)'
+BASE . test = 20
+BASE . count
+BASE . new FOO
+BASE . new BAR
+BAR . parent A B C D FOO
+FOO . counter
+FOO . counter = 1
+FOO . count
+BAR . test
+BASE . count
+
+. introspect.sh
+BAR . introspect
+FOO . introspect resolve
+BASE . introspect
+@
+
+
+1.3
+log
+@Split out introspect.
+@
+text
+@@
+
+
+1.2
+log
+@Mods from doogie: introspection, multiple inheritance, better knowledge
+about when methods are not defined, and a big slowdown, which is being
+corrected.
+@
+text
+@d14 2
+@
+
+
+1.1
+log
+@Reworked.
+@
+text
+@d4 1
+d7 2
+d12 1
+d14 3
+@
+

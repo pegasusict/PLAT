@@ -1,0 +1,149 @@
+head	1.3;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.3
+date	2001.03.08.19.02.12;	author doogie;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2001.03.01.22.20.01;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2001.02.20.23.07.56;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@Because t/regress used to munge variables, several false positives were
+being generated.  Now, these should all be fixed.
+@
+text
+@#!/bin/sh -e
+# Inheritance regression test. Also sets basic methods and variables.
+. ${SHOOPSH:-/usr/bin/shoop.sh}
+. ${SHOOPMOD:-/usr/share/shoop/modules}/use.sh
+
+
+ok "" 0 ""		OBJECT . use onexit
+
+# setup
+ok "" 0 ""		ONEXIT . new onexit
+ok "" 0 0		onexit . size
+
+# addition
+ok "" 0 ""		onexit . add echo 1
+ok "" 0 1		onexit . size
+ok "" 0 ""		onexit . add echo 2
+ok "" 0 2		onexit . size
+
+# fetching
+ok "" 0 "echo 2"	onexit . get 2
+ok "" 0 "echo 1"	onexit . get 1
+
+# insertion
+ok "" 0 ""		onexit . insert echo 3
+ok "" 0 3		onexit . size
+ok "" 0 "echo 3"	onexit . get 1
+ok "" 0 "echo 2"	onexit . get 3
+
+# pushing and popping
+ok "" 0 ""		onexit . push echo 4
+ok "" 0 4		onexit . size
+ok "" 0 ""		onexit . push echo 5
+ok "" 0 5		onexit . size
+ok "" 0 "echo 5"	onexit . pop
+ok "" 0 4		onexit . size
+ok "" 0 "echo 4"	onexit . get 4
+
+# running
+ok "a" 0 "3
+1
+2
+4
+"	onexit . run
+ok "" 0 "3
+1
+2
+4
+"	ONEXIT . run
+
+# multiple onexit objects
+ok "" 0 ""		ONEXIT . new onexit2
+ok "" 0 ""		onexit2 . add echo a
+ok "" 0 "a
+"		onexit2 . run
+
+# multiple onexit objects
+ok "" 0 ""		ONEXIT . inew onexit3
+ok "" 0 ""		onexit3 . add echo Z
+ok "" 0 "Z
+"		onexit3 . run
+
+# global runnings
+ok "" 0 "Z
+3
+1
+2
+4
+a
+"	ONEXIT . run
+
+# at exit
+#ok "" 0 "Z3124a"	exit
+
+tests 29
+@
+
+
+1.2
+log
+@Place new lines in the expected_output field, so that it can be properly
+checked for.
+@
+text
+@d39 1
+a39 1
+ok "" 0 "3
+d42 2
+a43 1
+4"	onexit . run
+d68 2
+a69 1
+a"	ONEXIT . run
+@
+
+
+1.1
+log
+@Add preliminary onexit module.  The code works, but it doesn't yet hook
+inself into running when the script exits.
+@
+text
+@d39 9
+a47 2
+ok "" 0 "3 1 2 4 "	onexit . run
+ok "" 0 "3 1 2 4 "	ONEXIT . run
+d52 2
+a53 1
+ok "" 0 "a "		onexit2 . run
+d58 2
+a59 1
+ok "" 0 "Z "		onexit3 . run
+d62 6
+a67 1
+ok "" 0 "Z 3 1 2 4 a "	ONEXIT . run
+@
+

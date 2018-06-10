@@ -1,0 +1,38 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2001.02.17.21.45.46;	author algernon;	state dead;
+branches;
+next	1.1;
+
+1.1
+date	2001.02.08.19.17.13;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@removed. there are no docs in shoop anymore.
+@
+text
+@docs/shoop.txt
+@
+
+
+1.1
+log
+@new file
+@
+text
+@@
+

@@ -1,0 +1,49 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2000.01.27.04.08.54;	author joey;	state dead;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.27.01.54.56;	author joey;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Reworked.
+@
+text
+@FOO_name () {
+	echo "foo"
+}
+FOO_hello () {
+	this=$1
+	echo "hello, world -- my name is `oosh $this name`"
+	oosh $this goodbye
+}
+FOO_goodbye () {
+	this=$1
+	echo "Bye now!"
+}
+@
+
+
+1.1
+log
+@Added. Crazy. :-)
+@
+text
+@@
+

@@ -1,0 +1,401 @@
+head	1.15;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.15
+date	2001.02.20.05.34.49;	author doogie;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2001.02.20.05.22.18;	author doogie;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2001.02.17.20.52.27;	author doogie;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2001.02.17.20.46.37;	author doogie;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2001.02.17.20.31.40;	author doogie;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2001.02.17.20.27.49;	author doogie;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2000.02.08.00.20.27;	author doogie;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2000.02.06.04.35.57;	author doogie;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2000.02.06.04.16.55;	author doogie;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2000.01.29.16.44.42;	author doogie;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2000.01.29.16.26.51;	author doogie;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2000.01.29.09.07.13;	author doogie;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.01.29.06.58.01;	author joey;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.01.29.06.06.12;	author joey;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.29.05.22.59;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.15
+log
+@Oodles of docs.
+@
+text
+@#!/bin/sh
+#                                                                               
+# Use module for shoop. Expands the OBJECT class with a method named use, 
+# that can import shoop modules, and prevents multiple definitions from
+# happenning.  It searches in the path defined in $THIS . usepath.
+# 
+# Example: OBJECT . use serialize destroy
+#
+# LGPL copyright 2000 by Adam Heath <doogie@@debian.org>
+
+## This module defines a convience method for importing shoop modules.
+## When passed the basename of a module(minus any path and .sh
+## extension), it will look for the first match in $SHOOPPATH.
+## 
+## Some additional methods and variables are provided thru an additional
+## _USE object.  These are:
+## 
+##>4
+##:findmodule <path> <module>;
+## looks thru the path trying
+## to find <module>.sh.
+## 
+##:recorduse
+## Set to 1 to record immediate dependencies of this module.
+## default = 1
+## 
+##:quiet
+## Set to 1 to not display an error when a module isn't found.
+## default = 0
+## 
+##:error
+## Set to 1 to return an error when a module isn't found.
+## default = 1
+##<
+
+OBJECT . usepath = $SHOOPPATH:. > /dev/null
+
+OBJECT . new _USE
+
+_USE . recorduse =q 1
+_USE . quiet =q 0
+_USE . error =q 1
+_USE . findmodule :p '
+	local oIFS="$IFS" IFS=: usepath
+	usepath="$1"; shift
+	for B in $usepath;do
+		IFS="$oIFS"
+		if [ -e $B/$1.sh ]; then
+			echo $B/$1.sh
+			break
+		fi
+	done
+'
+_USE . showdeps :p '
+	local A usepath="$($THIS . usepath)" module
+	for A in $(_USE . _record_ 2>/dev/null); do
+		module=$(_USE . findmodule "$usepath" $A)
+		if [ -z "$module" ]; then
+			echo "$A disappeared!" 1>&2
+		else
+			echo "$A: $module"
+		fi
+	done
+'
+IFS=" " OBJECT . use :p '
+	local A B usepath="$($THIS . usepath)" module recorduse
+	recorduse="$(_USE . recorduse 2>/dev/null)"
+	_USE . recorduse =q 0
+	for A in "$@@"; do
+		if [ -z "$(_USE . _used_$A 2>/dev/null)" ]; then
+			module=$(_USE . findmodule "$usepath" $A)
+			if [ "$module" ]; then
+				. $module
+				_USE . _used_ .=q " $A"
+				_USE . _used_$A =q 1
+				if [ "$recorduse" ]; then
+					_USE . _record_ .=q " $A"
+				fi
+			else
+				if [ ! "$(_USE quiet)" = 1 ]; then
+					echo "Could not find module $A" 1>&2
+				fi
+				if [ ! "$(_USE error 2>/dev/null)" = 1 ]; then
+					return 1
+				fi
+
+			fi
+		fi
+	done
+	return
+'
+_shoopuse_use=1
+@
+
+
+1.14
+log
+@Added 'queit' and 'error' variables to _USE.
+@
+text
+@d15 2
+a16 2
+## There is also '_USE . findmodule <path> <module>' convience method,
+## which looks thru the path trying to find <module>.sh.
+d18 17
+a34 3
+## If '_USE . recorduse' is set, then all top-level modules will get
+## recorded, and '_USE . showdeps' will print out a table of
+## module/path values.
+@
+
+
+1.13
+log
+@Add the ability to record the immediate dependencies of a program, and
+a way to show those dependencies.
+@
+text
+@d27 2
+d65 8
+@
+
+
+1.12
+log
+@Oops.  IFS wasn't been set/reset properly.
+@
+text
+@d17 4
+d26 1
+d28 2
+a29 2
+	local oIFS="$IFS" IFS=:
+	local usepath="$1"; shift
+d38 11
+d50 3
+a52 1
+	local A B usepath="$($THIS . usepath)" module
+d60 3
+@
+
+
+1.11
+log
+@Oops.  use.sh was used as a temporary file to type out the changelog entry
+for the last checkin.
+@
+text
+@a24 1
+	IFS="$oIFS"
+d26 1
+@
+
+
+1.10
+log
+@Add convience method '_USE . findmodule'.  Also, store all state variables
+in internal object _USE, instead of globally.
+@
+text
+@a47 3
+
+Add convience method '_USE . findmodule'.  Also, store all state variables
+in internal object _USE, instead of globally.
+@
+
+
+1.9
+log
+@Changed license to LGPL, and added preliminary inline document support.
+@
+text
+@d14 3
+d20 3
+a22 2
+IFS=" " OBJECT . use :p '
+	local A B usepath
+d24 1
+a24 1
+	usepath="$($THIS . usepath)"
+d26 9
+d36 7
+a42 9
+		if eval [ -z \"\$_shoopuse_$A\" ]; then
+			for B in $usepath;do
+				if [ -e $B/$A.sh ]; then
+					. $B/$A.sh
+					_shoopuse_="$_shoopuse_ $A"
+					eval "_shoopuse_$A=1"
+					break
+				fi
+			done
+d48 3
+@
+
+
+1.8
+log
+@Add support for declare methods and variables that are private, and are
+invisible to introspection.  Append 'p' to the '=' or ':'.
+@
+text
+@d8 7
+a14 2
+#                                                                               
+# GPL copyright 2000 by Adam Heath <doogie@@debian.org>
+@
+
+
+1.7
+log
+@Remove extraneous ';', as they detract from the code.
+@
+text
+@d12 1
+a12 1
+IFS=" " OBJECT . use : '
+@
+
+
+1.6
+log
+@Add 'returns' to all defined object methods.
+@
+text
+@d13 4
+a16 4
+	local A B usepath;
+	local oIFS="$IFS" IFS=:; 
+	usepath="$($THIS . usepath)";
+	IFS="$oIFS";
+d21 8
+a28 8
+					. $B/$A.sh;
+					_shoopuse_="$_shoopuse_ $A";
+					eval "_shoopuse_$A=1";
+					break;
+				fi;
+			done;
+		fi;
+	done;
+@
+
+
+1.5
+log
+@Save the value of $THIS . usepath in a local variable.
+@
+text
+@d28 2
+a29 1
+	done
+@
+
+
+1.4
+log
+@Add a variable 'usepath' to OBJECT, which use will look for external
+modules in.  The default value for this is '$SHOOPPATH:.'
+@
+text
+@d13 4
+a16 1
+	local A B;
+d19 1
+a19 1
+			for B in $(IFS=":" $THIS . usepath);do
+@
+
+
+1.3
+log
+@Lots of unimportant changes.
+@
+text
+@d4 2
+a5 2
+# use, that can import shoop modules, and prevents multiple difinitions
+# from happenning.
+d10 2
+d13 1
+a13 1
+	local A;
+d16 8
+a23 3
+			. $A.sh;
+			_shoopuse_="$_shoopuse_ $A";
+			eval "_shoopuse_$A=1";
+@
+
+
+1.2
+log
+@Lots of fixes to comments.
+@
+text
+@d20 1
+@
+
+
+1.1
+log
+@Add a 'OBJECT . use foo bar baz', which will import foo.sh, bar.sh, and
+baz.sh.  It makes sure that each module is only imported once.
+@
+text
+@d2 8
+@
+

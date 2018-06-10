@@ -1,0 +1,227 @@
+head	1.7;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.7
+date	2001.03.01.20.11.35;	author doogie;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2001.02.17.22.12.40;	author algernon;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2000.02.08.20.56.56;	author doogie;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2000.02.08.20.54.06;	author doogie;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.02.03.05.02.00;	author doogie;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.01.31.05.23.25;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.30.23.36.30;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.7
+log
+@Make shoop method sets and gets similiar in operation to shell method sets
+and gets.
+@
+text
+@#!/bin/sh
+DEF_PREP=". ${SHOOPSH:-/usr/share/shoop/shoop.sh}"
+
+bmcount ${ITERATIONS:-100}
+
+prep true
+bm 1 "internal variable sets" 'FOO=1'
+
+prep FOO=1
+bm 2 "internal variable gets" 'echo $FOO'
+
+prep true
+bm 3 "internal function sets" 'foo () { echo hi; }'
+
+prep 'foo () { echo hi; }'
+bm 4 "internal function gets" 'foo'
+
+prep $DEF_PREP
+bm 5 "shoop variable sets" 'OBJECT . foo = 1'
+
+prep $DEF_PREP
+prep OBJECT . foo = 1
+bm 6 "shoop variable gets" 'OBJECT . foo'
+
+prep $DEF_PREP
+bm 7 "shoop method sets" 'OBJECT . foo : "echo hi"'
+
+prep $DEF_PREP
+prep OBJECT . foo : "echo hi"
+bm 8 "shoop method gets" 'OBJECT . foo'
+
+prep $DEF_PREP
+prep OBJECT . foo : ":"
+prep OBJECT . new BAR
+bm 9 "shoop 1st-stage resolver method calls" 'BAR . foo'
+
+prep $DEF_PREP
+prep OBJECT . foo  : ':'
+prep OBJECT . new BAR
+prep BAR . new BLAH
+bm 10 "shoop 2nd-stage resolver method calls" 'BLAH . foo'
+
+prep $DEF_PREP
+prep _shoopnocache_=1
+prep OBJECT . foo  : ':'
+prep OBJECT . new BAR
+prep BAR . new BLAH
+
+bm 11 "shoop 2nd-stage(nocache) resolver method calls" 'BLAH . foo'
+
+prep OBJECT . foo  : 'echo hi'
+prep OBJECT . new BAR
+prep OBJECT . new BLAH
+prep OBJECT . new BAZ
+prep BAR . new A
+prep A . parent BAR BLAH OBJECT BAZ
+prepsave mi
+
+prepclear
+prep $DEF_PREP
+preprestore mi
+bm 12 "shoop multi-inheritance resolver method calls" 'A . foo'
+
+prep $DEF_PREP
+prep _shoopnocache_=1
+preprestore mi
+bm 13 "shoop multi-inheritance(nocache) resolver method calls" 'A . foo'
+
+prep $DEF_PREP
+prep _shoop_introspect=1
+
+bm 14 "shoop variable sets(with introspect)" 'OBJECT . foo = 1'
+
+prep $DEF_PREP
+prep OBJECT . foo : ":"
+prep OBJECT . new FOO
+prep FOO . new BAR
+bm 15 "shoop method sets not dumping cache" 'BAR . foo; OBJECT . foo : ":"'
+
+prep $DEF_PREP
+prep OBJECT . foo : ":"
+prep OBJECT . new FOO
+prep OBJECT . new BLAH
+prep FOO . new BAR
+bm 16 "shoop method sets dumping cache" 'BAR . foo; BLAH . foo : ":"'
+
+prep $DEF_PREP
+prep . ${SHOOPMOD:-/usr/share/shoop/modules}/use.sh
+prep OBJECT . use also_inherit
+prep OBJECT . new FOO
+prep FOO . new BAR
+prep BAR . new BLAH
+prep OBJECT . new A
+bm 17 "shoop multi-inheritance setting" 'FOO . also_inherit BLAH A'
+@
+
+
+1.6
+log
+@updated to new shoop.sh paths
+@
+text
+@d26 1
+a26 1
+bm 7 "shoop method sets" 'OBJECT . foo : ":"'
+d29 1
+a29 1
+prep OBJECT . foo : ":"
+@
+
+
+1.5
+log
+@Allow benchmark scripts to override the iteration count.
+@
+text
+@d2 1
+a2 1
+DEF_PREP=". ${SHOOPSH:-./shoop.sh}"
+@
+
+
+1.4
+log
+@Use ITERATIONS instead of count.
+@
+text
+@d3 2
+a4 1
+ITERATIONS=${ITERATIONS:-100}
+@
+
+
+1.3
+log
+@Add new module also_inherit, which walks the parent tree, looking for loops.
+This is currently not fully integrated with the system, and is just an
+addon module, that doesn't do anything.  Also added a benchmark for it.
+@
+text
+@d3 1
+a3 2
+count=100
+
+@
+
+
+1.2
+log
+@Added 2 more benchmarks to test setting and keeping cache.
+@
+text
+@d87 8
+@
+
+
+1.1
+log
+@Removed the benchmark code from the makefile, and created a benchmarking
+framework.
+@
+text
+@d57 1
+a57 1
+prepsave 12
+d61 1
+a61 1
+preprestore 12
+d66 1
+a66 1
+preprestore 12
+d73 14
+@
+

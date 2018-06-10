@@ -1,0 +1,142 @@
+head	1.6;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.6
+date	2001.02.24.01.42.01;	author doogie;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2000.02.08.00.20.27;	author doogie;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2000.02.06.04.35.57;	author doogie;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.02.06.04.16.55;	author doogie;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.01.29.10.57.18;	author joey;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.29.10.32.56;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.6
+log
+@Typo in comment.
+@
+text
+@#!/bin/sh
+#                                                                               
+# Pseudothread module for shoop. These aren't real threads (no shared data),
+# but they start up like threads.
+#
+# LGPL copyright 2000 by Adam Heath <doogie@@debian.org>
+
+OBJECT . new THREAD
+
+THREAD . start :p '
+	if [ -z "$($THIS . running)" ]; then
+		$THIS . run &
+		$THIS . pid = $! > /dev/null
+		$THIS . running = 1 > /dev/null
+	fi
+'
+THREAD . stop :p '
+	if [ -z "$($THIS . running)" ]; then
+		kill $($THIS . pid)
+	fi
+'
+THREAD . wait :p '
+	wait $($THIS . pid)
+'
+@
+
+
+1.5
+log
+@Changed license to LGPL, and added preliminary inline document support.
+@
+text
+@d3 1
+a3 1
+# Pseudothread module for shoop. These arn't real threads (no shared data),
+@
+
+
+1.4
+log
+@Add support for declare methods and variables that are private, and are
+invisible to introspection.  Append 'p' to the '=' or ':'.
+@
+text
+@d5 3
+a7 2
+#                                                                               
+# GPL copyright 2000 by Adam Heath <doogie@@debian.org>
+@
+
+
+1.3
+log
+@Remove extraneous ';', as they detract from the code.
+@
+text
+@d9 1
+a9 1
+THREAD . start : '
+d16 1
+a16 1
+THREAD . stop : '
+d21 1
+a21 1
+THREAD . wait : '
+@
+
+
+1.2
+log
+@them ain't real threads
+(added header)
+@
+text
+@d12 2
+a13 2
+		$THIS . pid = $! > /dev/null;
+		$THIS . running = 1 > /dev/null;
+d18 1
+a18 1
+		kill $($THIS . pid);
+d22 1
+a22 1
+	wait $($THIS . pid);
+@
+
+
+1.1
+log
+@Implemented simplistic threading support.
+@
+text
+@d2 5
+@
+

@@ -1,0 +1,90 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2001.03.02.07.31.04;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2001.03.02.06.54.39;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Moved all reference code out of shoop, and into a separate module.  All
+created references has OBJECT_REF as their primary parent, and multiple
+inheritance is used to support supplementary classes.  There areno docs
+yet, see the testing scripts as to how to use.
+@
+text
+@OBJECT . use list destroy
+LIST . new ALIST
+
+OBJECT . new ALIST_ENTRY
+ALIST_ENTRY . getkey = ""
+ALIST_ENTRY . getvalue = ""
+
+ALIST . newpair :p '
+	OBJECT_REF . _ref $1
+	eval local ref=\$$1;
+	shift
+	ALIST_ENTRY . new $ref
+	$ref . getkey =q "$1"
+	$ref . getvalue =q "$2"
+'
+
+ALIST . set :p '
+        local pos=$1 ref; shift
+	$THIS . newpair ref "$1" "$2"
+        set -- $($THIS . _order)
+        eval $THIS . _\$$pos =q \"\$ref\"
+'
+ALIST . getkey :p '
+	local pos="$1" ref=$($THIS . get "$1"); shift
+	$ref . getkey
+'
+ALIST . setkey :p '
+	local pos="$1" ref=$($THIS . get "$1"); shift
+	$ref . getkey = "$@@"
+'
+ALIST . getvalue :p '
+	local pos="$1" ref=$($THIS . get "$1"); shift
+	$ref . getvalue
+'
+ALIST . setvalue :p '
+	local pos="$1" ref=$($THIS . get "$1"); shift
+	$ref . getvalue = "$@@"
+'
+ALIST . drop :p '
+	local ref=$($THIS . get $1)
+	$ref . destroy
+	$THIS . super "$@@" >/dev/null
+'
+ALIST . delete :p '
+	$THIS . super "$@@" > /dev/null
+'
+@
+
+
+1.1
+log
+@An associative list module.  No docs yet, look at the test script to see
+how to use it.
+@
+text
+@d9 1
+a9 1
+	OBJECT . _ref $1
+@
+

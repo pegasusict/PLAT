@@ -1,0 +1,29 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2001.04.29.18.22.51;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@initial import
+@
+text
+@shwwwoop NEWS						-*- outline -*-
+=============
+
+* 0.1.0: Initial release. 
+A partial port of WebShell, with some enchancements, but
+slightly smaller feature set.
+@

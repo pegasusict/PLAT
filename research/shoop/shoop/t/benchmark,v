@@ -1,0 +1,294 @@
+head	1.12;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.12
+date	2001.06.20.19.49.24;	author doogie;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2001.03.01.23.38.49;	author doogie;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2001.03.01.20.10.18;	author doogie;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2001.03.01.20.08.08;	author doogie;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2001.03.01.19.10.35;	author doogie;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2000.02.12.10.05.59;	author doogie;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2000.02.08.20.56.56;	author doogie;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2000.02.08.00.20.27;	author doogie;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2000.02.06.04.24.43;	author doogie;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.02.06.04.07.39;	author doogie;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.02.03.05.00.01;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.30.23.36.30;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.12
+log
+@POSIX says that variable expansion happens first, before commands are run.
+This breaks 'local foo="$@@"'.  So, we separate the call to local, and the
+variable assignment, in the $@@ case.
+@
+text
+@#!/bin/sh -e
+# Benchmark suite (based on shoop/regress)
+#
+# LGPL copyright 2000 by Adam Heath <doogie@@debian.org>
+
+SHELL=$(basename ${SHELL:-bash})
+
+trap '[ "$tmp" ] && rm -f $tmp; exit' 2
+# Call this function to benchmark something.
+prep() {
+	if [ "$_bmprep_" ];then
+		_bmprep_="$_bmprep_;$@@"
+	else
+		_bmprep_="$@@"
+	fi
+}
+prepsave() {
+	eval _bmprep_$1=\"$_bmprep_\"
+}
+preprestore() {
+	eval _bmprep_=\"\$_bmprep_\; \$_bmprep_$1\"
+}
+prepclear() {
+	_bmprep_=""
+}
+
+bmcount() {
+	ITERATIONS=$1
+}
+
+bm () {
+
+	local name=$1 message=$2; shift 2
+	if eval [ -z \"\$_bms_$name\" ];then
+		eval "_bm_$name () { benchmark $ITERATIONS '$message' '$_bmprep_' '$@@'; }"
+		eval _bms_$name=1
+		_bmtest_="$_bmtest_ $name"
+		unset _bmprep_
+		_bmcount_=$(expr $_bmcount_ + 1)
+	fi
+
+}
+
+# Call this function last say how many tests you should have run.
+run () {
+	benchmark() {
+		local count=$1 message=$2 prep=$3
+		shift 3
+		local script; script="$@@"
+		if [ "$count" = done ]; then
+			return
+		fi
+		tmp=$(mktemp foo.XXXXXX)
+		printf "\t    : [$count] ($SHELL) $message\r"
+		/usr/bin/time -o $tmp -f "%E" $SHELL -c "
+				$prep;
+				count=$count;
+				while [ \$count -gt 0 ]; do
+					$script;
+					count=\$((\$count - 1));
+				done
+			" >/dev/null 2>&1 || true
+		cat $tmp|egrep -v '^Command ((stopped|terminated) by signal|exited with non-zero status) [0-9]*$'
+		rm -f $tmp
+	}
+	if [ "$1" ]; then
+		_bmtest_="$@@"
+	fi
+	for a in $_bmtest_;do
+		eval _bm_$a
+	done
+}
+
+if [ "$1" ]; then
+	_bmcount_=0
+	while [ $# -gt 0 ]; do
+		spoke=""
+		echo -n "Please wait.  Getting benchmark scripts .. "
+
+		. $1
+		echo "done(got $_bmcount_ scripts)."
+		run $2
+		shift 2
+	done
+fi
+@
+
+
+1.11
+log
+@Single quote the values inside the eval in bm(), so that variables don't
+get evalled too early.
+@
+text
+@d49 1
+a49 1
+		local script="$@@"
+@
+
+
+1.10
+log
+@Removed echo, and used printf.
+@
+text
+@d35 1
+a35 1
+		eval "_bm_$name () { benchmark $ITERATIONS \"$message\" \"$_bmprep_\" \"$@@\"; }"
+@
+
+
+1.9
+log
+@Remove unneeded echo from inner loop.
+@
+text
+@d54 1
+a54 1
+		echo -ne "\t    : [$count] ($SHELL) $message\r"
+@
+
+
+1.8
+log
+@Handle insanely large iteration values(>30000).
+@
+text
+@d59 1
+a59 1
+					echo -n \$a;$script;
+@
+
+
+1.7
+log
+@Removed an extra line.
+@
+text
+@a52 1
+		seq="$(seq -s ' ' 1 $count)"
+d57 2
+a58 1
+				for a in $seq; do
+d60 1
+@
+
+
+1.6
+log
+@Allow benchmark scripts to override the iteration count.
+@
+text
+@a83 1
+
+@
+
+
+1.5
+log
+@Changed license to LGPL, and added preliminary inline document support.
+@
+text
+@a6 1
+ITERATIONS=${ITERATIONS:-100}
+d25 4
+@
+
+
+1.4
+log
+@Added brief intros and copyrights to files.
+@
+text
+@d4 1
+a4 1
+# GPL copyright 2000 by Adam Heath <doogie@@debian.org>
+@
+
+
+1.3
+log
+@Remove tmp file on ctrl-c.
+@
+text
+@d3 3
+@
+
+
+1.2
+log
+@Tweak the formatting.
+@
+text
+@d6 1
+@
+
+
+1.1
+log
+@Removed the benchmark code from the makefile, and created a benchmarking
+framework.
+@
+text
+@d48 2
+a49 1
+		time=$(/usr/bin/time -o $tmp -f "%E" $SHELL -c "
+d54 2
+a55 3
+			"
+		)
+		time=$(cat $tmp)
+a56 1
+		echo -e "$time\t: [$count] ($SHELL) $message"
+@
+

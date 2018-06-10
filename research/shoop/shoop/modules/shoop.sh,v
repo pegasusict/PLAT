@@ -1,0 +1,26 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2001.03.05.10.09.15;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@shoop_command allows one to register additional commands, other than '.' or
+'d'.  It doesn't fully work, yet, however.  Also, the last checkin
+accidentally had the test script referenced in the makefile.
+@
+text
+@OBJECT . new SHOOP
+@

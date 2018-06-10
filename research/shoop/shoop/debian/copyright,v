@@ -1,0 +1,50 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2001.02.08.19.17.13;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@new file
+@
+text
+@This package was debianized by Gergely Nagy <8@@free.bsd.hu> on
+Wed, 31 Jan 2001 10:21:08 +0100.
+
+It was checked out from
+    :pserver:anonymous@@cvs.shoop.sourceforge.net:/cvsroot/shoop
+
+Upstream Authors: Joey Hess <joey@@kitenet.net>,
+		  Adam Heath <doogie@@debian.org>
+
+Copyright:
+
+    This package is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2 of the License, or (at your option) any later version.
+
+    This package is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this package; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+
+On Debian GNU/Linux systems, the complete text of the GNU Lesser General
+Public License can be found in `/usr/share/common-licenses/LGPL'.
+@

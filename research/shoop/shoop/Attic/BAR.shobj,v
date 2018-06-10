@@ -1,0 +1,46 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2000.01.27.04.08.54;	author joey;	state dead;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.27.01.54.56;	author joey;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Reworked.
+@
+text
+@BAR_parent () {
+	echo "FOO"
+}
+BAR_name () {
+	echo "bar"
+}
+BAR_goodbye () {
+	true
+}
+@
+
+
+1.1
+log
+@Added. Crazy. :-)
+@
+text
+@@
+

@@ -1,0 +1,241 @@
+head	1.7;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.7
+date	2001.07.07.12.42.04;	author algernon;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2001.03.02.18.31.58;	author doogie;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2001.03.02.07.52.24;	author doogie;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2001.03.02.07.50.13;	author doogie;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.02.13.02.47.35;	author doogie;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.02.12.12.29.49;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.02.12.12.07.59;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.7
+log
+@add back install.subdirs target explictly, make install somehow fails without it
+@
+text
+@#!/usr/bin/make -f
+#
+# This makefile needs GNU make.
+#
+
+inst_msg = echo Installing $(msg) from $< to $$\(prefix\)$$\($(thisdir)\)/$<.
+strip_comment_space = $(TOPDIR)/utils/shell-stripper
+this_dir := $(patsubst $(shell cd $(TOPDIR); /bin/pwd)/%,%,$(CURDIR))
+
+unexport clean_files clean_dirs
+install:\
+	installshowconfig\
+	install.subdirs\
+	installmodules.real\
+	installbins.real\
+	installdocs.real\
+	installexamples.real\
+
+$(patsubst %,install%.subdirs,modules bins docs examples dirs) install.subdirs: %.subdirs:
+ifdef SUBDIRS
+	set -e;\
+	for a in $(SUBDIRS); do\
+		$(MAKE) -C $$a $*;\
+	done
+endif
+
+$(patsubst %,install%,modules bins docs examples dirs): %: %.real %.subdirs
+
+installmodules.real	: $(patsubst %, $(prefix)$(moddir)/%,$(MODULES))
+installbins.real	: $(patsubst %, $(prefix)$(bindir)/%,$(BINS))
+installdocs.real	: $(patsubst %, $(prefix)$(docdir)/%,$(DOCS))
+installexamples.real	: $(patsubst %, $(prefix)$(empdir)/%,$(EXAMPLES))
+installdirs.real	: $(patsubst %,$(prefix)%,$(DIRS))
+
+installshowconfig:
+ifdef VERBOSE
+	echo "prefix is: $(prefix)"
+	echo "bindir is: $(bindir)"
+	echo "moddir is: $(moddir)"
+	echo
+endif
+
+$(patsubst %, $(prefix)$(moddir)/%,$(MODULES))	: msg=$(MODULES_MSG)
+$(patsubst %, $(prefix)$(bindir)/%,$(BINS))	: msg=$(BINS_MSG)
+$(patsubst %, $(prefix)$(docdir)/%,$(DOCS))	: msg=$(DOCS_MSG)
+$(patsubst %, $(prefix)$(empdir)/%,$(EXAMPLES))	: msg=$(EXAMPLES_MSG)
+$(patsubst %, $(prefix)$(moddir)/%,$(MODULES))	: thisdir=moddir
+$(patsubst %, $(prefix)$(bindir)/%,$(BINS))	: thisdir=bindir
+$(patsubst %, $(prefix)$(docdir)/%,$(DOCS))	: thisdir=docdir
+$(patsubst %, $(prefix)$(empdir)/%,$(EXAMPLES))	: thisdir=empdir
+
+ifneq ($(MODULES),)
+DIRS += $(moddir)
+$(patsubst %, $(prefix)$(moddir)/%,$(MODULES)): $(prefix)$(moddir)/%: % $(prefix)$(moddir) $(strip_comment_space)
+	$(inst_msg)
+	$(strip_comment_space) < $< > $@@
+endif
+
+ifneq ($(BINS),)
+DIRS += $(bindir)
+$(patsubst %, $(prefix)$(bindir)/%,$(BINS)): $(prefix)$(bindir)/%: % $(prefix)$(bindir) $(strip_comment_space)
+	$(inst_msg)
+	$(strip_comment_space) < $< > $@@
+	chmod +x $@@
+endif
+
+ifneq ($(DOCS),)
+DIRS += $(docdir)
+$(patsubst %, $(prefix)$(docdir)/%,$(DOCS)): $(prefix)$(docdir)/%: % $(prefix)$(docdir)
+	$(inst_msg)
+	install -m 644 $< $@@
+endif
+
+ifneq ($(EXAMPLES),)
+DIRS += $(empdir)
+$(patsubst %, $(prefix)$(empdir)/%,$(EXAMPLES)): $(prefix)$(empdir)/%: % $(prefix)$(empdir)
+	$(inst_msg)
+	install -m 644 $< $@@
+endif
+
+$(patsubst %,$(prefix)%,$(sort $(DIRS))): $(prefix)%:
+	echo Making dir $$\(prefix\)$*
+	mkdir -p $@@
+
+.PHONY: installshowconfig installdirs installdocs installbins installshare ChangeLog
+
+clean: clean.subdirs
+	echo Cleaning in $(this_dir)
+	if [ "$(clean_files)" ];then rm -f $(clean_files); fi
+	if [ "$(clean_dirs)" ];then rm -rf $(clean_dirs); fi
+
+modules_tmp: modules_tmp.subdirs
+	modules="$(patsubst %,$(this_dir)/%,$(MODULES))";\
+	if [ "$$modules" ]; then\
+		echo $$modules;\
+	fi >> $(TOPDIR)/$@@
+
+
+ifndef NOISY
+.SILENT:
+endif
+
+include $(TOPDIR)/Makefile.vars
+@
+
+
+1.6
+log
+@make -C modules installmodules.subdirs was not a valid target.
+@
+text
+@d19 1
+a19 1
+$(patsubst %,install%.subdirs,modules bins docs examples dirs): %.subdirs:
+@
+
+
+1.5
+log
+@Removed empty else blocks.
+@
+text
+@d19 1
+a19 1
+%.subdirs:
+@
+
+
+1.4
+log
+@Conditionally define each of the install targets.  Also, sort the install
+dirs, to shutup make.
+@
+text
+@a24 2
+else
+	
+a40 2
+else
+
+@
+
+
+1.3
+log
+@Move clean target to Makefile.rules.  Create docs/modules.pod instead of
+docs/modules.txt.
+@
+text
+@d56 2
+d61 1
+d63 2
+d69 1
+d71 2
+d76 1
+d78 2
+d83 1
+d85 1
+a85 1
+$(patsubst %,$(prefix)%,$(DIRS)): $(prefix)%:
+@
+
+
+1.2
+log
+@Re-add support for building docs/modules from the embedded perldoc.
+@
+text
+@d10 1
+a36 1
+
+d38 1
+d43 3
+d79 5
+d85 4
+a88 1
+	echo $(patsubst %,$(this_dir)/%,$(MODULES)) >> $(TOPDIR)/$@@
+@
+
+
+1.1
+log
+@Modularized the make system.  The subdirs have simple makefiles now.
+@
+text
+@d8 1
+d74 4
+@
+

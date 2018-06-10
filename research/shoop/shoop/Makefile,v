@@ -1,0 +1,1872 @@
+head	1.67;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.67
+date	2001.03.06.08.36.34;	author doogie;	state Exp;
+branches;
+next	1.66;
+
+1.66
+date	2001.03.05.18.50.19;	author doogie;	state Exp;
+branches;
+next	1.65;
+
+1.65
+date	2001.03.05.09.53.37;	author doogie;	state Exp;
+branches;
+next	1.64;
+
+1.64
+date	2001.03.02.07.36.53;	author doogie;	state Exp;
+branches;
+next	1.63;
+
+1.63
+date	2001.03.02.06.54.39;	author doogie;	state Exp;
+branches;
+next	1.62;
+
+1.62
+date	2001.03.02.06.35.59;	author doogie;	state Exp;
+branches;
+next	1.61;
+
+1.61
+date	2001.03.01.22.38.55;	author doogie;	state Exp;
+branches;
+next	1.60;
+
+1.60
+date	2001.03.01.20.17.25;	author doogie;	state Exp;
+branches;
+next	1.59;
+
+1.59
+date	2001.02.24.00.59.55;	author doogie;	state Exp;
+branches;
+next	1.58;
+
+1.58
+date	2001.02.22.18.24.53;	author doogie;	state Exp;
+branches;
+next	1.57;
+
+1.57
+date	2001.02.20.23.08.15;	author doogie;	state Exp;
+branches;
+next	1.56;
+
+1.56
+date	2001.02.20.07.13.18;	author doogie;	state Exp;
+branches;
+next	1.55;
+
+1.55
+date	2001.02.20.07.12.52;	author doogie;	state Exp;
+branches;
+next	1.54;
+
+1.54
+date	2001.02.03.18.46.16;	author doogie;	state Exp;
+branches;
+next	1.53;
+
+1.53
+date	2000.02.13.04.57.51;	author doogie;	state Exp;
+branches;
+next	1.52;
+
+1.52
+date	2000.02.13.04.32.22;	author doogie;	state Exp;
+branches;
+next	1.51;
+
+1.51
+date	2000.02.13.02.47.35;	author doogie;	state Exp;
+branches;
+next	1.50;
+
+1.50
+date	2000.02.12.12.32.58;	author doogie;	state Exp;
+branches;
+next	1.49;
+
+1.49
+date	2000.02.12.12.29.49;	author doogie;	state Exp;
+branches;
+next	1.48;
+
+1.48
+date	2000.02.12.12.07.59;	author doogie;	state Exp;
+branches;
+next	1.47;
+
+1.47
+date	2000.02.08.00.28.10;	author doogie;	state Exp;
+branches;
+next	1.46;
+
+1.46
+date	2000.02.06.23.00.21;	author doogie;	state Exp;
+branches;
+next	1.45;
+
+1.45
+date	2000.02.06.04.08.13;	author doogie;	state Exp;
+branches;
+next	1.44;
+
+1.44
+date	2000.02.03.05.09.21;	author doogie;	state Exp;
+branches;
+next	1.43;
+
+1.43
+date	2000.02.03.05.02.00;	author doogie;	state Exp;
+branches;
+next	1.42;
+
+1.42
+date	2000.01.31.07.54.58;	author doogie;	state Exp;
+branches;
+next	1.41;
+
+1.41
+date	2000.01.31.02.34.51;	author doogie;	state Exp;
+branches;
+next	1.40;
+
+1.40
+date	2000.01.31.02.04.51;	author doogie;	state Exp;
+branches;
+next	1.39;
+
+1.39
+date	2000.01.30.23.36.30;	author doogie;	state Exp;
+branches;
+next	1.38;
+
+1.38
+date	2000.01.30.23.30.40;	author doogie;	state Exp;
+branches;
+next	1.37;
+
+1.37
+date	2000.01.30.22.34.16;	author doogie;	state Exp;
+branches;
+next	1.36;
+
+1.36
+date	2000.01.29.22.06.29;	author joey;	state Exp;
+branches;
+next	1.35;
+
+1.35
+date	2000.01.29.20.19.02;	author doogie;	state Exp;
+branches;
+next	1.34;
+
+1.34
+date	2000.01.29.20.07.02;	author doogie;	state Exp;
+branches;
+next	1.33;
+
+1.33
+date	2000.01.29.19.42.34;	author doogie;	state Exp;
+branches;
+next	1.32;
+
+1.32
+date	2000.01.29.19.28.41;	author doogie;	state Exp;
+branches;
+next	1.31;
+
+1.31
+date	2000.01.29.19.23.37;	author doogie;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	2000.01.29.17.23.46;	author joey;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	2000.01.29.17.00.24;	author joey;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	2000.01.29.15.11.26;	author doogie;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	2000.01.29.14.13.43;	author doogie;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2000.01.29.14.03.39;	author joey;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2000.01.29.14.02.22;	author joey;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2000.01.29.14.01.20;	author joey;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2000.01.29.13.56.46;	author doogie;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2000.01.29.10.32.49;	author joey;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2000.01.29.10.32.11;	author joey;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2000.01.29.10.22.31;	author joey;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2000.01.29.10.04.25;	author joey;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2000.01.29.10.03.34;	author joey;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2000.01.29.08.25.33;	author doogie;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2000.01.29.08.08.43;	author doogie;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2000.01.29.08.06.15;	author doogie;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2000.01.29.06.58.01;	author joey;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2000.01.29.06.06.42;	author joey;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2000.01.29.04.19.18;	author joey;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2000.01.29.03.13.37;	author joey;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2000.01.28.09.06.05;	author doogie;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2000.01.27.14.25.26;	author joey;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2000.01.27.14.24.18;	author joey;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2000.01.27.11.54.05;	author joey;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2000.01.27.11.10.23;	author joey;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2000.01.27.11.01.45;	author joey;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2000.01.27.11.00.59;	author joey;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.01.27.11.00.47;	author joey;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.01.27.11.00.11;	author joey;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.27.10.18.13;	author joey;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.67
+log
+@This module contains 2 methods, ord and chr.  It also contains 2 variables,
+zero, which signifies whether the builtin command echo needs a leading
+zero when interpeting octal values during -e, and chars, which holds all
+256 characaters(with <space> as a placeholder for \0 and \210(ash bug)).
+@
+text
+@#!/usr/bin/make -f
+#
+# This makefile needs GNU make.
+#
+TOPDIR=$(CURDIR)
+prefix=$(CURDIR)/debian/shoop
+
+moddir=/usr/share/shoop/modules
+bindir=/usr/share/shoop
+docdir=/usr/share/doc/shoop
+mandir=/usr/share/man
+empdir=$(docdir)/examples
+
+MODULES_MSG=modules
+BINS_MSG=binary
+DOCS_MSG=documents
+EXAMPLES_MSG=examples
+MAN_MSG=man pages
+
+DIRS=$(bindir) $(moddir) $(docdir) $(docdir)/examples
+
+SUBDIRS=modules docs
+
+BINS=\
+	shoop.sh\
+	shoop2.sh\
+
+DOCS=\
+	COPYING\
+	TODO\
+	
+EXAMPLES=\
+	example.sh\
+
+PKG=shoop
+PKG_VER=0.1
+TOPDIR=.
+
+tinstall = $(CURDIR)/tmp-install
+
+all:
+	echo This makefile is only here to run benchmarks or examples,
+	echo or install shoop, or do regression tests.
+	echo \	make benchmark
+	echo \	make example
+	echo \	make install
+	echo \	make test
+
+test: SHELL=ash
+test:
+	$(MAKE) installmodules installbins prefix=$(tinstall)
+	cd $(tinstall); SHOOPPATH=$(tinstall)$(moddir)\
+			SHOOPMOD=$(tinstall)$(moddir)\
+			SHOOPSH=$(tinstall)$(bindir)/shoop.sh\
+			SHOOP2SH=$(tinstall)$(bindir)/shoop2.sh\
+			CURDIR=$(CURDIR)\
+			$(SHELL) $(CURDIR)/t/regress\
+			$(CURDIR)/t/shoop2.sh\
+			$(CURDIR)/t/ifs.sh\
+			$(CURDIR)/t/metachars.sh\
+			$(CURDIR)/t/super.sh\
+			$(CURDIR)/t/inheritance.sh\
+			$(CURDIR)/t/shoop_command.sh\
+			$(CURDIR)/t/ref.sh\
+			$(CURDIR)/t/list.sh\
+			$(CURDIR)/t/alist.sh\
+			$(CURDIR)/t/stack.sh\
+			$(CURDIR)/t/onexit.sh\
+			$(CURDIR)/t/serialize.sh\
+			$(CURDIR)/t/stringutil.sh\
+
+www-test1:
+	$(MAKE) installbins installmodules prefix=$(tinstall)
+	cd $(tinstall); SHOOPPATH=$(tinstall)$(moddir)\
+			SHOOPMOD=$(tinstall)$(moddir)\
+			SHOOPSH=$(tinstall)$(bindir)/shoop.sh\
+			SHOOP2SH=$(tinstall)$(bindir)/shoop2.sh\
+			CURDIR=$(CURDIR)\
+			$(SHELL) $(CURDIR)/t/benchmark\
+			$(CURDIR)/t/kbu.bm\
+			""
+
+www-test2:
+	$(MAKE) installbins installmodules prefix=$(tinstall)
+	cd $(tinstall); SHOOPPATH=$(tinstall)$(moddir)\
+			SHOOPMOD=$(tinstall)$(moddir)\
+			SHOOPSH=$(tinstall)$(bindir)/shoop.sh\
+			SHOOP2SH=$(tinstall)$(bindir)/shoop2.sh\
+			CURDIR=$(CURDIR)\
+			$(SHELL) $(CURDIR)/t/benchmark\
+			$(CURDIR)/t/kbhomes.bm\
+			""
+
+example:
+	$(MAKE) installbins installmodules prefix=$(tinstall)
+	cd $(tinstall); SHOOPPATH=$(tinstall)$(moddir)\
+			SHOOPMOD=$(tinstall)$(moddir)\
+			SHOOPSH=$(tinstall)$(bindir)/shoop.sh\
+			SHOOP2SH=$(tinstall)$(bindir)/shoop2.sh\
+			CURDIR=$(CURDIR)\
+			$(CURDIR)/example.sh
+
+benchmark:
+	$(MAKE) installbins installmodules prefix=$(tinstall)
+	cd $(tinstall); SHOOPPATH=$(tinstall)$(moddir)\
+			SHOOPMOD=$(tinstall)$(moddir)\
+			SHOOPSH=$(tinstall)$(bindir)/shoop.sh\
+			SHOOP2SH=$(tinstall)$(bindir)/shoop2.sh\
+			CURDIR=$(CURDIR)\
+			$(SHELL) $(CURDIR)/t/benchmark\
+			$(CURDIR)/t/benchmark.bm\
+			"$(bscr)"
+
+clean_dirs=$(tinstall)
+clean_files=*~ .\#* ChangeLog docs/modules.pod
+
+#
+# Author only targets are below
+#
+
+cvs-build:
+	rm -rf cvs-build
+	$(MAKE) ChangeLog
+	tar c --exclude CVS --exclude cvs-build . |\
+		(mkdir -p cvs-build/$(PKG)-$(PKG_VER);cd cvs-build/$(PKG)-$(PKG_VER);tar x)
+
+docs/modules.pod: utils/shelldoc $(MODULES)
+	rm -f modules_tmp
+	$(MAKE) modules_tmp
+	utils/shelldoc "SHOOP Modules" $$(cat modules_tmp) > $@@
+	rm -f modules_tmp
+
+docs/modules.txt: docs/modules.pod
+
+dyndocs: www/modules.html docs/modules.txt
+modules_title=SHOOP Modules
+
+%.txt: %.pod
+	pod2text < $< > $@@
+%.html: %.pod
+	pod2html --title "$($(*F)_title)"< $< > $@@
+
+www/modules.html: docs/modules.html
+	cp -a $< $@@
+
+clean_files+=www/modules.html docs/modules.txt docs/modules.html docs/modules.pod 
+clean_files+=pod2html-dircache pod2html-itemcache
+
+ChangeLog:
+	utils/mkChangeLog $@@
+
+include $(TOPDIR)/Makefile.rules
+
+.PHONY: docs/modules.pod
+@
+
+
+1.66
+log
+@Added early version of shoop2, a very enhanced definition syntax.  Not all
+features are supported yet.  This currently overlays on the old shoop code,
+which is suboptimal.
+@
+text
+@d70 1
+@
+
+
+1.65
+log
+@Add the metachars test, and reorder the tests, so that lower-order
+functionality and issues are checked first, before the high-level module
+tests.
+@
+text
+@d26 1
+d55 1
+d58 1
+d76 1
+d87 1
+d98 1
+d107 1
+@
+
+
+1.64
+log
+@Make the default SHELL for the test target ash, as it is the fastest shell.
+@
+text
+@d56 2
+a58 1
+			$(CURDIR)/t/ifs.sh\
+d60 1
+@
+
+
+1.63
+log
+@An associative list module.  No docs yet, look at the test script to see
+how to use it.
+@
+text
+@d48 1
+@
+
+
+1.62
+log
+@YAY!  super now works completely correctly.  The old code could not handle
+2(or more) super calls at once.  We also now have a set of tests for this.
+@
+text
+@d60 1
+@
+
+
+1.61
+log
+@Add IFS testing.
+@
+text
+@d55 1
+@
+
+
+1.60
+log
+@Use $(SHELL) when running benchmarks.
+@
+text
+@d55 1
+@
+
+
+1.59
+log
+@Enable the serialize module checker.
+@
+text
+@d68 1
+a68 1
+			$(CURDIR)/t/benchmark\
+d78 1
+a78 1
+			$(CURDIR)/t/benchmark\
+d96 1
+a96 1
+			$(CURDIR)/t/benchmark\
+@
+
+
+1.58
+log
+@Added support for object references.  'OBJECT . new myobj . ref' gives you
+the ability to do 'myobj . ref . foo'.
+@
+text
+@d60 1
+@
+
+
+1.57
+log
+@Add stack and onexit testing scripts.
+@
+text
+@d56 1
+@
+
+
+1.56
+log
+@make example actually works now.
+@
+text
+@d57 2
+@
+
+
+1.55
+log
+@Added LIST module.  No documentation yet.
+@
+text
+@d79 6
+a84 1
+	sh ./example.sh
+@
+
+
+1.54
+log
+@Changed some dirs around, thanks to Gergely Nagy.
+@
+text
+@d56 1
+@
+
+
+1.53
+log
+@Create www/modules.html, docs/modules.txt, and docs/modules.html, from
+docs/modules.pod.
+@
+text
+@d6 1
+a6 1
+prefix=$(CURDIR)/debian/tmp
+d9 2
+a10 2
+bindir=/usr/bin
+docdir=/usr/share/doc
+@
+
+
+1.52
+log
+@Use an external script to make the ChangeLog.
+@
+text
+@d109 15
+a123 1
+.PHONY: docs/modules.pod
+d129 2
+@
+
+
+1.51
+log
+@Move clean target to Makefile.rules.  Create docs/modules.pod instead of
+docs/modules.txt.
+@
+text
+@a102 12
+NAMES=$(shell\
+	awk '\
+		/^CVS:/{\
+			sub(/^CVS:/, "");\
+			printf "-u \"%s:", $$1;\
+			sub($$1 " ","");\
+			split($$0, A, / *[<>] */);\
+			printf "%s:%s\"\n", A[1], A[2]\
+			}\
+	' docs/AUTHORS)
+#endef
+
+d112 1
+a112 1
+	rcs2log $(NAMES) > $@@
+@
+
+
+1.50
+log
+@Oops.  shelldoc wants argv[0] to be the title.
+@
+text
+@d90 2
+a91 4
+clean:
+	echo Cleaning
+	rm -f *~ .#* ChangeLog
+	rm -rf $(tinstall)
+d115 1
+a115 1
+docs/modules.txt: utils/shelldoc $(MODULES)
+d121 1
+a121 1
+.PHONY: docs/modules.txt
+@
+
+
+1.49
+log
+@Re-add support for building docs/modules from the embedded perldoc.
+@
+text
+@d120 1
+a120 1
+	utils/shelldoc $$(cat modules_tmp) > $@@
+@
+
+
+1.48
+log
+@Modularized the make system.  The subdirs have simple makefiles now.
+@
+text
+@d118 6
+a123 1
+	utils/shelldoc $(MODULES) > $@@
+a125 1
+	echo $(NAMES)
+@
+
+
+1.47
+log
+@Auto-create docs/modules.txt from the embedded shelldoc in each module.
+@
+text
+@d5 1
+d14 6
+d22 2
+a26 10
+MODULES=\
+	destroy.sh\
+	final.sh\
+	introspect.sh\
+	prettyprint.sh\
+	serialize.sh\
+	thread.sh\
+	use.sh\
+	also_inherit.sh\
+
+a28 3
+	CONTRIBUTING\
+	MODULES\
+	README\
+a29 1
+	docs/modules.txt\
+a37 1
+strip_comment_space = $(TOPDIR)/utils/shell-stripper
+d49 19
+d72 4
+a75 2
+			$(CURDIR)/t/regress\
+			$(CURDIR)/t/*.sh\
+d85 1
+a94 51
+install: installmodules installbins installdocs installexamples
+
+installmodules	: $(patsubst %, $(prefix)$(moddir)/%,$(MODULES))
+installbins	: $(patsubst %, $(prefix)$(bindir)/%,$(BINS))
+installdocs	: $(patsubst %, $(prefix)$(docdir)/%,$(DOCS))
+installexamples	: $(patsubst %, $(prefix)$(empdir)/%,$(EXAMPLES))
+installdirs	: $(patsubst %,$(prefix)%,$(DIRS))
+
+installshowconfig:
+	echo "prefix is: $(prefix)"
+	echo "bindir is: $(bindir)"
+	echo "moddir is: $(moddir)"
+	echo
+
+$(patsubst %, $(prefix)$(moddir)/%,$(MODULES))	: msg=module
+$(patsubst %, $(prefix)$(bindir)/%,$(BINS))	: msg=binary
+$(patsubst %, $(prefix)$(docdir)/%,$(DOCS))	: msg=doc
+$(patsubst %, $(prefix)$(empdir)/%,$(EXAMPLES))	: msg=examples
+$(patsubst %, $(prefix)$(moddir)/%,$(MODULES))	: thisdir=moddir
+$(patsubst %, $(prefix)$(bindir)/%,$(BINS))	: thisdir=bindir
+$(patsubst %, $(prefix)$(docdir)/%,$(DOCS))	: thisdir=docdir
+$(patsubst %, $(prefix)$(empdir)/%,$(EXAMPLES))	: thisdir=empdir
+
+
+inst_msg = echo Installing $(msg) from $< to $$\(prefix\)$$\($(thisdir)\)/$<.
+
+strip_comment_space = $(TOPDIR)/utils/shell-stripper
+
+$(patsubst %, $(prefix)$(moddir)/%,$(MODULES)): $(prefix)$(moddir)/%: % $(prefix)$(moddir) $(strip_comment_space)
+	$(inst_msg)
+	$(strip_comment_space) < $< > $@@
+
+$(patsubst %, $(prefix)$(bindir)/%,$(BINS)): $(prefix)$(bindir)/%: % $(prefix)$(bindir) $(strip_comment_space)
+	$(inst_msg)
+	$(strip_comment_space) < $< > $@@
+	chmod +x $@@
+
+$(patsubst %, $(prefix)$(docdir)/%,$(DOCS)): $(prefix)$(docdir)/%: % $(prefix)$(docdir)
+	$(inst_msg)
+	install -m 644 $< $@@
+
+$(patsubst %, $(prefix)$(empdir)/%,$(EXAMPLES)): $(prefix)$(empdir)/%: % $(prefix)$(empdir)
+	$(inst_msg)
+	install -m 644 $< $@@
+
+$(patsubst %,$(prefix)%,$(DIRS)): $(prefix)%:
+	echo Making dir $$\(prefix\)$*
+	mkdir -p $@@
+
+.PHONY: installshowconfig installdirs installdocs installbins installshare ChangeLog
+
+d114 1
+a114 1
+	' AUTHORS)
+d124 1
+a124 4
+ifndef NOISY
+.SILENT:
+endif
+
+@
+
+
+1.46
+log
+@The BINS and MODULES install targets now depend on shell-stripper.
+@
+text
+@d34 2
+a35 1
+
+d152 3
+d162 1
+@
+
+
+1.45
+log
+@Don't install everything when just running tests or benchmarks.
+@
+text
+@d106 1
+a106 1
+$(patsubst %, $(prefix)$(moddir)/%,$(MODULES)): $(prefix)$(moddir)/%: % $(prefix)$(moddir)
+d110 1
+a110 1
+$(patsubst %, $(prefix)$(bindir)/%,$(BINS)): $(prefix)$(bindir)/%: % $(prefix)$(bindir)
+@
+
+
+1.44
+log
+@Modified to run tests in a tmp install dir, the same way that benchmarks
+are done.
+@
+text
+@d54 1
+a54 1
+	$(MAKE) install prefix=$(tinstall)
+d65 1
+a65 1
+	$(MAKE) install prefix=$(tinstall)
+d78 1
+a78 1
+install: installshare installbins installdocs installexamples
+d80 1
+a80 1
+installshare	: $(patsubst %, $(prefix)$(moddir)/%,$(MODULES))
+@
+
+
+1.43
+log
+@Add new module also_inherit, which walks the parent tree, looking for loops.
+This is currently not fully integrated with the system, and is just an
+addon module, that doesn't do anything.  Also added a benchmark for it.
+@
+text
+@d43 1
+a43 1
+binstall = $(CURDIR)/benchmark-dir
+d54 6
+a59 1
+	t/regress t/*.sh
+d65 4
+a68 3
+	$(MAKE) install prefix=$(binstall)
+	cd $(binstall); SHOOPPATH=$(binstall)$(moddir)\
+			SHOOPSH=$(binstall)$(bindir)/shoop.sh\
+d76 1
+a76 1
+	rm -rf $(binstall)
+@
+
+
+1.42
+log
+@Improve the formatting a bit.
+@
+text
+@d26 1
+@
+
+
+1.41
+log
+@Removed @@ from the makefile.
+@
+text
+@d60 5
+a64 1
+	cd $(binstall); SHOOPSH=$(binstall)$(bindir)/shoop.sh $(CURDIR)/t/benchmark $(CURDIR)/t/benchmark.bm ""
+@
+
+
+1.40
+log
+@Use perl script shell-stripper to clean when installing.  Also some
+formatting changes.
+@
+text
+@d45 6
+a50 6
+	@@echo This makefile is only here to run benchmarks or examples,
+	@@echo or install shoop, or do regression tests.
+	@@echo \	make benchmark
+	@@echo \	make example
+	@@echo \	make install
+	@@echo \	make test
+d53 1
+a53 1
+	@@t/regress t/*.sh
+d56 1
+a56 1
+	@@sh ./example.sh
+d76 4
+a79 4
+	@@echo "prefix is: $(prefix)"
+	@@echo "bindir is: $(bindir)"
+	@@echo "moddir is: $(moddir)"
+	@@echo
+d96 2
+a97 2
+	@@$(inst_msg)
+	@@$(strip_comment_space) < $< > $@@
+d100 3
+a102 3
+	@@$(inst_msg)
+	@@$(strip_comment_space) < $< > $@@
+	@@chmod +x $@@
+d105 2
+a106 2
+	@@$(inst_msg)
+	@@install -m 644 $< $@@
+d109 2
+a110 2
+	@@$(inst_msg)
+	@@install -m 644 $< $@@
+d113 2
+a114 2
+	@@echo Making dir $$\(prefix\)$*
+	@@mkdir -p $@@
+@
+
+
+1.39
+log
+@Removed the benchmark code from the makefile, and created a benchmarking
+framework.
+@
+text
+@d39 4
+a57 1
+binstall = $(CURDIR)/benchmark-dir
+d93 2
+a94 1
+strip_comment_space = egrep -v '^([	 ]*\#.*|[	 ]*)$$'
+d97 1
+a97 1
+	@@$(strip_comment_space) $< |(echo "#!/bin/sh -e";cat) > $@@
+d101 1
+a101 1
+	@@$(strip_comment_space) $< |(echo "#!/bin/sh -e";cat) > $@@
+a115 1
+
+d130 8
+a137 7
+	/^CVS:/{\
+	sub(/^CVS:/, "");\
+	printf "-u \"%s:", $$1;\
+	sub($$1 " ","");\
+	split($$0, A, / *[<>] */);\
+	printf "%s:%s\"\n", A[1], A[2]}\
+' AUTHORS)
+@
+
+
+1.38
+log
+@Fix removing of the benchmark install directory, and add an echo to clean.
+@
+text
+@a39 20
+TIME=/usr/bin/time -f "%E" 
+ITERATIONS=1000
+SEQ=$(shell seq 1 $(ITERATIONS)) 
+DEF_PREP = . ./shoop.sh
+
+# run_command msg, prep code, loop code
+benchmark = @@
+ifeq ($(NOBASH),)
+benchmark += \
+	echo -n "bash: $(ITERATIONS) $(1): ";$(TIME) bash -c "$(2); \
+	for x in $(SEQ); do $(3); done " > /dev/null ;\
+
+endif
+ifeq ($(NOASH),)
+benchmark += \
+	echo -n "ash : $(ITERATIONS) $(1): ";$(TIME) ash -c "$(2); \
+	for x in $(SEQ); do $(3); done " > /dev/null\
+
+endif
+
+d54 1
+a54 2
+
+binstall = benchmark-dir
+d57 1
+a57 86
+	$(MAKE) benchmark-install\
+		SHOOPPATH="$(binstall)/$(moddir)"\
+		DEF_PREP=". $(binstall)/$(bindir)/shoop.sh" 
+#	rm -rf $(binstall)
+	
+benchmark-install:
+#	$(int_var_set)
+#	$(int_var_get)
+#	$(int_fun_set)
+#	$(int_fun_get)
+#	$(shp_var_set)
+#	$(shp_var_get)
+#	$(shp_mth_set)
+#	$(shp_mth_get)
+	$(1st_stg_res)
+	$(2nd_stg_res)
+	$(2nd_stg_noc)
+#	$(mul_inh_res)
+#	$(mul_inh_noc)
+#	$(shp_set_int)
+int_var_set = $(call benchmark,internal variable sets                                 ,\
+		true,\
+		FOO=$x)
+int_var_get = $(call benchmark,internal variable gets                                 ,\
+		FOO=1,\
+		echo FOO)
+int_fun_set = $(call benchmark,internal function sets                                 ,\
+		:,\
+		foo () { echo hi; })
+int_fun_get = $(call benchmark,internal function calls                                ,\
+		foo () { echo hi; },\
+		foo)
+shp_var_set = $(call benchmark,shoop variable sets                                    ,\
+		$(DEF_PREP),\
+		OBJECT . foo = 1)
+shp_var_get = $(call benchmark,shoop variable gets                                    ,\
+		$(DEF_PREP); OBJECT . foo = $x,\
+		OBJECT . foo)
+shp_mth_set = $(call benchmark,shoop method sets                                      ,\
+		$(DEF_PREP) ,\
+		OBJECT . foo : '')
+shp_msg_get = $(call benchmark,shoop method calls                                     ,\
+		$(DEF_PREP); OBJECT . foo : 'echo hi;return',\
+		OBJECT . foo)
+# OBJECT . foo
+#  BAR
+1st_stg_res = $(call benchmark,shoop 1st-stage resolver method calls                  ,\
+		$(DEF_PREP); OBJECT . foo  : 'echo hi;return'; OBJECT . new BAR ,\
+		BAR . foo)
+# OBJECT . foo
+#  BAR
+#   BLAH
+2nd_stg_res = $(call benchmark,shoop 2nd-stage resolver method calls                  ,\
+		$(DEF_PREP);\
+OBJECT . foo  : 'echo hi;return';\
+OBJECT . new BAR;\
+BAR . new BLAH\
+		,BLAH . foo)
+2nd_stg_noc = $(call benchmark,shoop 2nd-stage(nocache) resolver method calls         ,\
+		$(DEF_PREP);_shoopnocache_=1;OBJECT . foo  : 'echo hi;return';OBJECT . new BAR;BAR . new BLAH,\
+		BLAH . foo)
+# OBJECT . foo
+#  BAR
+#   A
+#  BLAH
+#   A
+#  A
+#  BAZ
+#   A
+test12prep=\
+OBJECT . foo  : 'echo hi;return'; \
+OBJECT . new BAR;\
+OBJECT . new BLAH;\
+OBJECT . new BAZ;\
+BAR . new A;\
+A . parent BAR BLAH OBJECT BAZ\
+
+mul_inh_res = $(call benchmark,shoop multi-inheritance resolver method calls         ,\
+		$(DEF_PREP), $(test12prep),\
+		A . random 2>/dev/null || true)
+mul_inh_noc = $(call benchmark,shoop multi-inheritance(nocache) resolver method calls,\
+		$(DEF_PREP), _shoopcache_=1; $(test12prep),\
+		A . random 2>/dev/null || true)
+shp_set_int = $(call benchmark,shoop variable sets (with introspect)                 ,\
+		$(DEF_PREP); _shoop_introspect=1,\
+		OBJECT . foo = 1)
+@
+
+
+1.37
+log
+@Benchmark now installs the files in a tmp dir, before running.  If the
+variable NOISY isn't set, put the makefile into SILENT mode.  Added new
+benchmarks: 2nd-stage(nocache) resolver, and multi-inheritance(nocache)
+resolver.
+@
+text
+@d166 3
+a168 1
+	rm -f *~ .#* ChangeLog $(binstall)
+@
+
+
+1.36
+log
+@Simplified calling of regress
+@
+text
+@d76 1
+a76 1
+benchmark-install:
+d78 1
+a78 1
+	$(MAKE) benchmark\
+d81 1
+a81 1
+	rm -rf $(binstall)
+d83 16
+a98 15
+benchmark:
+	$(test1)
+	$(test2)
+	$(test3)
+	$(test4)
+	$(test5)
+	$(test6)
+	$(test7)
+	$(test8)
+	$(test9)
+	$(test10)
+	$(test11)
+	$(test12)
+
+test1 = $(call benchmark,internal variable sets                       ,\
+d101 1
+a101 2
+
+test2 = $(call benchmark,internal variable gets                       ,\
+d104 1
+a104 1
+test3 = $(call benchmark,internal function sets                       ,\
+d107 1
+a107 1
+test4 = $(call benchmark,internal function calls                      ,\
+d110 1
+a110 1
+test5 = $(call benchmark,shoop variable sets                          ,\
+d113 1
+a113 1
+test6 = $(call benchmark,shoop variable gets                          ,\
+d116 1
+a116 1
+test7 = $(call benchmark,shoop method sets                            ,\
+d119 1
+a119 1
+test8 = $(call benchmark,shoop method calls                           ,\
+d124 2
+a125 2
+test9 = $(call benchmark,shoop 1st-stage resolver method calls        ,\
+		$(DEF_PREP); OBJECT . foo  : 'echo hi;return'; OBJECT . new BAR,\
+d130 8
+a137 2
+test10 = $(call benchmark,shoop 2nd-stage resolver method calls        ,\
+		$(DEF_PREP); OBJECT . foo  : 'echo hi;return'; OBJECT . new BAR; BAR . new BLAH,\
+d147 2
+a148 2
+test11 = $(call benchmark,shoop multi-inheritance resolver method calls,\
+		$(DEF_PREP); OBJECT . foo  : echo hi\;return; \
+d153 4
+a156 1
+A . parent BAR BLAH OBJECT BAZ,\
+d158 4
+a161 1
+test12 = $(call benchmark,shoop variable sets (with introspect)        ,\
+d243 4
+@
+
+
+1.35
+log
+@Fixed spacing on introspection test.  Added new target, benchmark-install,
+which installs shoop into a tmp dir, then benchmarks it from there.  The
+installed scripts have blank lines and comment lines removed, as this speeds
+them up.
+@
+text
+@d69 1
+a69 1
+	@@for f in t/*.sh; do t/regress $$f; done
+@
+
+
+1.34
+log
+@Fix blank line stripping during install.
+@
+text
+@d75 8
+d149 1
+a149 1
+test12 = $(call benchmark,shoop variable sets (with introspect)     ,\
+d154 1
+a154 1
+	rm -f *~ .#* ChangeLog
+@
+
+
+1.33
+log
+@Fix benchmarks, and remove blank lines from shoop when installing.
+@
+text
+@d172 1
+a172 3
+define inst_msg
+	echo Installing $(msg) from $< to $$\(prefix\)$$\($(thisdir)\)/$<.
+endef
+d174 1
+d177 6
+a182 1
+	@@egrep -v '([ 	]*#|^[ 	]*$)' $< |(echo "#!/bin/sh -e";cat) > $@@
+a195 4
+$(patsubst %, $(prefix)$(bindir)/%,$(BINS)): $(prefix)$(bindir)/%: % $(prefix)$(bindir)
+	@@$(inst_msg)
+	@@egrep -v '([ 	]*#|^[ 	]*$)' $< |(echo "#!/bin/sh -e";cat) > $@@
+	@@chmod +x $@@
+@
+
+
+1.32
+log
+@Remove the generated ChangeLog
+@
+text
+@d48 1
+a48 1
+benchmark = \
+d178 1
+a178 1
+	@@egrep -v '[ 	]*#' $< |(echo "#!/bin/sh -e";cat) > $@@
+d194 1
+a194 1
+	@@egrep -v '[ 	]*#' $< |(echo "#!/bin/sh -e";cat) > $@@
+@
+
+
+1.31
+log
+@Added tests "internal function set," "method set," and "multi-inheritance
+resolver."  Defined all tests as variables, so it is easier to selectively
+enable and disable them.  Added NOBASH and NOASH variables, that when set
+to one, disable that shell from being used in the test.
+@
+text
+@d146 1
+a146 1
+	rm -f *~ .#*
+@
+
+
+1.30
+log
+@Regression tests.
+@
+text
+@d46 2
+d49 2
+a50 4
+	@@echo -n "bash: $(ITERATIONS) $(1): ";$(TIME) bash -c "$(2); \
+	for x in $(SEQ); do $(3); done " > /dev/null ; \
+	 echo -n "ash : $(ITERATIONS) $(1): ";$(TIME) ash -c "$(2); \
+	for x in $(SEQ); do $(3); done " > /dev/null
+d52 7
+a58 1
+nobenchmark =
+d74 1
+d76 14
+a89 1
+	$(call benchmark,internal variable sets                    ,\
+d92 2
+a93 1
+	$(call benchmark,internal variable gets                    ,\
+d96 4
+a99 1
+	$(call benchmark,internal function calls                   ,\
+d102 1
+a102 1
+	$(call benchmark,shoop variable sets                       ,\
+d105 1
+a105 1
+	$(call benchmark,shoop variable gets                       ,\
+d108 5
+a112 2
+	$(call benchmark,shoop method calls                        ,\
+		$(DEF_PREP); OBJECT . foo : echo hi,\
+d114 4
+a117 2
+	$(call benchmark,shoop resolver method calls               ,\
+		$(DEF_PREP); OBJECT . foo  : echo hi; OBJECT . new BAR,\
+d119 5
+a123 2
+	$(call benchmark,shoop multi-level resolver method calls   ,\
+		$(DEF_PREP); OBJECT . foo  : echo hi; OBJECT . new BAR; BAR . new BLAH,\
+d125 17
+a141 1
+	$(call benchmark,shoop variable sets (with introspect)     ,\
+d144 1
+a144 1
+	
+@
+
+
+1.29
+log
+@added regression tests.
+@
+text
+@d63 1
+a63 1
+	for f in t/*.sh; do t/regress $$f; done
+@
+
+
+1.28
+log
+@Enabled all the benchmarks.  Added author only makefile targets.
+@
+text
+@d56 1
+a56 1
+	@@echo or install shoop.
+d60 4
+a64 1
+test: example
+@
+
+
+1.27
+log
+@Install the examples.
+@
+text
+@d37 3
+d41 1
+a41 1
+ITERATIONS=100 
+d66 1
+a66 1
+	$(call nobenchmark,internal variable sets                    ,\
+d69 1
+a69 1
+	$(call nobenchmark,internal variable gets                    ,\
+d72 1
+a72 1
+	$(call nobenchmark,internal function calls                   ,\
+d75 1
+a75 1
+	$(call nobenchmark,shoop variable sets                       ,\
+d78 1
+a78 1
+	$(call nobenchmark,shoop variable gets                       ,\
+d81 1
+a81 1
+	$(call nobenchmark,shoop method calls                        ,\
+d84 1
+a84 1
+	$(call nobenchmark,shoop resolver method calls               ,\
+d90 1
+a90 1
+	$(call nobenchmark,shoop variable sets (with introspect)     ,\
+d146 26
+a171 1
+.PHONY: installshowconfig installdirs installdocs installbins installshare  
+@
+
+
+1.26
+log
+@more indentation
+@
+text
+@d11 1
+d34 1
+a34 1
+EXAMPLE=\
+d94 1
+a94 1
+install: installshare installbins installdocs
+d96 5
+a100 4
+installshare: $(patsubst %, $(prefix)$(moddir)/%,$(MODULES))
+installbins: $(patsubst %, $(prefix)$(bindir)/%,$(BINS))
+installdocs: $(patsubst %, $(prefix)$(docdir)/%,$(DOCS))
+installdirs: $(patsubst %,$(prefix)%,$(DIRS))
+d111 1
+d115 1
+a116 4
+$(prefix)$(moddir)/%		: thisdir=moddir
+$(prefix)$(bindir)/$(SHOOP)	: thisdir=bindir
+$(prefix)$(docdir)/%		: thisdir=moddir
+$(prefix)$(docdir)/$(SHOOP)	: thisdir=bindir
+d130 4
+d135 1
+a135 1
+	@@echo Making dir $*
+@
+
+
+1.25
+log
+@help message update
+@
+text
+@d15 1
+a15 1
+shoop.sh\
+d34 1
+a34 1
+example.sh\
+@
+
+
+1.24
+log
+@minor indentations and reorganizations
+@
+text
+@d51 5
+a55 2
+	@@echo This makefile is only here to run benchmarks or examples.
+	@@echo \"make benchmark\" or \"make example\" will do that.
+@
+
+
+1.23
+log
+@Added install targets.
+@
+text
+@a4 6
+TIME=/usr/bin/time -f "%E"
+ITERATIONS=100
+SEQ=$(shell seq 1 $(ITERATIONS))
+DEF_PREP = . ./shoop.sh
+
+
+d18 7
+a24 7
+destroy.sh\
+final.sh\
+introspect.sh\
+prettyprint.sh\
+serialize.sh\
+thread.sh\
+use.sh\
+d27 5
+a31 5
+COPYING\
+CONTRIBUTING\
+MODULES\
+README\
+TODO\
+d36 4
+@
+
+
+1.22
+log
+@line up colons
+@
+text
+@d1 4
+a4 1
+ #!/usr/bin/make -f
+d7 1
+a7 1
+SEQ=\$$(seq 1 $(ITERATIONS))
+d9 34
+d73 1
+a73 1
+	$(call benchmark,shoop variable gets                       ,\
+d76 1
+a76 1
+	$(call benchmark,shoop method calls                        ,\
+d79 1
+a79 1
+	$(call benchmark,shoop resolver method calls               ,\
+d91 48
+@
+
+
+1.21
+log
+@benchmark bash and ash, they can be quite different.
+@
+text
+@d10 1
+a10 1
+	echo -n "ash:  $(ITERATIONS) $(1): ";$(TIME) ash -c "$(2); \
+@
+
+
+1.20
+log
+@clean cvs trash
+@
+text
+@a5 1
+SH=sh
+d7 4
+a10 1
+benchmark = @@echo -n "$(ITERATIONS) $(1): ";$(TIME) $(SH) -c "$(2); \
+@
+
+
+1.19
+log
+@typo
+@
+text
+@d51 1
+a51 1
+	rm -f *~
+@
+
+
+1.18
+log
+@Made it a bit clearer how benchmarks are disabled.
+Don't need that variable anymore.
+@
+text
+@d11 1
+a11 1
+nobenchmark2 =
+@
+
+
+1.17
+log
+@Disable some benchmarks.
+@
+text
+@a5 1
+DEF_PREP_I = . ./shoop.sh; _shoop_introspect=1
+d11 1
+a11 1
+benchmark2 =
+d22 1
+a22 1
+	$(call benchmark2,internal variable sets                    ,\
+d25 1
+a25 1
+	$(call benchmark2,internal variable gets                    ,\
+d28 1
+a28 1
+	$(call benchmark2,internal function calls                   ,\
+d31 1
+a31 1
+	$(call benchmark2,shoop variable sets                       ,\
+d34 1
+a34 1
+	$(call benchmark2,shoop variable gets                       ,\
+d46 2
+a47 2
+	$(call benchmark2,shoop variable sets (with introspect)     ,\
+		$(DEF_PREP_I),\
+@
+
+
+1.16
+log
+@Fix unterminated function.
+@
+text
+@d3 1
+a3 1
+ITERATIONS=1000
+d12 2
+d23 1
+a23 1
+	$(call benchmark,internal variable sets                    ,\
+d26 1
+a26 1
+	$(call benchmark,internal variable gets                    ,\
+d29 1
+a29 1
+	$(call benchmark,internal function calls                   ,\
+d32 1
+a32 1
+	$(call benchmark,shoop variable sets                       ,\
+d35 1
+a35 1
+	$(call benchmark,shoop variable gets                       ,\
+d44 1
+a44 1
+	$(call benchmark,shoop multi-level resolver method calls,\
+d47 1
+a47 1
+	$(call benchmark,shoop variable sets (with introspect)     ,\
+@
+
+
+1.15
+log
+@Add resolver benchmarks, and format the makefile.
+@
+text
+@d21 2
+a22 2
+	$(call benchmark,internal variable sets                    , \
+		true, \
+d46 1
+a46 1
+		$(DEF_PREP_I),
+@
+
+
+1.14
+log
+@Lots of unimportant changes.
+@
+text
+@d21 14
+a34 5
+	$(call benchmark,internal variable sets , true , FOO=$x)
+	$(call benchmark,internal variable gets , FOO=1 , echo FOO)
+	$(call benchmark,internal function calls, foo () { echo hi; } , foo)
+	$(call benchmark,shoop variable sets, $(DEF_PREP) , OBJECT . foo = 1)
+	$(call benchmark,shoop variable gets, $(DEF_PREP); OBJECT . foo = $x , \
+d36 2
+a37 1
+	$(call benchmark,shoop method calls , $(DEF_PREP); OBJECT . foo : echo hi , \
+d39 9
+a47 1
+	$(call benchmark,shoop variable sets (with introspect), $(DEF_PREP_I) , OBJECT . foo = 1)
+@
+
+
+1.13
+log
+@clean
+@
+text
+@d29 1
+a29 5
+	$(call benchmark,shoop variable sets(i), $(DEF_PREP_I) , OBJECT . foo = 1)
+#	$(call benchmark,shoop variable gets(i), $(DEF_PREP_I); OBJECT . foo = $x , \
+#		OBJECT . foo)
+#	$(call benchmark,shoop method calls(i) , $(DEF_PREP_I); OBJECT . foo : echo hi , \
+#		OBJECT . foo)
+@
+
+
+1.12
+log
+@Renamed BASE to OBJECT
+@
+text
+@d35 2
+@
+
+
+1.11
+log
+@* Removed introspect get/call benchmarks, since the code path is now identical.
+* Don't test finalization in example.sh
+@
+text
+@d24 10
+a33 10
+	$(call benchmark,shoop variable sets, $(DEF_PREP) , BASE . foo = 1)
+	$(call benchmark,shoop variable gets, $(DEF_PREP); BASE . foo = $x , \
+		BASE . foo)
+	$(call benchmark,shoop method calls , $(DEF_PREP); BASE . foo : echo hi , \
+		BASE . foo)
+	$(call benchmark,shoop variable sets(i), $(DEF_PREP_I) , BASE . foo = 1)
+#	$(call benchmark,shoop variable gets(i), $(DEF_PREP_I); BASE . foo = $x , \
+#		BASE . foo)
+#	$(call benchmark,shoop method calls(i) , $(DEF_PREP_I); BASE . foo : echo hi , \
+#		BASE . foo)
+@
+
+
+1.10
+log
+@Benchmark introspect code paths.
+@
+text
+@d30 4
+a33 4
+	$(call benchmark,shoop variable gets(i), $(DEF_PREP_I); BASE . foo = $x , \
+		BASE . foo)
+	$(call benchmark,shoop method calls(i) , $(DEF_PREP_I); BASE . foo : echo hi , \
+		BASE . foo)
+@
+
+
+1.9
+log
+@minor changes
+@
+text
+@d3 1
+a3 1
+ITERATIONS=10000
+d6 1
+d28 5
+@
+
+
+1.8
+log
+@benchmark shell's internal commands, for comparison.
+@
+text
+@d5 2
+a6 1
+DEF_PREP = . shoop.sh
+d8 1
+a8 1
+benchmark = @@echo -n "$(ITERATIONS) $(1): ";$(TIME) sh -c "$(2); \
+@
+
+
+1.7
+log
+@Um er.
+@
+text
+@d7 1
+a7 1
+run_command = @@echo -n "$(1): $(ITERATIONS) in ";$(TIME) sh -c "$(2); \
+d19 5
+a23 3
+	$(call run_command, Variable sets , $(DEF_PREP) , \
+		BASE . foo = 1)
+	$(call run_command, Variable gets , $(DEF_PREP); BASE . foo = 1 , \
+d25 1
+a25 1
+	$(call run_command, Method calls  , $(DEF_PREP); BASE . foo : echo hi , \
+d27 1
+@
+
+
+1.6
+log
+@* Added exmaple target.
+* Markers.
+@
+text
+@d14 1
+@
+
+
+1.5
+log
+@dumbified
+@
+text
+@d11 5
+a15 2
+	@@echo This makefile is only here to run benchmarks.
+	@@echo \"make benchmark\" will do that.
+@
+
+
+1.4
+log
+@typo
+@
+text
+@d10 4
+@
+
+
+1.3
+log
+@line wrap
+@
+text
+@d7 1
+a7 1
+run_command = @@echo -n "$(1): $(ITERATIONS) in";$(TIME) sh -c "$(2); \
+@
+
+
+1.2
+log
+@doogie-ified Makefile
+@
+text
+@d11 6
+a16 3
+	$(call run_command, Variable sets , $(DEF_PREP) , BASE . foo = 1)
+	$(call run_command, Variable gets , $(DEF_PREP); BASE . foo = 1 , BASE . foo)
+	$(call run_command, Method calls  , $(DEF_PREP); BASE . foo : echo hi , BASE . foo)
+@
+
+
+1.1
+log
+@Added.
+@
+text
+@d1 2
+d5 4
+d11 3
+a13 6
+	@@echo -n "Variable sets: $(ITERATIONS) in "
+	@@/usr/bin/time -f "%E" sh -c ". shoop.sh; \
+		for x in $(SEQ); do BASE . foo = 1 ; done" >/dev/null
+	@@echo -n "Varibale gets: $(ITERATIONS) in "
+	@@/usr/bin/time -f "%E" sh -c ". shoop.sh; BASE . foo = 1; \
+		for x in $(SEQ); do BASE . foo ; done" >/dev/null
+@
+

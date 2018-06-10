@@ -1,0 +1,143 @@
+head	1.4;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.4
+date	2001.02.20.05.20.18;	author doogie;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.08.20.09.31.54;	author doogie;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.08.20.09.31.35;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.02.08.00.20.27;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@Added list commands, and it now uses itself to document itself(note: maybe
+this should be converted to plain perlpod).
+@
+text
+@#!/usr/bin/perl
+#
+# This is a perl script that can strip unneeded characters from a
+# shell script, so that certain shells(bash!) can run it faster.
+#
+# Copyright 2000 by Adam Heath <doogie@@debian.org>
+# Licensed under the LGPL
+#
+
+## A wrapper around perlpod for shell scripts.
+## 
+## This program looks for specially formatted comment lines
+## in shell scripts, and then passes that on to perlpod for
+## formatting.
+## 
+## A shelldoc line is prefixed with '##'(hash, hash), followed by
+## a command character, then the text.
+##>4
+##:<space>
+## raw text, passed unmodified
+##:><number>
+## start a new block, with indentation <number>
+##:<
+## end a block
+##::<text>
+## list an item in a block
+##<
+
+use Text::Wrap;
+
+print "=head1 $ARGV[0]\n\n";
+print "=over 4\n\n";
+for($a = 1; $a < @@ARGV; $a++) {
+	open(FILE, "<" . $ARGV[$a]);
+	while(<FILE>) {
+		next if(! /^##[:<> ]/);
+		s/^##(.)//;
+		$char = $1;
+		if ( $char =~ /^ / ) {
+			$line .= $_;
+		} elsif ( $char =~ /^>/ ) {
+			$line .= "\n=over $_\n";
+		} elsif ( $char =~ /^:/ ) {
+			$line .= "\n=item $_\n";
+		} elsif ( $char =~ /^</ ) {
+			$line .= "\n=back\n\n";
+		} else {
+			chomp;
+			print STDERR "'$_'\n";
+		}
+	}
+	if(defined $line) {
+		$file = $ARGV[$a];
+		$file =~ s/.sh$//;
+		$file =~ s/.*\///;
+		print "=item $file\n\n$line\n";
+		undef $line;
+	} else {
+		print STDERR $ARGV[$a] . "\n";
+	}
+	close FILE;
+}
+print "\n=back";
+@
+
+
+1.3
+log
+@Fix typo in the comments.
+@
+text
+@d10 19
+d32 1
+a32 1
+print "=over\n\n";
+d36 15
+a50 3
+		next if(! /^## /);
+		s/^## //;
+		$line .= $_;
+d63 1
+a63 1
+print "=back\n\n";
+@
+
+
+1.2
+log
+@If there is no data in the file, print out the filename to stderr.
+@
+text
+@d3 1
+a3 1
+# This is a perl script that can strip uneeded characters from a
+@
+
+
+1.1
+log
+@Changed license to LGPL, and added preliminary inline document support.
+@
+text
+@d27 2
+@
+

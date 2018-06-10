@@ -1,0 +1,79 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2001.04.29.18.22.51;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@initial import
+@
+text
+@## kernel/shwwwoop -- kernel core			-*- shell-script -*-
+## Copyright (C) 2000, 2001 Gergely Nagy <8@@free.bsd.hu>
+##
+## This file is part of shwwwoop.
+##
+## shwwwoop is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+##
+## shwwwoop is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+##
+## $Id$
+
+## SHOOP is already loaded by the main script
+OBJECT . new SHWWWOOP
+
+## Load core modules
+. ${SHWWWOOPBASE}/kernel/utils
+. ${SHWWWOOPBASE}/kernel/request
+. ${SHWWWOOPBASE}/kernel/base_config
+. ${SHWWWOOPBASE}/kernel/host_config
+. ${SHWWWOOPBASE}/kernel/environment
+. ${SHWWWOOPBASE}/kernel/http_response
+
+SHWWWOOP . load_vh : '
+	local vhost=$(REQUEST . get_field HOST $(HOST_CONFIG . HOST))
+
+	if [ -f $(BASE_CONFIG . CONFIG_ROOT)/virtual-hosts/${vhost}/host.conf ]; then
+		. $(BASE_CONFIG . CONFIG_ROOT)/virtual-hosts/${vhost}/host.conf
+	fi
+'
+
+SHWWWOOP . run_module : '
+	if [ -f $(BASE_CONFIG . MODULE_DIR)/$1 ]; then
+		. $(BASE_CONFIG . MODULE_DIR)/$1
+	fi
+'
+
+SHWWWOOP . guess_content_type : '
+	local _ext
+	local _ct
+
+	_ext=$(echo $(ENVIRONMENT . SCRIPT_FILENAME) | sed -e "s,.*\.\(.*\)$,\1,")
+	_ct=$(grep -i "^$_ext: " $(BASE_CONFIG . CONFIG_ROOT)/content-types 2>/dev/null | sed -e "s,$_ext: ,,g" || true)
+	_ct=${_ct:-$(HOST_CONFIG . DEFAULT_CONTENT_TYPE)}
+
+	HTTP_RESPONSE . CONTENT_TYPE =q $_ct
+'
+@

@@ -1,0 +1,230 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2001.04.29.18.22.51;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@initial import
+@
+text
+@## kernel/http_response -- HTTP response handling	-*- shell-script -*-
+## Copyright (C) 2000, 2001 Gergely Nagy <8@@free.bsd.hu>
+##
+## This file is part of shwwwoop.
+##
+## shwwwoop is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+##
+## shwwwoop is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+##
+## $Id$
+
+## SHOOP is already loaded
+## Already loaded at this time: kernel/environment
+
+OBJECT . new HTTP_RESPONSE
+
+HTTP_RESPONSE . STATUS =q 200
+HTTP_RESPONSE . MESSAGE =q "Ok"
+HTTP_RESPONSE . _DYNAMIC_CONTENT =q 0
+
+HTTP_RESPONSE . setup_filename : '
+	local script_fn
+	local fn
+
+	if [ "x$SCRIPT_FILENAME" = "x" ]; then
+		ENVIRONMENT . SCRIPT_FILENAME =q $(echo $(ENVIRONMENT . DOCUMENT_ROOT)/$(ENVIRONMENT . SCRIPT_NAME) | sed -e "s,^ *,,g")
+	fi
+
+	case $SCRIPT_FILENAME in
+		*/)
+			script_fn="$(ENVIRONMENT . SCRIPT_FILENAME)"
+
+			for fn in $(HOST_CONFIG . INDEX_FILES); do
+				if [ -e "$(ENVIRONMENT . SCRIPT_FILENAME)/$fn" ]; then
+					script_fn="$(ENVIRONMENT . SCRIPT_FILENAME)/$fn"
+					break
+				fi
+			done
+			ENVIRONMENT . SCRIPT_FILENAME =q $script_fn
+			;;
+		*)
+			if [ -d $(ENVIRONMENT . SCRIPT_FILENAME) ]; then
+				HTTP_RESPONSE . STATUS =q 302
+				HTTP_RESPONSE . MESSAGE =q "Temporary Relocation"
+			fi
+			;;
+	esac
+
+	script_fn=$(ENVIRONMENT . SCRIPT_FILENAME)
+
+	if [ -e "$script_fn" ]; then
+		if [ -r "$script_fn" ]; then
+			if [ -d "$script_fn" ]; then
+				HTTP_RESPONSE . STATUS =q 200-list
+				HTTP_RESPONSE . MESSAGE =q "Ok"
+			else
+				HTTP_RESPONSE . STATUS =q 200
+				HTTP_RESPONSE . MESSAGE =q "Ok"
+			fi
+		else
+			HTTP_RESPONSE . STATUS =q 403
+			HTTP_RESPONSE . MESSAGE =q "Forbidden"
+		fi
+	else
+		HTTP_RESPONSE . STATUS =q 404
+		HTTP_RESPONSE . MESSAGE =q "Not Found"
+	fi
+'
+
+HTTP_RESPONSE . sanity_check : '
+	# For non-dynamic content, only GET and HEAD is allowed
+	if [ $(HTTP_RESPONSE . _DYNAMIC_CONTENT) -eq 0 ] &&
+	   [ $(REQUEST . METHOD) != "GET" ] && [ $(REQUEST . METHOD) != "HEAD" ]; then
+		HTTP_RESPONSE . STATUS =q 405
+		HTTP_RESPONSE . MESSAGE =q "Method Not Allowed"
+	fi
+
+	case $(REQUEST . METHOD) in
+		GET|HEAD|PUT) ;;
+		*)
+			HTTP_RESPONSE . STATUS =q 501
+			HTTP_RESPONSE . MESSAGE =q "Not Implemented"
+			;;
+	esac
+
+	# Only HTTP/1.[01] is supported
+	case "$(REQUEST . HTTP_VERSION)" in
+		1.0|1.1)
+			;;
+		*)
+			if [ "x$(REQUEST . HTTP_VERSION)" != "x" ]
+			then
+				HTTP_RESPONSE . STATUS =q 505
+				HTTP_RESPONSE . MESSAGE =q "HTTP Version Not Supported"
+			fi
+			;;
+	esac
+
+	case "$(HTTP_RESPONSE . STATUS)" in
+		200-list)
+			HTTP_RESPONSE . do_content : "
+				HTTP_RESPONSE . do_response_200_list
+			"
+			HTTP_RESPONSE . STATUS =q 200
+			HTTP_RESPONSE . _DYNAMIC_CONTENT =q 1
+			;;
+
+		200)
+			;;
+		*)
+			if [ $(HTTP_RESPONSE . check do_response_$(HTTP_RESPONSE . STATUS)) -eq 1 ]; then
+				HTTP_RESPONSE . do_content : "
+					HTTP_RESPONSE . do_response_$(HTTP_RESPONSE . STATUS)
+				"
+			else
+				HTTP_RESPONSE . do_content : "
+					HTTP_RESPONSE . do_response_500
+				"
+			fi
+			HTTP_RESPONSE . _DYNAMIC_CONTENT =q 1
+			;;
+	esac
+'
+
+HTTP_RESPONSE . get_field : '
+	if [ $(HTTP_RESPONSE . check _field_$1) -eq 1 ]; then
+		echo "$(HTTP_RESPONSE . _field_$1)"
+	else
+		shift
+		[ -z "$1" ] || echo "$@@"
+	fi
+'
+
+HTTP_RESPONSE . generate_content : '
+	HTTP_RESPONSE . do_content > $(SHWWWOOP . TEMPFILE)
+	HTTP_RESPONSE . _EXIT_CODE =q $?
+
+	if [ $(HTTP_RESPONSE . _EXIT_CODE) -ne 0 ]; then
+		HTTP_RESPONSE . STATUS =q 500
+		HTTP_RESPONSE . MESSAGE =q "Internal server error"
+
+		HTTP_RESPONSE . do_content : "
+			HTTP_RESPONSE . do_response_500
+		"
+		HTTP_RESPONSE . do_content > $(SHWWWOOP . TEMPFILE)
+		HTTP_RESPONSE . _DYNAMIC_CONTENT =eq 1
+	fi
+'
+
+HTTP_RESPONSE . extract_headers : '
+	IFS_SAVE="$IFS"
+	IFS=" 	
+"
+	for line in $(head -n $(HTTP_RESPONSE . _HEADER_LENGTH) $(SHWWWOOP . TEMPFILE))
+	do
+		IFS="$IFS_SAVE"
+		field=$(echo $line | sed -e "s,:.*,,g")
+		field=$(UTILS . toupper "$field")
+
+		HTTP_RESPONSE . _field_$field =q $line
+
+		IFS=" 	
+"
+	done
+	IFS="$IFS_SAVE"
+'
+
+HTTP_RESPONSE . echo_header : '
+	head -n $(HTTP_RESPONSE . _HEADER_LENGTH) $(SHWWWOOP . TEMPFILE)
+
+	echo "$(HTTP_RESPONSE . get_field DATE $(echo Date: $(date -R --utc)))"
+	echo "$(HTTP_RESPONSE . get_field LAST_MODIFIED \
+		$(echo Last-Modified: $(date -R --utc -r $(ENVIRONMENT . SCRIPT_FILENAME))))"
+	echo "$(HTTP_RESPONSE . get_field SERVER_SOFTWARE \
+		$(echo Server-Software: $(ENVIRONMENT . SERVER_SOFTWARE)))"
+	echo "$(HTTP_RESPONSE . get_field MIME_VERSION $(echo MIME-Version: 1.0))"
+	echo "$(HTTP_RESPONSE . get_field CONTENT_TYPE \
+		$(echo Content-type: $(HTTP_RESPONSE . CONTENT_TYPE)))"
+	echo "$(HTTP_RESPONSE . get_field CONTENT_LENGTH \
+		$(echo Content-length: $(tail -n +$(HTTP_RESPONSE . _HEADER_LENGTH) $(SHWWWOOP . TEMPFILE) | wc -c | sed -e 's/ //g')))"
+	if [ $(HTTP_RESPONSE . _DYNAMIC_CONTENT) ]; then
+		echo
+	fi
+'
+
+HTTP_RESPONSE . echo_body : '
+	if [ $(REQUEST . METHOD) != "HEAD" ]; then
+		HTTP_RESPONSE . _HEADER_LENGTH =q $(expr $(HTTP_RESPONSE . _HEADER_LENGTH) + 1)
+		tail -n +$(HTTP_RESPONSE . _HEADER_LENGTH) $(SHWWWOOP . TEMPFILE)
+	fi
+'
+
+HTTP_RESPONSE . do_response_500 : '
+'
+
+HTTP_RESPONSE . do_response_200 : '
+'
+@

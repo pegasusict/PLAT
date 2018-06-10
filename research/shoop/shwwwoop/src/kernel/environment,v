@@ -1,0 +1,76 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2001.04.29.18.22.51;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@initial import
+@
+text
+@## kernel/environment -- CGI environment handling	-*- shell-script -*-
+## Copyright (C) 2000, 2001 Gergely Nagy <8@@free.bsd.hu>
+##
+## This file is part of shwwwoop.
+##
+## shwwwoop is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+##
+## shwwwoop is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+##
+## $Id$
+
+## SHOOP is already loaded by the main script
+## Already loaded before this: kernel/base_config, kernel/host_config,
+## kernel/request, kernel/utils
+
+OBJECT . new ENVIRONMENT
+
+ENVIRONMENT . finish_environment : '
+#PATH_INFO SCRIPT_NAME SCRIPT_FILENAME \
+#CONTENT_LENGTH"
+
+	ENVIRONMENT . HTTP_HOST =q $(REQUEST . get_field HOST $(HOST_CONFIG . HOST)):$(HOST_CONFIG . SERVER_PORT)
+	ENVIRONMENT . SERVER_URL =q http://$(ENVIRONMENT . HTTP_HOST)/
+	ENVIRONMENT . DOCUMENT_NAME =q $(echo $(REQUEST . URI) | sed -e "s,.*/\(.*\)\$,\1,")
+	ENVIRONMENT . SCRIPT_NAME =q $(ENVIRONMENT . DOCUMENT_NAME)
+	ENVIRONMENT . DOCUMENT_URI =q $(ENVIRONMENT . DOCUMENT_NAME)
+
+	ENVIRONMENT . SERVER_NAME =q $(HOST_CONFIG . HOST)
+	ENVIRONMENT . SERVER_PORT =q $(HOST_CONFIG . SERVER_PORT)
+	ENVIRONMENT . SERVER_SOFTWARE =q $(BASE_CONFIG . SERVER_SOFTWARE)
+	ENVIRONMENT . SERVER_PROTOCOL =q $(BASE_CONFIG . SERVER_PROTOCOL)
+	ENVIRONMENT . GATEWAY_INTERFACE =q $(BASE_CONFIG . GATEWAY_INTERFACE)
+	ENVIRONMENT . DOCUMENT_ROOT =q $(HOST_CONFIG . DOCUMENT_ROOT)
+	ENVIRONMENT . REQUEST_METHOD =q $(REQUEST . METHOD)
+	ENVIRONMENT . QUERY_STRING =q $(REQUEST . QUERY_STRING)
+	ENVIRONMENT . HTTP_USER_AGENT =q $(REQUEST . get_field USER_AGENT "unknown")
+
+	set -- $(getpeername -n 2>/dev/null || true)
+	ENVIRONMENT . REMOTE_ADDR =q ${1:-0.0.0.0}
+	ENVIRONMENT . REMOTE_PORT =q ${2:-}
+	set -- $(getpeername 2>/dev/null || true)
+	ENVIRONMENT . REMOTE_HOST =q ${1:-$(ENVIRONMENT . REMOTE_ADDR)}
+'
+@

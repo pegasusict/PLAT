@@ -1,0 +1,219 @@
+head	1.10;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.10
+date	2001.02.21.19.04.00;	author doogie;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2000.02.13.04.27.58;	author doogie;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2000.02.08.00.20.27;	author doogie;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2000.02.06.23.40.53;	author doogie;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2000.02.06.04.35.57;	author doogie;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2000.02.06.04.16.55;	author doogie;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2000.01.29.16.44.42;	author doogie;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.01.29.04.52.01;	author doogie;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.01.29.04.19.18;	author joey;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.29.03.36.08;	author joey;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.10
+log
+@Set the variable/method to protected status as well in _shoop.
+@
+text
+@#!/bin/sh -e
+#
+# Finalization module for shoop. Expands the OBJECT class with a finalize
+# method. The method takes the names of a list of properites and/or methods
+# that should become final. (Though they may be overridden in a child class.)
+#
+# LGPL copyright 2000 by Adam Heath <doogie@@debian.org>
+
+## Passing a list of methods and/or variables to this method will finalize
+## each item.  It does this thru the use of the shell builtin 'readonly.'
+## Once this is done, there is no way to 'destroy' this method, nor is
+## there any way to change the value.
+## 
+## This also sets the item to protected in shoop speak, so that _shoop can
+## detect the readonlyness of the item, and issue a warning.
+
+IFS=" " OBJECT . final :p '
+	local item varmeth
+	for item in $@@; do
+		if eval  [ -z \"\$_shoopfinal_${THIS}_$item\" ]; then
+			eval "readonly _shoop_${THIS}_$item
+			      _shoopfinal_${THIS}_$item=1
+			      _shoopfinal_$THIS=\"\$_shoopfinal_$THIS $item\""
+		fi
+		if eval [ \"\$_shooptype_${THIS}_$item\" = variable ]; then
+			$THIS . $item =p
+		else
+			$THIS . $item :p
+		fi
+	done
+	return
+'
+@
+
+
+1.9
+log
+@Commenting and adding perldoc stuff.
+@
+text
+@d13 3
+d18 1
+a18 1
+	local item
+d24 5
+@
+
+
+1.8
+log
+@Changed license to LGPL, and added preliminary inline document support.
+@
+text
+@d9 5
+@
+
+
+1.7
+log
+@Define the method final instead of finalize.  Modified comments and code
+in all introspection type files to be consistent.  Added copyright to
+final.sh.
+@
+text
+@d7 1
+a7 1
+# GPL copyright 2000 by Adam Heath <doogie@@debian.org>
+@
+
+
+1.6
+log
+@Add support for declare methods and variables that are private, and are
+invisible to introspection.  Append 'p' to the '=' or ':'.
+@
+text
+@d6 2
+d9 1
+a9 1
+IFS=" " OBJECT . finalize :p '
+@
+
+
+1.5
+log
+@Remove extraneous ';', as they detract from the code.
+@
+text
+@d7 1
+a7 1
+IFS=" " OBJECT . finalize : '
+@
+
+
+1.4
+log
+@Add 'returns' to all defined object methods.
+@
+text
+@d8 1
+a8 1
+	local item;
+d11 3
+a13 3
+			eval "readonly _shoop_${THIS}_$item;
+			      _shoopfinal_${THIS}_$item=1;
+			      _shoopfinal_$THIS=\"\$_shoopfinal_$THIS $item\"";
+d15 1
+a15 1
+	done;
+@
+
+
+1.3
+log
+@Can serialize finalized variable/methods now.  Also, the serialized output
+of methods retains the original formatting.
+@
+text
+@d15 2
+a16 1
+	done
+@
+
+
+1.2
+log
+@Renamed BASE to OBJECT
+@
+text
+@d7 1
+a7 1
+OBJECT . finalize : '
+d10 5
+a14 1
+		eval readonly _shoop_${THIS}_${item};
+@
+
+
+1.1
+log
+@Broke finalization out into a module.
+@
+text
+@d3 1
+a3 1
+# Finalization module for shoop. Expands the BASE class with a finalize
+d7 1
+a7 1
+BASE . finalize : '
+@
+

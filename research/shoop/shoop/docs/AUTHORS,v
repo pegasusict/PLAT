@@ -1,0 +1,41 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2001.02.08.22.06.00;	author algernon;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.29.19.27.19;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@added myself (for the sake of mkChangeLog)
+@
+text
+@CVS:joey Joey Hess <joey@@kitenet.net>
+CVS:doogie Adam Heath <doogie@@debian.org>
+CVS:algernon Gergely Nagy <algernon@@debian.org>
+@
+
+
+1.1
+log
+@Table of cvs names to real names and email address.
+@
+text
+@d3 1
+@
+

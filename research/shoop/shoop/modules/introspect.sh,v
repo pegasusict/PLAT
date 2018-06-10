@@ -1,0 +1,538 @@
+head	1.20;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.20
+date	2000.02.13.04.27.58;	author doogie;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2000.02.08.00.20.27;	author doogie;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2000.02.06.23.08.33;	author doogie;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2000.02.06.04.35.57;	author doogie;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2000.02.06.04.16.55;	author doogie;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2000.01.29.16.44.42;	author doogie;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2000.01.29.06.06.12;	author joey;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2000.01.29.04.59.01;	author doogie;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2000.01.29.04.52.01;	author doogie;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2000.01.29.04.19.18;	author joey;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2000.01.29.04.11.30;	author doogie;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2000.01.29.02.37.55;	author joey;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2000.01.29.00.35.54;	author doogie;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2000.01.27.23.50.07;	author joey;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2000.01.27.14.34.01;	author joey;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2000.01.27.14.32.59;	author joey;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2000.01.27.11.08.45;	author joey;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.01.27.10.15.06;	author joey;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.01.27.09.21.25;	author joey;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.27.09.18.56;	author joey;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.20
+log
+@Commenting and adding perldoc stuff.
+@
+text
+@#!/bin/sh -e
+#
+# Introspect module for shoop. Expands the OBJECT class with an introspect
+# method, that can list all methods and variables that are defined on a
+# class.
+#
+# Smell the Java. LGPL copyright 2000 by Adam Heath <doogie@@debian.org>
+
+## When called it will print out a brief synopsis of the methods and
+## variables defined for the current object.  If passed the parameter
+## C<resolve>, it will walk the parent tree, and print out everything,
+## all the way back to the base OBJECT.
+## 
+## If you are going to use introspection, it is suggested you C<use>
+## it early, as the introspection hooks are not normally enabled.
+
+# Enable introspection inside _shoop
+_shoop_introspect=1
+
+IFS=" " OBJECT . introspect :p '
+	local DEFINES A
+	if [ -z "$2" ]; then
+		local DISPLAYOBJ=$THIS
+	fi
+	eval DEFINES=\$_shoopdefines_$THIS
+	for A in $DEFINES; do
+		if eval [ -z \"\$_shoopseen_$A\" ]; then
+			echo -n "$DISPLAYOBJ($THIS): "
+			if eval [ \"\$_shoopfinal_${THIS}_$A\" ]; then
+				echo -n "final "
+			fi
+			eval echo "$A is \$_shooptype_${THIS}_$A"
+			eval local _shoopseen_$A="1"
+		fi;
+	done
+	# This does not use a non-recursive form, as this code does not
+	# need to be fast.  It is only for informative output.
+	if [ "$1" = resolve ];then
+		for P in $($THIS . parent); do
+			$P . introspect resolve $DISPLAYOBJ
+		done
+	fi
+	return
+'
+@
+
+
+1.19
+log
+@Changed license to LGPL, and added preliminary inline document support.
+@
+text
+@d9 4
+a12 5
+## This adds an 'introspect' method to the base object.  When called,
+## it will print out a brief synopsis of the methods and variables
+## defined for the current object.  If passed the parameter 'resolve',
+## it will walk the parent tree, and print out everything, all the way
+## back to the base OBJECT.
+d14 1
+a14 1
+## If you are going to use introspection, it is suggested you 'use'
+@
+
+
+1.18
+log
+@Minor speed up, and a few comment tweaks.  Removes 5 lines of code.
+@
+text
+@d7 10
+a16 1
+# Smell the Java. GPL copyright 2000 by Adam Heath <doogie@@debian.org>
+@
+
+
+1.17
+log
+@Add support for declare methods and variables that are private, and are
+invisible to introspection.  Append 'p' to the '=' or ':'.
+@
+text
+@d4 2
+a5 1
+# method, that can list all methods and variables that are defined on a class.
+d13 3
+a15 5
+	local DEFINES A DISPLAYOBJ
+	if [ "$2" ]; then
+		DISPLAYOBJ=$2
+	else
+		DISPLAYOBJ=$THIS
+d25 1
+a25 1
+			eval _shoopseen_$A="1"
+d28 2
+a34 3
+	for A in $DEFINES; do
+		eval unset _shoopseen_$A
+	done
+@
+
+
+1.16
+log
+@Remove extraneous ';', as they detract from the code.
+@
+text
+@d11 1
+a11 1
+IFS=" " OBJECT . introspect : '
+@
+
+
+1.15
+log
+@Add 'returns' to all defined object methods.
+@
+text
+@d12 1
+a12 1
+	local DEFINES A DISPLAYOBJ;
+d14 1
+a14 1
+		DISPLAYOBJ=$2;
+d16 3
+a18 3
+		DISPLAYOBJ=$THIS;
+	fi;
+	eval DEFINES=\$_shoopdefines_$THIS;
+d21 1
+a21 1
+			echo -n "$DISPLAYOBJ($THIS): ";
+d23 4
+a26 4
+				echo -n "final ";
+			fi;
+			eval echo "$A is \$_shooptype_${THIS}_$A";
+			eval _shoopseen_$A="1";
+d28 1
+a28 1
+	done;
+d31 3
+a33 3
+			$P . introspect resolve $DISPLAYOBJ;
+		done;
+	fi;
+d35 2
+a36 2
+		eval unset _shoopseen_$A;
+	done;
+@
+
+
+1.14
+log
+@Lots of fixes to comments.
+@
+text
+@d36 2
+a37 1
+	done
+@
+
+
+1.13
+log
+@Renamed introspect.sh to prettyprint.sh.  introspect.sh is now the old,
+quicker to parse version.  prettyprint.sh is the java/c++ version.
+@
+text
+@d3 1
+a3 1
+# Introspect module for shoop. Expands the BASE class with an introspect
+@
+
+
+1.12
+log
+@Can serialize finalized variable/methods now.  Also, the serialized output
+of methods retains the original formatting.
+@
+text
+@d3 1
+a3 1
+# Introspect module for shoop. Expands the OBJECT class with an introspect
+a16 1
+		echo "$3object $DISPLAYOBJ {";
+d21 1
+a21 1
+			echo -en "\t$3";
+d25 1
+a25 10
+			eval echo -n "\$_shooptype_${THIS}_$A $A\ ";
+			if eval [ \$_shooptype_${THIS}_$A = variable ]; then
+				echo -n "= ";
+				$DISPLAYOBJ . $A;
+			else
+				echo -ne "{\n$3\t\t";
+				eval echo "\$_shoop_${THIS}_$A";
+				echo -ne "$3\t}";
+			fi;
+			echo ;
+d30 2
+a31 4
+		for P in $($THIS . parent 2>/dev/null); do
+			echo -e "\t$3class $P {";
+			$P . introspect resolve $DISPLAYOBJ "$3\t";
+			echo -e "\t$3}";
+d35 2
+a36 5
+		unset _shoopseen_$A;
+	done;
+	if [ -z "$2" ]; then
+		echo "$3}";
+	fi
+@
+
+
+1.11
+log
+@Renamed BASE to OBJECT
+@
+text
+@d11 1
+a11 1
+OBJECT . introspect : '
+@
+
+
+1.10
+log
+@Made the output look more like a c++/java file.  This is easier to read.
+@
+text
+@d3 1
+a3 1
+# Introspect module for shoop. Expands the BASE class with an introspect
+d11 1
+a11 1
+BASE . introspect : '
+@
+
+
+1.9
+log
+@* Changed _shoop_THIS to THIS; it is not an internal variable.
+* With the readonly shell builtin, we can automate final variables.
+  Converted over to always storing methods as variables too, so they can also
+  be handled with readonly. This cuts a lot of code, and speeds things up
+  all over.
+@
+text
+@d17 1
+d22 14
+a35 1
+			eval echo "$DISPLAYOBJ\($THIS\): $A is \$_shooptype_${THIS}_$A";
+d40 4
+a43 2
+		for P in $($THIS . parent); do
+			$P . introspect resolve $DISPLAYOBJ;
+d47 5
+a51 2
+		eval unset _shoopseen_$A;
+	done
+@
+
+
+1.8
+log
+@Added a proper _shoop_THIS parameter.
+@
+text
+@d16 1
+a16 1
+		DISPLAYOBJ=$_shoop_THIS;
+d18 1
+a18 1
+	eval DEFINES=\$_shoopdefines_$_shoop_THIS;
+d21 1
+a21 1
+			eval echo "$DISPLAYOBJ\($_shoop_THIS\): $A is \$_shooptype_${_shoop_THIS}_$A";
+d26 1
+a26 1
+		for P in $($_shoop_THIS . parent); do
+@
+
+
+1.7
+log
+@did away with the parent method, simplified other code, echo newlins as
+needed in example.sh
+@
+text
+@d12 1
+a12 2
+	local OBJNAME=$1 DEFINES A DISPLAYOBJ;
+	shift;
+d16 1
+a16 1
+		DISPLAYOBJ=$OBJNAME;
+d18 1
+a18 1
+	eval DEFINES=\$_shoopdefines_$OBJNAME;
+d21 1
+a21 1
+			eval echo "$DISPLAYOBJ\($OBJNAME\): $A is \$_shooptype_${OBJNAME}_$A";
+d26 1
+a26 1
+		for P in $($OBJNAME . parent); do
+@
+
+
+1.6
+log
+@minor
+@
+text
+@d14 1
+a14 1
+	if [ "$2" ];then
+d21 1
+a21 1
+		if eval [ -z \"\$_shoopseen_$A\" ];then
+d24 1
+a24 1
+		fi
+d27 1
+a27 2
+		eval local PARENT=\$_shoopparent_$OBJNAME;
+		for P in $PARENT;do
+d29 1
+a29 1
+		done
+@
+
+
+1.5
+log
+@Only keep track of introspection data when it is going to be used, for a
+reasonable performance and memory savings.
+@
+text
+@d8 1
+a8 1
+# Enable introspection.
+@
+
+
+1.4
+log
+@indented
+@
+text
+@d8 3
+@
+
+
+1.3
+log
+@Patch from doogie, to fix it.
+@
+text
+@d9 22
+a30 18
+local OBJNAME=$1 DEFINES A DISPLAYOBJ;
+shift;
+if [ "$2" ];then
+	DISPLAYOBJ=$2;
+else
+	DISPLAYOBJ=$OBJNAME;
+fi;
+eval DEFINES=\$_shoopdefines_$OBJNAME;
+for A in $DEFINES; do
+	if eval [ -z \"\$_shoopseen_$A\" ];then
+		eval echo "$DISPLAYOBJ\($OBJNAME\): $A is \$_shooptype_${OBJNAME}_$A";
+		eval _shoopseen_$A="1";
+	fi
+done;
+if [ "$1" = resolve ];then
+	eval local PARENT=\$_shoopparent_$OBJNAME;
+	for P in $PARENT;do
+		$P . introspect resolve $DISPLAYOBJ;
+a31 4
+fi;
+for A in $DEFINES; do
+	eval unset _shoopseen_$A;
+done
+@
+
+
+1.2
+log
+@email fix, eval consolidating.
+@
+text
+@d9 1
+a9 1
+local OBJNAME=$1 DEFINES TYPE A DISPLAYOBJ;
+d18 3
+a20 4
+	if ! echo $_shoop_introspect_seen | tr " " "\n" | grep -q "^$A$";then
+		eval TYPE=\$_shooptype_${OBJNAME}_$A;
+		echo "$DISPLAYOBJ: $A is $TYPE";
+		_shoop_introspect_seen="$_shoop_introspect_seen $A";
+d30 1
+a30 1
+	_shoop_introspect_seen=$(echo $_shoop_introspect_seen | tr " " "\n" | grep -v "^$A$");
+@
+
+
+1.1
+log
+@Split out introspect.
+@
+text
+@d6 1
+a6 1
+# Smell the Java. GPL copyright 2000 by Adam Heath <adam.heath@@usa.net>
+@
+

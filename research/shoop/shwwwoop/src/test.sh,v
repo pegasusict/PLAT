@@ -1,0 +1,31 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2001.04.29.18.22.51;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@initial import
+@
+text
+@#! /bin/sh
+
+/bin/sh ./shwwwoop.sh <<EOF
+GET /index.html HTTP/1.0
+Host: localhost
+User-Agent: test.sh/0.1
+
+EOF
+@

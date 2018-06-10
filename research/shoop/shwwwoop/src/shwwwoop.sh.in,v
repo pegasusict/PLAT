@@ -1,0 +1,135 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2001.04.29.18.22.51;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@initial import
+@
+text
+@#! /bin/sh
+## shwwwoop - Webserver in SHOOP
+## Copyright (C) 2000, 2001 Gergely Nagy <8@@free.bsd.hu>
+##
+## This file is part of shwwwoop.
+##
+## shwwwoop is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+##
+## shwwwoop is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+##
+## $Id$
+
+## Initialisation
+SHOOPPATH=.:@@SHOOP_BASE@@/modules
+SHWWWOOPBASE=@@MODULEDIR@@
+. ${SHOOPSH:-@@SHOOP_BASE@@/shoop.sh}
+. ${SHOOPMOD:-@@SHOOP_BASE@@/modules}/use.sh
+OBJECT . use checker
+
+. ${SHWWWOOPBASE}/kernel/shwwwoop
+
+################################
+# Option parsing               #
+################################
+for OPT in $*
+do
+	case "$OPT" in
+		--version|-v|-V)
+			echo "shwwwoop version @@VERSION@@"
+			echo "Copyright (C) 2000, 2001 Gergely Nagy <8@@free.bsd.hu>"
+			exit 0
+			;;
+	esac
+done
+
+################################
+# CONFIGURATION PART           #
+################################
+BASE_CONFIG . load_config
+
+exec 2>> $(HOST_CONFIG . DEBUG_LOG)
+
+################################
+# INPUT PART                   #
+################################
+REQUEST . read_input
+REQUEST . process_input
+SHWWWOOP . load_vh
+ENVIRONMENT . finish_environment
+
+SHWWWOOP . run_module post-process
+
+HTTP_RESPONSE . setup_filename
+
+SHWWWOOP . guess_content_type
+
+SHWWWOOP . run_module pre-reply
+
+if [ $(HTTP_RESPONSE . check do_content) -ne 1 ]; then
+	HTTP_RESPONSE . do_content : '
+		cat "$(ENVIRONMENT . SCRIPT_FILENAME)"
+	'
+fi
+
+HTTP_RESPONSE . sanity_check
+
+################################
+# OUTPUT PART                  #
+################################
+SHWWWOOP . TEMPFILE =q $(BASE_CONFIG . MKTEMPFILE)
+
+trap 'rm -f $(SHWWWOOP . TEMPFILE)' 0
+
+HTTP_RESPONSE . generate_content
+
+if [ $(HTTP_RESPONSE . _DYNAMIC_CONTENT) -ne 0 ]; then
+	HTTP_RESPONSE . _HEADER_LENGTH =q `cat $(SHWWWOOP . TEMPFILE) | grep -n "^\$" | head -1 | sed -e "s,:.*,,g"`
+	HTTP_RESPONSE . _HEADER_LENGTH =q $(expr $(HTTP_RESPONSE . _HEADER_LENGTH) - 1)
+else
+	HTTP_RESPONSE . _HEADER_LENGTH =q 0
+fi
+
+HTTP_RESPONSE . extract_headers
+
+# ... and set those that aren't...
+if [ $(HTTP_RESPONSE . check _field_LOCATION) -eq 1 ]; then
+	HTTP_RESPONSE . STATUS =q 302
+	HTTP_RESPONSE . MESSAGE =q "Temporary relocation"
+fi
+
+echo "HTTP/1.0 $(HTTP_RESPONSE . STATUS) $(HTTP_RESPONSE . MESSAGE)"
+
+HTTP_RESPONSE . echo_header
+HTTP_RESPONSE . echo_body
+
+# RESPONSE_LENGTH is only useful for post-reply, so it is computed here
+HTTP_RESPONSE . _LENGTH =q $(tail -n +$(HTTP_RESPONSE . _HEADER_LENGTH) $(SHWWWOOP . TEMPFILE) | wc -c | sed -e 's/ //g')
+
+rm -f $TEMPFILE
+
+## Post-reply module
+SHWWWOOP . run_module post-reply
+@

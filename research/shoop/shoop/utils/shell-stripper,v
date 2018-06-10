@@ -1,0 +1,216 @@
+head	1.8;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.8
+date	2001.02.27.01.36.27;	author doogie;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2001.02.27.01.30.48;	author doogie;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2001.02.20.05.34.49;	author doogie;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2000.02.08.00.20.27;	author doogie;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2000.02.06.00.54.25;	author doogie;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.02.03.05.17.26;	author doogie;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.01.31.05.21.12;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.31.01.59.28;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.8
+log
+@Typo in the docs.
+@
+text
+@#!/usr/bin/perl
+#
+# This is a perl script that can strip uneeded characters from a
+# shell script, so that certain shells(bash!) can run it faster.
+#
+# Copyright 2000 by Adam Heath <doogie@@debian.org>
+# Licensed under the LGPL
+#
+use strict;
+
+## A semi-simple shell comment stripper
+## 
+## It was found that certain shell interpeters ran faster, if leading
+## blank space was removed, along with comments.  This program was
+## designed to remove text that match the above constraints.
+## 
+## Items removed
+##>4
+##:blank lines
+##:leading white space
+##:comment lines
+##<
+## Combined lines
+##>4
+##:\\
+## A line ending with \\ has the \\ removed, and the next line is
+## concatenated to the current line, before processing is continued.
+##:;
+## ; is a command delimiter, so it is safe to combine a command from
+## subsequent lines onto the end of the current line.
+##<
+my $first = 1;
+while (<>) {
+
+	#
+	# Remove continuation characters.  This is done first
+	# incase the script magic below is a continued line.
+	#
+	if(/\\$/) {
+		chop;s/\\$//;
+		$_ .= <>;
+		redo if not eof;
+	};
+
+	#
+	# Don't throw away the script magic identifier.
+	#
+	if(!(defined $first && /^#!/)) {
+		#
+		# Strip leading whitespace.
+		#
+		s/[ \t]*//;
+
+		#
+		# Skip blank and comment lines.
+		#
+		next if(/^(#.*|)$/);
+	}
+
+	#
+	# If a line ends with ;, then combine it with the next
+	# line, as the new line character is extraneous.
+	#
+	chop if(/\;[ \t]*$/);
+
+	print if(/^#!/);
+	if(defined $first) {
+		print "# This script has been preprocessed prior to installation\n";
+		print "# It has had comments, blank lines, and leading spaces\n";
+		print "# removed, and \\-style lines combined.  This was done so\n";
+		print "# that it could run quicker under some shells.\n"
+	}
+	print if(! /^#!/);
+	undef $first;
+
+}
+@
+
+
+1.7
+log
+@Make it 'use strict' compliant.
+@
+text
+@d29 1
+a29 1
+## ; is a command delimiter, so it is safe to combined a command from
+@
+
+
+1.6
+log
+@Oodles of docs.
+@
+text
+@d9 1
+d32 1
+a32 1
+$first = 1;
+@
+
+
+1.5
+log
+@Changed license to LGPL, and added preliminary inline document support.
+@
+text
+@d10 21
+@
+
+
+1.4
+log
+@If a line ends with ';', combine it with the next line.
+@
+text
+@d7 1
+a7 1
+# Licensed under the GPL
+@
+
+
+1.3
+log
+@Output the comment only after an initial #!, but before anything else.
+@
+text
+@d37 7
+@
+
+
+1.2
+log
+@Remove spurious next at end of script.  Add note to parsed data that the
+script has been munged.
+@
+text
+@d37 1
+a37 1
+	print;
+d44 1
+@
+
+
+1.1
+log
+@This is a perl script that can strip uneeded characters from a shell script,
+so that certain shells(bash!) can run it faster.
+@
+text
+@d26 1
+a26 1
+	if(!($first && /^#!/)) {
+d38 7
+a44 2
+	next;
+	$first = 0;
+@
+

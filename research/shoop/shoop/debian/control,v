@@ -1,0 +1,126 @@
+head	1.5;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.5
+date	2001.07.07.12.50.26;	author algernon;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2001.02.18.18.20.35;	author algernon;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2001.02.17.21.41.24;	author algernon;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2001.02.17.18.10.42;	author algernon;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2001.02.08.19.17.13;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.5
+log
+@changed maintainer to the list
+@
+text
+@Source: shoop
+Section: devel
+Priority: extra
+Maintainer: SHOOP developers <shoop-devel@@lists.sourceforge.net>
+Build-Depends: debhelper (>= 2.0.40), perl
+Standards-Version: 3.5.5
+
+Package: shoop
+Architecture: all
+Recommends: shoop-modules (>= ${Source-Version})
+Description: The SHell Object Oriented Programming library
+ Every language under the sun these days is Object Oriented.
+ In an effort to make POSIX shell more buzzword compliant, and
+ to show that it's really not a big deal for a language to lack
+ built-in OO support, we have added object orientation to plain
+ old shell script. Specifically, we have implemented classless
+ OO with introspection, finalization, serialization, and multiple
+ inheritance.
+
+Package: shoop-modules
+Architecture: all
+Depends: shoop (>= ${Source-Version})
+Description: A collection of shoop modules
+ This package includes various modules for shoop, such as
+ introspect, prettyprint, serialize, and some others.
+ .
+ It is a good idea to have these at hand!
+
+Package: shoop-dev
+Architecture: all
+Depends: shoop (>= ${Source-Version})
+Description: Development files and documention for shoop
+ Herein lies example code, utility programs, and documentation
+ for shoop, the SHell Object Oriented Programming library.
+@
+
+
+1.4
+log
+@build depend only on perl, not perl5, to reflect recent reorganization
+@
+text
+@d4 1
+a4 1
+Maintainer: Gergely Nagy <shoop-devel@@lists.sourceforge.net>
+d6 1
+a6 1
+Standards-Version: 3.5.0
+@
+
+
+1.3
+log
+@added shoop-dev
+@
+text
+@d5 1
+a5 1
+Build-Depends: debhelper (>= 2.0.40), perl5
+d11 1
+a11 1
+Description: OOP in shell
+@
+
+
+1.2
+log
+@changed maintainer address to shoop-devel
+@
+text
+@d28 7
+@
+
+
+1.1
+log
+@new file
+@
+text
+@d4 1
+a4 1
+Maintainer: Gergely Nagy <8@@free.bsd.hu>
+@
+

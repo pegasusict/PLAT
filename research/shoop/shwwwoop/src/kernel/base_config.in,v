@@ -1,0 +1,66 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2001.04.29.18.22.51;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@initial import
+@
+text
+@## kernel/base_config -- base configuration		-*- shell-script -*-
+## Copyright (C) 2000, 2001 Gergely Nagy <8@@free.bsd.hu>
+##
+## This file is part of shwwwoop.
+##
+## shwwwoop is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+##
+## shwwwoop is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+##
+## $Id$
+
+## SHOOP is already loaded by the main script
+
+OBJECT . new BASE_CONFIG
+
+BASE_CONFIG . CONFIG_ROOT =q @@PKGCONFDIR@@
+BASE_CONFIG . MODULE_DIR =q @@MODULEDIR@@
+BASE_CONFIG . MKTEMPFILE : '
+	local TMPFILE=${TMPDIR:-/tmp}/.shwwwoop.$$.$RANDOM
+	while [ -e ${TMPFILE} ]; do
+		TMPFILE=${TMPDIR:-/tmp}/.shwwwoop.$$.$RANDOM
+	done
+	touch ${TMPFILE}
+	echo ${TMPFILE}'
+BASE_CONFIG . SERVER_SOFTWARE =q shwwwoop/@@VERSION@@
+BASE_CONFIG . SERVER_PROTOCOL =q HTTP/1.0
+BASE_CONFIG . GATEWAY_INTERFACE =q CGI/1.1
+
+BASE_CONFIG . load_config : '
+	if [ -f $($THIS . CONFIG_ROOT)/shwwwoop.conf ]; then
+		. $($THIS . CONFIG_ROOT)/shwwwoop.conf
+	fi
+'
+@

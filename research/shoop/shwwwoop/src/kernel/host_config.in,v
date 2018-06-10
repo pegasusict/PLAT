@@ -1,0 +1,57 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2001.04.29.18.22.51;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@initial import
+@
+text
+@## kernel/host_config -- Host configuration		-*- shell-script -*-
+## Copyright (C) 2000, 2001 Gergely Nagy <8@@free.bsd.hu>
+##
+## This file is part of shwwwoop.
+##
+## shwwwoop is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+##
+## shwwwoop is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+##
+## $Id$
+
+## SHOOP is already loaded by the main script
+
+## Setup base methods & stuff
+OBJECT . new HOST_CONFIG
+
+HOST_CONFIG . DOCUMENT_ROOT =q @@LOCALSTATEDIR@@/www
+HOST_CONFIG . SERVER_PORT =q 80
+HOST_CONFIG . SERVER_NAME =q ${HOSTNAME:-localhost}
+HOST_CONFIG . DEFAULT_CONTENT_TYPE =q text/plain
+HOST_CONFIG . INDEX_FILES =q index.html index.cgi
+HOST_CONFIG . HOST =q $(HOST_CONFIG . SERVER_NAME)
+HOST_CONFIG . LOGDIR =q @@LOCALSTATEDIR@@/log/shwwwoop
+HOST_CONFIG . DEBUG_LOG =q $(HOST_CONFIG . LOGDIR)/debug.log
+@

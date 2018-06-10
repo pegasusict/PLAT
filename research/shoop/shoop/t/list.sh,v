@@ -1,0 +1,172 @@
+head	1.4;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.4
+date	2001.03.06.00.54.55;	author doogie;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2001.02.24.02.02.41;	author doogie;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2001.02.20.23.03.22;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2001.02.20.07.12.52;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@_order was having extra spaces inserted in certain cases, and this was
+breaking rol and ror.
+@
+text
+@#!/bin/sh -e
+# Inheritance regression test. Also sets basic methods and variables.
+. ${SHOOPSH:-/usr/bin/shoop.sh}
+. ${SHOOPMOD:-/usr/share/shoop/modules}/use.sh
+
+
+ok "" 0 ""		OBJECT . use list
+
+# setup
+ok "" 0 ""		LIST . new list
+ok "" 0 0		list . size
+
+# addition
+ok "" 0 "first"		list . add "first"
+ok "" 0 1		list . size
+ok "" 0 "second"	list . add "second"
+ok "" 0 2		list . size
+
+# insertion
+ok "" 0 "third"		list . insert "third"
+ok "" 0 3		list . size
+
+# fetching
+ok "" 0 "first"		list . get 2
+ok "" 0 "second"	list . get 3
+
+# setting
+ok "" 0 "FIRST"		list . set 2 "FIRST"
+ok "" 0 "FIRST"		list . get 2
+
+# deletion
+ok "" 0 "FIRST"		list . delete 2
+ok "" 0 2		list . size
+ok "" 0 "second"	list . get 2
+ok "" 0 "SECOND"	list . add "SECOND"
+ok "" 0 3		list . size
+
+# increase to size 5 for rotation test
+ok "" 0 "fourth"	list . add "fourth"
+ok "" 0 "FIFTH"		list . add "FIFTH"
+
+# sanity check
+ok "" 0 "third"		list . get 1
+ok "" 0 "second"	list . get 2
+ok "" 0 "SECOND"	list . get 3
+ok "" 0 "fourth"	list . get 4
+ok "" 0 "FIFTH"		list . get 5
+
+#set -x
+# rotation
+ok "" 0 ""		list . ror 1
+ok "" 0 5		list . size
+ok "" 0 "FIFTH"		list . get 1
+ok "" 0 "third"		list . get 2
+ok "" 0 "second"	list . get 3
+ok "" 0 "SECOND"	list . get 4
+ok "" 0 "fourth"	list . get 5
+ok "" 0 ""		list . rol 2
+ok "" 0 5		list . size
+ok "" 0 "second"	list . get 1
+ok "" 0 "SECOND"	list . get 2
+ok "" 0 "fourth"	list . get 3
+ok "" 0 "FIFTH"		list . get 4
+ok "" 0 "third"		list . get 5
+
+ok "" 0 ""		list . increase_size 5
+ok "" 0 "10"		list . size
+ok "" 0 "second"	list . get 1
+ok "" 0 "SECOND"	list . get 2
+ok "" 0 "fourth"	list . get 3
+ok "" 0 "FIFTH"		list . get 4
+ok "" 0 "third"		list . get 5
+ok "" 0 ""		list . get 6
+ok "" 0 ""		list . get 7
+ok "" 0 ""		list . get 8
+
+tests 49
+@
+
+
+1.3
+log
+@Add an increase_size method, with tests.  Not documented yet.
+@
+text
+@d38 4
+d46 2
+d49 1
+d52 2
+a53 2
+ok "" 0 3		list . size
+ok "" 0 "SECOND"	list . get 1
+d56 2
+d59 1
+a59 1
+ok "" 0 3		list . size
+d62 3
+a64 1
+ok "" 0 "third"		list . get 3
+d67 1
+a67 1
+ok "" 0 "8"		list . size
+d70 3
+a72 3
+ok "" 0 "third"		list . get 3
+ok "" 0 ""		list . get 4
+ok "" 0 ""		list . get 5
+d77 1
+a77 1
+tests 41
+@
+
+
+1.2
+log
+@Add 'ror' and 'rol' methods.
+@
+text
+@d55 12
+a66 1
+tests 31
+@
+
+
+1.1
+log
+@Added LIST module.  No documentation yet.
+@
+text
+@d38 18
+a55 1
+tests 18
+@
+

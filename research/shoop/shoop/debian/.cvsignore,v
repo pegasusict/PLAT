@@ -1,0 +1,28 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2001.02.20.05.37.10;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Ignore some files.
+@
+text
+@*.debhelper
+files
+shoop
+shoop-modules
+shoop-dev
+@

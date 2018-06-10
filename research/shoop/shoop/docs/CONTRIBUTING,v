@@ -1,0 +1,164 @@
+head	1.9;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.9
+date	2000.01.29.10.26.34;	author joey;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2000.01.29.06.19.36;	author joey;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2000.01.29.05.50.59;	author joey;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2000.01.29.05.25.55;	author joey;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2000.01.29.05.22.59;	author doogie;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2000.01.29.04.59.59;	author doogie;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.01.29.04.26.34;	author joey;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.01.29.03.36.08;	author joey;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.27.11.06.55;	author joey;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.9
+log
+@Swapped MODULES and CONTRIBUTING filenames.
+We'd the README
+@
+text
+@If you come up with any useful base objects, or extention modules send them
+to me, Joey Hess <joey@@kitenet.net>, copyrighted under the GPL, LGPL, or BSD
+copyright (sans advertising clause), and I'll add them into shoop.
+@
+
+
+1.8
+log
+@Broke up MODULES and CONTRIBUTING
+@
+text
+@d1 3
+a3 9
+Several modules expand shoop so it can do various object oriented things:
+
+introspect.sh  - list all methods and variables that are defined on a class
+final.sh       - make class variables and methods final
+serialize.sh   - dump out objects in a format that can be re-loaded later
+prettyprint.sh - output a c++/java like represantation of a class
+use.sh         - imports shoop modules, and keeps multiple definitions
+		 from happening.
+destroy.sh     - destroy objects
+@
+
+
+1.7
+log
+@Added destroy.sh
+@
+text
+@d1 1
+a1 4
+If you come up with any useful base objects, or extention modules send them
+to me, Joey Hess <joey@@kitenet.net>, copyrighted under the GPL, LGPL, or BSD
+copyright (sans advertising clause), and I'll add them in. Currently, I
+have:
+@
+
+
+1.6
+log
+@reword
+@
+text
+@d12 1
+@
+
+
+1.5
+log
+@Add a 'OBJECT . use foo bar baz', which will import foo.sh, bar.sh, and
+baz.sh.  It makes sure that each module is only imported once.
+@
+text
+@d1 4
+a4 3
+If you come up with any useful base objects, send them to me, Joey Hess
+<joey@@kitenet.net>, copyrighted under the GPL, LGPL, or BSD copyright (sans
+advertising clause), and I'll add them in. Currently, I have:
+@
+
+
+1.4
+log
+@Add prettyprint.sh
+@
+text
+@d9 2
+@
+
+
+1.3
+log
+@redid comment
+@
+text
+@d5 4
+a8 3
+introspect.sh - list all methods and variables that are defined on a class
+final.sh      - make class variables and methods final
+serialize.sh  - dump out objects in a format that can be re-loaded later
+@
+
+
+1.2
+log
+@Broke finalization out into a module.
+@
+text
+@d7 1
+@
+
+
+1.1
+log
+@added
+@
+text
+@d6 1
+@
+

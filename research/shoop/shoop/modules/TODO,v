@@ -1,0 +1,48 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2001.02.21.15.14.39;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2001.02.20.08.08.54;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@No need to use shoop 'd' command to erase memory for destroy.sh, as it was
+doing it all along by hand.
+@
+text
+@destroy.sh:
+DONE delete object references using new 'd' command
+  The above is being done the same was as the 'd' command, it just isn't
+  calling _shoop to do it, for speed reasons.
+
+final.sh:
+  * set the variable/method to 'protected' using shoop commands
+@
+
+
+1.1
+log
+@Some items that need to be done for modules.
+@
+text
+@d2 3
+a4 1
+  * delete object references using new 'd' command
+@
+

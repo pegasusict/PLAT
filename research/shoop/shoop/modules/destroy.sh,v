@@ -1,0 +1,235 @@
+head	1.11;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.11
+date	2001.02.21.15.18.28;	author doogie;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2000.02.13.04.27.58;	author doogie;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2000.02.08.00.20.27;	author doogie;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2000.02.06.23.40.53;	author doogie;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2000.02.06.04.35.57;	author doogie;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2000.01.31.10.13.41;	author doogie;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2000.01.30.23.26.35;	author doogie;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2000.01.29.10.35.48;	author joey;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.01.29.06.06.12;	author joey;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.01.29.06.01.20;	author joey;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.29.05.50.59;	author joey;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.11
+log
+@There is no need to partially clear the cache as each method/variable gets
+destroyed, as we clear the entire cache at the end.
+@
+text
+@#!/bin/sh -e
+#
+# Destroy module for shoop. Expands the OBJECT class with a destroy method
+# that completly whipes out any object it is called on (if that object has
+# children, they stick around, so use with caution.
+#
+# LGPL copyright 2000 by Joey Hess <joey@@kitenet.net>
+
+# Enable introspection inside _shoop
+_shoop_introspect=1
+
+
+## This module allows one to destroy a shoop object.  It also erases the
+## entire cache.
+
+IFS=" " OBJECT . destroy :p '
+	eval local A DEFINES=\$_shoopdefines_$THIS METH TRUEMETH
+	for A in $DEFINES; do
+		METH=$A TRUEMETH=${THIS}_$A
+		unset _shooptype_$TRUEMETH _shoopfinal_$TRUEMETH _shoop_TRUEMETH
+	done
+	# Unfortunately, destroying an object can have really weird side
+	# effects to the cache tree.  It is best just to erase the whole
+	# thing, then attempting to figure out which parts need to be
+	# erased.
+	eval unset _shoopdefines_$THIS $THIS _shoopcache_ \$_shoopcache_
+'
+@
+
+
+1.10
+log
+@Commenting and adding perldoc stuff.
+@
+text
+@a19 3
+		if [ -z "$_shoopnocache_" ]; then
+			eval $_shoopcacheclear_
+		fi
+@
+
+
+1.9
+log
+@Changed license to LGPL, and added preliminary inline document support.
+@
+text
+@d12 4
+d26 1
+a26 1
+	# effects, to the cache tree.  It is best just to erase the whole
+@
+
+
+1.8
+log
+@Define the method final instead of finalize.  Modified comments and code
+in all introspection type files to be consistent.  Added copyright to
+final.sh.
+@
+text
+@d7 1
+a7 1
+# GPL copyright 2000 by Joey Hess <joey@@kitenet.net>
+@
+
+
+1.7
+log
+@Add support for declare methods and variables that are private, and are
+invisible to introspection.  Append 'p' to the '=' or ':'.
+@
+text
+@d13 1
+a13 1
+	eval local A DEFINES=\$_shoopdefines_$THIS METH="" TRUEMETH=""
+d19 6
+a24 2
+		unset _shooptype_$TRUEMETH _shoopfinal_$TRUEMETH _shoop_TRUEMETH;
+	done;
+@
+
+
+1.6
+log
+@Clear the cache when destroying an object.  Could be made more efficient,
+and I haven't verified if this works(altho it should)
+@
+text
+@d12 1
+a12 1
+IFS=" " OBJECT . destroy : '
+@
+
+
+1.5
+log
+@Added a cache to the resolver.  Slowed down the 1st stage by 2.4%, but
+speed up the 2nd-stage by 71%!.  In general practice, more time will be
+spent in the 2nd-stage, so this is a huge win.
+
+The whole cache is blown away when a new object is created, destroyed, or
+a new method/variable is added.
+@
+text
+@d13 1
+a13 1
+	eval local A DEFINES=\$_shoopdefines_$THIS;
+d15 5
+a19 1
+		unset _shooptype_${THIS}_$A _shoopfinal_${THIS}_$A _shoop_${THIS}_$A;
+@
+
+
+1.4
+log
+@killed unnecessary eval
+@
+text
+@d17 1
+a17 1
+	unset _shoopdefines_$THIS $THIS
+@
+
+
+1.3
+log
+@Lots of fixes to comments.
+@
+text
+@d17 1
+a17 1
+	eval unset _shoopdefines_$THIS $THIS
+@
+
+
+1.2
+log
+@fixed destroy
+@
+text
+@d3 3
+a5 3
+# Destroy module for shoop. Expands the BASE class with a destroy method, that
+# completly whipes out any object it is called on (if that object has children,
+# they stick around, so use with caution.
+d7 1
+a7 1
+# GPL copyright 2000 by Joey Hess <doogie@@debian.org>
+@
+
+
+1.1
+log
+@Added destroy.sh
+@
+text
+@d17 1
+a17 1
+	eval unset \$_shoopdefines_$THIS $THIS
+@
+

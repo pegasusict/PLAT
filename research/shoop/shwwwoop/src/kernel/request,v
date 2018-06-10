@@ -1,0 +1,100 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2001.04.29.18.22.51;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@initial import
+@
+text
+@## kernel/request -- input handling			-*- shell-script -*-
+## Copyright (C) 2000, 2001 Gergely Nagy <8@@free.bsd.hu>
+##
+## This file is part of shwwwoop.
+##
+## shwwwoop is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+##
+## shwwwoop is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+##
+## $Id$
+
+## SHOOP is already loaded by the main script
+## Already loaded at this point: kernel/utils
+
+OBJECT . new REQUEST
+
+REQUEST . read_input : '
+	local req line field value
+
+	read req
+	REQUEST . HEADER =q $(echo "$req" | tr -d "\r")
+
+	line="x"
+
+	while [ "x$line" != "x" ]
+	do
+		read line
+		line=$(echo "$line" | tr -d "\r")
+
+		field=$(echo "$line" | sed -e "s,^\([^:]*\):.*,\1,")
+		field=$(UTILS . toupper "$field")
+		value=$(echo "$line" | sed -e "s,^[^:]*: \(.*\),\1,")
+
+		if [ "x$line" != "x" ]; then
+			REQUEST . _field_$field =q $value
+		fi
+	done
+'
+
+REQUEST . get_field : '
+	if [ $(REQUEST . check _field_$1) -eq 1 ]; then
+		echo "$(REQUEST . _field_$1)"
+	else
+		shift
+		[ -z "$1" ] || echo "$@@"
+	fi
+'
+
+REQUEST . process_input : '
+	REQUEST . METHOD =q $(echo $(REQUEST . HEADER) | sed -e "s,^\([^ ]*\) .*,\1,")
+
+	if [ $(echo $(REQUEST . HEADER) | grep -q " HTTP/\([^ ]*\)$") ]; then
+		REQUEST . HTTP_VERSION =q $(echo $(REQUEST . HEADER) | sed -e "s,.* HTTP/\(.*\)\$,\1,i")
+	else
+		REQUEST . HTTP_VERSION =q ""
+	fi
+
+	REQUEST . URI =q $(echo $(REQUEST . HEADER) | sed -e "s,^$(REQUEST . METHOD) ,,i" -e "s, HTTP/.*,,i" -e "s,\.\.,,g" -e "s,//,/,g" -e "s,/\.\/,/,g" | tr -d "\r")
+
+	IFS_SAVE="$IFS"; IFS="?"
+	set -- $(REQUEST . URI)
+	REQUEST . URI =q $1
+	shift
+	REQUEST . QUERY_STRING =q $@@
+	IFS="$IFS_SAVE"
+
+'
+@

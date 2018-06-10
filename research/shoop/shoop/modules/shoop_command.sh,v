@@ -1,0 +1,57 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2001.03.06.01.03.27;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2001.03.05.10.09.15;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@It now works.
+@
+text
+@OBJECT . use shoop ref alist
+
+OBJECT_REF . new OBJECT SHOOP . command
+OBJECT_REF . new ALIST SHOOP . command . list 
+
+SHOOP . command . register :p '
+	$THIS . list . add "$@@"
+	local key=$1 value; shift
+	value="$@@"
+	_shoopcommand_middle_="${_shoopcommand_middle_:+$_shoopcommand_middle_
+}
+$key)	$value;;"
+'
+@
+
+
+1.1
+log
+@shoop_command allows one to register additional commands, other than '.' or
+'d'.  It doesn't fully work, yet, however.  Also, the last checkin
+accidentally had the test script referenced in the makefile.
+@
+text
+@d8 2
+a9 3
+	local ref=$($THIS . list . get $($THIS . list . size))
+	local key="$($ref . getkey)" value="$($ref . getvalue)"
+	: key=$key value=$value
+@
+

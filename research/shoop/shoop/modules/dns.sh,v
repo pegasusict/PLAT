@@ -1,0 +1,273 @@
+head	1.5;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.5
+date	2001.06.20.19.49.25;	author doogie;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2001.02.21.19.06.23;	author doogie;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2001.02.20.05.34.49;	author doogie;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2001.02.20.05.34.19;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2001.02.03.18.48.11;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.5
+log
+@POSIX says that variable expansion happens first, before commands are run.
+This breaks 'local foo="$@@"'.  So, we separate the call to local, and the
+variable assignment, in the $@@ case.
+@
+text
+@#!/bin/sh -e
+#
+# LGPL copyright 2000 by Adam Heath <doogie@@debian.org>
+
+
+_shoop_quote="'"
+OBJECT . new DNS
+
+## Methods available for module 'dns'.
+##>4
+##:builddns
+## This rather long method is responsible for walking all hosts, mx, and
+## cnames, and building a properly formatted dns database file.
+##:host <host> <address>
+## Add a host -> ip mapping
+##:cname <host> <name>
+## Add a host -> name mapping
+##:gethost <host>
+## Return the ip address for a host.
+##:host_mx <host> <mx> <name>
+## Create an mx mapping for a host.
+##<
+##>4
+## Global variables
+##:serial
+##:refresh
+##:retry
+##:expire
+##:ttl
+## These all following the meaning from a standard SOA record.
+##:address
+## The default address for a domain.
+##:mx
+## The default mx entry for a domain
+##<
+IFS=" " DNS . builddns :p '
+	local counter\
+		title=$($THIS . title) domain=$($THIS . domain)\
+		mx=$($THIS . mx) address=$($THIS . address)\
+		num_ns=$($THIS . num_ns)
+	exec 3>&1
+	echo $($THIS . file)
+	echo ";"
+	echo "; Domain name server configuration file - $title"
+	echo ";"
+	echo
+	echo "@@ IN SOA ns1.$domain root.ns1.$domain ("
+	echo "	$($THIS . serial)"
+	echo "	$($THIS . refresh)"
+	echo "	$($THIS . retry)"
+	echo "	$($THIS . expire)"
+	echo "	$($THIS . ttl)"
+	echo ")"
+	echo
+	if [ "$address" ]; then
+		echo "	IN A	$address"
+	fi
+	if [ "$mx" ]; then
+		echo "	IN MX	$mx"
+	fi
+	echo
+	for counter in $(seq -s " " 1 $num_ns); do
+		echo "	IN NS	ns$counter.$domain."
+#		echo "ns$counter	IN A	$($THIS . ns_ip_$counter)"
+	done
+	echo
+	$THIS hosts host_ip_ "IN A"
+	echo
+	$THIS cnames cname_ "IN CNAME"
+	echo
+	for counter in $($THIS . hosts 2>/dev/null); do
+		echo "$($THIS . host_ip_$counter)	IN PTR	$counter.$($THIS . domain)."
+	done
+'
+IFS=" " DNS . buildhost :p '
+	local var=$1 varstub=$2 line="$3" host
+	for host in $($THIS . $var 2>/dev/null); do
+		echo "$host	$line	$($THIS . $varstub$host)"
+		: bar
+		mx=$($THIS . host_mx_$host 2>/dev/null)
+		if [ "$mx" ];then
+			echo "	IN MX	$mx"
+		fi
+	done
+
+'
+IFS=" " DNS . host :p '
+	local host=$1; shift
+	if [ -z "$($THIS . host_ip_$host 2>/dev/null)" ]; then
+		$THIS . hosts =q "$($THIS . hosts 2>/dev/null) $host"
+	fi
+	$THIS . host_ip_$host =q "$@@"
+'
+IFS=" " DNS . cname :p '
+	local host=$1; shift
+	if [ -z "$($THIS . cname_$host 2>/dev/null)" ]; then
+		$THIS . cnames =q "$($THIS . cnames 2>/dev/null) $host"
+	fi
+	$THIS . cname_$host =q "$@@"
+'
+IFS=" " DNS . gethost :p '$THIS . host_ip_$1'
+DNS . host_mx :p '
+	local host=$1;shift
+	$THIS . host_mx_$host =q "$@@"
+'
+
+IFS=" " DNS . serialize :p '
+	local DISPLAYOBJ=$THIS oldargs PARENTS=$($THIS . parent); oldargs="$@@"
+	set -- $PARENTS
+	if [ "$1" ]; then
+		if [ $# -gt 1 ]; then
+			echo "$THIS . parent $PARENTS"
+		fi
+		eval _shoopseen_parent=1
+	fi
+	set -- $oldargs
+	$THIS . super "dummy" $DISPLAYOBJ
+'
+@
+
+
+1.4
+log
+@Add some documentation.
+@
+text
+@d108 1
+a108 1
+	local DISPLAYOBJ=$THIS oldargs="$@@" PARENTS=$($THIS . parent)
+@
+
+
+1.3
+log
+@Oodles of docs.
+@
+text
+@d14 22
+a35 1
+
+a47 3
+##>4
+## Global variables
+##:serial
+a48 1
+##:refresh
+a49 1
+##:retry
+a50 1
+##:expire
+a51 1
+##:ttl
+a53 1
+## These all following the meaning from a standard SOA record.
+a54 2
+##:address
+## The default address for a domain.
+a57 2
+##:mx
+## The default mx entry for a domain
+a60 1
+##<
+a86 2
+##:host <host> <address>
+## Add a host -> ip mapping
+a93 2
+##:cname <host> <name>
+## Add a host -> name mapping
+a100 2
+##:gethost <host>
+## Return the ip address for a host.
+a101 2
+##:mx <host> <mx> <name>
+## Create an mx mapping for a host.
+@
+
+
+1.2
+log
+@Move duplicated code block from builddns to buildhost.
+@
+text
+@d9 6
+d27 3
+d31 1
+d33 1
+d35 1
+d37 1
+d40 1
+d42 2
+d47 2
+d52 1
+d79 2
+d88 2
+d97 2
+d100 2
+@
+
+
+1.1
+log
+@Preliminary dns support.
+@
+text
+@d40 4
+d45 1
+a45 6
+		echo "$counter	IN A	$($THIS . host_ip_$counter)"
+		: bar
+		mx=$($THIS . host_mx_$counter 2>/dev/null)
+		if [ "$mx" ];then
+			echo "	IN MX	$mx"
+		fi
+d47 5
+a51 3
+	echo
+	for counter in $($THIS . cnames 2>/dev/null); do
+		echo "$counter	IN CNAME	$($THIS . cname_$counter)"
+d53 1
+a53 1
+		mx=$($THIS . host_mx_$counter 2>/dev/null)
+d58 1
+a58 4
+	echo
+	for counter in $($THIS . hosts 2>/dev/null); do
+		echo "$($THIS . host_ip_$counter)	IN PTR	$counter.$($THIS . domain)."
+	done
+@
+

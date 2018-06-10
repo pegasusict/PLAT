@@ -1,0 +1,235 @@
+head	1.7;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.7
+date	2000.02.13.04.27.58;	author doogie;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2000.02.08.00.20.27;	author doogie;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2000.02.06.23.40.53;	author doogie;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2000.02.06.04.35.57;	author doogie;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.02.06.04.16.55;	author doogie;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.01.29.05.22.32;	author joey;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.29.04.59.01;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.7
+log
+@Commenting and adding perldoc stuff.
+@
+text
+@#!/bin/sh -e
+#
+# Pretty-printing module for shoop. Expands the OBJECT class with a prettyprint
+# method, that can list all methods and variables that are defined on a class,
+# pretty-printing them.
+#
+# Smell the Java. LGPL copyright 2000 by Adam Heath <doogie@@debian.org>
+
+## This module is based off C<introspect>.  It prints out the object's
+## members, in a java/c++ format.
+
+# Enable introspection inside _shoop
+_shoop_introspect=1
+
+
+IFS=" " OBJECT . prettyprint :p '
+	local DEFINES A
+	if [ -z "$2" ]; then
+		local DISPLAYOBJ=$THIS
+		echo "$3object $DISPLAYOBJ {"
+	fi
+	eval DEFINES=\$_shoopdefines_$THIS
+	for A in $DEFINES; do
+		if eval [ -z \"\$_shoopseen_$A\" ]; then
+			echo -en "\t$3"
+			if eval [ \"\$_shoopfinal_${THIS}_$A\" ]; then
+				echo -n "final "
+			fi
+			eval echo -n "\$_shooptype_${THIS}_$A $A\ "
+			if eval [ \$_shooptype_${THIS}_$A = variable ]; then
+				echo -n "= "
+				$DISPLAYOBJ . $A
+			else
+				echo -ne "{\n$3\t\t"
+				eval echo "\$_shoop_${THIS}_$A"
+				echo -ne "$3\t}"
+			fi
+			echo 
+			eval local _shoopseen_$A="1"
+		fi
+	done
+	# This does not use a non-recursive form, as this code does not
+	# need to be fast.  It is only for informative output.
+	if [ "$1" = resolve ];then
+		for P in $($THIS . parent 2>/dev/null); do
+			echo -e "\t$3class $P {"
+			$P . introspect resolve $DISPLAYOBJ "$3\t"
+			echo -e "\t$3}"
+		done
+	fi
+	if [ -z "$2" ]; then
+		echo "$3}"
+	fi
+'
+@
+
+
+1.6
+log
+@Changed license to LGPL, and added preliminary inline document support.
+@
+text
+@d9 3
+d14 1
+@
+
+
+1.5
+log
+@Define the method final instead of finalize.  Modified comments and code
+in all introspection type files to be consistent.  Added copyright to
+final.sh.
+@
+text
+@d7 1
+a7 1
+# Smell the Java. GPL copyright 2000 by Adam Heath <doogie@@debian.org>
+@
+
+
+1.4
+log
+@Add support for declare methods and variables that are private, and are
+invisible to introspection.  Append 'p' to the '=' or ':'.
+@
+text
+@d13 3
+a15 5
+	local DEFINES A DISPLAYOBJ
+	if [ "$2" ]; then
+		DISPLAYOBJ=$2
+	else
+		DISPLAYOBJ=$THIS
+d35 1
+a35 1
+			eval _shoopseen_$A="1"
+d38 2
+a46 3
+	for A in $DEFINES; do
+		unset _shoopseen_$A
+	done
+@
+
+
+1.3
+log
+@Remove extraneous ';', as they detract from the code.
+@
+text
+@d12 1
+a12 1
+IFS=" " OBJECT . prettyprint : '
+@
+
+
+1.2
+log
+@Redid comment header.
+@
+text
+@d13 1
+a13 1
+	local DEFINES A DISPLAYOBJ;
+d15 1
+a15 1
+		DISPLAYOBJ=$2;
+d17 4
+a20 4
+		DISPLAYOBJ=$THIS;
+		echo "$3object $DISPLAYOBJ {";
+	fi;
+	eval DEFINES=\$_shoopdefines_$THIS;
+d23 1
+a23 1
+			echo -en "\t$3";
+d25 3
+a27 3
+				echo -n "final ";
+			fi;
+			eval echo -n "\$_shooptype_${THIS}_$A $A\ ";
+d29 2
+a30 2
+				echo -n "= ";
+				$DISPLAYOBJ . $A;
+d32 8
+a39 8
+				echo -ne "{\n$3\t\t";
+				eval echo "\$_shoop_${THIS}_$A";
+				echo -ne "$3\t}";
+			fi;
+			echo ;
+			eval _shoopseen_$A="1";
+		fi;
+	done;
+d42 5
+a46 5
+			echo -e "\t$3class $P {";
+			$P . introspect resolve $DISPLAYOBJ "$3\t";
+			echo -e "\t$3}";
+		done;
+	fi;
+d48 2
+a49 2
+		unset _shoopseen_$A;
+	done;
+d51 1
+a51 1
+		echo "$3}";
+@
+
+
+1.1
+log
+@Renamed introspect.sh to prettyprint.sh.  introspect.sh is now the old,
+quicker to parse version.  prettyprint.sh is the java/c++ version.
+@
+text
+@d3 3
+a5 2
+# Introspect module for shoop. Expands the OBJECT class with an introspect
+# method, that can list all methods and variables that are defined on a class.
+@
+

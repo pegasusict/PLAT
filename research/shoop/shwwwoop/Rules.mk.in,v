@@ -1,0 +1,287 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2001.04.29.18.22.51;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@initial import
+@
+text
+@## Rules.mk - Common -*- Makefile -*- rules for shwwwoop
+## Copyright (C) 2001 Gergely Nagy <8@@free.bsd.hu>
+##
+## This file is part of shwwwoop.
+##
+## shwwwoop is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+##
+## shwwwoop is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+##
+## $Id$
+
+SHELL		= /bin/sh
+
+PACKAGE		?= shwwwoop
+VERSION		= @@VERSION@@
+
+prefix		?= @@prefix@@
+exec_prefix	?= @@exec_prefix@@
+bindir		?= @@bindir@@
+datadir		?= @@datadir@@
+docdir		?= @@docdir@@
+pkgdocdir	?= @@pkgdocdir@@
+mandir		?= @@mandir@@
+man1dir		?= ${mandir}/man1
+sysconfdir	?= @@sysconfdir@@
+pkgconfdir	?= @@pkgconfdir@@
+libdir		?= @@libdir@@
+moduledir	?= @@moduledir@@
+infodir		?= @@infodir@@
+localstatedir	?= @@localstatedir@@
+
+DESTDIR		?=
+SUBDIRS		?=
+
+GZIP_ENV	?= --best
+TAR		?= tar
+TAR_OPTIONS	?= -ho
+INSTALL		?= @@INSTALL@@
+INSTALL_PROG	?= $(INSTALL) -m 0755
+INSTALL_DATA	?= $(INSTALL) -m 0644
+INSTALL_DIR	?= $(INSTALL) -d
+
+DISTFILES	?= $(bin_SCRIPTS) $(doc_DATA) $(etc_DATA) $(pkgdoc_DATA) \
+		$(man_MANS) Makefile $(EXTRA_DIST) $(module_DATA)
+
+dest_bindir	:= $(subst /,\#,$(DESTDIR)$(bindir))
+dest_docdir	:= $(subst /,\#,$(DESTDIR)$(docdir))
+dest_pkgconfdir	:= $(subst /,\#,$(DESTDIR)$(pkgconfdir))
+dest_pkgdocdir	:= $(subst /,\#,$(DESTDIR)$(pkgdocdir))
+dest_moduledir	:= $(subst /,\#,$(DESTDIR)$(moduledir))
+dest_man1dir	:= $(subst /,\#,$(DESTDIR)$(man1dir))
+
+ifneq (,$(findstring s,$(MAKEFLAGS)))
+	define xecho
+		echo >/dev/null
+	endef
+else
+	define xecho
+		echo
+	endef
+endif
+
+all: $(top_srcdir)/Rules.mk all-recursive all-local
+all-local:: ;
+
+clean: clean-recursive clean-local
+distclean:: clean distclean-recursive distclean-local
+mostlyclean:: clean mostlyclean-recursive mostlyclean-local
+maintainer-clean: distclean maintainer-clean-recursive maintainer-clean-local
+clean-local::
+	test -z "$(CLEAN_FILES)" || rm -f $(CLEAN_FILES)
+distclean-local::
+	test -z "$(DISTCLEAN_FILES)" || rm -f $(DISTCLEAN_FILES)
+mostlyclean-local::
+	test -z "$(MOSTLYCLEAN_FILES)" || rm -f $(MOSTLYCLEAN_FILES)
+maintainer-clean-local::
+	test -z "$(MAINTAINTERCLEANFILES)" || rm -f $(MAINTAINTERCLEANFILES)
+
+install install-strip: all $(if $(SUBDIRS),install-recursive) install-local
+install-local: pre-install-hook $(if $(bin_SCRIPTS),install-bin) \
+	       $(if $(doc_DATA),install-doc) \
+	       $(if $(man_MANS),install-man) \
+	       $(if $(pkgdoc_DATA),install-pkgdoc) \
+	       $(if $(etc_DATA),install-etc) \
+	       $(if $(module_DATA),install-module) install-hook
+
+installdirs: installdirs-recursive installdirs-local
+installdirs-local: $(if $(bin_SCRIPTS),install$(dest_bindir)) \
+	     $(if $(doc_DATA),install$(dest_docdir)) \
+	     $(if $(man_MANS),install$(dest_mandir)) \
+	     $(if $(pkgdoc_DATA),install$(dest_pkgdocdir)) \
+	     $(if $(etc_DATA),install$(dest_pkgconfdir)) \
+	     $(if $(module_DATA),install$(dest_moduledir))
+
+uninstall: uninstall-recursive uninstall-local
+uninstall-local: uninstall-bin uninstall-doc uninstall-etc uninstall-pkgdoc \
+		 uninstall-module uninstall-man uninstall-hook
+
+installdirs-recursive install-recursive uninstall-recursive \
+all-recursive clean-recursive distclean-recursive distdir-recursive \
+distfiles-recursive check-recursive: %-recursive: $(SUBDIRS)
+	@@list='$(SUBDIRS)'; for d in $$list; do \
+		$(xecho) "$(MAKE) -C $$d $*" ;\
+		$(MAKE) -C $$d $* ;\
+	done
+
+install$(dest_bindir) install$(dest_pkgconfdir) install$(dest_man1dir) \
+$(sort install$(dest_pkgdocdir) install$(dest_docdir)) \
+install$(dest_moduledir):
+	$(INSTALL_DIR) $(subst install,,$(subst #,/,$@@))
+
+install-bin: install$(dest_bindir) $(bin_SCRIPTS)
+	@@list='$(bin_SCRIPTS)'; for f in $$list; do \
+		if test -f $$f; then \
+			$(xecho) "$(INSTALL_PROG) $$f $(DESTDIR)$(bindir)" ;\
+			$(INSTALL_PROG) $$f $(DESTDIR)$(bindir) ;\
+		fi \
+	done
+
+uninstall-bin: $(bin_SCRIPTS)
+	@@list='$(bin_SCRIPTS)'; for f in $$list; do \
+		if test -f $$f; then \
+			$(xecho) "rm -f $(DESTDIR)$(bindir)/$$f" ;\
+			rm -f $(DESTDIR)$(bindir)/$$f ;\
+		fi \
+	done
+
+install-doc: install$(dest_docdir) $(doc_DATA) 
+	@@list='$(doc_DATA)'; for f in $$list; do \
+		if test -f $$f; then \
+			$(xecho) "$(INSTALL_DATA) $$f $(DESTDIR)$(docdir)" ;\
+			$(INSTALL_DATA) $$f $(DESTDIR)$(docdir) ;\
+		fi \
+	done
+
+uninstall-doc: $(doc_DATA) $(if $(pkgdoc_DATA),uninstall-pkgdoc)
+	@@list='$(doc_DATA)'; for f in $$list; do \
+		if test -f $$f; then \
+			$(xecho) "rm -f $(DESTDIR)$(docdir)/$$f" ;\
+			rm -f $(DESTDIR)$(docdir)/$$f ;\
+		fi \
+	done
+
+install-pkgdoc: install$(dest_pkgdocdir) $(pkgdoc_DATA)
+	@@list='$(pkgdoc_DATA)'; for f in $$list; do \
+		if test -f $$f; then \
+			$(xecho) "$(INSTALL_DATA) $$f $(DESTDIR)$(pkgdocdir)" ;\
+			$(INSTALL_DATA) $$f $(DESTDIR)$(pkgdocdir) ;\
+		fi \
+	done
+
+uninstall-pkgdoc: $(pkgdoc_DATA)
+	@@list='$(pkgdoc_DATA)'; for f in $$list; do \
+		if test -f $$f; then \
+			$(xecho) "rm -f $(DESTDIR)$(pkgdocdir)/$$f" ;\
+			rm -f $(DESTDIR)$(pkgdocdir)/$$f ;\
+		fi \
+	done
+
+install-module: install$(dest_moduledir) $(module_DATA)
+	@@list='$(module_DATA)'; for f in $$list; do \
+		if test -f $$f; then \
+			$(xecho) "$(INSTALL_DATA) $$f $(DESTDIR)$(moduledir)" ;\
+			$(INSTALL_DATA) $$f $(DESTDIR)$(moduledir) ;\
+		fi \
+	done
+
+uninstall-module: $(module_DATA)
+	@@list='$(module_DATA)'; for f in $$list; do \
+		if test -f $$f; then \
+			$(xecho) "rm -f $(DESTDIR)$(moduledir)/$$f" ;\
+			rm -f $(DESTDIR)$(moduledir)/$$f ;\
+		fi \
+	done
+
+install-etc: install$(dest_pkgconfdir) $(etc_DATA)
+	@@list='$(etc_DATA)'; for f in $$list; do \
+		if test -f $$f; then \
+			$(xecho) "$(INSTALL_DATA) $$f $(DESTDIR)$(pkgconfdir)" ;\
+			$(INSTALL_DATA) $$f $(DESTDIR)$(pkgconfdir) ;\
+		fi \
+	done
+
+uninstall-etc: $(etc_DATA)
+	@@list='$(etc_DATA)'; for f in $$list; do \
+		if test -f $$f; then \
+			$(xecho) "rm -f $(DESTDIR)$(pkgconfdir)/$$f" ;\
+			rm -f $(DESTDIR)$(pkgconfdir)/$$f ;\
+		fi \
+	done
+
+install-man: install$(dest_man1dir) $(man_MANS)
+	@@list='$(man_MANS)'; for f in $$list; do \
+		if test -f $$f; then \
+			$(xecho) "$(INSTALL_DATA) $$f $(DESTDIR)$(man1dir)/" ;\
+			$(INSTALL_DATA) $$f $(DESTDIR)$(man1dir)/ ;\
+		fi \
+	done
+
+uninstall-man: $(man_MANS)
+	@@list='$(man_MANS)'; for f in $$list; do \
+		if test -f $$f; then \
+			$(xecho) "rm -f $(DESTDIR)$(man1dir)/$$f" ;\
+			rm -f $(DESTDIR)$(man1dir)/$$f ;\
+		fi \
+	done
+
+distdir = $(if $(subdir),$(top_srcdir)/$(PACKAGE)-$(VERSION)/$(subdir),$(top_srcdir)/$(PACKAGE)-$(VERSION))
+distdir: distdir-recursive distdir-local
+distdir-local: $(DISTFILES)
+	$(INSTALL_DIR) $(distdir)
+	@@list='$(DISTFILES)'; for f in $$list; do \
+		dirpart="$(distdir)/`echo ./$$f | sed -e 's,^\(.*\)/[^/]*$$,\1,'`" ;\
+		if ! test -d $$dirpart; then \
+			echo "$(INSTALL_DIR) $$dirpart" ;\
+			$(INSTALL_DIR) $$dirpart; \
+		fi; \
+		$(xecho) "cp -pr $$f $(distdir)/$$f" ;\
+		cp -pr $$f $(distdir)/$$f ;\
+	done
+
+dvi info installcheck: ;
+
+$(top_srcdir)/Rules.mk: $(top_srcdir)/Rules.mk.in $(top_srcdir)/config.status
+	cd $(top_srcdir) && ./config.status
+
+$(top_srcdir)/config.status: $(top_srcdir)/configure
+	cd $(top_srcdir) && ./configure
+
+distfiles: distfiles-recursive distfiles-local
+distfiles-local:
+	@@subdir="$(if $(subdir),$(subdir)/)"; \
+	list="$(DISTFILES)"; for f in $$list; do \
+		echo "$$subdir$$f"; \
+	done
+
+MANIFEST: $(top_srcdir)/Rules.mk $(top_srcdir)/Makefile.top Makefile
+	@@$(MAKE) -s distfiles | sort >$@@
+
+check: all check-recursive check-local
+check-local::
+
+.PHONY:: all clean install install-dirs install-bin install-doc install-etc \
+	install-local install-recursive uninstall uninstall-recursive \
+	uninstall-bin uninstall-etc uninstall-doc install-hook uninstall-hook \
+	uninstall-local pre-install-hook install-man uninstall-man \
+	install-pkgdoc uninstall-pkgdoc dummy distclean mostlyclean \
+	maintainer-clean installdirs installdirs-local installdirs-local \
+	all-recursive all-local clean-recursive clean-local distdir-local \
+	distdir-recursive distdir dist install-strip dvi info check installcheck \
+	distfiles-local distfiles-recursive distfiles dist-hook \
+	distclean-recursive distclean-local check-local check-recursive \
+	install-module uninstall-module maintainerclean-local \
+	maintainerclean-recursive mostlyclean-local mostlyclean-recursive
+@

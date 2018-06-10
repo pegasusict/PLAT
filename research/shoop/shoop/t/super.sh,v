@@ -1,0 +1,71 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2001.03.08.19.02.12;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2001.03.02.06.35.59;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Because t/regress used to munge variables, several false positives were
+being generated.  Now, these should all be fixed.
+@
+text
+@#!/bin/sh -e
+# Inheritance regression test. Also sets basic methods and variables.
+. ${SHOOPSH:-/usr/share/shoop/shoop.sh}
+
+# Setting/getting variables.
+ok "" 0 ""	OBJECT . count :p 'echo OBJECT-$THIS'
+ok "" 0 ""	OBJECT . new ONE
+ok "" 0 ""	ONE . count :p 'echo ONE-$THIS;$THIS . super'
+ok "" 0 ""	ONE . new TWO
+ok "" 0 ""	TWO . count :p 'echo TWO-$THIS;$THIS . super'
+
+ok "" 0 "OBJECT-OBJECT
+"		OBJECT . count
+ok "" 0 "ONE-ONE
+OBJECT-ONE
+"	ONE . count
+ok "" 0 "TWO-TWO
+ONE-TWO
+OBJECT-TWO
+"	TWO . count
+
+tests 8
+
+@
+
+
+1.1
+log
+@YAY!  super now works completely correctly.  The old code could not handle
+2(or more) super calls at once.  We also now have a set of tests for this.
+@
+text
+@d12 2
+a13 1
+ok "" 0 "OBJECT-OBJECT"		OBJECT . count
+d15 2
+a16 1
+OBJECT-ONE"	ONE . count
+d19 2
+a20 1
+OBJECT-TWO"	TWO . count
+@
+

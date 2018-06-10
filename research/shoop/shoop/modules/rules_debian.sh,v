@@ -1,0 +1,214 @@
+head	1.3;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.3
+date	2000.02.08.00.20.27;	author doogie;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.02.06.04.24.42;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.02.03.05.19.39;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@Changed license to LGPL, and added preliminary inline document support.
+@
+text
+@#!/bin/sh -e
+#
+# Simplistic debian/rules module for shoop.
+#
+# LGPL copyright 2000 by Adam Heath <doogie@@debian.org>
+
+OBJECT . new DEBIAN
+
+DEBIAN . processcmdline : '
+	while [ $# -gt 0 ]; do
+		var=$(echo "$1"|sed -n "s,^\([^ =	]*\)=,\1,p")
+		if [ "$var" ];then
+			value=$(echo "$1"|sed -n "s,^[^ =	]*=\"?\(.*\)\"?$,\1")
+			eval $var=\"$value\";
+			continue
+		fi
+		case "$1" in
+			-j*)
+				if [ "$1" = "-j" ];then
+					$THIS . J_FLAG = $2;
+					shift
+				else
+					$THIS . J_FLAG = $(echo $1|sed "s,^-j,,")
+				fi
+			;;
+			*)
+				$THIS . targets =q $($THIS . targets 2>/dev/null) $1
+			;;
+		esac;
+		shift
+	done;
+	local a targets=$($THIS . targets 2>/dev/null);
+	if [ -z "$targets" ]; then
+		targets=$($THIS . default_target)
+	fi;
+	for a in $targets; do
+		$THIS . $a
+	done
+'
+DEBIAN . newpkg : '
+	local pkg=$1; shift;
+	$THIS . new $pkg;
+	DEBIAN . pkgs .=q " $pkg"
+'
+DEBIAN . runpkg : '
+	local method=$1 msg="$2" a; shift 2;
+	for a in $(DEBIAN . pkgs); do
+		echo $msg for $($a . pkg);
+		$a . ${method}deps
+	done
+'
+
+CURDIR=$PWD
+
+DEBIAN . prefix = ${prefix:-$CURDIR} > /dev/null
+
+DEBIAN . installfile : '
+	if [ "$2" ]; then
+		local base=$(basename $2) target=$($THIS . prefix);
+		if [ $2 -nt $target/$base -o ! -e $target/$base ]; then
+			echo install -m 644 $2 $target/$i;
+			install -m 644 $2 $target/$i
+		fi
+	fi
+'
+DEBIAN . installdir : '
+	local dir=$($THIS . prefix)/$1;
+	if [ ! -d $dir ]; then
+		echo install -m 755 $dir
+		install -d -m 755 $dir
+	fi
+'
+DEBIAN . installfiles : '
+	local dir=$1 file; shift;
+	for file in "$@@"; do
+		$THIS . installfile $dir $file
+	done
+'
+
+DEBIAN . installdirs : '
+	local dir;
+	for dir in "$@@"; do
+		$THIS . installdir $dir
+	done
+'
+
+
+DEBIAN . installpriv	: '
+	local dir=$($THIS . $1);
+	$THIS . installdir $dir;
+	$THIS . installfiles $dir $($THIS . $2 2>/dev/null);
+'
+
+DEBIAN . installbins 		: '$THIS . installpriv bindir bins'
+DEBIAN . installdocs		: '$THIS . installpriv docdir docs'
+DEBIAN . installmodules		: '$THIS . installpriv moddir modules'
+DEBIAN . installexamples	: '$THIS . installpriv empdir examples'
+DEBIAN . installdeps		: '
+	$THIS . installbins;
+	$THIS . installdocs;
+	$THIS . installmodules;
+	$THIS . installexamples
+'
+
+DEBIAN . install		: '
+	DEBIAN . build;
+	DEBIAN . runpkg install Installing
+'
+
+DEBIAN . build		: '
+	DEBIAN . configure;
+	DEBIAN . runpkg build Building
+'
+
+DEBIAN . configure	: '
+	DEBIAN . runpkg configure Configuring
+'
+
+DEBIAN . binary			: '$THIS . binary_indep; $THIS . binary_arch'
+DEBIAN . binary_indep		: '$THIS . install'
+DEBIAN . binary_arch		: '$THIS . install'
+@
+
+
+1.2
+log
+@Added brief intros and copyrights to files.
+@
+text
+@d5 1
+a5 1
+# GPL copyright 2000 by Adam Heath <doogie@@debian.org>
+@
+
+
+1.1
+log
+@Yes, you read correctly.  An early implementation of a rules file in shoop.
+@
+text
+@d2 4
+d7 3
+a9 1
+OBJECT . processcmdline : '
+d27 1
+a27 1
+				$THIS . targets = $($THIS . targets) $1
+d40 13
+d55 1
+a55 1
+OBJECT . prefix = ${prefix:-$CURDIR} > /dev/null
+d57 1
+a57 1
+OBJECT . installfile : '
+d66 1
+a66 1
+OBJECT . installdir : '
+d73 1
+a73 1
+OBJECT . installfiles : '
+d80 1
+a80 1
+OBJECT . installdirs : '
+d88 1
+a88 1
+OBJECT . installpriv	: '
+d94 5
+a98 7
+OBJECT . installbins 		: '$THIS . installpriv bindir bins'
+OBJECT . installdocs		: '$THIS . installpriv docdir docs'
+OBJECT . installmodules		: '$THIS . installpriv moddir modules'
+OBJECT . installexamples	: '$THIS . installpriv empdir examples'
+OBJECT . install		: '
+	$THIS . build;
+	echo Installing for $($THIS . pkg);
+d104 18
+a121 3
+OBJECT . binary			: '$THIS . binary_indep; $THIS . binary_arch'
+OBJECT . binary_indep		: '$THIS . install'
+OBJECT . binary_arch		: '$THIS . install'
+@
+

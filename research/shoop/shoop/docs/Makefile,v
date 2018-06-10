@@ -1,0 +1,52 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2001.03.02.07.49.27;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.02.12.12.08.00;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Include Makefile.vars
+@
+text
+@#!/usr/bin/make -f
+#
+# This makefile needs GNU make.
+#
+TOPDIR=..
+
+DOCS=\
+	CONTRIBUTING\
+	MODULES\
+	README\
+	modules.txt\
+
+include $(TOPDIR)/Makefile.vars
+include $(TOPDIR)/Makefile.rules
+@
+
+
+1.1
+log
+@Modularized the make system.  The subdirs have simple makefiles now.
+@
+text
+@d13 1
+@
+

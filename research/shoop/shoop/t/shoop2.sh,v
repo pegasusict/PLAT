@@ -1,0 +1,80 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2001.03.06.08.37.33;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2001.03.05.18.50.18;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Don't fudge around with the expected output anymore, and expect the real
+thing.  However, the code doesn't work yet, so these tests fail.
+@
+text
+@#!/bin/sh -e
+# Inheritance regression test. Also sets basic methods and variables.
+. ${SHOOPSH:-/usr/share/shoop/shoop.sh}
+. ${SHOOP2SH:-/usr/share/shoop/shoop2.sh}
+#. ${SHOOPMOD:-/usr/share/shoop/modules}/use.sh
+
+SHOOP abstract class TEST
+	SHOOP abstract method _print
+	SHOOP public method print '
+		$THIS . _print "$@@"
+	'
+	SHOOP public variable var = 1
+SHOOP end
+SHOOP public class REAL : TEST
+	SHOOP public method _print '
+		echo "real:$@@"
+	'
+SHOOP end
+
+
+ok "" 0 ""		SHOOP new t : REAL
+ok "" 0 "1"		t . var
+ok "" 0 "real:1"	t . print $(t . var)
+
+tests 3
+@
+
+
+1.1
+log
+@Added early version of shoop2, a very enhanced definition syntax.  Not all
+features are supported yet.  This currently overlays on the old shoop code,
+which is suboptimal.
+@
+text
+@d8 1
+a8 1
+#	SHOOP abstract method _print
+a12 3
+	SHOOP public method _print '
+		echo "default:$@@"
+	'
+d16 1
+a16 1
+		echo "$@@"
+d21 3
+a23 3
+ok "" 0 ""	SHOOP new t : TEST
+ok "" 0 ""	t . var
+ok "" 0 ""	t . print $(t . var)
+@
+

@@ -1,0 +1,108 @@
+head	1.3;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.3
+date	2001.07.07.13.23.34;	author algernon;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2001.02.22.20.58.44;	author algernon;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2001.02.17.21.50.02;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@synced with current module and test list
+@
+text
+@modules/alist.sh
+modules/also_inherit.sh
+modules/apt.sh
+modules/destroy.sh
+modules/dns.sh
+modules/final.sh
+modules/introspect.sh
+modules/list.sh
+modules/onexit.sh
+modules/prettyprint.sh
+modules/ref.sh
+modules/rules_debian.sh
+modules/serialize.sh
+modules/shoop.sh
+modules/shoop_command.sh
+modules/stack.sh
+modules/stringutil.sh
+modules/thread.sh
+modules/use.sh
+modules/www.sh
+t/alist.sh
+t/benchmark
+t/benchmark.bm
+t/ifs.sh
+t/inheritance.sh
+t/metachars.sh
+t/list.sh
+t/onexit.sh
+t/ref.sh
+t/regress
+t/serialize.sh
+t/shoop2.sh
+t/shoop_command.sh
+t/stack.sh
+t/stringutil.sh
+t/super.sh
+utils/shell-stripper
+utils/shelldoc
+shoop.sh
+shoop2.sh
+example.sh
+@
+
+
+1.2
+log
+@Sync with current module and test list.
+@
+text
+@d1 1
+d11 1
+d14 2
+d17 1
+d21 1
+d24 1
+d26 1
+d31 3
+d35 2
+d40 1
+@
+
+
+1.1
+log
+@new files
+@
+text
+@a0 2
+utils/shell-stripper
+utils/shelldoc
+d7 2
+d12 1
+d19 3
+d23 3
+@
+

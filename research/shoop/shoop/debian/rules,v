@@ -1,0 +1,648 @@
+head	1.11;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.11
+date	2001.07.07.12.57.54;	author algernon;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2001.07.07.12.46.02;	author algernon;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2001.03.01.22.38.27;	author doogie;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2001.03.01.19.04.56;	author doogie;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2001.02.22.20.48.07;	author algernon;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2001.02.18.18.22.54;	author algernon;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2001.02.17.22.00.47;	author algernon;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2001.02.17.18.19.57;	author algernon;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2001.02.08.19.21.25;	author algernon;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.02.06.04.25.42;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.02.03.05.19.38;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.11
+log
+@make docs/modules.txt apparently does not work, use -C instead
+@
+text
+@#! /usr/bin/make -f
+## debian/rules for SHOOP
+## by Gergely Nagy <algernon@@debian.org>
+##
+
+export DH_COMPAT	= 2
+DPKG_BUILDPACKAGE	= ${DPKG_BUILDPACKAGE:-dpkg-buildpackage}
+INSTALL_OPTIONS		= 
+
+ifneq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+	INSTALL_OPTIONS	= strip_comment_space=/bin/cat
+endif
+
+build-stamp:
+	dh_testdir
+	$(MAKE) -C docs modules.txt 2>/dev/null
+	touch $@@
+
+build: build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp doc/modules.txt docs/modules.pod
+	mv ChangeLog ChangeLog.backup
+	$(MAKE) clean
+	mv ChangeLog.backup ChangeLog
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	$(MAKE) install ${INSTALL_OPTIONS} prefix=${CURDIR}/debian/shoop
+	rm -f debian/shoop/usr/share/doc/shoop/COPYING \
+	      debian/shoop/usr/share/doc/shoop/COPYING.gz
+	mv debian/shoop/usr/share/shoop/modules \
+	   debian/shoop-modules/usr/share/shoop/modules
+	mv debian/shoop/usr/share/doc/shoop/modules.txt \
+	   debian/shoop-dev/usr/share/doc/shoop/
+	mv debian/shoop/usr/share/doc/shoop/MODULES \
+	   debian/shoop-dev/usr/share/doc/shoop
+	rm -rf debian/shoop/usr/share/doc/shoop/examples
+	ln -sf shoop debian/shoop-dev/usr/share/doc/shoop-dev
+	ln -sf shoop debian/shoop-modules/usr/share/doc/shoop-modules
+	for f in `cat debian/shoop-dev.examples`; do \
+		cp $$f debian/shoop-dev/usr/share/doc/shoop/examples/$$f; \
+	done
+	
+packages: install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installchangelogs
+# This is Evil.
+	for file in copyright changelog changelog.gz; do \
+		rm -f debian/shoop-dev/usr/share/doc/shoop/$$file; \
+		rm -f debian/shoop-modules/usr/share/doc/shoop/$$file; \
+	done
+# Evil ends here.
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary-arch:
+binary-indep: packages
+binary: binary-arch binary-indep
+
+cvs-build:
+	$(MAKE) ChangeLog
+	$(DPKG_BUILDPACKAGE)
+
+.PHONY: cvs-build binary binary-arch binary-indel packages install clean build
+@
+
+
+1.10
+log
+@rewrote as Makefile
+@
+text
+@d16 1
+a16 1
+	$(MAKE) docs/modules.txt 2>/dev/null
+@
+
+
+1.9
+log
+@Removed the evil IFS hack, as shoop itself is now fixed.
+@
+text
+@d1 1
+a1 1
+#! /bin/sh
+a4 7
+## Trapped in time
+## A miracle of hope and change
+## A swirling mass, no mercy now
+## If the truth hurts prepare for pain
+## ...Do you think we're forever ?
+##
+##	- Anathema: Eternity Part I
+d6 19
+a24 46
+# exports
+export SHOOPPATH=${PWD}:${PWD}/modules
+export SHOOPMOD=${PWD}/modules
+export DH_COMPAT=2
+
+# #include <shoop>
+. ${PWD}/shoop.sh
+
+# basic setup
+OBJECT . new DEBIAN
+
+DEBIAN . MAKE_LEVEL =q 1
+DEBIAN . dry_run =q no
+DEBIAN . verbose =q yes
+DEBIAN . keep_going =q no
+DEBIAN . DPKG_BUILDPACKAGE =q ${DPKG_BUILDPACKAGE:-dpkg-buildpackage}
+DEBIAN . INSTALL_OPTIONS =q ""
+
+# core methods
+# The next two is unused, because MAKE_LEVEL inc/dec causes
+# some trouble
+DEBIAN . __do_header : 'echo "==> [$($THIS . MAKE_LEVEL)] Making $@@" 1>&2
+	$THIS . MAKE_LEVEL =q $(expr $($THIS . MAKE_LEVEL) + 1)'
+DEBIAN . __do_done : '$THIS . MAKE_LEVEL =q $(expr $($THIS . MAKE_LEVEL) - 1)
+	echo "<== [$($THIS . MAKE_LEVEL)] Finished $@@" 1>&2'
+
+DEBIAN . do_header : 'echo "==> Making $@@" 1>&2'
+DEBIAN . do_done : 'echo "<== Finished $@@" 1>&2'
+DEBIAN . do : 'if test "x$($THIS . verbose)" != "xno"; then echo $@@; fi
+	if test "x$($THIS . dry_run)" = "xno"; then eval $@@; fi'
+DEBIAN . header : 'if test "x$($THIS . verbose)" != "xno"; then
+		$THIS . do_header $@@
+	fi'
+DEBIAN . done : 'if test "x$($THIS . verbose)" != "xno"; then
+		$THIS . do_done $@@
+	fi'
+
+# These do the Real Job
+DEBIAN . do_build : 'test -f build-stamp || $THIS . build_stamp'
+DEBIAN . do_build_stamp : '$THIS . do dh_testdir
+	$THIS . do "make docs/modules.txt 2>/dev/null"
+	$THIS . do touch build-stamp'
+DEBIAN . do_clean : '$THIS . do dh_testdir
+	$THIS . do dh_testroot
+	$THIS . do rm -f build-stamp docs/modules.txt docs/modules.pod
+# Back up the ChangeLog
+d26 1
+a26 3
+# Clean up!
+	$THIS . do "make clean || true"
+# Copy the ChangeLog back
+d28 28
+a55 30
+	$THIS . do dh_clean'
+DEBIAN . do_install : '$THIS . build
+	$THIS . do dh_testdir
+	$THIS . do dh_testroot
+	$THIS . do dh_clean -k
+	$THIS . do dh_installdirs
+	$THIS . do make install $($THIS . INSTALL_OPTIONS)
+	$THIS . do rm -f debian/shoop/usr/share/doc/shoop/COPYING \
+			 debian/shoop/usr/share/doc/shoop/COPYING.gz
+	$THIS . do mv debian/shoop/usr/share/shoop/modules \
+		      debian/shoop-modules/usr/share/shoop/modules
+	$THIS . do mv debian/shoop/usr/share/doc/shoop/modules.txt \
+		      debian/shoop-dev/usr/share/doc/shoop/
+	$THIS . do mv debian/shoop/usr/share/doc/shoop/MODULES \
+		      debian/shoop-dev/usr/share/doc/shoop/
+	$THIS . do rm -rf debian/shoop/usr/share/doc/shoop/examples
+	$THIS . do ln -sf shoop debian/shoop-dev/usr/share/doc/shoop-dev
+	$THIS . do ln -sf shoop debian/shoop-modules/usr/share/doc/shoop-modules
+	for f in $(cat debian/shoop-dev.examples); do
+		$THIS . do cp $f debian/shoop-dev/usr/share/doc/shoop/examples/$f
+	done'
+DEBIAN . do_packages : '$THIS . build
+	$THIS . install
+	$THIS . do dh_testdir
+	$THIS . do dh_testroot
+#	$THIS . do dh_installdebconf
+	$THIS . do dh_installdocs
+#	$THIS . do dh_installmenu
+#	$THIS . do dh_installinfo
+	$THIS . do dh_installchangelogs
+d57 3
+a59 3
+	for file in copyright changelog changelog.gz; do
+		$THIS . do rm -f debian/shoop-dev/usr/share/doc/shoop/$file
+		$THIS . do rm -f debian/shoop-modules/usr/share/doc/shoop/$file
+d62 16
+a77 116
+	$THIS . do dh_link
+	$THIS . do dh_strip
+	$THIS . do dh_compress
+	$THIS . do dh_fixperms
+	$THIS . do dh_installdeb
+	$THIS . do dh_gencontrol
+	$THIS . do dh_md5sums
+	$THIS . do dh_builddeb'
+DEBIAN . do_binary_arch : ''
+DEBIAN . do_binary_indep : '$THIS . packages'
+DEBIAN . do_binary : '$THIS . binary_arch
+	$THIS . binary_indep'
+DEBIAN . do_cvs_build : '# Oh boy, oh boy!
+	$THIS . do make ChangeLog
+	$THIS . do $($THIS . DPKG_BUILDPACKAGE)'
+
+# Wrapper function that calls header & done too
+DEBIAN . do_func : '$THIS . header $LASTMETH
+	$THIS . do_$LASTMETH
+	$THIS . done $LASTMETH'
+# Use the wrapper for all targets
+DEBIAN . build : DEBIAN . do_func
+DEBIAN . build_stamp : DEBIAN . do_func
+DEBIAN . clean : DEBIAN . do_func
+DEBIAN . install : DEBIAN . do_func
+DEBIAN . packages : DEBIAN . do_func
+DEBIAN . binary_arch : DEBIAN . do_func
+DEBIAN . binary_indep : DEBIAN . do_func
+DEBIAN . binary : DEBIAN . do_func
+DEBIAN . cvs_build : DEBIAN . do_func
+
+# void main ( whatever )
+DEBIAN . debian : '# Go Johny, go! Go Johny, go go go!
+	while test $# -gt 0
+	do
+		opt=$1
+		shift
+
+		case $opt in
+			build|build-stamp|clean|install|packages|binary-arch|binary-indep|binary|cvs-build)
+				method=$(echo $opt | sed -e "s,\-,_,g")
+				$THIS . TODO .=q $method
+				;;
+			DEB_BUILD_OPTIONS=*nostrip*)
+				$THIS . INSTALL_OPTIONS .=q "strip_comment_space=/bin/cat"
+				;;
+			DEB_*=*)
+				# These are useless for us
+				;;
+			-*b*|-*m*|-*d*|-*e*|-*i*|-*p*|-*q*|-*r*|-*t*|-*w*|-*C|-*f|-*I|-*o|-*W|-*j*|-*k*|-*s*|-*S-|-*n*|-*l*)
+				# Ignored, handled later
+				;;
+			-*)
+				echo "*** Unsupported option: $opt"
+				exit 1
+				;;
+			*)
+				echo "*** Unsupported target: $opt"
+				exit 1
+				;;
+		esac
+		case $opt in
+			-*b*|-*m*|-*d*|-*e*|-*i*|-*p*|-*q*|-*r*|-*t*|-*w*)
+				# Ignored for GNU Make compatibility
+				;;
+		esac
+		case $opt in
+			-*C|-*f|-*I|-*o|-*W|-*l)
+				# Ignored (with arguments) for GNU Make compatibility
+				shift
+				;;
+		esac
+		case $opt in
+			-*j*)
+				# This is not implemented yet
+				;;
+		esac
+		case $opt in
+			-*k*)
+				$THIS . keep_going =q yes
+				;;
+		esac
+		case $opt in
+			-*S*)
+				$THIS . keep_going =q no
+				;;
+		esac
+		case $opt in
+			-*n*)
+				$THIS . dry_run =q yes
+				;;
+		esac
+		case $opt in
+			-*s*)
+				$THIS . verbose =q no
+				;;
+		esac
+		case $opt in
+			-*v*)
+				$ THIS . version
+				exit 0
+				;;
+		esac
+	done
+	$THIS . header debian
+	if test "x$($THIS . keep_going)" = "xno"; then
+		set -e
+	fi
+	# FIXME : $THIS . TODO empty => print warning
+	for rule in $($THIS . TODO); do
+		$THIS . $rule
+	done
+	$THIS . done debian'
+
+# Run forest, run !
+DEBIAN . debian ${@@:-build}
+d79 1
+a79 1
+exit 0
+@
+
+
+1.8
+log
+@Removed bashism from debian/rules.
+@
+text
+@a81 5
+# I have to use ugly IFS magic here, otherwise things would fail miserably
+	SAVE_IFS="$IFS"
+	GOOD_IFS=" 	
+"
+	IFS="$GOOD_IFS"
+a82 1
+		IFS="$SAVE_IFS"
+d84 1
+a84 3
+		IFS="$GOOD_IFS"
+	done
+	IFS="$SAVE_IFS"'
+@
+
+
+1.7
+log
+@An attempt make it work with current shoop.sh. See the
+comment above DEBIAN . __do_header for some more info.
+@
+text
+@d103 4
+a106 4
+	$THIS . do rm -f debian/shoop-dev/usr/share/doc/shoop/copyright
+	$THIS . do rm -f debian/shoop-dev/usr/share/doc/shoop/changelog{,.gz}
+	$THIS . do rm -f debian/shoop-modules/usr/share/doc/shoop/copyright
+	$THIS . do rm -f debian/shoop-modules/usr/share/doc/shoop/changelog{,.gz}
+@
+
+
+1.6
+log
+@The Coffee-overdose version.
+
+Supports the following `make' options: -n, -k, -S, -v, -h, --help, --version
+Other options are ignored (but only single-dash options for now).
+
+Added cvs-build target, that will build the ChangeLog and launch
+a dpkg-buildpackage,
+
+Now honours DEB_BUILD_OPTIONS=nostrip! In this case, the shoop modules
+(and shoop itself) won't be compiled with utils/shell-stripper.
+@
+text
+@d24 1
+a24 1
+DEBIAN . MAKE_LEVEL =q 0
+d32 3
+a34 1
+DEBIAN . do_header : 'echo "==> [$($THIS . MAKE_LEVEL)] Making $@@" 1>&2
+d36 1
+a36 1
+DEBIAN . do_done : '$THIS . MAKE_LEVEL =q $(expr $($THIS . MAKE_LEVEL) - 1)
+d38 3
+@
+
+
+1.5
+log
+@first set of update, more to come soon
+@
+text
+@d1 1
+a1 1
+#! /bin/sh -e
+d4 8
+d16 1
+a16 1
+export DH_COMPAT=3
+d25 5
+d32 12
+a43 6
+DEBIAN . header : 'echo "==> [`eval $THIS . MAKE_LEVEL`] Making $@@" 1>&2
+	$THIS . MAKE_LEVEL =q `expr \`eval $THIS . MAKE_LEVEL\` + 1`'
+DEBIAN . done : '$THIS . MAKE_LEVEL =q `expr \`eval $THIS . MAKE_LEVEL\` - 1`
+	echo "<== [`eval $THIS . MAKE_LEVEL`] Finished $@@" 1>&2'
+DEBIAN . do : 'echo $@@
+	eval $@@'
+d53 3
+d57 2
+d65 1
+a65 1
+	$THIS . do make install
+d77 1
+d115 3
+d132 1
+d135 2
+a136 2
+DEBIAN . debian : '$THIS . header debian
+	for opt in $@@
+d138 3
+d142 6
+a147 3
+			build|build-stamp|clean|install|packages|binary-arch|binary-indep|binary)
+				method=`echo $opt | sed -e "s,\-,_,g"`
+				DEBIAN . $method
+d152 7
+d164 50
+@
+
+
+1.4
+log
+@dh_testversion purged
+@
+text
+@d47 1
+a47 1
+		      debian/shoop-modules/usr/share/doc/shoop-modules/
+d49 14
+a62 3
+		      debian/shoop-modules/usr/share/doc/shoop-modules/
+	$THIS . do mv debian/shoop/usr/share/doc/shoop/examples \
+		      debian/shoop-modules/usr/share/doc/shoop-modules/'
+d72 6
+@
+
+
+1.3
+log
+@rewritten, because I could not figure out how the original supposed to work
+@
+text
+@a53 1
+	$THIS . do dh_testversion 2.0.40
+@
+
+
+1.2
+log
+@Converted over to using DEBIAN object, instead of just making everything
+part of the base OBJECT.
+@
+text
+@d1 107
+a107 4
+#!/bin/sh -e
+#SHELL=$(basename ${SHELL:-bash})
+. ${SHOOPSH:-/usr/bin/shoop.sh}
+. ${SHOOPMOD:-/usr/share/shoop/modules}/use.sh
+d109 2
+a110 1
+OBJECT . use rules_debian
+d112 1
+a112 48
+DEBIAN . default_target =q build
+
+DEBIAN . new SHOOP_base
+
+SHOOP_base . bindir =q /usr/bin
+SHOOP_base . moddir =q /usr/share/shoop/modules
+SHOOP_base . docdir =q /usr/share/doc/shoop
+SHOOP_base . empdir =q /usr/share/doc/shoop/examples
+
+SHOOP_base . newpkg SHOOP
+SHOOP_base . newpkg SHOOP_doc
+
+SHOOP . prefix =q $CURDIR/debian/tmp
+SHOOP_doc . prefix =q $CURDIR/debian/shoop-doc
+
+SHOOP . pkg =q shoop
+SHOOP_doc . pkg =q shoop-doc
+
+SHOOP . bins =q \
+	shoop.sh\
+
+SHOOP_doc . docs =q \
+	AUTHORS\
+	CONTRIBUTING\
+	COPYING\
+	MODULES\
+	README\
+	TODO\
+
+SHOOP_doc . examples =q \
+	example.sh\
+
+SHOOP . modules =q \
+        destroy.sh\
+        final.sh\
+        introspect.sh\
+        prettyprint.sh\
+        serialize.sh\
+        thread.sh\
+        use.sh\
+
+DEBIAN . build : '
+'
+
+DEBIAN . processcmdline "$@@"
+
+#SHOOP . install
+#SHOOP_doc . install
+@
+
+
+1.1
+log
+@Yes, you read correctly.  An early implementation of a rules file in shoop.
+@
+text
+@a6 1
+OBJECT . default_target = build
+d8 1
+a8 1
+OBJECT . pkgs == SHOOP SHOOP_doc
+d10 1
+a10 1
+OBJECT . new SHOOP_base
+d12 4
+d17 2
+a18 4
+SHOOP_base . bindir == /usr/bin
+SHOOP_base . moddir == /usr/share/shoop/modules
+SHOOP_base . docdir == /usr/share/doc/shoop
+SHOOP_base . empdir == /usr/share/doc/shoop/examples
+d20 2
+a21 2
+SHOOP_base . new SHOOP
+SHOOP_base . new SHOOP_doc
+d23 2
+a24 2
+SHOOP . prefix == $CURDIR/debian/tmp
+SHOOP_doc . prefix == $CURDIR/debian/shoop-doc
+d26 1
+a26 4
+SHOOP . pkg = shoop > /dev/null
+SHOOP_doc . pkg = shoop-doc > /dev/null
+
+SHOOP . bins == \
+d29 1
+a29 1
+SHOOP_doc . docs == \
+d37 1
+a37 1
+SHOOP_doc . examples == \
+d40 1
+a40 1
+SHOOP . modules == \
+d49 1
+a49 1
+OBJECT . build : '
+d52 1
+a52 1
+OBJECT . processcmdline "$@@"
+@
+

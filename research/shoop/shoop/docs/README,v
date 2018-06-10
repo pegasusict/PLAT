@@ -1,0 +1,545 @@
+head	1.26;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.26
+date	2000.02.08.00.20.27;	author doogie;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2000.01.29.11.17.43;	author joey;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2000.01.29.11.15.08;	author doogie;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2000.01.29.11.03.39;	author joey;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2000.01.29.10.42.36;	author joey;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2000.01.29.10.26.34;	author joey;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2000.01.29.10.22.36;	author joey;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2000.01.29.06.19.36;	author joey;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2000.01.29.05.22.21;	author joey;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2000.01.29.04.19.18;	author joey;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2000.01.29.03.36.08;	author joey;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2000.01.28.23.27.46;	author doogie;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2000.01.28.08.00.55;	author joey;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2000.01.28.07.39.28;	author joey;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2000.01.28.07.26.11;	author joey;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2000.01.28.03.58.01;	author doogie;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2000.01.28.02.31.00;	author joey;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2000.01.28.02.29.54;	author joey;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2000.01.28.00.57.34;	author joey;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2000.01.28.00.01.47;	author joey;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2000.01.27.09.46.42;	author joey;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2000.01.27.08.43.05;	author joey;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2000.01.27.06.00.01;	author joey;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.01.27.05.59.35;	author joey;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.01.27.05.52.08;	author joey;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.27.05.51.26;	author joey;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.26
+log
+@Changed license to LGPL, and added preliminary inline document support.
+@
+text
+@What on earth is this?
+
+Every language under the sun these days is Object Oriented.  In an effort
+to make POSIX shell more buzzword compliant, and to show that it's really
+not a big deal for a language to lack built-in OO support, we have added
+object orientation to plain old shell script.  (Next up: awk) Specifically,
+we have implemented classless OO with introspection, finalization, seriali-
+zation, and multiple inheritance.
+
+Shoop will work in any POSIX shell.  It requires no third-party UNIX tools
+at all.  We do reccommend you do not run it under bash, since bash is very
+slow at recursion.  Use ash: it's significantly faster.  To see just how
+fast, run "make benchmark".
+
+When you source shoop.sh, you start out with a single base object, OBJECT.
+You can make a new object named OBJ that has OBJECT as its parent like so:
+
+OBJECT . new OBJ
+
+You can add/change a property of OBJ like this:
+
+OBJ . property = 3
+
+You can add/change a method of OBJ like this:
+
+OBJ . method : echo "hello world!"
+
+You can call a method or get the value of a property like this:
+
+OBJ . property
+OBJ . method
+
+Both will output the value of the property or return value of the method to
+stdout.
+
+You can change the parent of an object like this.  Specify multiple parents
+and multiple inheritance starts happening:
+
+OBJ . parent = FOO
+OBJ . parent = BAR BAZ QUUX
+
+You can call an overridden method like this (used inside the method that
+overrode it, generally):
+
+THIS . super method
+
+If you want introspection, finalization, or serialization, or various other
+features, see MODULES.  If you have a module you think would be benefitial
+to the shoop community, see CONTRIBUTING.  If you've written something
+interesting that actually _uses_ shoop, the authors would love to hear about
+it.
+
+That's about it.  Now run off and write a MOO or something.
+
+Shoop is copyright 2000 under the terms of the GNU LGPL by this pack of
+maniacs:
+	Joey Hess <joeyh@@debian.org>
+	Adam Heath <doogie@@debian.org>
+@
+
+
+1.25
+log
+@additions
+@
+text
+@d55 1
+a55 1
+Shoop is copyright 2000 under the terms of the GNU GPL by this pack of
+@
+
+
+1.24
+log
+@Indentation and spelling fixes.
+@
+text
+@d47 5
+a51 3
+If you want introspection, finalization, or serialization, or various
+other features, see MODULES.  If you have a module you think would be
+benefitial to the shoop community, see CONTRIBUTING.
+@
+
+
+1.23
+log
+@Minor changes.
+@
+text
+@d3 11
+a13 11
+Every language under the sun these days is Object Oriented. In an effort to
+make POSIX shell more buzzword compliant, and to show that it's really not a
+big deal for a language to lack built-in OO support, we have added object
+orientation to plain old shell script. (Next up: awk.) Specifically, we have
+implemented classless OO with introspection, finalization, serialization,
+and multiple inheritance.
+
+Shoop whould work in any POSIX shell. It requires no third-party UNIX tools
+at all. We do reccommend you do not run it under bash, since bash is very
+slow at recursion. Use ash: it's significantly faster. To see just how fast,
+run "make benchmark".
+d36 2
+a37 2
+You can change the parent of an object like this. Specify multiple parents and
+multiple inheritance starts happening:
+d47 5
+a51 2
+If you want introspection, finalization, or serialization, see MODULES.
+That's about it. Now run off and write a MOO or something.
+@
+
+
+1.22
+log
+@Random twiddles.
+@
+text
+@d28 1
+a28 1
+You can call the method or get the value of the property like this:
+a47 2
+Also, see CONTRIBUTING.
+
+d50 3
+a52 2
+Shoop is copyright 2000 under the terms of the GNU GPL by:
+	Joey Hess <joey@@kitenet.net>
+@
+
+
+1.21
+log
+@Swapped MODULES and CONTRIBUTING filenames.
+We'd the README
+@
+text
+@d12 2
+a13 1
+slow at recursion. Use ash: it's significantly faster.
+@
+
+
+1.20
+log
+@ash rules!
+@
+text
+@d5 2
+a6 2
+big deal for a language to lack built-in OO support, I have added object
+orientation to plain old shell script. (Next up: awk.) Specifically, I have
+d12 1
+a12 1
+slow at recursion. Use ash, it's significantly faster.
+@
+
+
+1.19
+log
+@Broke up MODULES and CONTRIBUTING
+@
+text
+@d10 4
+@
+
+
+1.18
+log
+@added stuff
+@
+text
+@d42 2
+a43 1
+If you want introspection, finalization, or serialization, see CONTRIBUTING.
+@
+
+
+1.17
+log
+@Renamed BASE to OBJECT
+@
+text
+@d31 1
+a31 1
+You can change the parent of an object like this. List multiple parents and
+d41 2
+@
+
+
+1.16
+log
+@Broke finalization out into a module.
+@
+text
+@d10 2
+a11 2
+When you source shoop.sh, you start out with a single base object, BASE.
+You can make a new object named OBJ that has BASE as its parent like so:
+d13 1
+a13 1
+BASE . new OBJ
+@
+
+
+1.15
+log
+@More precise docs on final methods/variables.
+@
+text
+@a22 6
+If you want to make a property/method final, ie, can't be changed(but can
+still be overridden in subclasses), prepend the type char with `:'.
+
+OBJ . property := 3
+OBJ . method :: echo "hello world!"
+
+@
+
+
+1.14
+log
+@reword
+@
+text
+@d23 2
+a24 2
+If you want to make a property/method final, ie, can't be overriden,
+prepend the type char with `:'.
+@
+
+
+1.13
+log
+@reword
+@
+text
+@d3 6
+a8 6
+Well, every language under the sun these days is Object Oriented. In an
+effort to make POSIX shell more buzzword compliant, and to show that it's
+really not a big deal for a language to lack built-in OO support, I have
+added object orientation to plain old shell script. (Next up: awk.)
+Specifically, I have implemented classless OO with introspection,
+finalization, serialization, and multiple inheritance.
+@
+
+
+1.12
+log
+@Minor changes.
+@
+text
+@d4 5
+a8 5
+effort to make POSIX shell more buzzword compliant, and to show that built
+in object orientation support is just not a big deal at all, I have added
+object orientation to the language. (Next up: awk.) Specifically, it
+implements classless OO with multiple inheritance, supporting object
+introspection, finalization, and serialization.
+@
+
+
+1.11
+log
+@Add 'final' attribute to properties and methods.  Also some slight tweaks
+that should save parsing time for the shell.
+@
+text
+@d23 2
+a24 2
+If you want to make a property/method final, ie, can't be overriden, 
+prepend the type char with :.
+@
+
+
+1.10
+log
+@update
+@
+text
+@d8 1
+a8 1
+introspection and serialization.
+d22 6
+@
+
+
+1.9
+log
+@super works
+@
+text
+@d37 5
+@
+
+
+1.8
+log
+@Super added, but it doesn't work yet.
+@
+text
+@d39 3
+a41 1
+Joey Hess <joey@@kitenet.net>
+@
+
+
+1.7
+log
+@whatever.
+@
+text
+@d7 2
+a8 1
+implements classless OO with multiple inheritance.
+@
+
+
+1.6
+log
+@spellcheck, multiple inheritence docs
+@
+text
+@d33 2
+a34 2
+OBJ . parent FOO
+OBJ . parent BAR BAZ QUUX
+@
+
+
+1.5
+log
+@Mods from doogie: introspection, multiple inheritance, better knowledge
+about when methods are not defined, and a big slowdown, which is being
+corrected.
+@
+text
+@d4 1
+a4 1
+effort to make POSIX shell more buzzword complient, and to show that built
+d7 1
+a7 1
+impliments classless OO with single inheritance.
+d29 6
+@
+
+
+1.4
+log
+@added email
+@
+text
+@d4 4
+a7 3
+effort to make POSIX shell more buzzword complient, I have added object
+orientation to that language. (Next up: awk.) Specifically, it impliments
+classless OO with single inheritance.
+@
+
+
+1.3
+log
+@typo
+@
+text
+@d30 2
+@
+
+
+1.2
+log
+@oops
+@
+text
+@d4 1
+a4 1
+effort to make POSIX shell more buzzword complient, I have added objection
+d26 2
+a27 1
+Both will output the value of the property or method to stdout.
+@
+
+
+1.1
+log
+@Added
+@
+text
+@d13 1
+a13 1
+You can add/change a property of FOO like this:
+d17 1
+a17 1
+You can add/change a method of FOO like this:
+@
+

@@ -1,0 +1,46 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2001.03.06.08.36.33;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@This module contains 2 methods, ord and chr.  It also contains 2 variables,
+zero, which signifies whether the builtin command echo needs a leading
+zero when interpeting octal values during -e, and chars, which holds all
+256 characaters(with <space> as a placeholder for \0 and \210(ash bug)).
+@
+text
+@#!/bin/sh -e
+# Inheritance regression test. Also sets basic methods and variables.
+. ${SHOOPSH:-/usr/bin/shoop.sh}
+. ${SHOOPMOD:-/usr/share/shoop/modules}/use.sh
+
+OBJECT . use stringutil
+STRINGUTIL . new s
+
+# setup
+
+#set -x
+# ord/chr
+c=1
+#set -x
+while [ $c -lt 256 ]; do
+	char=$(s . chr $c)
+	ok "ord-$c($char)" 0 $c	s . ord "$char"
+	c=$(( $c + 1 ))
+done
+tests 255
+@

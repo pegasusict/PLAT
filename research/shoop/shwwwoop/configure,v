@@ -1,0 +1,378 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2001.04.29.18.44.28;	author algernon;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2001.04.29.18.22.51;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@older shells does not grok $() :(
+@
+text
+@#! /bin/sh
+## configure - configuration script for shwwwoop
+## Copyright (C) 2001 Gergely Nagy <8@@free.bsd.hu>
+##
+## This file is part of shwwwoop.
+##
+## shwwwoop is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+##
+## shwwwoop is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+##
+## $Id: configure,v 1.1 2001/04/29 18:22:51 algernon Exp $
+
+VERSION=0.1.0
+
+prefix='/usr/local'
+exec_prefix='${prefix}'
+bindir='${exec_prefix}/bin'
+datadir='${prefix}/share'
+docdir='${datadir}/doc/shwwwoop'
+pkgdocdir='${docdir}'
+mandir='${prefix}/man'
+sysconfdir='${prefix}/etc'
+pkgconfdir='${sysconfdir}/shwwwoop'
+libdir='${prefix}/lib'
+moduledir='${datadir}/shwwwoop'
+infodir='${prefix}/info'
+localstatedir='${prefix}/var'
+
+INSTALL=install
+MAKE=make
+
+OPTIONS="$@@"
+ORIG_IFS="$IFS"
+
+while test $# -gt 0
+do
+	opt=$1
+	shift
+
+	case $opt in
+		-*=*)
+			optarg=`echo "$opt" | sed -e 's/[-_a-zA-Z0-9]*=//'`
+			;;
+		*)
+			optarg=$1
+			shift
+			;;
+	esac
+
+	case $opt in
+		--prefix|--prefix=*)
+			prefix=$optarg;;
+		--exec_prefix|--exec_prefix=*)
+			exec_prefix=$optarg;;
+		--bindir|--bindir=*)
+			bindir=$optarg;;
+		--datadir|--datadir=*)
+			datadir=$optarg;;
+		--docdir|--docdir=*)
+			docdir=$optarg;;
+		--pkgdocdir|--pkgdocdir=*)
+			pkgdocdir=$optarg;;
+		--mandir|--mandir=*)
+			mandir=$optarg;;
+		--sysconfdir|--sysconfdir=*)
+			sysconfdir=$optarg;;
+		--pkgconfdir|--pkgconfdir=*)
+			pkgconfdir=$optarg;;
+		--libdir|--libdir=*)
+			libdir=$optarg;;
+		--infodir|--infodir=*)
+			infodir=$optarg;;
+		--localstatedir|--localstatedir=*)
+			localstatedir=$optarg;;
+		--spooldir|--spooldir=*)
+			spooldir=$optarg;;
+		--no-create)
+			no_create=yes;;
+		--quiet|--silent)
+			silent=yes;;
+		--version)
+			echo "\$Revision: 1.1 $" | \
+				sed -e 's/^$Revision[: ]*\([^ ]*\).*$$/configure version \1/'
+			exit 0
+			;;
+		--help)
+			cat <<EOF
+Usage: configure [options]
+Options: [defaults in brackets after descriptions]
+Configuration:
+  --help                  print this message
+  --no-create             do not create output files
+  --quiet, --silent       do not print \`checking...' messages
+  --version               print the version of the configure script
+Directory and file names:
+  --prefix=PREFIX         install architecture-independent files in PREFIX
+                          [/usr/local]
+  --exec-prefix=EPREFIX   install architecture-dependent files in EPREFIX
+                          [same as prefix]
+  --bindir=DIR            user executables in DIR [EPREFIX/bin]
+  --datadir=DIR           read-only architecture-independent data in DIR
+                          [PREFIX/share]
+  --infodir=DIR           info documentation to DIR [PREFIX/info]
+  --libdir=DIR            shared libraries [PREFIX/lib]
+  --sysconfdir=DIR        read-only single-machine data in DIR [PREFIX/etc]
+  --mandir=DIR            man documentation in DIR [PREFIX/man]
+  --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
+EOF
+			exit 0
+			;;
+		*)
+			;;
+	esac
+done
+
+## These are from autoconf
+# File descriptor usage:
+# 0 standard input
+# 1 file creation
+# 2 errors and warnings
+# 3 some systems may open it to /dev/tty
+# 4 used on the Kubota Titan
+# 6 checking for... messages and results
+if test "$silent" = yes; then
+	exec 6>/dev/null
+else
+	exec 6>&1
+fi
+
+if (echo "testing\c"; echo 1,2,3) | grep c >/dev/null; then
+	# Stardent Vistra SVR4 grep lacks -e, says ghazi@@caip.rutgers.edu.
+	if (echo -n testing; echo 1,2,3) | sed s/-n/xn/ | grep xn >/dev/null; then
+		ac_n= ac_c='
+' ac_t='        '
+	else
+		ac_n=-n ac_c= ac_t=
+	fi
+else
+	ac_n= ac_c='\c' ac_t=
+fi
+
+# Find a good install program.  We prefer a C program (faster),
+# so one script is as good as another.  But avoid the broken or
+# incompatible versions:
+# SysV /etc/install, /usr/sbin/install
+# SunOS /usr/etc/install
+# IRIX /sbin/install
+# AIX /bin/install
+# AIX 4 /usr/bin/installbsd, which doesn't work without a -g flag
+# AFS /usr/afsws/bin/install, which mishandles nonexistent args
+# SVR4 /usr/ucb/install, which tries to use the nonexistent group "staff"
+# ./install, which can be erroneously created by make from ./install.sh.
+echo $ac_n "checking for a BSD compatible install""... $ac_c" 1>&6
+if test -z "$INSTALL"; then
+	IFS="${IFS= 	}"; ac_save_IFS="$IFS"; IFS=":"
+	for ac_dir in $PATH; do
+		# Account for people who put trailing slashes in PATH elements.
+		case "$ac_dir/" in
+			/|./|.//|/etc/*|/usr/sbin/*|/usr/etc/*|/sbin/*|/usr/afsws/bin/*|/usr/ucb/*) ;;
+		*)
+			# OSF1 and SCO ODT 3.0 have their own names for install.
+			# Don't use installbsd from OSF since it installs stuff as root
+			# by default.
+			for ac_prog in ginstall scoinst install; do
+				if test -f $ac_dir/$ac_prog; then
+					if test $ac_prog = install &&
+					grep dspmsg $ac_dir/$ac_prog >/dev/null 2>&1; then
+						# AIX install.  It has an incompatible calling convention.
+						:
+					else
+						ac_cv_path_install="$ac_dir/$ac_prog -c"
+						break 2
+					fi
+				fi
+			done
+			;;
+		esac
+	done
+	IFS="$ac_save_IFS"
+	if test "${ac_cv_path_install+set}" = set; then
+		INSTALL="$ac_cv_path_install"
+	fi
+fi
+if test -z "$INSTALL"; then
+	echo "$ac_t""not found" 1>&6
+	echo "*** Error: a BSD compatible install is required for this software." 1>&2
+	exit 1
+fi
+echo "$ac_t""$INSTALL" 1>&6
+
+## End of autoconf stuff
+
+#######################
+# Check for GNU make  #
+#######################
+echo $ac_n "checking for GNU make""... $ac_c" 1>&6
+if test -z "$MAKE"; then
+	IFS="${IFS= 	}"; ac_save_IFS="$IFS"; IFS=":"
+	for ac_dir in $PATH; do
+		# Account for people who put trailing slashes in PATH elements.
+		case "$ac_dir/" in
+			/|./|.//|/etc/*|/usr/sbin/*|/usr/etc/*|/sbin/*|/usr/afsws/bin/*|/usr/ucb/*) ;;
+		*)
+			for ac_prog in gmake make; do
+				if test -f $ac_dir/$ac_prog; then
+					if $ac_dir/$ac_prog --version 2>/dev/null | grep -q "GNU"; then
+						MAKE=$ac_dir/$ac_prog
+					fi
+				fi
+			done
+			;;
+		esac
+	done
+	IFS="$ac_save_IFS"
+fi
+if test -z "$MAKE"; then
+	echo "$ac_t""not found" 1>&6
+	echo "*** Error: GNU make is required for this software." 1>&2
+	exit 1
+fi
+echo "$ac_t""$MAKE" 1>&6
+
+#######################
+# Write output        #
+#######################
+# config.status
+echo "creating config.status"
+rm -f config.status
+cat >config.status <<EOF
+#! /bin/sh
+## Generated automatically by configure
+## Run this file to recreate the current configuration.
+## This directory was configured as follows,
+## on host `uname -n`:
+##
+## $0 $OPTIONS
+
+prefix='$prefix'
+exec_prefix='$exec_prefix'
+bindir='$bindir'
+datadir='$datadir'
+docdir='$docdir'
+pkgdocdir='$pkgdocdir'
+mandir='$mandir'
+sysconfdir='$sysconfdir'
+pkgconfdir='$pkgconfdir'
+libdir='$libdir'
+moduledir='$moduledir'
+infodir='$infodir'
+localstatedir='$localstatedir'
+
+VERSION='$VERSION'
+
+INSTALL='$INSTALL'
+MAKE='$MAKE'
+
+usage="Usage: ./config.status [--recheck] [--version] [--help]"
+for option
+do
+	case "\$option" in
+		--recheck)
+			echo "running \${CONFIG_SHELL-/bin/sh} $0 $OPTIONS"
+			exec \${CONFIG_SHELL-/bin/sh} $0 $OPTIONS;;
+		--version)
+			echo './config.status generated by `echo "\\$Revision: 1.1 $" | sed -e 's/^$Revision[: ]*\([^ ]*\).*$$/configure version \1/'`'
+			exit 0;;
+		--help)
+			echo "\$usage"
+			exit 0;;
+		*)
+			echo "\$usage"
+			exit 1;;
+	esac
+done
+
+# Rules.mk
+echo "config.status: creating Rules.mk"
+rm -f Rules.mk
+sed -e "s^@@prefix@@^\$prefix^g" \\
+    -e "s^@@exec_prefix@@^\$exec_prefix^g" \\
+    -e "s^@@bindir@@^\$bindir^g" \\
+    -e "s^@@datadir@@^\$datadir^g" \\
+    -e "s^@@docdir@@^\$docdir^g" \\
+    -e "s^@@pkgdocdir@@^\$pkgdocdir^g" \\
+    -e "s^@@mandir@@^\$mandir^g" \\
+    -e "s^@@sysconfdir@@^\$sysconfdir^g" \\
+    -e "s^@@pkgconfdir@@^\$pkgconfdir^g" \\
+    -e "s^@@libdir@@^\$libdir^g" \\
+    -e "s^@@moduledir@@^\$moduledir^g" \\
+    -e "s^@@infodir@@^\$infodir^g" \\
+    -e "s^@@localstatedir@@^\$localstatedir^g" \\
+    -e "s^@@INSTALL@@^\$INSTALL^g" \\
+    -e "s^@@MAKE@@^\$MAKE^g" \\
+    -e "s^@@VERSION@@^\$VERSION^g" \\
+    < Rules.mk.in > Rules.mkT && rm -f Rules.mk && mv Rules.mkT Rules.mk
+EOF
+
+chmod +x config.status
+
+# Rules.mk
+echo "creating Rules.mk"
+rm -f Rules.mk
+sed -e "s^@@prefix@@^$prefix^g" \
+    -e "s^@@exec_prefix@@^$exec_prefix^g" \
+    -e "s^@@bindir@@^$bindir^g" \
+    -e "s^@@datadir@@^$datadir^g" \
+    -e "s^@@docdir@@^$docdir^g" \
+    -e "s^@@pkgdocdir@@^$pkgdocdir^g" \
+    -e "s^@@mandir@@^$mandir^g" \
+    -e "s^@@sysconfdir@@^$sysconfdir^g" \
+    -e "s^@@pkgconfdir@@^$pkgconfdir^g" \
+    -e "s^@@libdir@@^$libdir^g" \
+    -e "s^@@moduledir@@^$moduledir^g" \
+    -e "s^@@infodir@@^$infodir^g" \
+    -e "s^@@localstatedir@@^$localstatedir^g" \
+    -e "s^@@INSTALL@@^$INSTALL^g" \
+    -e "s^@@MAKE@@^$MAKE^g" \
+    -e "s^@@VERSION@@^$VERSION^g" \
+    < Rules.mk.in > Rules.mkT && rm -f Rules.mk && mv Rules.mkT Rules.mk
+@
+
+
+1.1
+log
+@initial import
+@
+text
+@d21 1
+a21 1
+## $Id$
+d52 1
+a52 1
+			optarg=$(echo "$opt" | sed -e 's/[-_a-zA-Z0-9]*=//')
+d92 1
+a92 1
+			echo "\$Revision$" | \
+d275 1
+a275 1
+			echo './config.status generated by `echo "\\$Revision$" | sed -e 's/^$Revision[: ]*\([^ ]*\).*$$/configure version \1/'`'
+@
+

@@ -1,0 +1,2985 @@
+head	1.113;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.113
+date	2001.03.06.08.24.29;	author doogie;	state Exp;
+branches;
+next	1.112;
+
+1.112
+date	2001.03.05.10.10.14;	author doogie;	state Exp;
+branches;
+next	1.111;
+
+1.111
+date	2001.03.05.09.50.31;	author doogie;	state Exp;
+branches;
+next	1.110;
+
+1.110
+date	2001.03.04.11.01.37;	author doogie;	state Exp;
+branches;
+next	1.109;
+
+1.109
+date	2001.03.02.23.44.35;	author doogie;	state Exp;
+branches;
+next	1.108;
+
+1.108
+date	2001.03.02.07.31.04;	author doogie;	state Exp;
+branches;
+next	1.107;
+
+1.107
+date	2001.03.02.06.35.59;	author doogie;	state Exp;
+branches;
+next	1.106;
+
+1.106
+date	2001.03.02.06.29.58;	author doogie;	state Exp;
+branches;
+next	1.105;
+
+1.105
+date	2001.03.02.06.12.48;	author doogie;	state Exp;
+branches;
+next	1.104;
+
+1.104
+date	2001.03.02.06.10.38;	author doogie;	state Exp;
+branches;
+next	1.103;
+
+1.103
+date	2001.03.02.05.58.06;	author doogie;	state Exp;
+branches;
+next	1.102;
+
+1.102
+date	2001.03.02.05.55.33;	author doogie;	state Exp;
+branches;
+next	1.101;
+
+1.101
+date	2001.03.02.05.55.03;	author doogie;	state Exp;
+branches;
+next	1.100;
+
+1.100
+date	2001.03.02.03.02.17;	author doogie;	state Exp;
+branches;
+next	1.99;
+
+1.99
+date	2001.03.02.03.00.35;	author doogie;	state Exp;
+branches;
+next	1.98;
+
+1.98
+date	2001.03.01.23.37.20;	author doogie;	state Exp;
+branches;
+next	1.97;
+
+1.97
+date	2001.03.01.22.35.47;	author doogie;	state Exp;
+branches;
+next	1.96;
+
+1.96
+date	2001.03.01.22.17.20;	author doogie;	state Exp;
+branches;
+next	1.95;
+
+1.95
+date	2001.03.01.20.26.18;	author doogie;	state Exp;
+branches;
+next	1.94;
+
+1.94
+date	2001.03.01.20.15.30;	author doogie;	state Exp;
+branches;
+next	1.93;
+
+1.93
+date	2001.03.01.20.14.29;	author doogie;	state Exp;
+branches;
+next	1.92;
+
+1.92
+date	2001.02.24.01.47.42;	author doogie;	state Exp;
+branches;
+next	1.91;
+
+1.91
+date	2001.02.22.18.24.53;	author doogie;	state Exp;
+branches;
+next	1.90;
+
+1.90
+date	2001.02.21.20.28.09;	author doogie;	state Exp;
+branches;
+next	1.89;
+
+1.89
+date	2001.02.21.15.49.37;	author doogie;	state Exp;
+branches;
+next	1.88;
+
+1.88
+date	2001.02.21.15.34.53;	author doogie;	state Exp;
+branches;
+next	1.87;
+
+1.87
+date	2001.02.20.22.49.16;	author doogie;	state Exp;
+branches;
+next	1.86;
+
+1.86
+date	2001.02.20.07.09.43;	author doogie;	state Exp;
+branches;
+next	1.85;
+
+1.85
+date	2001.02.20.05.17.44;	author doogie;	state Exp;
+branches;
+next	1.84;
+
+1.84
+date	2001.02.20.04.47.43;	author doogie;	state Exp;
+branches;
+next	1.83;
+
+1.83
+date	2001.02.20.04.43.43;	author doogie;	state Exp;
+branches;
+next	1.82;
+
+1.82
+date	2001.02.20.04.40.07;	author doogie;	state Exp;
+branches;
+next	1.81;
+
+1.81
+date	2001.02.17.19.15.58;	author doogie;	state Exp;
+branches;
+next	1.80;
+
+1.80
+date	2001.02.17.19.15.34;	author doogie;	state Exp;
+branches;
+next	1.79;
+
+1.79
+date	2000.02.15.06.34.39;	author doogie;	state Exp;
+branches;
+next	1.78;
+
+1.78
+date	2000.02.15.04.55.56;	author doogie;	state Exp;
+branches;
+next	1.77;
+
+1.77
+date	2000.02.12.12.13.19;	author doogie;	state Exp;
+branches;
+next	1.76;
+
+1.76
+date	2000.02.12.10.04.54;	author doogie;	state Exp;
+branches;
+next	1.75;
+
+1.75
+date	2000.02.08.00.20.27;	author doogie;	state Exp;
+branches;
+next	1.74;
+
+1.74
+date	2000.02.07.00.26.01;	author doogie;	state Exp;
+branches;
+next	1.73;
+
+1.73
+date	2000.02.07.00.23.06;	author doogie;	state Exp;
+branches;
+next	1.72;
+
+1.72
+date	2000.02.06.04.35.57;	author doogie;	state Exp;
+branches;
+next	1.71;
+
+1.71
+date	2000.02.06.04.16.55;	author doogie;	state Exp;
+branches;
+next	1.70;
+
+1.70
+date	2000.02.06.03.43.51;	author doogie;	state Exp;
+branches;
+next	1.69;
+
+1.69
+date	2000.02.06.00.37.38;	author doogie;	state Exp;
+branches;
+next	1.68;
+
+1.68
+date	2000.02.06.00.36.18;	author doogie;	state Exp;
+branches;
+next	1.67;
+
+1.67
+date	2000.02.03.04.15.25;	author doogie;	state Exp;
+branches;
+next	1.66;
+
+1.66
+date	2000.02.02.08.47.04;	author doogie;	state Exp;
+branches;
+next	1.65;
+
+1.65
+date	2000.02.01.22.02.30;	author doogie;	state Exp;
+branches;
+next	1.64;
+
+1.64
+date	2000.01.30.23.26.35;	author doogie;	state Exp;
+branches;
+next	1.63;
+
+1.63
+date	2000.01.29.20.08.08;	author doogie;	state Exp;
+branches;
+next	1.62;
+
+1.62
+date	2000.01.29.18.45.43;	author doogie;	state Exp;
+branches;
+next	1.61;
+
+1.61
+date	2000.01.29.17.41.36;	author joey;	state Exp;
+branches;
+next	1.60;
+
+1.60
+date	2000.01.29.17.18.52;	author doogie;	state Exp;
+branches;
+next	1.59;
+
+1.59
+date	2000.01.29.16.44.42;	author doogie;	state Exp;
+branches;
+next	1.58;
+
+1.58
+date	2000.01.29.16.40.21;	author doogie;	state Exp;
+branches;
+next	1.57;
+
+1.57
+date	2000.01.29.16.35.21;	author doogie;	state Exp;
+branches;
+next	1.56;
+
+1.56
+date	2000.01.29.14.15.32;	author doogie;	state Exp;
+branches;
+next	1.55;
+
+1.55
+date	2000.01.29.11.06.11;	author doogie;	state Exp;
+branches;
+next	1.54;
+
+1.54
+date	2000.01.29.11.03.45;	author doogie;	state Exp;
+branches;
+next	1.53;
+
+1.53
+date	2000.01.29.10.42.36;	author joey;	state Exp;
+branches;
+next	1.52;
+
+1.52
+date	2000.01.29.10.30.03;	author doogie;	state Exp;
+branches;
+next	1.51;
+
+1.51
+date	2000.01.29.10.28.25;	author joey;	state Exp;
+branches;
+next	1.50;
+
+1.50
+date	2000.01.29.10.07.23;	author joey;	state Exp;
+branches;
+next	1.49;
+
+1.49
+date	2000.01.29.09.54.51;	author joey;	state Exp;
+branches;
+next	1.48;
+
+1.48
+date	2000.01.29.09.52.41;	author joey;	state Exp;
+branches;
+next	1.47;
+
+1.47
+date	2000.01.29.09.50.09;	author doogie;	state Exp;
+branches;
+next	1.46;
+
+1.46
+date	2000.01.29.09.47.34;	author doogie;	state Exp;
+branches;
+next	1.45;
+
+1.45
+date	2000.01.29.09.38.03;	author doogie;	state Exp;
+branches;
+next	1.44;
+
+1.44
+date	2000.01.29.09.32.22;	author doogie;	state Exp;
+branches;
+next	1.43;
+
+1.43
+date	2000.01.29.08.31.02;	author doogie;	state Exp;
+branches;
+next	1.42;
+
+1.42
+date	2000.01.29.05.22.04;	author joey;	state Exp;
+branches;
+next	1.41;
+
+1.41
+date	2000.01.29.05.20.08;	author doogie;	state Exp;
+branches;
+next	1.40;
+
+1.40
+date	2000.01.29.04.19.18;	author joey;	state Exp;
+branches;
+next	1.39;
+
+1.39
+date	2000.01.29.04.08.46;	author doogie;	state Exp;
+branches;
+next	1.38;
+
+1.38
+date	2000.01.29.03.36.08;	author joey;	state Exp;
+branches;
+next	1.37;
+
+1.37
+date	2000.01.29.03.17.35;	author joey;	state Exp;
+branches;
+next	1.36;
+
+1.36
+date	2000.01.29.03.01.57;	author joey;	state Exp;
+branches;
+next	1.35;
+
+1.35
+date	2000.01.29.02.37.55;	author joey;	state Exp;
+branches;
+next	1.34;
+
+1.34
+date	2000.01.29.00.35.54;	author doogie;	state Exp;
+branches;
+next	1.33;
+
+1.33
+date	2000.01.29.00.08.38;	author doogie;	state Exp;
+branches;
+next	1.32;
+
+1.32
+date	2000.01.28.23.53.51;	author doogie;	state Exp;
+branches;
+next	1.31;
+
+1.31
+date	2000.01.28.22.41.26;	author doogie;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	2000.01.28.22.29.05;	author doogie;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	2000.01.28.22.23.53;	author doogie;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	2000.01.28.07.48.12;	author joey;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	2000.01.28.07.26.11;	author joey;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2000.01.28.07.24.28;	author doogie;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2000.01.28.07.23.00;	author doogie;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2000.01.28.03.58.01;	author doogie;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2000.01.28.03.46.07;	author joey;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2000.01.28.02.29.54;	author joey;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2000.01.28.00.57.34;	author joey;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2000.01.28.00.01.47;	author joey;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2000.01.27.23.53.26;	author joey;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2000.01.27.23.50.07;	author joey;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2000.01.27.14.32.59;	author joey;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2000.01.27.11.00.00;	author joey;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2000.01.27.10.12.45;	author joey;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2000.01.27.10.10.49;	author joey;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2000.01.27.09.46.42;	author joey;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2000.01.27.09.21.25;	author joey;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2000.01.27.09.18.56;	author joey;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2000.01.27.09.03.59;	author joey;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2000.01.27.09.03.17;	author joey;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2000.01.27.09.01.47;	author joey;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2000.01.27.08.56.43;	author joey;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2000.01.27.08.50.36;	author joey;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2000.01.27.08.46.04;	author joey;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2000.01.27.08.43.05;	author joey;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.01.27.06.00.01;	author joey;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.01.27.05.39.38;	author joey;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.01.27.04.08.54;	author joey;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.113
+log
+@We are now truly metacharacter safe.  However, there is an internal
+function, that fixes embedded "'" inside variables.
+@
+text
+@#!/bin/sh -e
+# OOP in shell.
+# LGPL copyright 2000 by Joey Hess <joey@@kitenet.net>
+#			 Adam Heath <doogie@@debian.org>
+
+_shoopcommand_header_='
+	case "$cmd" in
+		d)	if eval [ \"\$_shoopprivate_$TRUEMETH\" ]; then
+				echo "Previous declaration of ($TRUEOBJ:$METH) marked private" >&2
+				return 1
+			fi
+			unset _shoop_$TRUEMETH _shooptype_$TRUEMETH
+			if [ -z "$_shoopnocache_" ]; then
+				eval $_shoopcacheclear_
+			fi
+			return
+			;;
+'
+_shoopcommand_footer_='
+	esac
+'
+_shoop_tr() {
+	local char="$1" replace="$2" bad rest tmp left; shift 2
+	bad="$@@" rest="$@@" out=""
+	while :; do
+		: $rest
+		: $char
+		tmp="${rest%$char*}"
+		if [ ${#tmp} -eq ${#rest} ]; then
+			break
+		fi
+		left="${rest#$tmp$char}"
+		out="$replace$left$out"
+		rest="$tmp"
+	done
+	out="$rest$out"
+}
+_shoop () {
+	local cmd=$1; shift
+	local TRUEOBJ=$1 TRYOBJ=$2 METH=$3 TRUEMETH=$1_$3 TRYMETH=$2_$3 LASTMETH=$METH GETMETH THIS CLASS
+	shift 3
+
+	eval "$_shoopcommand_header_$_shoopcommand_middle_$_shoopcommand_footer_"
+
+	case "$1" in
+		:|:p|.:|.:p|\=|\=q|\=p|\.\=|\.\=q|\.\=p|\.\=qp)
+			local varmeth=$1 append="" quiet="" private=""; shift
+			if [ "${varmeth%p}" != "$varmeth" ]; then private=1 varmeth=${varmeth%p}; fi
+			# This block is for introspect.
+			if [ "$_shoop_introspect" ] &&
+			   eval [ -z \"\$_shooptype_$TRYMETH\$private\" ]; then
+				eval "_shoopdefines_$TRUEOBJ=\"\$_shoopdefines_$TRUEOBJ $METH\""
+			fi
+			if [ -z "$_shoopnocache_" ]; then
+				eval $_shoopcacheclear_
+			fi
+			# Some various assignment modifiers.
+			if [ "${varmeth#.}" != "$varmeth" ]; then append=1 varmeth=${varmeth#.}; fi
+			if [ "${varmeth%q}" != "$varmeth" ]; then quiet=1 varmeth=${varmeth%q}; fi
+			if eval [ \"\$_shoopprivate_$TRYMETH\" ]; then
+				echo "Previous declaration of ($TRYOBJ:$METH) marked private" >&2
+				return 1
+			fi
+			if [ "$private" ]; then
+				eval _shoopprivate_$TRYMETH=1
+			fi
+			if [ "$varmeth" = = ]; then
+				if [ "$append" ];then set -- "$(eval eval "\$_shoop_$TRUEMETH") $@@"; fi
+				local out
+				_shoop_tr "'" "'\''" "$@@"
+				if [ ! "$quiet" ]; then eval 'echo -n '\'"$out"\'; fi
+
+				if [ $# -eq 0 ]; then
+					return
+				fi
+				eval "_shoop_$TRUEMETH=\"echo -n '\$out'\"
+				      _shooptype_$TRUEMETH=variable"
+			else
+				if [ "$quiet" ]; then echo "Invalid modifier(q) on assignment!($TRUEOBJ.$METH)" >&2; fi
+				if [ $# -eq 0 ]; then
+					return
+				fi
+				if [ "$append" ];then
+					eval eval "_shoop_$TRUEMETH=\'\$_shoop_$TRUEMETH;\$@@\'
+					      _shooptype_$TRUEMETH=method"
+				else
+					eval "_shoop_$TRUEMETH=\"\$@@\"
+					      _shooptype_$TRUEMETH=method"
+				fi
+			fi
+			return
+		;;
+	esac
+	if eval [ \"\$_shooptype_$TRYMETH\" ]; then
+		THIS=$TRUEOBJ CLASS=$TRYOBJ
+	else
+		eval local PARENTS=\"$(eval eval "\$_shoop_${TRYOBJ}_parent")\"\
+			NEWPARENTS=""
+		THIS=$TRUEOBJ
+		if [ -z "$_shoopnocache_" ]; then
+			# If this object is found in the cache, than short-circuit
+			# the resolving code.
+			eval local CACHE=\"\$_shoopcache_link_$TRUEMETH\"
+			if [ "$CACHE" ]; then
+				eval GETMETH=\"\$$CACHE\"
+			fi
+		fi
+
+		resolve() {
+			local GETTYPE
+			eval set -- $PARENTS
+			# 1st stage resolver.  Look at the immediate parents.
+			while [ $# -gt 0 ]; do
+				CLASS=$1
+				eval GETTYPE=\"\$_shooptype_${CLASS}_$METH\"
+				if [ "$GETTYPE" ]; then
+					return
+				fi
+				# Save the parents of the current parents, for use in the
+				# 2nd stage resolver.  Yes, this slows the 1st stage down,
+				# but barely.  However, it greatly speeds up the 2nd stage,
+				# which is where most of the time will be spent.  This
+				# gave an 8% speedup in the 2nd stage, and only noise in
+				# the first.
+				NEWPARENTS="${NEWPARENTS:+$NEWPARENTS }$(eval eval "\$_shoop_${CLASS}_parent")"
+				shift
+			done
+			# 1st stage found no match, so resolve the inheritance tree,
+			# starting at the second level, and loop over untested super
+			# classes.
+			set -- $NEWPARENTS
+			while [ $# -gt 0 ];do
+				CLASS=$1
+				eval GETMETH=\"\$_shoop_${CLASS}_$METH\"
+				if [ ${#GETMETH} -gt 0 ]; then
+					# Save a reference to the resolved object in the cache for the
+					# true object.
+					if [ -z "$_shoopnocache_" ]; then
+						eval _shoopcache_link_${THIS}_$METH=_shoop_${CLASS}_$METH\
+						     _shoopcache_=\"\$_shoopcache_\
+							  _shoopcache_method_$METH _shoopcache_link_${THIS}_$METH \"\
+						     _shoopcache_method_$METH=\"\$_shoopcache_method_$METH\
+							  _shoopcache_link_${THIS}_$METH\"\
+						     _shoopcache_linkmethod_${CLASS}_$METH=\"\$_shoopcache_linkmethod_${CLASS}_$METH\
+							  _shoopcache_link_${THIS}_$METH\"
+					fi
+					return
+				fi
+				shift
+				set -- $(eval eval "\$_shoop_${CLASS}_parent") "$@@"
+			done
+			return 1
+		}
+		if ! resolve; then
+			echo "\"$METH\" is undefined for $TRYOBJ." >&2
+			return 1
+		fi
+	fi
+	if [ "$CLASS" ]; then
+		local _shoopclassstack_new="$_shoopclassstack_old $CLASS"
+		local _shoopclassstack_old=$_shoopclassstack_new
+		eval GETMETH=\"\$_shoop_${CLASS}_$METH\"
+	fi
+	if [ ${#GETMETH} -gt 0 ]; then
+		local oIFS="$IFS"
+		IFS=""
+		eval "IFS='$oIFS'; $GETMETH"
+		return
+	fi
+}
+# _shoopcache_link_DESCENDENT_counter=_shoop_OBJECT_counter
+# _shoopcache_= _shoopcache_method_new _shoopcache_link_GRANDCHILD_new  _shoopcache_method_counter _shoopcache_link_DESCENDENT_counter 
+# _shoopcache_method_counter= _shoopcache_link_DESCENDENT_counter
+# _shoopcache_linkmethod_OBJECT_counter= _shoopcache_link_DESCENDENT_counter
+
+_shoopcacheclear_='
+	if eval [ \"\$_shoopcache_method_$METH\" ]; then
+		# Ok, the current METH is already in someone''s cache.
+		# Find out if it is THIS object that is referenced.
+		if eval [ -z \"\$_shoopcache_linkmethod_$TRUEMETH\" ]; then
+			# Someone is referencing \$METH, and it is not TRUEMETH, so
+			# that means we have to erase all references for \$METH.
+			#
+			# TODO: Only erase if $TRUE was in the parent path of
+			# \$_shoopcache_method_\$METH
+			eval unset _shoopcache_method_$METH\
+				 \$_shoopcache_method_$METH\
+				 _shoopcache_linkmethod_$TRUEMETH\
+				 \$_shoopcache_linkmethod_$TRUEMETH || true;
+		fi;
+	fi
+'
+# Temporarily turn on introspection, so the base object has everything 
+# recorded about it as it is being created.
+_shoop_introspect=1
+
+# Create a method to create a new object.
+
+# We clear the whole cache, whenever a new object is created.  This
+# is sub-optimal, as it should really only dump cache chains that
+# have traversed this object.
+#
+# The reason for this, is because we use lazy resolving.  You can
+# set your parents to non-existant objects, and define those objects
+# at a later time.  However, if the newer object contains a method
+# that has already been resolved(and cached) by the first object,
+# this will lead to a cache inconsistency.
+
+_shoop . OBJECT OBJECT new :p '
+	eval "$1 () { local cmd=\"\$1\"; shift; _shoop \$cmd $1 $1 \"\$@@\"; };"
+	if [ $THIS != $1 ]; then
+		_shoop . $1 $1 parent = $THIS >/dev/null
+	fi
+	eval unset _shoopcache_ \$_shoopcache_ || true
+'
+# Create the base object via the method already defined on it.
+_shoop . OBJECT OBJECT new OBJECT
+
+# Define the parent variable
+OBJECT . parent = ""
+
+# This method handles calling an overridden method of your parent.
+OBJECT . super :p '
+	local __last_class=$(set -- $_shoopclassstack_old;eval echo \$\{$(($# - 1))\})
+	eval local "__super_savetype=\"\$_shooptype_${__last_class}_$LASTMETH\" _shooptype_${__last_class}_$LASTMETH="
+	_shoop . $THIS $THIS "$LASTMETH" "$@@"
+	eval _shooptype_${TRYOBJ}_$__last_meth=$__super_savetype
+'
+
+# Now if you want introspection, you have to turn it back on.
+unset _shoop_introspect
+@
+
+
+1.112
+log
+@Oops again.  Forgot the mods needed for this with the last checkins.
+@
+text
+@d22 16
+d69 3
+a71 1
+				if [ ! "$quiet" ]; then eval 'echo -n '\'"$@@"\'; fi
+d76 1
+a76 1
+				eval "_shoop_$TRUEMETH=\"echo -n '\$@@'\"
+@
+
+
+1.111
+log
+@All shell metacharacters are now supported in variable and method values.
+This includes the following characters(delimited by ':'):
+:`~!@@#$%^&*(){}[]|\;'"<>? ]:  No special translation is done by shoop on
+these characters, only proper quoting is used to make sure everything stays
+the way the caller intended.
+@
+text
+@d6 1
+a6 5
+_shoop () {
+	local cmd=$1; shift
+	local TRUEOBJ=$1 TRYOBJ=$2 METH=$3 TRUEMETH=$1_$3 TRYMETH=$2_$3 LASTMETH=$METH GETMETH THIS CLASS
+	shift 3
+
+d18 2
+d21 8
+@
+
+
+1.110
+log
+@Whee.  Found a very cute bug. When there are more than 2 parents, and the
+requested method is not in the immediate parents, the second-level parents
+would be combined without a space between them, so the resolver wouldn't be
+able to walk into them.  ugh.
+@
+text
+@d47 1
+a47 1
+				if [ ! "$quiet" ]; then eval "echo -n \"$@@\""; fi
+d52 1
+a52 1
+				eval "_shoop_$TRUEMETH='echo -n $@@'
+d63 1
+a63 1
+					eval "_shoop_$TRUEMETH='$@@'
+@
+
+
+1.109
+log
+@Use the length of GETMETH, not the value of it, in conditionals.  This
+lessens the amount of debug info displayed during -x.
+@
+text
+@d101 1
+a101 1
+				NEWPARENTS="${NEWPARENTS:+ $NEWPARENTS}$(eval eval "\$_shoop_${CLASS}_parent")"
+@
+
+
+1.108
+log
+@Moved all reference code out of shoop, and into a separate module.  All
+created references has OBJECT_REF as their primary parent, and multiple
+inheritance is used to support supplementary classes.  There areno docs
+yet, see the testing scripts as to how to use.
+@
+text
+@d111 1
+a111 1
+				if [ "$GETMETH" ]; then
+d140 1
+a140 1
+	if [ "$GETMETH" ]; then
+@
+
+
+1.107
+log
+@YAY!  super now works completely correctly.  The old code could not handle
+2(or more) super calls at once.  We also now have a set of tests for this.
+@
+text
+@d186 3
+a188 10
+	local OBJNAME
+	if [ $# -gt 1 ]; then
+		OBJECT . _ref OBJNAME
+		eval "$@@ :p ''$OBJNAME \\\"\\\$@@\\\"''"
+	else
+		OBJNAME=$1
+	fi
+	eval "$OBJNAME () { local cmd=\"\$1\"; shift; _shoop \$cmd $OBJNAME $OBJNAME \"\$@@\"; };"
+	if [ $THIS != $OBJNAME ]; then
+		_shoop . $OBJNAME $OBJNAME parent = $THIS >/dev/null
+a191 4
+_shoop . OBJECT OBJECT _ref :p '
+	eval $1=_$(($($THIS . __ref 2>/dev/null) + 1))
+	eval "$THIS . __ref =q \${$1#_}"
+'
+a193 1
+
+@
+
+
+1.106
+log
+@Use _shooptype_.. to check if a method is available in the current class.
+@
+text
+@d71 1
+a71 1
+		THIS=$TRYOBJ CLASS=$TRYOBJ
+d136 2
+d212 4
+a215 5
+	if [ -z "$__super" ]; then
+		local __super=$THIS
+	fi
+	_shoop . $__super $($THIS . parent) "$LASTMETH" "$@@"
+	return
+@
+
+
+1.105
+log
+@Oops.  duplicate local CLASS variable.
+@
+text
+@d86 1
+d91 2
+a92 2
+				eval GETMETH=\"\$_shoop_${CLASS}_$METH\"
+				if [ "$GETMETH" ]; then
+@
+
+
+1.104
+log
+@The resolver code was using P to hold the class, switched that to CLASS.
+Also made the single-level code use CLASS, and removed all eval GETMETH
+blocks, and made it a single block at the bottom of the function.
+@
+text
+@d73 1
+a73 1
+		eval local CLASS PARENTS=\"$(eval eval "\$_shoop_${TRYOBJ}_parent")\"\
+@
+
+
+1.103
+log
+@Only have THIS in the first local call.
+@
+text
+@d8 1
+a8 1
+	local TRUEOBJ=$1 TRYOBJ=$2 METH=$3 TRUEMETH=$1_$3 TRYMETH=$2_$3 LASTMETH=$METH GETMETH THIS
+d71 1
+a71 2
+		THIS=$TRYOBJ
+		eval GETMETH=\"\$_shoop_$TRYMETH\"
+d73 1
+a73 1
+		eval local P PARENTS=\"$(eval eval "\$_shoop_${TRYOBJ}_parent")\"\
+d89 2
+a90 2
+				P=$1
+				eval GETMETH=\"\$_shoop_${P}_$METH\"
+d100 1
+a100 1
+				NEWPARENTS="${NEWPARENTS:+ $NEWPARENTS}$(eval eval "\$_shoop_${P}_parent")"
+d108 2
+a109 2
+				P=$1
+				eval GETMETH=\"\$_shoop_${P}_$METH\"
+d114 1
+a114 1
+						eval _shoopcache_link_${THIS}_$METH=_shoop_${P}_$METH\
+d119 1
+a119 1
+						     _shoopcache_linkmethod_${P}_$METH=\"\$_shoopcache_linkmethod_${P}_$METH\
+d125 1
+a125 1
+				set -- $(eval eval "\$_shoop_${P}_parent") "$@@"
+a128 1
+
+d133 3
+@
+
+
+1.102
+log
+@Don't need a second local copy of GETMETH
+@
+text
+@d8 1
+a8 1
+	local TRUEOBJ=$1 TRYOBJ=$2 METH=$3 TRUEMETH=$1_$3 TRYMETH=$2_$3 LASTMETH=$METH GETMETH
+d71 1
+a71 1
+		local THIS=$TRYOBJ
+d75 2
+a76 1
+			THIS=$TRUEOBJ NEWPARENTS=""
+@
+
+
+1.101
+log
+@Moved the eval of the actual code blocks to the end of the _shoop function.
+This is needed for the next few patches.  The sad part is this slows the
+code down.
+@
+text
+@d75 1
+a75 1
+			THIS=$TRUEOBJ GETMETH="" NEWPARENTS=""
+@
+
+
+1.100
+log
+@Properly handle saying the original arguments, by putting the method
+resolver inside a local function.
+@
+text
+@d8 1
+a8 1
+	local TRUEOBJ=$1 TRYOBJ=$2 METH=$3 TRUEMETH=$1_$3 TRYMETH=$2_$3 LASTMETH=$METH
+d71 2
+a72 4
+		local THIS=$TRYOBJ oIFS="$IFS"
+		IFS=""
+		eval "eval \"IFS='$oIFS'; \$_shoop_$TRYMETH\""
+		return
+d81 1
+a81 4
+				local oIFS="$IFS"
+				IFS=""
+				eval "eval \"IFS='$oIFS'; \$$CACHE\""
+				return
+d130 1
+a130 3
+		if resolve; then
+			eval "$GETMETH"
+		else
+a133 1
+
+d135 6
+a140 1
+
+@
+
+
+1.99
+log
+@Increment __ref without running inside $(), so that the change is not
+local to the $().
+@
+text
+@d89 9
+a97 39
+		eval "local orgargs=\"$@@\""
+		eval set -- $PARENTS
+		# 1st stage resolver.  Look at the immediate parents.
+		while [ $# -gt 0 ]; do
+			P=$1
+			eval GETMETH=\"\$_shoop_${P}_$METH\"
+			if [ "$GETMETH" ]; then
+				set -- $orgargs
+				eval "$GETMETH"
+				return
+			fi
+			# Save the parents of the current parents, for use in the
+			# 2nd stage resolver.  Yes, this slows the 1st stage down,
+			# but barely.  However, it greatly speeds up the 2nd stage,
+			# which is where most of the time will be spent.  This
+			# gave an 8% speedup in the 2nd stage, and only noise in
+			# the first.
+			NEWPARENTS="${NEWPARENTS:+ $NEWPARENTS}$(eval eval "\$_shoop_${P}_parent")"
+			shift
+		done
+		# 1st stage found no match, so resolve the inheritance tree,
+		# starting at the second level, and loop over untested super
+		# classes.
+		set -- $NEWPARENTS
+		while [ $# -gt 0 ];do
+			P=$1
+			eval GETMETH=\"\$_shoop_${P}_$METH\"
+			if [ "$GETMETH" ]; then
+				set -- $orgargs
+				# Save a reference to the resolved object in the cache for the
+				# true object.
+				if [ -z "$_shoopnocache_" ]; then
+					eval _shoopcache_link_${THIS}_$METH=_shoop_${P}_$METH\
+					     _shoopcache_=\"\$_shoopcache_\
+						  _shoopcache_method_$METH _shoopcache_link_${THIS}_$METH \"\
+					     _shoopcache_method_$METH=\"\$_shoopcache_method_$METH\
+						  _shoopcache_link_${THIS}_$METH\"\
+					     _shoopcache_linkmethod_${P}_$METH=\"\$_shoopcache_linkmethod_${P}_$METH\
+						  _shoopcache_link_${THIS}_$METH\"
+d99 43
+a141 8
+				eval "$GETMETH"
+				return
+			fi
+			shift
+			set -- $(eval eval "\$_shoop_${P}_parent") "$@@"
+		done
+		echo "\"$METH\" is undefined for $TRYOBJ." >&2
+		return 1
+@
+
+
+1.98
+log
+@Cache wasn't being properly cleared, because of the last checkin.
+@
+text
+@d181 1
+a181 1
+		OBJNAME="$(OBJECT . _ref)"
+d193 2
+a194 1
+	echo _$($THIS . __ref = $(($($THIS . __ref 2>/dev/null) + 1)))
+@
+
+
+1.97
+log
+@Fix handling of IFS and the _shoopcacheclear_ helper variable.
+@
+text
+@d33 1
+a33 4
+				local THIS=$TRYOBJ oIFS="$IFS"
+				IFS=""
+				eval $_shoopcacheclear_ || true
+				IFS="$oIFS"
+d146 1
+a146 1
+	if eval [ \"\$_shoopcache_method_\$METH\" ]; then
+d149 1
+a149 1
+		if eval [ -z \"\$_shoopcache_linkmethod_\$TRUEMETH\" ]; then
+d155 4
+a158 4
+			eval unset _shoopcache_method_\$METH\
+				 \$_shoopcache_method_\$METH\
+				 _shoopcache_linkmethod_\$TRUEMETH\
+				 \$_shoopcache_linkmethod_\$TRUEMETH;
+@
+
+
+1.96
+log
+@Don't leave IFS in a non-default state when running methods.
+@
+text
+@d33 2
+d36 1
+d148 3
+a150 3
+_shoopcacheclear_="
+	if eval [ \\\"\\\$_shoopcache_method_\\\$METH\\\" ]; then
+		# Ok, the current METH is already in someone's cache.
+d152 2
+a153 2
+		if eval [ -z \\\"\\\$_shoopcache_linkmethod_\$TRUEMETH\\\" ]; then
+			# Someone is referencing \$METH, and it isn't TRUEMETH, so
+d159 1
+a159 1
+				 \\\$_shoopcache_method_\$METH\
+d161 1
+a161 1
+				 \\\$_shoopcache_linkmethod_\$TRUEMETH;
+d164 1
+a164 1
+"
+@
+
+
+1.95
+log
+@When clearing the cache, ignore errors(which happens if no variables were
+unset.
+@
+text
+@d71 3
+a73 2
+		local THIS=$TRYOBJ
+		eval eval \$_shoop_$TRYMETH
+d83 3
+a85 1
+				eval eval \$$CACHE
+d145 1
+a145 1
+IFS=" " _shoopcacheclear_="
+d158 2
+a159 2
+				 \\\$_shoopcache_linkmethod_\$TRUEMETH
+		fi
+@
+
+
+1.94
+log
+@Remove an unnescessary ; from a compound variable assignment.
+@
+text
+@d33 1
+a33 1
+				eval $_shoopcacheclear_
+@
+
+
+1.93
+log
+@Remove unneeded quotes when running a method.
+@
+text
+@d26 1
+a26 1
+			if [ "${varmeth%p}" != "$varmeth" ]; then private=1; varmeth=${varmeth%p}; fi
+@
+
+
+1.92
+log
+@Make the _ref method prepend the "_", instead of doing it in new.
+@
+text
+@d72 1
+a72 1
+		eval eval "\$_shoop_$TRYMETH"
+@
+
+
+1.91
+log
+@Added support for object references.  'OBJECT . new myobj . ref' gives you
+the ability to do 'myobj . ref . foo'.
+@
+text
+@d178 1
+a178 1
+		OBJNAME="_$(OBJECT . _ref)"
+d190 1
+a190 1
+	$THIS . __ref = $(($($THIS . __ref 2>/dev/null) + 1))
+@
+
+
+1.90
+log
+@Various fixes to make it behave better under zsh's ksh emulation.  It does
+not work under pure zsh, however, due to what appears to be a bug in zsh.
+Shoop also currently works in ksh, bash, and ash.
+@
+text
+@d176 7
+a182 1
+	local OBJNAME=$1
+d189 3
+d194 1
+@
+
+
+1.89
+log
+@The test should have been -eq not -gt.
+@
+text
+@d24 1
+a24 1
+		=|=q|=p|.=|.=q|.=p|.=qp|:|:p|.:|.:p)
+d26 1
+a26 1
+			if [ "${varmeth%p}" != $varmeth ]; then private=1; varmeth=${varmeth%p}; fi
+d36 2
+a37 2
+			if [ "${varmeth#.}" != $varmeth ]; then append=1 varmeth=${varmeth#.}; fi
+			if [ "${varmeth%q}" != $varmeth ]; then quiet=1 varmeth=${varmeth%q}; fi
+d47 1
+a47 1
+				if [ ! "$quiet" ]; then echo -n $@@; fi
+d86 2
+d89 2
+a90 1
+		for P in $PARENTS; do
+d93 1
+d103 2
+a104 1
+			NEWPARENTS="$NEWPARENTS $(eval eval "\$_shoop_${P}_parent")"
+a108 1
+		local orgargs="$@@"
+d112 1
+a112 1
+			eval GETMETH="\$_shoop_${P}_$METH"
+@
+
+
+1.88
+log
+@If a variable or method is being set, but there is actually nothing to set
+it too, don't set it to nothing, but return right away.  This is different
+than passing an empty parameter.  This allows for setting a variable/method
+to private, without changing it's value.
+@
+text
+@d49 1
+a49 1
+				if [ $# -gt 0 ]; then
+d56 1
+a56 1
+				if [ $# -gt 0 ]; then
+@
+
+
+1.87
+log
+@Fix casced super calls.
+@
+text
+@d49 3
+d56 3
+@
+
+
+1.86
+log
+@Add the ability to erase variables, so as to save memory.
+@
+text
+@d39 1
+a39 1
+				echo "Previous declaration of ($TRUEOBJ:$METH) marked private" >&2
+d65 1
+a65 1
+		local THIS=$TRUEOBJ
+d180 7
+a186 1
+OBJECT . super :p '_shoop . $THIS $($THIS . parent) "$LASTMETH" "$@@"; return'
+@
+
+
+1.85
+log
+@Oops.  can't remove the IFS munging for _shoopcacheclear_.  Note: ALWAYS
+run make test when playing with shoop.sh.
+@
+text
+@d7 1
+d10 13
+d125 1
+d165 1
+a165 1
+_shoop OBJECT OBJECT new :p '
+d167 1
+a167 1
+	eval "$OBJNAME () { shift; _shoop $OBJNAME $OBJNAME \"\$@@\"; };"
+d169 1
+a169 1
+		_shoop $OBJNAME $OBJNAME parent = $THIS >/dev/null
+d174 1
+a174 1
+_shoop OBJECT OBJECT new OBJECT
+d180 1
+a180 1
+OBJECT . super :p '_shoop $THIS $($THIS . parent) "$LASTMETH" "$@@"; return'
+@
+
+
+1.84
+log
+@Actually store when a method/variable is being marked private, and display
+an error when a attempt is made to reassign a method/variable.
+@
+text
+@d117 2
+a118 2
+_shoopcacheclear_='
+	if eval [ \"\$_shoopcache_method_\$METH\" ]; then
+d121 1
+a121 1
+		if eval [ -z \"\$_shoopcache_linkmethod_\$TRUEMETH\" ]; then
+d128 1
+a128 1
+				 \$_shoopcache_method_\$METH\
+d130 1
+a130 1
+				 \$_shoopcache_linkmethod_\$TRUEMETH
+d133 1
+a133 1
+'
+@
+
+
+1.83
+log
+@Enable appending to previously defined methods.
+@
+text
+@d24 7
+@
+
+
+1.82
+log
+@Remove unnescessary IFS munging.
+@
+text
+@d10 1
+a10 1
+		=|=q|=p|.=|.=q|.=p|.=qp|:|:p)
+@
+
+
+1.81
+log
+@s/modified/modifier/ in error message.
+@
+text
+@d110 2
+a111 2
+IFS=" " _shoopcacheclear_="
+	if eval [ \\\"\\\$_shoopcache_method_\$METH\\\" ]; then
+d114 1
+a114 1
+		if eval [ -z \\\"\\\$_shoopcache_linkmethod_\$TRUEMETH\\\" ]; then
+d121 3
+a123 3
+				 \\\$_shoopcache_method_\$METH\
+				   _shoopcache_linkmethod_\$TRUEMETH\
+				 \\\$_shoopcache_linkmethod_\$TRUEMETH
+d126 1
+a126 1
+"
+d143 1
+a143 1
+IFS=" " _shoop OBJECT OBJECT new :p '
+@
+
+
+1.80
+log
+@Oops.  Parameters weren't being escaped properly when being passed into
+_shoop(missing '"' around $@@)
+@
+text
+@d31 1
+a31 1
+				if [ "$quiet" ]; then echo "Invalid modified(q) on assignment!($TRUEOBJ.$METH)" >&2; fi
+@
+
+
+1.79
+log
+@Don't quote $orgargs, so that set -- works correctly.
+@
+text
+@d145 1
+a145 1
+	eval "$OBJNAME () { shift; _shoop $OBJNAME $OBJNAME \$@@; };"
+@
+
+
+1.78
+log
+@Enclose $@@ in "".
+@
+text
+@d83 1
+a83 1
+				set -- "$orgargs"
+@
+
+
+1.77
+log
+@Properly fix the bad return code from unset.
+@
+text
+@d158 1
+a158 1
+OBJECT . super :p '_shoop $THIS $($THIS . parent) "$LASTMETH" $@@; return'
+@
+
+
+1.76
+log
+@Unset returns false if a variable is not defined, and you try to unset it.
+@
+text
+@d149 1
+a149 3
+	if [ "$_shoopcache_" ]; then
+		eval unset _shoopcache_ \$_shoopcache_
+	fi
+@
+
+
+1.75
+log
+@Changed license to LGPL, and added preliminary inline document support.
+@
+text
+@d149 3
+a151 2
+	eval unset _shoopcache_ \$_shoopcache_
+	return
+@
+
+
+1.74
+log
+@Don't need to curly-escape positional parameters.
+@
+text
+@d2 3
+a4 1
+# OOP in shell. GPL copyright 2000 by Joey Hess <joey@@kitenet.net>
+@
+
+
+1.73
+log
+@Clear the entire cache when creating an object.  Added an extensive comment
+block saying why we clear the entire thing, instead of trying to do it
+selectively.
+@
+text
+@d5 1
+a5 1
+	local TRUEOBJ=$1 TRYOBJ=$2 METH=$3 TRUEMETH=${1}_$3 TRYMETH=${2}_$3 LASTMETH=$METH
+@
+
+
+1.72
+log
+@Add support for declare methods and variables that are private, and are
+invisible to introspection.  Append 'p' to the '=' or ':'.
+@
+text
+@d131 9
+a139 4
+# TODO: clear cache !!!!<<<< CRITICAL >>>>!!!!
+# Not as simple as it first looks, because you can set your
+# parents to non-existant objects, and then define those parents
+# later.  Maybe we should not allow that, tho?
+d147 1
+@
+
+
+1.71
+log
+@Remove extraneous ';', as they detract from the code.
+@
+text
+@d8 3
+a10 2
+		=|=q|.=|.=q|:)
+			local varmeth=$1 append="" quiet=""; shift
+d13 1
+a13 1
+			   eval [ -z \"\$_shooptype_$TRYMETH\" ]; then
+d136 1
+a136 1
+IFS=" " _shoop OBJECT OBJECT new : '
+d151 1
+a151 1
+OBJECT . super : '_shoop $THIS $($THIS . parent) "$LASTMETH" $@@; return'
+@
+
+
+1.70
+log
+@You no longer need to pass in the current method when calling super.  It
+knows automagically. :)
+@
+text
+@d136 1
+a136 1
+	local OBJNAME=$1;
+d139 2
+a140 2
+		_shoop $OBJNAME $OBJNAME parent = $THIS >/dev/null;
+	fi;
+@
+
+
+1.69
+log
+@Move the comments back inside the cache clearing code.  They are removed
+upon installation, and benchmarking and testing is done inside a tmp
+install dir.
+@
+text
+@d5 1
+a5 1
+	local TRUEOBJ=$1 TRYOBJ=$2 METH=$3 TRUEMETH=${1}_$3 TRYMETH=${2}_$3
+d150 1
+a150 2
+# Sadly, you have to pass in the method name to call.
+OBJECT . super : '_shoop $THIS $($THIS . parent) $@@; return'
+@
+
+
+1.68
+log
+@Fix the appending assigns, and a small speedup on the cache clearing code.
+@
+text
+@a106 7
+			# Ok, the current METH is already in someone's cache.
+			# Find out if it is THIS object that is referenced.
+				# Someone is referencing \$METH, and it isn't TRUEMETH, so
+				# that means we have to erase all references for \$METH.
+				#
+				# TODO: Only erase if $TRUE was in the parent path of
+				# \$_shoopcache_method_\$METH
+d109 2
+d112 5
+@
+
+
+1.67
+log
+@Add assignment modifiers '.' and 'q'.  Document comming in a bit.
+@
+text
+@d22 1
+a22 1
+				if [ "$append" ];then eval "set -- $(eval eval "\$_shoop_$TRUEMETH")$@@"; fi
+a115 1
+		eval echo \\\"\\\$_shoopcache_linkmethod_\$TRUEMETH\\\"
+d145 2
+@
+
+
+1.66
+log
+@Added new assignment operator, '=q', which will not echo the value of the
+assignment.
+@
+text
+@d7 20
+a26 14
+	if [ "$1" = = -o "$1" = =q -o "$1" = : ]; then
+		# This block is for introspect.
+		if [ "$_shoop_introspect" ] &&
+		   eval [ -z \"\$_shooptype_$TRYMETH\" ]; then
+			eval "_shoopdefines_$TRUEOBJ=\"\$_shoopdefines_$TRUEOBJ $METH\""
+		fi
+		
+		if [ -z "$_shoopnocache_" ]; then
+			eval $_shoopcacheclear_
+		fi
+		if [ "$1" = = -o "$1" = =q ]; then
+			if [ "$1" = = ]; then
+				shift
+				echo -n $@@
+d28 8
+a35 1
+				shift
+d37 4
+a40 9
+			eval "_shoop_$TRUEMETH='echo -n $@@'
+			      _shooptype_$TRUEMETH=variable"
+		else
+			shift
+			eval "_shoop_$TRUEMETH='$@@'
+			      _shooptype_$TRUEMETH=method"
+		fi
+		return
+	elif eval [ \"\$_shooptype_$TRYMETH\" ]; then
+@
+
+
+1.65
+log
+@Add partial clearing of cache's.  Does NOT clear the cache at ALL when an
+object is created or destroy.  This MUST be fixed before release.
+@
+text
+@d7 1
+a7 1
+	if [ "$1" = = -o "$1" = : ]; then
+d17 7
+a23 2
+		if [ "$1" = = ]; then
+			shift
+a25 1
+			echo -n $@@
+@
+
+
+1.64
+log
+@Added a cache to the resolver.  Slowed down the 1st stage by 2.4%, but
+speed up the 2nd-stage by 71%!.  In general practice, more time will be
+spent in the 2nd-stage, so this is a huge win.
+
+The whole cache is blown away when a new object is created, destroyed, or
+a new method/variable is added.
+@
+text
+@d14 2
+a15 4
+		if [ "$_shoopcache_" ];then
+			# We are redefining something, so blow away the entire cache.
+			# TODO: Figure out a way to just clear part of the cache.
+			eval unset _shoopcache_ \$_shoopcache_
+d34 9
+a42 6
+			THIS=$TRUEOBJ GETMETH="" NEWPARENTS="" CACHE=\"\$_shoopcache_${TRUEOBJ}_$METH\"
+		# If this object is found in the cache, than short-circuit
+		# the resolving code.
+		if [ "$CACHE" ]; then
+			eval eval \$$CACHE
+			return
+d46 1
+a46 1
+			eval GETMETH="\$_shoop_${P}_$METH"
+d72 7
+a78 2
+					eval _shoopcache_${THIS}_$METH=_shoop_${P}_$METH\
+						_shoopcache_=\"\$_shoopcache_ _shoopcache_${THIS}_$METH\"
+d90 4
+d95 18
+d118 6
+d126 1
+a126 2
+	eval "$OBJNAME () { shift; _shoop $OBJNAME $OBJNAME \$@@; };
+	      unset _shoopcache_ \$_shoopcache_";
+@
+
+
+1.63
+log
+@Wrote some comments.
+@
+text
+@d14 5
+a23 1
+			return
+a27 1
+			return
+d29 1
+d35 8
+a42 1
+		eval local P PARENTS=\"$(eval eval "\$_shoop_${TRYOBJ}_parent")\" THIS=$TRUEOBJ GETMETH="" NEWPARENTS=""
+d68 6
+d92 2
+a93 1
+	eval "$OBJNAME () { shift; _shoop $OBJNAME $OBJNAME \$@@; }";
+@
+
+
+1.62
+log
+@Optimized the hell out of the 2nd stage.  Got an 8% speed up in it, with
+no noticeable change in the 1st stage, at the cost of only 2 lines of code!
+@
+text
+@d32 1
+a32 1
+		# Try inheritance 1 level deep -- the quick way.
+d47 3
+a49 3
+		# 1 level deep found no match, so resolve the inheritance
+		# tree, and loop over untested super classes.
+
+@
+
+
+1.61
+log
+@added tests. Found a bug.
+@
+text
+@d31 1
+a31 1
+		eval local P PARENTS=\"$(eval eval "\$_shoop_${TRYOBJ}_parent")\" THIS=$TRUEOBJ
+d34 3
+a36 2
+			if eval [ -n \"\$_shooptype_${P}_$METH\" ]; then
+				eval eval "\$_shoop_${P}_$METH"
+d39 7
+d51 1
+a51 1
+		set -- $PARENTS
+d54 2
+a55 1
+			if eval [ \"\$_shooptype_${P}_$METH\" ];then
+d57 1
+a57 1
+				eval eval "\$_shoop_${P}_$METH"
+@
+
+
+1.60
+log
+@Fastpath some returns, and remove the method doesn't return warning msg.
+@
+text
+@d13 1
+@
+
+
+1.59
+log
+@Add 'returns' to all defined object methods.
+@
+text
+@d15 1
+a15 1
+			eval "_shoop_$TRUEMETH='echo -n $@@; return'
+d18 1
+d23 1
+d28 1
+a28 1
+		echo $THIS.$METH did not return. >&2
+a34 1
+				echo $THIS.$METH did not return. >&2
+a47 1
+				echo $THIS.$METH did not return. >&2
+a55 1
+	return 0
+@
+
+
+1.58
+log
+@Use $THIS in method returnation warning.
+@
+text
+@d69 2
+a70 1
+	fi
+d78 1
+a78 1
+OBJECT . super : '_shoop $THIS $($THIS . parent) $@@'
+@
+
+
+1.57
+log
+@If a defined method doesn't have a return statement at its end, print a
+warning.
+@
+text
+@d26 1
+a26 1
+		echo $TRUEOBJ.$METH did not return. >&2
+d33 1
+a33 1
+				echo $TRUEOBJ.$METH did not return. >&2
+d47 1
+a47 1
+				echo $TRUEOBJ.$METH did not return. >&2
+@
+
+
+1.56
+log
+@Remove stale code.
+@
+text
+@d15 1
+a15 1
+			eval "_shoop_$TRUEMETH='echo -n $@@'
+d26 1
+d33 1
+d47 1
+@
+
+
+1.55
+log
+@Set OBJECT's parent to '', to avoid a warning during resolve.
+@
+text
+@d7 1
+a7 1
+	if [ "$1" = = -o "$1" = := -o "$1" = : -o "$1" = :: ]; then
+@
+
+
+1.54
+log
+@Various fixes, and a 1 line 25% speedup.
+@
+text
+@d70 1
+@
+
+
+1.53
+log
+@Random twiddles.
+@
+text
+@d27 1
+a27 1
+		eval local P PARENTS=$(eval eval "\$_shoop_${TRYOBJ}_parent")
+a30 1
+				local THIS=$TRUEOBJ
+d39 1
+a39 1
+		set -- $TRYOBJ
+d41 2
+a42 2
+			TRUEOBJ=$1
+			if eval [ \"\$_shooptype_$1_$METH\" ]; then
+d48 1
+a48 1
+			set -- $(eval eval "\$_shoop_${TRUEOBJ}_parent") "$@@"
+@
+
+
+1.52
+log
+@Removed _shoopgetparent, and used a non-recursive version to get the
+method.
+@
+text
+@d43 2
+a44 3
+			if eval [ \"\$_shooptype_$1_$METH\" ];then
+				local THIS=$TRUEOBJ
+				set "$orgargs"
+d51 2
+a52 4
+		if [ "$PARENTS" ];then
+			echo "\"$METH\" is undefined for $TRYOBJ." >&2
+			return 1
+		fi
+@
+
+
+1.51
+log
+@killed line
+@
+text
+@a3 14
+_shoopgetparent() {
+	local a
+	for a in $(eval eval "\$_shoop_${1}_parent"); do
+		if eval [ -z \"\$_shoopresolve_parent_seen_$a\" ]; then
+			eval local _shoopresolve_parent_seen_$a=1
+			echo -n "$a "
+		fi
+		if eval [ -z \"\$_shoopresolve_parent_get_$a\" ]; then
+			eval local _shoopresolve_parent_get_$a=1
+			_shoopgetparent $a
+		fi
+	done
+}
+
+d39 5
+a43 8
+		# Tell getparent that we have already checked the first
+		# level of parents.  However, getparent still needs to
+		# walk the entire parent tree.
+		for P in $PARENTS; do
+			eval local _shoopresolve_parent_seen_$P=1
+		done
+		for P in $(_shoopgetparent $TRYOBJ); do
+			if eval [ -n \"\$_shooptype_${P}_$METH\" ]; then
+d45 1
+d49 2
+@
+
+
+1.50
+log
+@killed old variables.
+indentation fix.
+@
+text
+@a42 1
+		# (Benchmark to see if this helps..)
+@
+
+
+1.49
+log
+@typo
+@
+text
+@a21 1
+		local FINAL DEFINE
+d24 2
+a25 2
+			eval [ -z \"\$_shooptype_$TRYMETH\" ]; then
+				eval "_shoopdefines_$TRUEOBJ=\"\$_shoopdefines_$TRUEOBJ $METH\""
+d75 2
+a76 2
+# Temporarily turn on introspection, so the base object has everything recorded
+# about it as it is being created.
+@
+
+
+1.48
+log
+@no changes, really. Ignore me :-)
+@
+text
+@d8 1
+a8 1
+			eval local _shoopresolve_parent_send_$a=1
+@
+
+
+1.47
+log
+@Minor fix for parent retrieval code.
+@
+text
+@d17 1
+d44 1
+a44 2
+		# TODO: benchmark to see if this helps.
+		#    (remember, it also lets errors be seen..)
+@
+
+
+1.46
+log
+@Change local variable _shoopresolve_parent_echo_ with s/echo/seen/.
+@
+text
+@d9 1
+a9 1
+			echo -n $a
+@
+
+
+1.45
+log
+@More lines removed, and still a little bit faster.
+@
+text
+@d7 3
+a9 3
+		if eval [ -z \"\$_shoopresolve_parent_echo_$a\" ]; then
+			eval local _shoopresolve_parent_echo_$a=1
+			echo $a
+d59 1
+a59 1
+			eval local _shoopresolve_parent_echo_$P=1
+@
+
+
+1.44
+log
+@Local variables are inherited by subfunctions.  Now we don't have to
+remember what to unset.  Nice speedup.
+@
+text
+@d41 1
+a41 5
+		eval local PARENTS=$(eval eval "\$_shoop_${TRYOBJ}_parent")
+		if [ -z "$PARENTS" ]; then
+			return 0
+		fi
+		local P
+d61 1
+a61 2
+		local PARENTS2="$(_shoopgetparent $TRYOBJ)"
+		for P in $PARENTS2; do
+@
+
+
+1.43
+log
+@Class resolver overhaul.
+  * Speed up the single level inheritance by 10-20%.
+  * Fix the multi-level inheritance.
+    * This multi-level resolver is close to O(n) in performance, where n is
+      the total number of classes inherited from that are beyond the single
+      layer.
+@
+text
+@d8 1
+a8 1
+			eval _shoopresolve_parent_echo_$a=1
+d12 1
+a12 1
+			eval _shoopresolve_parent_get_$a=1
+d63 1
+a63 1
+			eval _shoopresolve_parent_echo_$P=1
+a65 8
+		local UNSET
+		for P in $PARENTS; do
+			UNSET="$UNSET _shoopresolve_parent_echo_$P"
+		done
+		for P in $PARENTS2; do
+			UNSET="$UNSET _shoopresolve_parent_echo_$P _shoopresolve_parent_get_$P"
+		done
+		eval unset $UNSET
+@
+
+
+1.42
+log
+@IFS trick
+@
+text
+@d4 13
+a19 1
+
+d42 3
+d51 3
+a53 2
+				_shoop $TRUEOBJ $P $METH $@@
+				return $?
+d56 11
+a66 1
+		# When the quick way fails, try the hard way.
+d68 11
+a78 2
+			if ! _shoop $TRUEOBJ $P $METH $@@ 2>/dev/null; then
+				return 0
+d86 1
+@
+
+
+1.41
+log
+@Fix spurious '"parent" is undefined for OBJECT.' messages.
+@
+text
+@d58 1
+a58 1
+_shoop OBJECT OBJECT new : '
+@
+
+
+1.40
+log
+@Renamed BASE to OBJECT
+@
+text
+@d46 4
+a49 2
+		echo "\"$METH\" is undefined for $TRYOBJ." >&2
+		return 1
+@
+
+
+1.39
+log
+@Removed blank line.
+@
+text
+@d56 1
+a56 1
+_shoop BASE BASE new : '
+d64 1
+a64 1
+_shoop BASE BASE new BASE
+d68 1
+a68 1
+BASE . super : '_shoop $THIS $($THIS . parent) $@@'
+@
+
+
+1.38
+log
+@Broke finalization out into a module.
+@
+text
+@a14 1
+		
+@
+
+
+1.37
+log
+@Sped up sets just a touch.
+@
+text
+@d16 10
+a25 21
+		DEFINE=$1
+		shift
+		case $DEFINE in
+			=)
+				eval "_shoop_$TRUEMETH='echo -n $@@'
+				      _shooptype_$TRUEMETH=variable"
+				echo -n $@@
+			;;
+			:=)
+				eval "readonly _shoop_$TRUEMETH='echo -n $@@'
+				      _shooptype_$TRUEMETH=variable"
+				echo -n $@@
+			;;
+			:)
+				eval "_shoop_$TRUEMETH='$@@'
+				      _shooptype_$TRUEMETH=method"
+			;;
+			::)
+				eval "readonly _shoop_$TRUEMETH='$@@'
+				      _shooptype_$TRUEMETH=method"
+		esac
+@
+
+
+1.36
+log
+@readonly fixes
+@
+text
+@d19 1
+a19 1
+			*=)
+d24 6
+a29 1
+			*:)
+d33 3
+a35 5
+		esac
+		case $DEFINE in
+			:?*)
+				eval readonly "_shoop_$TRUEMETH"
+			;;
+@
+
+
+1.35
+log
+@* Changed _shoop_THIS to THIS; it is not an internal variable.
+* With the readonly shell builtin, we can automate final variables.
+  Converted over to always storing methods as variables too, so they can also
+  be handled with readonly. This cuts a lot of code, and speeds things up
+  all over.
+@
+text
+@d15 1
+d20 2
+a21 4
+				#local DOLLAR=\$
+				#set -- $(eval eval echo \"$\{DOLLAR\}\{{$(seq -s , 1 $(($#-1)))}\}\")
+				eval "_shooptype_$TRUEMETH=variable;
+				      _shoop_$TRUEMETH='echo -n $@@'"
+d25 2
+a26 2
+				eval "_shooptype_$TRUEMETH=method;
+				      _shoop_$TRUEMETH='$@@'"
+d31 1
+a31 1
+				eval readonly "_shoop_$TRUEMETH=1"
+@
+
+
+1.34
+log
+@Added a proper _shoop_THIS parameter.
+@
+text
+@a16 4
+		if eval [ \"\$_shoopfinal_$TRUEMETH\" ]; then
+			eval "echo \"Can't redefine final $TRUEOBJ.$METH(\$_shooptype_$TRUEMETH)\"" >&2
+			return 1
+		fi
+d21 2
+a22 7
+				if [ "$_shoop_introspect" ]; then
+					eval "_shooptype_$TRUEMETH=variable;
+					      _shoop_$TRUEMETH='echo -n $@@'"
+				else
+					eval "_shooptype_$TRUEMETH=variable;
+					      _shoop_$TRUEMETH () { echo -n $@@; }"
+				fi
+d26 2
+a27 8
+				if [ "$_shoop_introspect" ]; then
+					eval "_shooptype_$TRUEMETH=method;
+					      _shoop_$TRUEMETH='$@@'"
+				else
+					eval "_shooptype_$TRUEMETH=method;
+					      _shoop_$TRUEMETH () { local _shoop_THIS=$1; shift; $@@;
+}"
+				fi
+d32 1
+a32 1
+				eval "_shoopfinal_$TRUEMETH=1"
+d36 2
+a37 6
+		if [ "$_shoop_introspect" ]; then
+			local _shoop_THIS=$TRUEOBJ
+			eval eval "\$_shoop_$TRYMETH"
+		else
+			_shoop_$TRYMETH $TRUEOBJ "$@@"
+		fi
+d39 1
+a39 5
+		if [ "$_shoop_introspect" ]; then
+			eval local PARENTS=$(eval eval "\$_shoop_${TRYOBJ}_parent")
+		else
+			eval local PARENTS=$(_shoop_${TRYOBJ}_parent)
+		fi
+d69 2
+a70 2
+	if [ $_shoop_THIS != $OBJNAME ]; then
+		_shoop $OBJNAME $OBJNAME parent = $_shoop_THIS >/dev/null;
+d78 1
+a78 1
+BASE . super : '_shoop $_shoop_THIS $($_shoop_THIS . parent) $@@'
+@
+
+
+1.33
+log
+@Fix the 2nd loop in the multiple inheritance resolver.
+@
+text
+@d40 1
+a40 1
+					      _shoop_$TRUEMETH () { $@@;
+d52 1
+a52 1
+			set -- $TRUEOBJ $@@
+d90 1
+a90 2
+	local PARENT=$1 OBJNAME=$2;
+	
+d92 2
+a93 2
+	if [ $PARENT != $OBJNAME ]; then
+		_shoop $OBJNAME $OBJNAME parent = $PARENT >/dev/null;
+d101 1
+a101 1
+BASE . super : 'THIS=$1; shift; _shoop $THIS $($THIS . parent) $@@'
+@
+
+
+1.32
+log
+@Only set the parent if the parent isn't equal to the current object.
+@
+text
+@d75 1
+a75 1
+			if _shoop $TRUEOBJ $P $METH $@@ 2>/dev/null; then
+@
+
+
+1.31
+log
+@Provide slow/fast paths for variable/method setting/getting.  Slow is
+turned on when introspection is enabled.
+@
+text
+@d92 4
+a95 2
+	eval "$OBJNAME () { shift; _shoop $OBJNAME $OBJNAME \$@@; };
+	      $OBJNAME . parent = $PARENT >/dev/null"
+@
+
+
+1.30
+log
+@Use _shoop to define the initial base object, instead of calling the _new_
+function directly.
+@
+text
+@d25 7
+a31 2
+				eval "_shooptype_$TRUEMETH=variable;
+				      _shoop_$TRUEMETH () { echo -n $@@; }"
+d35 8
+a42 3
+				eval "_shooptype_$TRUEMETH=method;
+				      _shoop_$TRUEMETH () { $@@
+}";
+d51 6
+a56 1
+		eval _shoop_$TRYMETH $TRUEOBJ \"\$@@\";
+d58 5
+a62 1
+		eval local PARENTS=\"`_shoop_${TRYOBJ}_parent`\"
+@
+
+
+1.29
+log
+@Make the undefined error message more informative.
+@
+text
+@d77 1
+a77 1
+_shoop_BASE_new '' BASE
+@
+
+
+1.28
+log
+@indentation changes.
+@
+text
+@d60 1
+a60 1
+		echo "\"$METH\" is undefined." >&2
+@
+
+
+1.27
+log
+@Minor changes.
+@
+text
+@d27 2
+a28 1
+				echo -n $@@;;
+d33 1
+d36 3
+a38 1
+			:?*)	eval "_shoopfinal_$TRUEMETH=1";;
+@
+
+
+1.26
+log
+@Oops.  Last checking wasn't quite correct.
+@
+text
+@d5 1
+a5 5
+	local TRUEOBJ=$1
+	local TRYOBJ=$2
+	local METH=$3
+	local TRUEMETH=${1}_$3
+	local TRYMETH=${2}_$3
+d67 1
+a67 2
+	local PARENT=$1;
+	local OBJNAME=$2;
+@
+
+
+1.25
+log
+@Correctly define BASE . new.
+@
+text
+@d74 2
+a75 2
+	eval "$OBJNAME () { shift; _shoop $OBJNAME $OBJNAME \$@@; }
+	      $OBJNAME . parent = $PARENT >/dev/null";
+@
+
+
+1.24
+log
+@Add 'final' attribute to properties and methods.  Also some slight tweaks
+that should save parsing time for the shell.
+@
+text
+@d71 2
+a72 2
+	local PARENT=$1
+	local OBJNAME=$2
+d75 1
+a75 1
+	      $OBJNAME . parent = $PARENT >/dev/null"
+@
+
+
+1.23
+log
+@minor
+@
+text
+@d8 2
+d12 3
+a14 1
+	if [ "$1" = = -o "$1" = : ]; then
+d16 2
+a17 2
+		   eval [ "$_shoop_introspect" -a -z "\$_shooptype_${TRYOBJ}_$METH" ]; then
+			eval "_shoopdefines_$TRUEOBJ=\"\$_shoopdefines_$TRUEOBJ $METH\""
+d19 5
+a23 11
+		
+		if [ "$1" = = ]; then
+			shift
+			eval "_shooptype_${TRUEOBJ}_$METH=variable;
+			      _shoop_${TRUEOBJ}_$METH () { echo -n $@@; }"
+			echo -n $@@
+		else
+			shift
+			eval "_shooptype_${TRUEOBJ}_$METH=method;
+			      _shoop_${TRUEOBJ}_$METH () { $@@
+}"
+d25 17
+a41 2
+	elif eval [ \"\$_shooptype_${TRYOBJ}_$METH\" ]; then
+		eval _shoop_${TRYOBJ}_$METH $TRUEOBJ \"\$@@\";
+@
+
+
+1.22
+log
+@super works
+@
+text
+@a10 1
+		# This block is for introspect.
+d71 1
+a71 1
+# Now if you want it, you have to turn it back on.
+@
+
+
+1.21
+log
+@Super added, but it doesn't work yet.
+@
+text
+@d7 1
+a7 1
+	_shoop_current_method=$3
+d13 2
+a14 2
+		   eval [ "$_shoop_introspect" -a -z "\$_shooptype_${TRYOBJ}_$_shoop_current_method" ]; then
+			eval "_shoopdefines_$TRUEOBJ=\"\$_shoopdefines_$TRUEOBJ $_shoop_current_method\""
+d19 2
+a20 2
+			eval "_shooptype_${TRUEOBJ}_$_shoop_current_method=variable;
+			      _shoop_${TRUEOBJ}_$_shoop_current_method () { echo -n $@@; }"
+d24 2
+a25 2
+			eval "_shooptype_${TRUEOBJ}_$_shoop_current_method=method;
+			      _shoop_${TRUEOBJ}_$_shoop_current_method () { $@@
+d28 2
+a29 2
+	elif eval [ \"\$_shooptype_${TRYOBJ}_$_shoop_current_method\" ]; then
+		eval _shoop_${TRYOBJ}_$_shoop_current_method $TRUEOBJ \"\$@@\";
+d37 2
+a38 2
+			if eval [ -n \"\$_shooptype_${P}_$_shoop_current_method\" ]; then
+				_shoop $TRUEOBJ $P $_shoop_current_method $@@
+d44 1
+a44 1
+			if _shoop $TRUEOBJ $P $_shoop_current_method $@@ 2>/dev/null; then
+d48 1
+a48 1
+		echo "\"$_shoop_current_method\" is undefined." >&2
+d69 2
+a70 1
+BASE . super : '_shoop $1 $($1 . parent) $_shoop_current_method $@@'
+@
+
+
+1.20
+log
+@whatever.
+@
+text
+@d7 1
+a7 1
+	local METH=$3
+d13 2
+a14 2
+		   eval [ "$_shoop_introspect" -a -z "\$_shooptype_${TRYOBJ}_$METH" ]; then
+			eval "_shoopdefines_$TRUEOBJ=\"\$_shoopdefines_$TRUEOBJ $METH\""
+d19 2
+a20 2
+			eval "_shooptype_${TRUEOBJ}_$METH=variable;
+			      _shoop_${TRUEOBJ}_$METH () { echo -n $@@; }"
+d24 2
+a25 2
+			eval "_shooptype_${TRUEOBJ}_$METH=method;
+			      _shoop_${TRUEOBJ}_$METH () { $@@
+d28 2
+a29 2
+	elif eval [ \"\$_shooptype_${TRYOBJ}_$METH\" ]; then
+		eval _shoop_${TRYOBJ}_$METH $TRUEOBJ \"\$@@\";
+d37 2
+a38 2
+			if eval [ -n \"\$_shooptype_${P}_$METH\" ]; then
+				_shoop $TRUEOBJ $P $METH $@@
+d44 1
+a44 1
+			if _shoop $TRUEOBJ $P $METH $@@ 2>/dev/null; then
+d48 1
+a48 1
+		echo "\"$METH\" is undefined." >&2
+d67 3
+@
+
+
+1.19
+log
+@Trimmed a few more lines.
+@
+text
+@d33 1
+a33 1
+		# Try inheritance 1 level deep, the quick way.
+d54 1
+a54 1
+# about it.
+d57 1
+a57 2
+# Create a method to create a new object (on an object that technically doesn't
+# exist yet).
+@
+
+
+1.18
+log
+@did away with the parent method, simplified other code, echo newlins as
+needed in example.sh
+@
+text
+@d32 16
+a47 18
+		if [ "$PARENTS" ]; then
+			local P
+			# Try inheritance 1 level deep, the quick way.
+			# TODO: benchmark to see if this helps.
+			#    (remember, it also lets errors be seen..)
+			for P in $PARENTS; do
+				if eval [ -n \"\$_shooptype_${P}_$METH\" ]; then
+					_shoop $TRUEOBJ $P $METH $@@
+					return $?
+				fi
+			done
+			# When the quick way fails, try the hard way.
+			for P in $PARENTS; do
+				if _shoop $TRUEOBJ $P $METH $@@ 2>/dev/null; then
+					return 0
+				fi
+			done
+		fi
+@
+
+
+1.17
+log
+@Only keep track of introspection data when it is going to be used, for a
+reasonable performance and memory savings.
+@
+text
+@d21 1
+a21 1
+			echo $@@
+d31 1
+a31 1
+		eval local PARENTS=\$_shoopparent_$TRYOBJ
+d38 1
+a38 1
+				if eval [ "\$_shooptype_${P}_$METH" ]; then
+d65 2
+a66 4
+	eval "$OBJNAME () { shift; _shoop $OBJNAME $OBJNAME \$@@; }"
+	if [ "$PARENT" ]; then
+		eval "_shoopparent_$OBJNAME=$PARENT"
+	fi
+a69 5
+BASE . parent : '
+	local OBJNAME=$1;
+	shift;
+	eval _shoopparent_$OBJNAME=\"$@@\"
+'
+@
+
+
+1.16
+log
+@* Killed property as variable code; it slowed down method calls to much.
+* echo -n property values, doogie says otherwise there will be extra whitespace.
+@
+text
+@d11 3
+a13 1
+		if eval [ -z "\$_shooptype_${TRYOBJ}_$METH" ]; then
+d16 1
+d55 3
+a57 1
+# Create a base object class. All other objects will inherit from this.
+d77 3
+@
+
+
+1.15
+log
+@fix from doogie
+@
+text
+@d17 1
+a17 2
+			      _shoop_${TRUEOBJ}_$METH () { echo $@@; }"
+#			eval "_shoop_${TRUEOBJ}_$METH=$@@"
+a24 3
+# Alternate, variable method. Benchmark before turning on. (See line above, too.)
+#	elif eval [ \"\$_shooptype_${TRYOBJ}_$METH\" = variable ]; then
+#		eval echo \$_shoop_${TRYOBJ}_$METH
+@
+
+
+1.14
+log
+@Bugfix from doogie.
+@
+text
+@d29 1
+a29 1
+	elif eval [ "\$_shooptype_${TRYOBJ}_$METH" ]; then
+@
+
+
+1.13
+log
+@spellcheck, multiple inheritence docs
+@
+text
+@d12 1
+a12 1
+			eval "_shoopdefines_$TRUEOBJ=\"$_shoopdefines_$TRUEOBJ $METH\""
+@
+
+
+1.12
+log
+@email fix, eval consolidating.
+@
+text
+@d58 2
+a59 1
+# Create a method to create a new object.
+d69 1
+a69 1
+# Make the base object.
+@
+
+
+1.11
+log
+@Split out introspect.
+@
+text
+@d16 2
+a17 2
+			eval "_shooptype_${TRUEOBJ}_$METH=variable"
+			eval "_shoop_${TRUEOBJ}_$METH () { echo $@@; }"
+d22 2
+a23 2
+			eval "_shooptype_${TRUEOBJ}_$METH=method"
+			eval "_shoop_${TRUEOBJ}_$METH () { $@@
+@
+
+
+1.10
+log
+@not cruft after all.
+@
+text
+@d11 1
+a11 1
+		if eval [ "\$_shooptype_${TRYOBJ}_$METH" ]; then
+d35 11
+a45 1
+			for P in $PARENTS;do
+d71 3
+a73 29
+local OBJNAME=$1;
+shift;
+eval _shoopparent_$OBJNAME=\"$@@\"
+'
+BASE . introspect : '
+local OBJNAME=$1 DEFINES TYPE A DISPLAYOBJ;
+shift;
+if [ "$2" ];then
+	DISPLAYOBJ=$2;
+else
+	DISPLAYOBJ=$OBJNAME;
+fi;
+eval DEFINES=\$_shoopdefines_$OBJNAME;
+for A in $DEFINES; do
+	if ! echo $_shoop_introspect_seen | tr " " "\n" | grep -q "^$A$";then
+		eval TYPE=\$_shooptype_${OBJNAME}_$A;
+		echo "$DISPLAYOBJ: $A is $TYPE";
+		_shoop_introspect_seen="$_shoop_introspect_seen $A";
+	fi
+done;
+if [ "$1" = resolve ];then
+	eval local PARENT=\$_shoopparent_$OBJNAME;
+	for P in $PARENT;do
+		$P . introspect resolve $DISPLAYOBJ;
+	done
+fi;
+for A in $DEFINES; do
+	_shoop_introspect_seen=$(echo $_shoop_introspect_seen | tr " " "\n" | grep -v "^$A$");
+done
+@
+
+
+1.9
+log
+@Removed cruft.
+@
+text
+@d60 5
+a64 1
+
+@
+
+
+1.8
+log
+@Make new object differently.
+Handle methods that cannot end in ;
+@
+text
+@d24 1
+a24 1
+			}"
+d60 1
+a60 5
+BASE . parent : '
+local OBJNAME=$1;
+shift;
+eval _shoopparent_$OBJNAME=\"$@@\"
+'
+@
+
+
+1.7
+log
+@alternate code path to benchmark later
+@
+text
+@d23 2
+a24 1
+			eval "_shoop_${TRUEOBJ}_$METH () { $@@; }"
+d48 2
+a49 2
+# Method to create a new object. Pass the name of the object to create.
+_shoop_BASE_new () {
+d57 1
+a57 3
+}
+_shoopdefines_BASE=new
+_shooptype_BASE_new=method
+@
+
+
+1.6
+log
+@Code reduction, bugfixes, speedups.
+@
+text
+@d18 1
+d25 4
+a28 1
+	elif eval [ "\$_shooptype_${TRYOBJ}_$METH" ]; then # Bwa ha ha.
+@
+
+
+1.5
+log
+@speedups
+@
+text
+@d10 1
+a10 3
+	if [ "$1" = = ]; then
+		# Set value.
+		shift
+d12 11
+a22 1
+			eval "_shoopdefines_$TRUEOBJ='$_shoopdefines_$TRUEOBJ $METH'"
+a23 9
+		eval "_shooptype_${TRUEOBJ}_$METH=variable"
+		eval "_shoop_${TRUEOBJ}_$METH () { echo $@@; }"
+		echo $@@
+	elif [ "$1" = : ]; then
+		# Set method.
+		shift
+		eval "_shoop_${TRUEOBJ}_$METH () { $@@; }"
+		eval "_shooptype_${TRUEOBJ}_$METH=method"
+		eval "_shoopdefines_$TRUEOBJ=\$(echo \$_shoopdefines_$TRUEOBJ $METH|tr ' ' '\n'|sort|uniq)"
+@
+
+
+1.4
+log
+@Mods from doogie: introspection, multiple inheritance, better knowledge
+about when methods are not defined, and a big slowdown, which is being
+corrected.
+@
+text
+@d12 5
+a16 1
+		shift 1
+a17 2
+		eval "_shooptype_${TRUEOBJ}_$METH=variable"
+		eval "_shoopdefines_$TRUEOBJ=\$(echo \$_shoopdefines_$TRUEOBJ $METH|tr ' ' '\n'|sort|uniq)"
+d21 1
+a21 1
+		shift 1
+@
+
+
+1.3
+log
+@added email
+@
+text
+@d13 3
+a15 1
+		eval "_shoop_${TRUEOBJ}_${METH} () { echo $@@; }"
+d20 14
+a33 7
+		eval "_shoop_${TRUEOBJ}_${METH} () { $@@; }"
+	elif ! eval _shoop_${TRYOBJ}_$METH $TRUEOBJ $@@ 2>/dev/null; then
+		if [ "$(_shoop_${TRYOBJ}_parent 2>/dev/null)" ]; then
+			_shoop $TRUEOBJ $(_shoop_${TRYOBJ}_parent) $METH $@@
+		else
+			echo "No such method, \"$METH\"" >&2
+			return 1
+d35 2
+d49 1
+a49 1
+		eval "_shoop_${OBJNAME}_parent () { echo $PARENT; }"
+d52 2
+d56 31
+@
+
+
+1.2
+log
+@sheesh, you guys. Pick-y.
+@
+text
+@d2 1
+a2 1
+# OOP in shell. GPL copyright 2000 by Joey Hess
+@
+
+
+1.1
+log
+@Reworked.
+@
+text
+@d20 2
+a21 2
+		if [ "`_shoop_${TRYOBJ}_parent 2>/dev/null`" ]; then
+			_shoop $TRUEOBJ `_shoop_${TRYOBJ}_parent` $METH $@@
+@
+

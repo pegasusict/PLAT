@@ -1,0 +1,55 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2001.04.29.18.21.17;	author algernon;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@initial import
+@
+text
+@#!/bin/sh -e
+NAMES=$(awk "
+/^CVS:/{
+	sub(/^CVS:/, \"\");
+	printf \"-u '%s:\", \$1;
+	sub(\$1 \" \",\"\");
+	split(\$0, A, / *[<>] */);
+	printf \"%s:%s'\n\", A[1], A[2]
+}
+" utils/COMMITTERS)
+eval rcs2log -v $NAMES -r "-sExp" | 
+awk '
+/	\* /{
+	split($0,A,/:/);
+	count=split(A[1],B,/, /);
+	first=1;
+	for(C = 1; C <= count; C++) {
+		if(!first)
+			printf ", ";
+		sub(/\/cvsroot\/shoop\/shwwwoop\///,"",B[C]);
+		printf "%s", B[C];
+		first=0
+	}
+	printf ":%s\n", A[2];
+	printed=1
+}
+{
+	if(printed != 1)
+		print;
+	printed=0
+}
+' > ${1:-ChangeLog}
+@

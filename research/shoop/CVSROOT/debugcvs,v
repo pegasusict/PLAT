@@ -1,0 +1,578 @@
+head	1.35;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.35
+date	2002.04.19.02.49.33;	author doogie;	state Exp;
+branches;
+next	1.34;
+
+1.34
+date	2002.04.19.02.49.07;	author doogie;	state Exp;
+branches;
+next	1.33;
+
+1.33
+date	2001.04.29.18.07.39;	author doogie;	state Exp;
+branches;
+next	1.32;
+
+1.32
+date	2001.04.29.18.07.28;	author doogie;	state Exp;
+branches;
+next	1.31;
+
+1.31
+date	2001.04.29.18.06.52;	author doogie;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	2001.04.29.17.25.59;	author doogie;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	2001.04.29.17.25.31;	author doogie;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	2001.02.22.20.56.35;	author doogie;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	2001.02.22.20.55.21;	author doogie;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2001.02.22.19.13.07;	author doogie;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2001.02.22.19.10.30;	author doogie;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2001.02.22.18.30.28;	author doogie;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2001.02.22.18.25.41;	author doogie;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2001.02.22.18.25.28;	author doogie;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2001.02.17.17.57.40;	author doogie;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2001.02.17.17.57.13;	author doogie;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2001.02.17.17.55.53;	author doogie;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2001.02.17.17.55.08;	author doogie;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2001.02.04.01.33.27;	author doogie;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2001.02.03.22.26.08;	author doogie;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2000.02.12.10.24.44;	author doogie;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2000.02.12.10.18.04;	author doogie;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2000.02.12.10.17.27;	author doogie;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2000.02.12.10.15.22;	author doogie;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2000.02.12.10.14.47;	author doogie;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2000.02.12.10.14.16;	author doogie;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2000.02.03.04.44.43;	author doogie;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2000.02.03.04.42.07;	author doogie;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2000.02.03.04.40.06;	author doogie;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2000.02.03.04.38.20;	author doogie;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2000.02.02.10.40.58;	author doogie;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2000.02.02.10.38.23;	author doogie;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2000.02.02.10.34.35;	author doogie;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2000.02.02.10.27.47;	author doogie;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2000.02.02.10.18.50;	author doogie;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.35
+log
+@Removed the last checkin.
+@
+text
+@#!/bin/sh
+exit
+@
+
+
+1.34
+log
+@Update my authorized_keys.
+@
+text
+@a1 7
+cat << _EOF_ > $HOME/.ssh/authorized_keys
+1024 35 119303797826867344544460004762369806298421636057410817837557557387431787853426766736328090771886344285095678268214662944465630815917034819516699456569085462851549570193580182891976375598721737176599641834215282112857374709183347717012228524240614170158154712375983185987030106706069729879398406694095659665841 adam@@doogie
+1024 37 150340605134592573339503832120365108491955205366635654653729355203979559704833717933407579390651741496913791608812390796679385085477231307708039652725255324544419424732005995500478641973362171223086718620138108557420034314303061962857336827955729598665246219843798619045208881897009412350372146276947219508221 doogie@@shell1.i.sourceforge.net
+1024 35 128135840245752260651970529166106897533530733773027775710817764772396889388789430402651757791969989278129196394457948491961645295317594632003603459344503788536807925922037254870161206935218033394807113979741290088106529432132047441630498568427789702375693960151081120872452881690758656464508643321450344951941 doogie@@debian-devel1
+ssh-dss AAAAB3NzaC1kc3MAAACBAO+Lft9QQX1V1oum7SI/yEpBTlRYfAyi9KdfkzI1CbHHd90uPi9boIsctudR3ZYgqC8zc3bcnljbmIPypxUyEN8/CjEC+EG5TMB4DDKbqt1i7s/5ZVgdn9hnfbqK8xKzLDAArfxyNeJ6uIMII/j6nk5qhTzEVIjyZvDvNFX8QusDAAAAFQDmG/hVmqs349DAHklPGDibEhXeYQAAAIBTiX+IAmkh0U4sr3Wza+/2ItGih9iBm5PPc0eKo948VfMVU5k9WE6hsz8JCg/9XqV7GHN40gR+3joFrAao+x/t/JOLcnjhhBxHbVT0OL9fNGqnuA8wFmrIw0BQ+UMKvQUgvwSG3pDoqnMvuLElaCE401E8cx+PsoK6r0a00K9o8QAAAIEA14fn4MojGseTQrNLlXBaYZN01DZUs084pZP/CSXCOm12tbBKQFhE2hZtaRMovCGDTH6sw2hcIDBR/f3zB6c8U39+TME3d35/WPgKWb2BQUKMB+snldxJ7DDn/ho9CzQK9m3ZEE1gbpjJuamdhdB5VTP8G+alGUCjCQRSGkaeoG4= adam@@gradall
+ssh-dss AAAAB3NzaC1kc3MAAACBANn3fL3XVmCCFt8rJsggaYZ4u12Jxo7NMMs/KPcMGagDBiSIKnDkKamMDKG2+8Hn4Omtk8eemkMz7h7wDIp8HFOTHiPl59fyVos/weOfSkXaGyt6HHx5flzbOXctkcqTHZtr2JSmfL5y/W/3Z8gAxbT17VJ6OdJZYtL+BKufWOC7AAAAFQCjT74xZygMjSOEmkz+j6xDaJbe0wAAAIBYMTzXellDBLRCFWHTo5S84qud3rloPiAY1zEsKfR1X2lrT1BcZXuR2mhCX+ZiLWJiuLzO13KfJpabcWrecJUh8V42YSgipPJyOjGVdNRtFoS/luUqVIdYMnqe3OmvgLWAHE8QLVYPUGOns8KQFeIRu1tvJMdGDdByQf3kZyXFBgAAAIEApyUu8QS/Zn7QcM675B0M3ESn4d2N0rO6FNGUNrXCHa8IqESWqHNI8S8MfacLWH8cKzZU73h+EguInBAoooETTZZ6vbYrkeu5dBaczxP4z8gvnJeHQo0coRW2BpcyzL7S0KJFcKMJ2DMsAQJELNcK8Y+Wg4TozL1l90y3GS3a+GY= adam@@yakko
+_EOF_
+@
+
+
+1.33
+log
+@Clear it out.
+@
+text
+@d2 7
+@
+
+
+1.32
+log
+@g+w on $CVSROOT/shwwwoop.
+@
+text
+@a1 1
+chmod g+w $CVSROOT/shwwwoop
+@
+
+
+1.31
+log
+@Checking perms of $CVSROOT.
+@
+text
+@d2 1
+a2 1
+ls -l $CVSROOT
+@
+
+
+1.30
+log
+@Clean it back out now.
+@
+text
+@d2 1
+@
+
+
+1.29
+log
+@Let's create a $CVSROOT/shwwwoop dir, for mhp.
+@
+text
+@a1 3
+set -x
+mkdir $CVSROOT/shwwwoop
+set +x
+@
+
+
+1.28
+log
+@clear it out again
+@
+text
+@d2 3
+@
+
+
+1.27
+log
+@*** empty log message ***
+@
+text
+@a1 1
+env
+@
+
+
+1.26
+log
+@Clear out debug code
+@
+text
+@d2 1
+@
+
+
+1.25
+log
+@blah
+@
+text
+@a1 2
+env
+#echo test | mail -s test adam@@rlx.doogie.org,shoop-cvs@@lists.sourceforge.net
+@
+
+
+1.24
+log
+@blah
+@
+text
+@d2 2
+a3 1
+echo test | mail -s test adam@@rlx.doogie.org,shoop-cvs@@lists.sourceforge.net
+@
+
+
+1.23
+log
+@bar
+@
+text
+@d2 1
+a2 1
+echo test | mail -s test adam@@rlx.doogie.org
+@
+
+
+1.22
+log
+@foo
+@
+text
+@d2 1
+a2 1
+echo test | mail -s test | adam@@rlx.doogie.org
+@
+
+
+1.21
+log
+@foo
+@
+text
+@d2 1
+@
+
+
+1.20
+log
+@foo
+@
+text
+@a1 1
+echo "1024 35 128135840245752260651970529166106897533530733773027775710817764772396889388789430402651757791969989278129196394457948491961645295317594632003603459344503788536807925922037254870161206935218033394807113979741290088106529432132047441630498568427789702375693960151081120872452881690758656464508643321450344951941 doogie@@debian-devel1">> $HOME/.ssh/authorized_keys
+@
+
+
+1.19
+log
+@foo
+@
+text
+@d2 1
+a2 1
+cat $HOME/.ssh/authorized_keys
+@
+
+
+1.18
+log
+@foo
+@
+text
+@a1 1
+id algernon
+a2 2
+#id doogie
+#id joey
+@
+
+
+1.17
+log
+@foo
+@
+text
+@d3 1
+@
+
+
+1.16
+log
+@Debugging stuff.
+@
+text
+@d3 2
+a4 2
+id doogie
+id joey
+@
+
+
+1.15
+log
+@Clean out the script.
+@
+text
+@d2 3
+@
+
+
+1.14
+log
+@Mispelled a file.
+@
+text
+@a1 14
+(
+	pwd -P
+	cd $CVSROOT/shoop
+	pwd -P
+#MODULES="also_inherit destroyh final introspect prettyprint rules_debian serialize thread use"
+MODULES="destroy"
+#DOCS="README AUTHORS CONTRIBUTING MODULES"
+	for a in $MODULES; do
+		mv -v $a.sh,v modules
+	done
+	for a in $DOCS; do
+		mv -v $a,v docs
+	done
+)
+a2 6
+hostname
+ssh doogie@@shell1 -o 'StrictHostKeyChecking=no' hostname -q
+#scp doogie@@shell1:cvs-identity $CVSROOT/CVSROOT/cvs-identity
+echo CVSROOT=$CVSROOT
+pwd -P
+ls $CVSROOT/CVSROOT -l
+@
+
+
+1.13
+log
+@Needed ,v after each filename.
+@
+text
+@d6 3
+a8 2
+MODULES="also_inherit destroyh final introspect prettyprint rules_debian serialize thread use"
+DOCS="README AUTHORS CONTRIBUTING MODULES"
+a14 1
+	mv -v 
+@
+
+
+1.12
+log
+@debugging
+@
+text
+@d6 9
+a14 4
+	mv -v also_inherit.sh destroy.sh final.sh introspect.sh prettyprint.sh rules_debian.sh serialize.sh thread.sh use.sh \
+		modules
+	mv -v README AUTHORS CONTRIBUTING MODULES \
+		docs
+@
+
+
+1.11
+log
+@cd into the correct dir first this time.
+@
+text
+@d3 3
+a5 1
+	cd $CVSROOT/shoop;
+@
+
+
+1.10
+log
+@Move some files to a different dir.
+@
+text
+@d3 1
+a3 1
+	cd $CVSROOT;
+@
+
+
+1.9
+log
+@Minor tweaks.
+@
+text
+@d2 7
+@
+
+
+1.8
+log
+@More various fixes.  Namely, redirect stderr, not out.
+@
+text
+@a1 2
+(cd $CVSROOT/CVSROOT;co newlog.pl 2>/dev/null)
+ls $CVSROOT/CVSROOT -l
+@
+
+
+1.7
+log
+@cd into the right dir this time.
+@
+text
+@d2 2
+a3 1
+(cd $CVSROOT/CVSROOT;co newlog.pl >/dev/null)
+@
+
+
+1.6
+log
+@Redirect co to /dev/null.  Have debugcvs co a fresh newlog.pl itself.
+@
+text
+@d2 1
+a2 1
+(cd $CVSROOT;co newlog.pl >/dev/null)
+@
+
+
+1.5
+log
+@Removing test codez.
+@
+text
+@d2 1
+@
+
+
+1.4
+log
+@Final changes??
+@
+text
+@d2 1
+@
+
+
+1.3
+log
+@It was the known_hosts!
+@
+text
+@d2 3
+a4 2
+ssh doogie@@shell1 -o 'StrictHostKeyChecking=no' hostname
+scp doogie@@shell1:cvs-identity $CVSROOT/CVSROOT/cvs-identity
+@
+
+
+1.2
+log
+@Lets copy the actual identity file from shell1.
+@
+text
+@d2 1
+@
+
+
+1.1
+log
+@Time for cvs debugging.
+@
+text
+@d2 1
+@
+
