@@ -1,6 +1,6 @@
 #!/bin/bash
 ############################################################################
-# Pegasus' Linux Administration Tools #					postinstall script #
+# Pegasus' Linux Administration Tools #					bootstrap script #
 # (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
 # License: MIT						  # Please keep my name in the credits #
 ############################################################################
@@ -16,15 +16,15 @@ init() {
 	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
 	declare -gr SCRIPT="${0##*/}"
 	declare -gr SCRIPT_DIR="${0%/*}"
-	declare -gr SCRIPT_TITLE="Post Install Script"
+	declare -gr SCRIPT_TITLE="Bootstrap Script"
 	declare -gr MAINTAINER="Mattijs Snepvangers"
 	declare -gr MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
 	declare -gr VERSION_MAJOR=1
 	declare -gr VERSION_MINOR=4
-	declare -gr VERSION_PATCH=28
+	declare -gr VERSION_PATCH=29
 	declare -gr VERSION_STATE="PRE-ALPHA"
-	declare -gr VERSION_BUILD=20180602
+	declare -gr VERSION_BUILD=20180612
 	declare -gr LICENSE="MIT"
 	###############################################################################
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
@@ -33,9 +33,10 @@ init() {
 }
 
 prep() {
+	Verbosity=5
 	import "PBFL/default.inc.bash"
 	create_dir "$LOG_DIR"
-	import "lib/postinstall-functions.inc.bash"
+	import "lib/bootstrap-functions.inc.bash"
 	header
 	goto_base_dir
 	parse_ini $INI_FILE
@@ -107,31 +108,10 @@ main() {
 	if [[ $SYSTEM_ROLE_NAS == true ]]		;	then apt-inst samba nfsd proftpd ; fi
 	if [[ $SYSTEM_ROLE_PXE == true ]]		;	then apt-inst atftpd ; fi
 	if [[ $SYSTEM_ROLE_LXCHOST == true ]]	;	then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
-	if [[ $SYSTEM_ROLE_SERVER == true ]]		;	then apt-inst ssh-server screen webmin; fi
+	if [[ $SYSTEM_ROLE_SERVER == true ]]	;	then apt-inst ssh-server screen webmin; fi
 	if [[ $SYSTEM_ROLE_BASIC == true ]]		;	then echo "" ; fi
-	if [[ $SYSTEM_ROLE_ROUTER == true ]]		;	then apt-inst bridge-utils ufw; fi
+	if [[ $SYSTEM_ROLE_ROUTER == true ]]	;	then apt-inst bridge-utils ufw; fi
 	################################################################################
-	info_line "Installing extra software"
-	verb_line "Installing TeamViewer"
-	OLD_PWD=$(pwd)
-	create_tmp
-	cd $TMP_DIR
-	download "https://download.teamviewer.com/download/teamviewer_i386.deb"
-	install teamviewer_i386.deb
-	apt-get install -fy 2>&1 | verb_line
-	if [[ $SYSTEM_ROLE_POSEIDON == true ]]
-	then
-		verb_line "Installing StarUML"
-		download "http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb"
-		install libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb
-		download "http://staruml.io/download/release/v2.8.1/StarUML-v2.8.1-64-bit.deb"
-		install StarUML-v2.8.0-64-bit.deb
-		verb_line "Installing GitKraken"
-		download "https://release.gitkraken.com/linux/gitkraken-amd64.deb"
-		install gitkraken-amd64.deb
-	fi
-	cd $OLD_PWD
-	unset $OLD_PWD
 	####
 	info_line "Building maintenance script"
 	build_maintenance_script "$MAINTENANCE_SCRIPT$MAINTENANCE_SCRIPT"
