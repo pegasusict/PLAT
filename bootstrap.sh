@@ -46,7 +46,7 @@ init() {
 }
 
 prep() {
-	Verbosity=5
+	VERBOSITY=5
 	import "PBFL/default.inc.bash"
 	create_dir "$LOG_DIR"
 	import "lib/bootstrap-functions.inc.bash"

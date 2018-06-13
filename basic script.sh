@@ -31,7 +31,7 @@ echo "$START_TIME ## Starting PostInstall Process #######################"
 ### FUNCTIONS ###
 
 init() {
-	################### PROGRAM INFO ###########################################
+	################### PROGRAM INFO ##########################################
 	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
 	declare -gr SCRIPT="${0##*/}"
 	declare -gr SCRIPT_DIR="${0%/*}"
@@ -45,7 +45,7 @@ init() {
 	declare -gr VERSION_STATE="PRE-ALPHA"
 	declare -gr VERSION_BUILD="<<date>>"
 	declare -gr LICENSE="MIT"
-	############################################################################
+	###########################################################################
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
 	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
@@ -80,7 +80,7 @@ main() {
 
 }
 
-################################################################################
+###############################################################################
 init
 prep $@
 
