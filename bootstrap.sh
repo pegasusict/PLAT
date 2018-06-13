@@ -30,7 +30,7 @@ init() {
 	declare -gr SCRIPT_FULL="${0##*/}"
 	declare -gr SCRIPT_EXT="${SCRIPT_FULL##*.}"
 	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
-	declare -gr SCRIPT_DIR="${0%/*}"
+	#declare -gr SCRIPT_DIR="${BASENAME%/*}"
 	declare -gr SCRIPT_TITLE="Bootstrap Script"
 	declare -gr MAINTAINER="Mattijs Snepvangers"
 	declare -gr MAINTAINER_EMAIL="pegasus.ict@gmail.com"
