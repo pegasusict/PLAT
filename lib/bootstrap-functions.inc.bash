@@ -7,14 +7,14 @@
 
 #######################################################
 # PROGRAM_SUITE="Pegasus' Linux Administration Tools" #
-# SCRIPT_TITLE="PostInstall Functions Library"        #
-# MAINTAINER="Mattijs Snepvangers"                    #
-# MAINTAINER_EMAIL="pegasus.ict@gmail.com"            #
-# VERSION_MAJOR=0                                     #
-# VERSION_MINOR=1                                     #
-# VERSION_PATCH=33                                    #
-# VERSION_STATE="ALPHA"                               #
-# VERSION_BUILD=20180419                              #
+# SCRIPT_TITLE="BootStrap Functions Library"		  #
+# MAINTAINER="Mattijs Snepvangers"					  #
+# MAINTAINER_EMAIL="pegasus.ict@gmail.com"			  #
+# VERSION_MAJOR=0									  #
+# VERSION_MINOR=1									  #
+# VERSION_PATCH=36									  #
+# VERSION_STATE="PRE-ALPHA"							  #
+# VERSION_BUILD=20180613							  #
 # LICENSE="MIT"										  #
 #######################################################
 
@@ -26,7 +26,7 @@ get_args() {
 		err_line "I’m sorry, \"getopt --test\" failed in this environment."
 		exit 1
 	fi
-	OPTIONS="hv:r:c:g:l:t:S:P:R:"
+	OPTIONS="hv:r:c:g:l:t:"
 	LONG_OPTIONS="help,verbosity:,role:,containertype:garbageage:logage:tmpage:"
 	PARSED=$(getopt -o $OPTIONS --long $LONG_OPTIONS -n "$0" -- "$@")
 	if [ $? -ne 0 ]
