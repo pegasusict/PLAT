@@ -27,7 +27,9 @@ set -o pipefail	# Use last non-zero exit code in a pipeline
 init() {
 	################### PROGRAM INFO ###########################################
 	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
-	declare -gr SCRIPT="${0##*/}"
+	declare -gr SCRIPT_FULL="${0##*/}"
+	declare -gr SCRIPT_EXT="${SCRIPT_FULL##*.}"
+	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
 	declare -gr SCRIPT_DIR="${0%/*}"
 	declare -gr SCRIPT_TITLE="Bootstrap Script"
 	declare -gr MAINTAINER="Mattijs Snepvangers"
@@ -35,7 +37,7 @@ init() {
 	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
 	declare -gr VERSION_MAJOR=1
 	declare -gr VERSION_MINOR=4
-	declare -gr VERSION_PATCH=31
+	declare -gr VERSION_PATCH=33
 	declare -gr VERSION_STATE="PRE-ALPHA"
 	declare -gr VERSION_BUILD=20180613
 	declare -gr LICENSE="MIT"
