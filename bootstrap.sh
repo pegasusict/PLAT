@@ -1,4 +1,11 @@
 #!/bin/bash
+# DEBUG OPTIONS
+set -o xtrace	# Trace the execution of the script
+set -o errexit	# Exit on most errors (see the manual)
+set -o errtrace	# Make sure any error trap is inherited
+set -o pipefail	# Use last non-zero exit code in a pipeline
+#set -o nounset	# Disallow expansion of unset variables
+
 ############################################################################
 # Pegasus' Linux Administration Tools #					  bootstrap script #
 # (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
@@ -11,17 +18,9 @@ if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 if [[ $EUID -ne 0 ]]; then echo "This script must be run as root" ; exit 1 ; fi
 echo "$START_TIME ## Starting BootStrap Process #######################"
 
-# DEBUG SWITCH
-set -o xtrace	# Trace the execution of the script
-
 # to prevent mishaps when using cd with relative paths
 unset CDPATH
 
-# A better class of script...
-set -o errexit	# Exit on most errors (see the manual)
-set -o errtrace	# Make sure any error trap is inherited
-set -o nounset	# Disallow expansion of unset variables
-set -o pipefail	# Use last non-zero exit code in a pipeline
 
 ### FUNCTIONS ###
 init() {
@@ -51,10 +50,10 @@ prep() {
 	VERBOSITY=5
 	import "PBFL/default.inc.bash"
 	create_dir "$LOG_DIR"
-	import "lib/bootstrap-functions.inc.bash"
+	import $LIB
 	header
 	goto_base_dir
-	parse_ini $INI_FILE
+	read_ini $INI_FILE
 	get_args $@
 }
 
