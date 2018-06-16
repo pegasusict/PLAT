@@ -1,26 +1,25 @@
 #!/bin/bash
+
+# DEBUG SWITCHES
+set -o xtrace	# Trace the execution of the script
+set -o errexit	# Exit on most errors (see the manual)
+set -o errtrace	# Make sure any error trap is inherited
+#set -o nounset	# Disallow expansion of unset variables
+set -o pipefail	# Use last non-zero exit code in a pipeline
+
 ############################################################################
-# Pegasus' Linux Administration Tools #					<<script title>> #
-# (C)2017-<<year>> Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
+# Pegasus' Linux Administration Tools #					  <<script title>> #
+# (C)2017-<<yr>> Mattijs Snepvangers  #				 pegasus.ict@gmail.com #
 # License: MIT						  # Please keep my name in the credits #
 ############################################################################
 
 # !!! first replace (ctrl-h)
-# <<year>> with the current year
+# <<yr>> with the current year
 # "<<date>>" with todays date
 # <<script title>> with the title of the script and adjust the number of tabs if needed for proper alignment
-# DEBUG SWITCH
-
-set -o xtrace	# Trace the execution of the script
 
 # to prevent mishaps when using cd with relative paths
 unset CDPATH
-
-# A better class of script...
-set -o errexit	# Exit on most errors (see the manual)
-set -o errtrace	# Make sure any error trap is inherited
-set -o nounset	# Disallow expansion of unset variables
-set -o pipefail	# Use last non-zero exit code in a pipeline
 
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 # Making sure this script is run by bash to prevent mishaps
@@ -54,7 +53,7 @@ init() {
 prep() {
 	import "PBFL/default.inc.bash"
 	create_dir "$LOG_DIR"
-	import "lib/postinstall-functions.inc.bash"
+	import "$LIB"
 	header
 	goto_base_dir
 	parse_ini $INI_FILE

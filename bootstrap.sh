@@ -1,35 +1,31 @@
 #!/bin/bash
-# DEBUG OPTIONS
-set -o xtrace	# Trace the execution of the script
-set -o errexit	# Exit on most errors (see the manual)
-set -o errtrace	# Make sure any error trap is inherited
-set -o pipefail	# Use last non-zero exit code in a pipeline
-#set -o nounset	# Disallow expansion of unset variables
-
 ############################################################################
 # Pegasus' Linux Administration Tools #					  bootstrap script #
 # (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
 # License: MIT						  # Please keep my name in the credits #
 ############################################################################
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
-# Making sure this script is run by bash to prevent mishaps
-if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
-# Make sure only root can run this script
-if [[ $EUID -ne 0 ]]; then echo "This script must be run as root" ; exit 1 ; fi
-echo "$START_TIME ## Starting BootStrap Process #######################"
+source lib/subheader.sh
+echo "$START_TIME ## Starting Bootstrap Process #######################"
 
-# to prevent mishaps when using cd with relative paths
-unset CDPATH
+# mod: main
+# txt: This script is meant to run as bootstrap on a freshly installed system
+#      to add tweaks, software sources, install extra packages and external
+#      software which isn't available via PPA and generates a suitable
+#      maintenance script which will be set in cron or anacron
 
-
-### FUNCTIONS ###
+# fun: init
+# txt: declares global constants with program/suite information
+# env: $0 is used to determine basepath and scriptname
+# use: init
+# api: prerun
 init() {
 	################### PROGRAM INFO ###########################################
 	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
 	declare -gr SCRIPT_FULL="${0##*/}"
 	declare -gr SCRIPT_EXT="${SCRIPT_FULL##*.}"
 	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
-	#declare -gr SCRIPT_DIR="${BASENAME%/*}"
+	#declare -gr SCRIPT_DIR="${BASENAME%/*}" ###FIXME###
 	declare -gr SCRIPT_TITLE="Bootstrap Script"
 	declare -gr MAINTAINER="Mattijs Snepvangers"
 	declare -gr MAINTAINER_EMAIL="pegasus.ict@gmail.com"
@@ -38,7 +34,7 @@ init() {
 	declare -gr VERSION_MINOR=4
 	declare -gr VERSION_PATCH=33
 	declare -gr VERSION_STATE="PRE-ALPHA"
-	declare -gr VERSION_BUILD=20180613
+	declare -gr VERSION_BUILD=20180616
 	declare -gr LICENSE="MIT"
 	############################################################################
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
@@ -46,6 +42,11 @@ init() {
 	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
 }
 
+# fun: prep
+# txt: sum two numbers and output the result
+# use: prep
+# env: $ARGS is used to call parse_args
+# api: prerun
 prep() {
 	VERBOSITY=5
 	import "PBFL/default.inc.bash"
@@ -54,18 +55,7 @@ prep() {
 	header
 	goto_base_dir
 	read_ini $INI_FILE
-	get_args $@
-}
-
-import() {
-	local _FILE="$1"
-	if [[ -f "$_FILE" ]]
-	then
-		source "$_FILE"
-	else
-		crit_line "File $_FILE not found!"
-		exit 1
-	fi
+	get_args $ARGS
 }
 
 main() {
@@ -168,6 +158,6 @@ main() {
 
 ###########
 init
-prep $@
+prep
 
 main
