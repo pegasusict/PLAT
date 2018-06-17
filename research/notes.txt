@@ -8,7 +8,8 @@
 
 # fun: init
 # txt: declares global constants with program/suite information
-# env: $0 is used to determine basepath and scriptname
+# opt: VAR: descr...
+# env: $0: is used to determine basepath and scriptname
 # use: init
 # api: prerun
 
