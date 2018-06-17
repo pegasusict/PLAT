@@ -1,6 +1,6 @@
 #!/bin/bash
 ############################################################################
-# Pegasus' Linux Administration Tools #		 PostInstall Functions Library #
+# Pegasus' Linux Administration Tools #		   Bootstrap Functions Library #
 # (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
 # License: MIT						  #	Please keep my name in the credits #
 ############################################################################
@@ -12,13 +12,20 @@
 # MAINTAINER_EMAIL="pegasus.ict@gmail.com"			  #
 # VERSION_MAJOR=0									  #
 # VERSION_MINOR=1									  #
-# VERSION_PATCH=37									  #
+# VERSION_PATCH=38									  #
 # VERSION_STATE="PRE-ALPHA"							  #
-# VERSION_BUILD=20180613							  #
+# VERSION_BUILD=20180616							  #
 # LICENSE="MIT"										  #
 #######################################################
 
-### Basic program #############################################################
+# mod: bootstrap_functions
+# txt: This script is contains functions made specific for the script with the
+#      same name.
+
+# fun: getargs
+# txt: parses commandline arguments
+# use: init
+# api: prerun
 get_args() {
 	getopt --test > /dev/null
 	if [[ $? -ne 4 ]]
@@ -28,7 +35,7 @@ get_args() {
 	fi
 	OPTIONS="hv:r:c:g:l:t:"
 	LONG_OPTIONS="help,verbosity:,role:,containertype:garbageage:logage:tmpage:"
-	PARSED=$(getopt -o $OPTIONS --long $LONG_OPTIONS -n "$0" -- "$@")
+	PARSED=$(getopt -o $OPTIONS --long $LONG_OPTIONS -n "$COMMAND" -- "$ARGS")
 	if [ $? -ne 0 ]
 		then usage
 	fi
@@ -48,7 +55,11 @@ get_args() {
 	done
 }
 
-build_maintenance_script() { ###TODO### Convert to template
+# fun: build_maintenance_script
+# txt: Generates maintenance script for workstations, servers and containers.
+# use: build_maintenance_script filename
+# api: bootstrap
+build_maintenance_script() { ### TODO(pegasusict): convert to template
 	local _SCRIPT=$1
 	local _SCRIPT_INI="${_SCRIPT%.*}.ini"
 	if [[ "$_SCRIPT" == "$MAINTENANCE_SCRIPT" ]]
@@ -122,6 +133,10 @@ build_maintenance_script() { ###TODO### Convert to template
 	sed -e 1d maintenance/body-basic.sh >> "$_SCRIPT"
 }
 
+# fun: check_container
+# txt: parses containertype and sets systemroles accordingly
+# use: check_container containertype
+# api: bootstrap
 check_container() {
 	_CONTAINER=$1
 	case "$_CONTAINER" in
@@ -137,6 +152,10 @@ check_container() {
 	esac;
 }
 
+# fun: check_role
+# txt: parses systemrole and sets additional systemroles accordingly
+# use: check_container containertype
+# api: bootstrap
 check_role() {
 	local _ROLE=$1
 	case "$_ROLE" in
@@ -155,6 +174,10 @@ check_role() {
 	esac
 }
 
+# fun: usage
+# txt: outputs usage information
+# use: usage
+# api: prerun
 usage() {
 	version
 	cat <<-EOT

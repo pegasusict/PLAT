@@ -1,0 +1,16 @@
+ ### TODO(pegasusict): Fix this ASAP
+
+# mod: main
+# txt: This script is meant to run as bootstrap on a freshly installed system
+#      to add tweaks, software sources, install extra packages and external
+#      software which isn't available via PPA and generates a suitable
+#      maintenance script which will be set in cron or anacron
+
+# fun: init
+# txt: declares global constants with program/suite information
+# env: $0 is used to determine basepath and scriptname
+# use: init
+# api: prerun
+
+
+declare -agr PLAT_MODULES=("PBFL" "PLAT_Manager" "PLAT_WordPressTools" "PLAT_internet_watchdog" "PLAT_aptcacher")

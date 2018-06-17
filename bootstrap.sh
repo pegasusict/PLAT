@@ -8,7 +8,7 @@ START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 source lib/subheader.sh
 echo "$START_TIME ## Starting Bootstrap Process #######################"
 
-# mod: main
+# mod: bootstrap
 # txt: This script is meant to run as bootstrap on a freshly installed system
 #      to add tweaks, software sources, install extra packages and external
 #      software which isn't available via PPA and generates a suitable
@@ -22,17 +22,18 @@ echo "$START_TIME ## Starting Bootstrap Process #######################"
 init() {
 	################### PROGRAM INFO ###########################################
 	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
+	declare -gr SHELL_COMMAND="$0"
 	declare -gr SCRIPT_FULL="${0##*/}"
 	declare -gr SCRIPT_EXT="${SCRIPT_FULL##*.}"
 	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
-	#declare -gr SCRIPT_DIR="${BASENAME%/*}" ###FIXME###
+	#declare -gr SCRIPT_DIR="${BASENAME%/*}" ### TODO(pegasusict): Fix this ASAP
 	declare -gr SCRIPT_TITLE="Bootstrap Script"
 	declare -gr MAINTAINER="Mattijs Snepvangers"
 	declare -gr MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
 	declare -gr VERSION_MAJOR=1
 	declare -gr VERSION_MINOR=4
-	declare -gr VERSION_PATCH=33
+	declare -gr VERSION_PATCH=35
 	declare -gr VERSION_STATE="PRE-ALPHA"
 	declare -gr VERSION_BUILD=20180616
 	declare -gr LICENSE="MIT"
@@ -48,16 +49,24 @@ init() {
 # env: $ARGS is used to call parse_args
 # api: prerun
 prep() {
-	VERBOSITY=5
+	declare -gr MAINTENANCE_SCRIPT="maintenance.sh"
+	declare -gr MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
+	declare -gr CONTAINER_SCRIPT="maintenance_container.sh"
+	declare -gr CONTAINER_SCRIPT_TITLE="Container Maintenance Script"
+	declare -g VERBOSITY=5
 	import "PBFL/default.inc.bash"
 	create_dir "$LOG_DIR"
 	import $LIB
 	header
 	goto_base_dir
 	read_ini $INI_FILE
-	get_args $ARGS
+	get_args
 }
 
+# fun: main
+# txt: main bootstrap thread
+# use: main
+# api: bootstrap
 main() {
 	# check whether SYSTEM_ROLE_container has been checked and if yes,
 	#+ nas,web,ws,pxe,basic or router have been checked
@@ -156,8 +165,7 @@ main() {
 	fi
 }
 
-###########
+##### BOILERPLATE #####
 init
 prep
-
 main
