@@ -41,6 +41,11 @@ init() {
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
 	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
+	############################################################################
+	declare -gr MAINTENANCE_SCRIPT="maintenance.sh"
+	declare -gr MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
+	declare -gr CONTAINER_SCRIPT="maintenance_container.sh"
+	declare -gr CONTAINER_SCRIPT_TITLE="Container Maintenance Script"
 }
 
 # fun: prep
@@ -49,10 +54,7 @@ init() {
 # env: $ARGS is used to call parse_args
 # api: prerun
 prep() {
-	declare -gr MAINTENANCE_SCRIPT="maintenance.sh"
-	declare -gr MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
-	declare -gr CONTAINER_SCRIPT="maintenance_container.sh"
-	declare -gr CONTAINER_SCRIPT_TITLE="Container Maintenance Script"
+
 	declare -g VERBOSITY=5
 	import "PBFL/default.inc.bash"
 	create_dir "$LOG_DIR"
@@ -78,7 +80,7 @@ main() {
 			then
 				dbg_line "a CONTAINER_ROLE has been chosen; we're good :-) "
 			else
-				exit 1 "No container role has been designated"
+				exit 1 "No container role has been designated" >&2
 		fi
 	fi
 	############################################################################
@@ -90,7 +92,7 @@ main() {
 	############################################################################
 	############################################################################
 	info_line "Copying Ubuntu sources and some extras"
-	cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | err_line
+	cp apt/base.list /etc/apt/sources.list.d/ >&2 | err_line
 	############################################################################
 	############################################################################
 	info_line "Installing extra PPA's"
@@ -117,7 +119,7 @@ main() {
 	############################################################################
 	############################################################################
 	info_line "Installing extra packages"
-	###TODO### REWRITE TO INCORPORATE ARRAY
+	###TODO REWRITE TO INCORPORATE ARRAY
 	if [[ $SYSTEM_ROLE_POSEIDON == true ]]	;	then apt-inst audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full gparted picard ; fi
 	if [[ $SYSTEM_ROLE_WEB == true ]]		;	then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
 	if [[ $SYSTEM_ROLE_NAS == true ]]		;	then apt-inst samba nfsd proftpd ; fi

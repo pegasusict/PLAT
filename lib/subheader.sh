@@ -10,7 +10,7 @@ set -o xtrace	# Trace the execution of the script
 set -o errexit	# Exit on most errors (see the manual)
 set -o errtrace	# Make sure any error trap is inherited
 set -o pipefail	# Use last non-zero exit code in a pipeline
-set -o nounset	# Disallow expansion of unset variables
+#set -o nounset	# Disallow expansion of unset variables
 
 # Making sure this script is run by bash to prevent mishaps
 if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
@@ -27,7 +27,7 @@ import() {
 	then
 		source "$_FILE"
 	else
-		echo "File $_FILE not found!" 2&<
+		echo "File $_FILE not found!" >&2
 		exit 1
 	fi
 }
