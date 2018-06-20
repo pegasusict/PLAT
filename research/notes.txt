@@ -48,3 +48,115 @@ alias grr='git remote rm'
 alias gpu='git pull'
 alias gcl='git clone'
 
+=========================================================================================================================
+
+
+_opts=`getopt -o a:e:t:h --long arguments:,executable:,identifier:,help -- "$@"`
+_sn=$(basename "$0")
+_sn=${_sn%%.*}
+
+if [ $? != 0 ] ; then echo "$_sn: Failed parsing options." >&2 ; exit 1 ; fi
+eval set -- "$_opts"
+
+_help=0
+while true
+do
+    case "$1" in
+        -a | --arguments )      _ARGS="$2";     shift 2 ;;
+        -e | --executable )     _EXEC="$2";     shift 2 ;;
+        -t | --identifier )     _IDENT="$2";    shift 2 ;;
+        -h | --help )           _help=1;        shift   ;;
+        -- ) shift; break ;;
+        * ) break ;;
+    esac
+done
+
+if [[ _help -gt 0 ]]; then
+    #    0         1         2         3         4         5         6         7         8
+    #    |123456789|123456789|123456789|123456789|123456789|123456789|123456789|123456789|
+    echo "$_sn: Usage"
+    echo
+    echo "  -a|--arguments   Specify arguments for the executable to be wrapped. If"
+    echo "                   argument string contains spaces it must be enclosed in"
+    echo "                   quotes."
+    echo
+    echo "  -e|--executable  Specify path for the executable to be wrapped. If path"
+    echo "                   contains spaces it must be enclosed in quotes. REQUIRED."
+    echo
+    echo "  -t|--identifier  Specify a short string that is used to identify the cronjob"
+    echo "                   being logged. Will be prefixed with \"cronwrap-\". REQUIRED."
+    echo
+    echo "  -h|--help        Displays this help message."
+    echo
+    exit 0
+fi
+
+# set defaults for missing required arguments or error
+if [ -z ${_EXEC:+x}     ]; then echo "$_sn: -e|--executable is a required argument. Try with --help." >&2; exit 1; fi
+if [ -z ${_IDENT:+x}    ]; then echo "$_sn: -t|--identifier is a required argument. Try with --help." >&2; exit 1; fi
+
+# ensure command exists and is executable for us
+if [ ! -x $_EXEC    ]; then echo "$_sn: Unable to locate executable $_EXEC. Check your path and permissions." >&2; exit 1; fi
+
+# use a named pipe to get around race condition with journald.
+_pipe=/tmp/$_IDENT.out
+if [ -p $_pipe ]; then echo "$_sn: $_pipe Exisits! Either wrapper is being called too often for identifier $_IDENT or pipe is a zombie." >&2; exit 1; fi
+
+# create pipe and hold it open with file handle
+mkfifo $_pipe
+systemd-cat --identifier=$_IDENT --priority="info" < $_pipe &
+exec 3>$_pipe
+
+# trap exit signal to ensure cleanup
+function finish {
+    exec 3>&-
+    if [ -p $_pipe ]; then rm $_pipe; fi
+}
+trap finish EXIT
+
+# log function to actualy write out results.
+function journaldlog {
+    __tmplvl="$1"
+    #__msg="${@:2}"
+    __msg=$(cat; echo x)
+    __msg=${__msg%x}
+    #echo "DEBUG journaldlog: \$1       = $__tmplvl" #debugging - deleteme
+    #echo "DEBUG journaldlog: \$(cat)   = $__msg" #debugging - deleteme
+
+    if [ -z ${__tmplvl:+x}  ]; then __tmplvl=4; __msg='Empty log priority and message!'; fi
+    if [ -z ${__msg:+x}     ]; then __tmplvl=4; __msg='Empty log message!'; fi
+
+    case "$__tmplvl" in
+        debug | 7 )             __level='7'; __lname='DEBUG'    ;;
+        info | 6 )              __level='6'; __lname='INFO'     ;;
+        notice | 5 )            __level='5'; __lname='NOTICE'   ;;
+        warning | warn | 4 )    __level='4'; __lname='WARNING'  ;;
+        error | 3 )             __level='3'; __lname='ERROR'    ;;
+        critical | 2 )          __level='2'; __lname='CRITICAL' ;;
+        emergency | 1 )         __level='1'; __lname='EMERGENCY';;
+        * )                 echo "$_sn: Unknown log priority $1. Exiting." >&2; exit 1;;
+    esac
+
+    # log the thing
+    echo "\<$__level\> $__lname: $__msg" >&3
+    #if [ "$__level" -le "4" ]; then echo "$_sn: $__lname - $__msg" >&2; fi
+    echo "$_sn - $__lname: $__msg"
+}
+
+# redirect all further stdout to the log function using "info" priority level (maybe some other day)
+#exec 1>journaldlog info -
+
+# redirect all further stderr to the log function with "error" priority level (maybe some other day)
+#exec 2>journaldlog error -
+
+
+#do the thing - triggers only for the error invocation, passes NULL for second parameter
+#(
+#    exec 7>&1
+#    (
+#        stdbuf -oL -eL $_EXEC $_ARGS | journaldlog info
+#    ) 2>&7 1>/dev/null
+#) | journaldlog error
+
+#do the thing - triggers journaldlog only twice, not line by line.
+{ $_EXEC $_ARGS 2>&1 1>&7 7>&- | journaldlog error; } 7>&1 1>&2 | journaldlog info

@@ -7,18 +7,25 @@
 
 #########################################################
 # PROGRAM_SUITE="Pegasus' Linux Administration Tools"	#
-# SCRIPT_TITLE="Plat Manager Functions Library"			#
+# SCRIPT_TITLE="Plat Manager Functions"					#
 # MAINTAINER="Mattijs Snepvangers"						#
 # MAINTAINER_EMAIL="pegasus.ict@gmail.com"				#
 # VERSION_MAJOR=0										#
 # VERSION_MINOR=0										#
-# VERSION_PATCH=0										#
-# VERSION_STATE="PRE-ALPHA"								#
-# VERSION_BUILD=20180602								#
+# VERSION_PATCH=5										#
+# VERSION_STATE="ALPHA"									#
+# VERSION_BUILD=20180620								#
 # LICENSE="MIT"											#
 #########################################################
 
-### Basic program ##############################################################
+# mod: PLAT_manager functions
+# txt: This script is contains functions made specific for the script with the
+#      same name.
+
+# fun: getargs
+# txt: parses commandline arguments
+# use: init
+# api: prerun
 get_args() {
 	getopt --test > /dev/null
 	if [[ $? -ne 4 ]]
@@ -48,6 +55,10 @@ get_args() {
 	done
 }
 
+# fun: usage
+# txt: outputs usage information
+# use: usage
+# api: prerun
 usage() {
 	version
 	cat <<-EOT

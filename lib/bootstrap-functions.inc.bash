@@ -7,14 +7,14 @@
 
 #######################################################
 # PROGRAM_SUITE="Pegasus' Linux Administration Tools" #
-# SCRIPT_TITLE="BootStrap Functions Library"		  #
+# SCRIPT_TITLE="BootStrap Functions"				  #
 # MAINTAINER="Mattijs Snepvangers"					  #
 # MAINTAINER_EMAIL="pegasus.ict@gmail.com"			  #
 # VERSION_MAJOR=0									  #
 # VERSION_MINOR=1									  #
-# VERSION_PATCH=38									  #
-# VERSION_STATE="PRE-ALPHA"							  #
-# VERSION_BUILD=20180616							  #
+# VERSION_PATCH=40									  #
+# VERSION_STATE="ALPHA"								  #
+# VERSION_BUILD=20180620							  #
 # LICENSE="MIT"										  #
 #######################################################
 

@@ -26,16 +26,15 @@ init() {
 	declare -gr SCRIPT_FULL="${0##*/}"
 	declare -gr SCRIPT_EXT="${SCRIPT_FULL##*.}"
 	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
-	#declare -gr SCRIPT_DIR="${BASENAME%/*}" ### TODO(pegasusict): Fix this ASAP
 	declare -gr SCRIPT_TITLE="Bootstrap Script"
 	declare -gr MAINTAINER="Mattijs Snepvangers"
 	declare -gr MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
 	declare -gr VERSION_MAJOR=1
 	declare -gr VERSION_MINOR=4
-	declare -gr VERSION_PATCH=35
+	declare -gr VERSION_PATCH=37
 	declare -gr VERSION_STATE="PRE-ALPHA"
-	declare -gr VERSION_BUILD=20180616
+	declare -gr VERSION_BUILD=20180620
 	declare -gr LICENSE="MIT"
 	############################################################################
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
@@ -46,6 +45,13 @@ init() {
 	declare -gr MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
 	declare -gr CONTAINER_SCRIPT="maintenance_container.sh"
 	declare -gr CONTAINER_SCRIPT_TITLE="Container Maintenance Script"
+	############################################################################
+	SCRIPT_PATHx="$(readlink -fn -- "$0"; echo x)"
+	SCRIPT_PATH="${SCRIPT_DIRx%x}"
+	declare -gr SCRIPT_DIR=(dirname "$SCRIPT_PATH")
+	unset SCRIPT_PATHx
+	unset SCRIPT_PATH
+	###
 }
 
 # fun: prep
@@ -54,14 +60,13 @@ init() {
 # env: $ARGS is used to call parse_args
 # api: prerun
 prep() {
-
 	declare -g VERBOSITY=5
 	import "PBFL/default.inc.bash"
 	create_dir "$LOG_DIR"
 	import $LIB
 	header
 	#goto_base_dir
-	read_ini $INI_FILE
+	read_ini ${SCRIPT_DIR}${INI_FILE}
 	get_args
 }
 
@@ -72,35 +77,43 @@ prep() {
 main() {
 	# check whether SYSTEM_ROLE_container has been checked and if yes,
 	#+ nas,web,ws,pxe,basic or router have been checked
-	create_dir $TARGET_SCRIPT_DIR
+	create_dir "$TARGET_SCRIPT_DIR"
 	if [[ $SYSTEM_ROLE[CONTAINER] == true ]]
 	then
 		dbg_line "SYSTEM_ROLE CONTAINER was chosen, see if there's a containerrole as well"
-		if [[ $SYSTEM_ROLE[BASIC] == true ]] || [[ $SYSTEM_ROLE[WS] == true ]] || [[ $SYSTEM_ROLE[SERVER] == true ]] || [[ $SYSTEM_ROLE[NAS] == true ]] || [[ $SYSTEM_ROLE[PXE] == true ]] || [[ $SYSTEM_ROLE[ROUTER] == true ]] || [[ $SYSTEM_ROLE[WEB] == true ]] || [[ $SYSTEM_ROLE[X11] == true ]]
+		declare -g CONTAINER_ROLE_CHOSEN=false
+		for ROLE in BASIC WS SERVER NAS PXE ROUTER WEB X11
+		do
+			if [[ $SYSTEM_ROLE["$ROLE"] == true ]]
 			then
-				dbg_line "a CONTAINER_ROLE has been chosen; we're good :-) "
-			else
-				exit 1 "No container role has been designated" >&2
+				CONTAINER_ROLE_CHOSEN=true
+			fi
+		done
+		if [[ $CONTAINER_ROLE_CHOSEN == true ]]
+		then
+			dbg_line "CONTAINER ROLE(s) was/were chosen, we're good"
+		else
+			crit_line "NO CONTAINER ROLE was chosen"
+			exit 1
 		fi
 	fi
 	############################################################################
 	if [[ $SYSTEM_ROLE[MAINSERVER] == true ]]
 	then
 		info_line "Injecting interfaces file into network config"
-		cat lxchost_interfaces.txt > /etc/network/interfaces
+		cat lxchost_interfaces.txt > /etc/network/interfaces ### TODO(pegasusict): convert to sed insert/replace
 	fi
 	############################################################################
 	############################################################################
 	info_line "Copying Ubuntu sources and some extras"
 	cp apt/base.list /etc/apt/sources.list.d/ >&2 | err_line
 	############################################################################
-	############################################################################
 	info_line "Installing extra PPA's"
 	for ROLE in $SYSTEM_ROLE
 	do
 		if [[ "$ROLE"==true ]]
 		then
-			for PPA_KEY in PPA_KEYS
+			for PPA_KEY in $INI_PPA_KEYS
 			do
 				info_line "Adding $PPA_KEY PPA key"
 				echo "add_ppa" "$PPA_KEYS[PPA_KEY][0]" "$PPA_KEYS[PPA_KEY][1]" "$PPA_KEYS[PPA_KEY][2]"
@@ -108,7 +121,6 @@ main() {
 			done
 		fi
 	done
-
 	############################################################################
 	info_line "removing duplicate lines from source lists"
 	perl -i -ne 'print if ! $a{$_}++' "/etc/apt/sources.list /etc/apt/sources.list.d/*" 2>&1 | dbg_line
@@ -119,7 +131,7 @@ main() {
 	############################################################################
 	############################################################################
 	info_line "Installing extra packages"
-	###TODO REWRITE TO INCORPORATE ARRAY
+	### TODO(pegasusict): Rewrite to incorporate INI
 	if [[ $SYSTEM_ROLE_POSEIDON == true ]]	;	then apt-inst audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full gparted picard ; fi
 	if [[ $SYSTEM_ROLE_WEB == true ]]		;	then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
 	if [[ $SYSTEM_ROLE_NAS == true ]]		;	then apt-inst samba nfsd proftpd ; fi
@@ -129,17 +141,46 @@ main() {
 	if [[ $SYSTEM_ROLE_BASIC == true ]]		;	then echo "" ; fi
 	if [[ $SYSTEM_ROLE_ROUTER == true ]]	;	then apt-inst bridge-utils ufw; fi
 	############################################################################
+	info_line "Cleaning up obsolete packages"
+	apt-get -qqy autoremove 2>&1 | dbg_line
+	info_line "Clearing old/obsolete package cache"
+	apt-get -qqy autoclean 2>&1 | dbg_line
+	### GARBAGE ################################################################
+	info_line "Taking out the trash."
+	verb_line "Removing files from trash older than $GARBAGE_AGE days"
+	trash-empty "$GARBAGE_AGE" 2>&1 dbg_line
+	###
+	verb_line "Clearing user cache"
+	find /home/* -type f \( -name '*.tmp' -o -name '*.temp' -o -name '*.swp' -o -name '*~' -o -name '*.bak' -o -name '..netrwhist' \) -delete 2>&1 | dbg_line
+	###
+	verb_line "Deleting logs older than $LOG_AGE"
+	find /var/log -name "*.log" -mtime +"$LOG_AGE" -a ! -name "SQLUpdate.log" -a ! -name "updated_days*" -a ! -name "qadirectsvcd*" -exec rm -f {} \ 2>&1 dbg_line
+	###
+	verb_line "Purging TMP dirs of files unchanged for at least $TMP_AGE days"
+	CRUNCHIFY_TMP_DIRS="/tmp /var/tmp"	# List of directories to search
+	find $CRUNCHIFY_TMP_DIRS -depth -type f -a -ctime $TMP_AGE -print -delete 2>&1 dbg_line
+	find $CRUNCHIFY_TMP_DIRS -depth -type l -a -ctime $TMP_AGE -print -delete 2>&1 dbg_line
+	find $CRUNCHIFY_TMP_DIRS -depth -type f -a -empty -print -delete 2>&1 dbg_line
+	find $CRUNCHIFY_TMP_DIRS -depth -type s -a -ctime $TMP_AGE -a -size 0 -print -delete 2>&1 dbg_line
+	find $CRUNCHIFY_TMP_DIRS -depth -mindepth 1 -type d -a -empty -a ! -name 'lost+found' -print -delete 2>&1 dbg_line
+	############################################################################
+
+	### TODO(pegasusict): download & install software from INI based on SYSTEM_ROLE
+
+	############################################################################
 	############################################################################
 	info_line "Building maintenance script"
-	build_maintenance_script "$MAINTENANCE_SCRIPT$MAINTENANCE_SCRIPT"
+	build_maintenance_script "$MAINTENANCE_SCRIPT"
 	if [[ $SYSTEM_ROLE_LXCHOST == true ]]
 	then
-		build_maintenance_script "$MAINTENANCE_SCRIPT$CONTAINER_SCRIPT"
+		build_maintenance_script "$CONTAINER_SCRIPT"
 	fi
 	cp "$LIB_DIR$LIB" "$TARGET_SCRIPT_DIR$LIB_DIR"
 	############################################################################
+	############################################################################
 	if [[ $SYSTEM_ROLE_CONTAINER == true ]]
-	then dbg_line "NOT adding $MAINTENANCE_SCRIPT to sheduler"
+	then
+		dbg_line "This is a container; NOT adding $MAINTENANCE_SCRIPT to a sheduler"
 	else
 		verb_line "adding $MAINTENANCE_SCRIPT to sheduler"
 		if [[ $SYSTEM_ROLE_MAINSERVER == true ]]
