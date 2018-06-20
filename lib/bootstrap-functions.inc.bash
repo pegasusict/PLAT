@@ -21,7 +21,6 @@
 # mod: bootstrap_functions
 # txt: This script is contains functions made specific for the script with the
 #      same name.
-check_dependencies log header file
 
 # fun: getargs
 # txt: parses commandline arguments

@@ -60,7 +60,7 @@ prep() {
 	create_dir "$LOG_DIR"
 	import $LIB
 	header
-	goto_base_dir
+	#goto_base_dir
 	read_ini $INI_FILE
 	get_args
 }
