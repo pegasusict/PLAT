@@ -21,6 +21,7 @@
 # mod: bootstrap_functions
 # txt: This script is contains functions made specific for the script with the
 #      same name.
+check_dependencies log header file
 
 # fun: getargs
 # txt: parses commandline arguments
@@ -60,11 +61,12 @@ get_args() {
 # use: build_maintenance_script filename
 # api: bootstrap
 build_maintenance_script() { ### TODO(pegasusict): convert to template
-	local _SCRIPT=$1
-	local _SCRIPT_INI="${_SCRIPT%.*}.ini"
+	local _SCRIPT		;	_SCRIPT=$1
+	local _SCRIPT_INI	;	_SCRIPT_INI="${_SCRIPT%.*}.ini"
+	local _SCRIPT_TITLE
 	if [[ "$_SCRIPT" == "$MAINTENANCE_SCRIPT" ]]
-	then local _SCRIPT_TITLE="$MAINTENANCE_SCRIPT_TITLE"
-	else local _SCRIPT_TITLE="$CONTAINER_SCRIPT_TITLE"
+	then _SCRIPT_TITLE="$MAINTENANCE_SCRIPT_TITLE"
+	else _SCRIPT_TITLE="$CONTAINER_SCRIPT_TITLE"
 	fi
 	### removing old script if it exists
 	if [ -f "$_SCRIPT" ] ; then

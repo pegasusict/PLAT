@@ -15,3 +15,36 @@
 
 
 declare -agr PLAT_MODULES=("PBFL" "PLAT_Manager" "PLAT_WordPressTools" "PLAT_internet_watchdog" "PLAT_aptcacher")
+
+=======================================================================================================================
+
+save_function() {
+    local ORIG_FUNC=$(declare -f $1)
+    local NEWNAME_FUNC="$2${ORIG_FUNC#$1}"
+    eval "$NEWNAME_FUNC"
+}
+
+save_function foo old_foo
+foo() {
+    initialization_code()
+    old_foo()
+    cleanup_code()
+}
+
+======================================================================================================================
+
+alias ga='git add'
+alias gp='git push'
+alias gl='git log'
+alias gs='git status'
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias gm='git commit -m'
+alias gma='git commit -am'
+alias gb='git branch'
+alias gc='git checkout'
+alias gra='git remote add'
+alias grr='git remote rm'
+alias gpu='git pull'
+alias gcl='git clone'
+
