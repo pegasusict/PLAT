@@ -16,56 +16,35 @@ echo "$START_TIME ## Starting Bootstrap Process #######################"
 
 # fun: init
 # txt: declares global constants with program/suite information
-# env: $0 is used to determine basepath and scriptname
 # use: init
 # api: prerun
 init() {
-	################### PROGRAM INFO ###########################################
-	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
-	declare -gr SHELL_COMMAND="$0"
-	declare -gr SCRIPT_FULL="${0##*/}"
-	declare -gr SCRIPT_EXT="${SCRIPT_FULL##*.}"
-	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
+	##### PROGRAM INFO #####
 	declare -gr SCRIPT_TITLE="Bootstrap Script"
 	declare -gr MAINTAINER="Mattijs Snepvangers"
 	declare -gr MAINTAINER_EMAIL="pegasus.ict@gmail.com"
-	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
 	declare -gr VERSION_MAJOR=1
 	declare -gr VERSION_MINOR=4
-	declare -gr VERSION_PATCH=37
-	declare -gr VERSION_STATE="PRE-ALPHA"
-	declare -gr VERSION_BUILD=20180620
-	declare -gr LICENSE="MIT"
-	############################################################################
+	declare -gr VERSION_PATCH=39
+	declare -gr VERSION_STATE="ALPHA"
+	declare -gr VERSION_BUILD=20180622
+	###
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
 	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
-	############################################################################
-	declare -gr MAINTENANCE_SCRIPT="maintenance.sh"
-	declare -gr MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
-	declare -gr CONTAINER_SCRIPT="maintenance_container.sh"
-	declare -gr CONTAINER_SCRIPT_TITLE="Container Maintenance Script"
-	############################################################################
-	SCRIPT_PATHx="$(readlink -fn -- "$0"; echo x)"
-	SCRIPT_PATH="${SCRIPT_DIRx%x}"
-	declare -gr SCRIPT_DIR=(dirname "$SCRIPT_PATH")
-	unset SCRIPT_PATHx
-	unset SCRIPT_PATH
 	###
 }
 
 # fun: prep
-# txt: sum two numbers and output the result
+# txt: prep initializes default settings, imports the PBFL index and makes
+#      other preparations needed by the script
 # use: prep
-# env: $ARGS is used to call parse_args
 # api: prerun
 prep() {
 	declare -g VERBOSITY=5
 	import "PBFL/default.inc.bash"
 	create_dir "$LOG_DIR"
-	import $LIB
 	header
-	#goto_base_dir
 	read_ini ${SCRIPT_DIR}${INI_FILE}
 	get_args
 }

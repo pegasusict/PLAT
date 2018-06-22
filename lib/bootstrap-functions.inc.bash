@@ -81,7 +81,7 @@ build_maintenance_script() { ### TODO(pegasusict): convert to template
 	header_line "License: $LICENSE" "Please keep my name in the credits" >> "$_SCRIPT"
 	make_line >> "$_SCRIPT"
 	###########################################################################
-	sed -e 1d maintenance/maintenance-subheader1.sh >> "$_SCRIPT"
+	sed -e 1d "${TPL_DIR}${MAINT_PRFX}"subheader1.sh >> "$_SCRIPT"
 	add_to_script "$_SCRIPT" line "PROGRAM_SUITE=\"$PROGRAM_SUITE\""
 	add_to_script "$_SCRIPT" line "SCRIPT_TITLE=\"$_SCRIPT_TITLE\""
 	add_to_script "$_SCRIPT" line "VERSION_MAJOR=$VERSION_MAJOR"
@@ -104,7 +104,7 @@ build_maintenance_script() { ### TODO(pegasusict): convert to template
 	add_to_script "$_SCRIPT" line "GARBAGE_AGE=$GARBAGE_AGE"
 	add_to_script "$_SCRIPT" line "LOG_AGE=$LOG_AGE"
 	add_to_script "$_SCRIPT" line "LOG_DIR=\"$LOG_DIR\""
-	sed -e 1d maintenance/maintenance-subheader2.sh >> "$_SCRIPT"
+	sed -e 1d "${TPL_DIR}${MAINT_PRFX}"subheader2.sh >> "$_SCRIPT"
 	### adding header to be printed by maintenance file #######################
 	add_to_script "$_SCRIPT" line "verb_line <<EOH"
 	make_line >> "$_SCRIPT"
@@ -123,15 +123,15 @@ build_maintenance_script() { ### TODO(pegasusict): convert to template
 	if [[ $SYSTEMROLE_CONTAINER == false ]] ; then
 		if [[ $_SCRIPT == $MAINTENANCE_SCRIPT ]] ; then
 			if [[ $SYSTEMROLE_LXCHOST == true ]] ; then
-				sed -e 1d maintenance/body-lxchost0.sh >> "$_SCRIPT"
+				sed -e 1d "${TPL_DIR}${MAINT_PRFX}"body-lxchost0.sh >> "$_SCRIPT"
 				if [[ $SYSTEMROLE_MAINSERVER == true ]] ; then
-					sed -e 1d maintenance/backup2tape.sh >> "$_SCRIPT"
+					sed -e 1d "${TPL_DIR}${MAINT_PRFX}"backup2tape.sh >> "$_SCRIPT"
 				fi
-				sed -e 1d maintenance/body-lxchost1.sh >> "$_SCRIPT"
+				sed -e 1d "${TPL_DIR}${MAINT_PRFX}"body-lxchost1.sh >> "$_SCRIPT"
 			fi
 		fi
 	fi
-	sed -e 1d maintenance/body-basic.sh >> "$_SCRIPT"
+	sed -e 1d "${TPL_DIR}${MAINT_PRFX}"body-basic.sh >> "$_SCRIPT"
 }
 
 # fun: check_container

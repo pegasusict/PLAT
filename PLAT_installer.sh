@@ -1,68 +1,69 @@
 #!/bin/bash
-cat <<EOT
-#############################################################################
-# Pegasus' Linux Administration Tools #					PLAT install script #
-# https://github.com/pegasusict/PLAT/ #	 https://pegasusict.github.io/PLAT/ #
-# (C)2017-2018 Mattijs Snepvangers	  #				  pegasus.ict@gmail.com #
-# License: MIT						  #	 Please keep my name in the credits #
-#############################################################################
-EOT
+############################################################################
+# Pegasus' Linux Administration Tools #				   PLAT install script #
+# pegasus.ict@gmail.com				  #	https://pegasusict.github.io/PLAT/ #
+# (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
+# License: MIT						  #	Please keep my name in the credits #
+############################################################################
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
-# Making sure this script is run by bash to prevent mishaps
-if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
-# Make sure only root can run this script
-if [[ $EUID -ne 0 ]]; then echo "This script must be run as root" ; exit 1 ; fi
+source lib/subheader.sh
 echo "$START_TIME ## Starting PLAT Install Process #######################"
-### SETTINGS ###
-defaults(){
-	declare -gr INSTALL_BIN="/usr/bin/plat/"
-	declare -gr INSTALL_LIB="/usr/lib/plat/"
-	declare -gr INSTALL_INI="/etc/plat/"
-	declare -gr BASE_URL="https://github.com/pegasusict/"
-	declare -gr EXT=".git"
-}
-### PROGRAM INFO ###
+
+# mod: PLAT::Installer
+# txt: This script installs the entire PLAT suite on your system.
+
+# fun: init
+# txt: declares global constants with program/suite information
+# use: init
+# api: prerun
 init() {
-	################### PROGRAM INFO ##############################################
-	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
-	declare -gr SCRIPT="${0##*/}" ###CHECK###
 	declare -gr SCRIPT_TITLE="PLAT Install Script"
-	declare -gr MAINTAINER="Mattijs Snepvangers"
-	declare -gr MAINTAINER_EMAIL="pegasus.ict@gmail.com"
-	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
 	declare -gr VERSION_MAJOR=0
 	declare -gr VERSION_MINOR=0
-	declare -gr VERSION_PATCH=1
+	declare -gr VERSION_PATCH=5
 	declare -gr VERSION_STATE="PRE-ALPHA"
-	declare -gr VERSION_BUILD=20180522
-	declare -gr LICENSE="MIT"
-	###############################################################################
+	declare -gr VERSION_BUILD=20180622
+	###
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
 	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
 }
 
-gen_ini(){
+# fun: prep
+# txt: prep initializes default settings, imports the PBFL index and makes
+#      other preparations needed by the script
+# use: prep
+# api: prerun
+prep() {
+	declare -g VERBOSITY=5
+	import "PBFL/default.inc.bash"
+	create_dir "$LOG_DIR"
+	header
+	read_ini ${SCRIPT_DIR}${INI_FILE}
+	get_args
+}
 
-}
-import() {
-	local _FILE="$1"
-	if [[ -f "$_FILE" ]]
-	then
-		source "$_FILE"
-	else
-		crit_line "File $_FILE not found!"
-		exit 1
-	fi
-}
+# fun: main
+# txt: main bootstrap thread
+# use: main
+# api: PLAT::install
 main(){
-	import "BASH_FUNC_LIB/default.inc.bash"
-	#move to tmp dir
+	import "PBFL/default.inc.bash"
 	create_tmp "plat_inst"
 	cd "$TMP_DIR"
 	#download all repositories
 	for _REP in ("PLAT" "PBFL" "PLAT_WordPressTools" "PLAT_container_toolset")
-		git clone "$_BASE_URL$_REP$_EXT"
+	do
+		git clone "${_BASE_URL}${_REP}${_EXT}"
+		mv templates/* "${SYS_LIB_DIR}templates/"
+		mv *.inc.bash "$SYS_LIB_DIR"
+		mv *.bash "$SYS_BIN_DIR"
+		mv *.ini "$SYS_CFG_DIR"
 	done
-	
+	###TODO(pegasusict): Continue developing this script
 }
+
+##### BOILERPLATE #####
+init
+prep
+main

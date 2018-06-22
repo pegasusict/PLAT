@@ -1,34 +1,31 @@
 #!/bin/bash
-
-# DEBUG SWITCHES
-set -o xtrace	# Trace the execution of the script
-set -o errexit	# Exit on most errors (see the manual)
-set -o errtrace	# Make sure any error trap is inherited
-#set -o nounset	# Disallow expansion of unset variables
-set -o pipefail	# Use last non-zero exit code in a pipeline
-
 ############################################################################
 # Pegasus' Linux Administration Tools #					  <<script title>> #
 # (C)2017-<<yr>> Mattijs Snepvangers  #				 pegasus.ict@gmail.com #
 # License: MIT						  # Please keep my name in the credits #
 ############################################################################
+# tpl version: 0.1.0-ALPHA
+# tpl build: 20180622
+START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 
 # !!! first replace (ctrl-h)
 # <<yr>> with the current year
 # "<<date>>" with todays date
 # <<script title>> with the title of the script and adjust the number of tabs if needed for proper alignment
 
-# to prevent mishaps when using cd with relative paths
-unset CDPATH
+source lib/subheader.sh
 
-START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
-# Making sure this script is run by bash to prevent mishaps
-if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
-# Make sure only root can run this script
-if [[ $EUID -ne 0 ]]; then echo "This script must be run as root" ; exit 1 ; fi
-echo "$START_TIME ## Starting PostInstall Process #######################"
-### FUNCTIONS ###
+# mod: bootstrap
+# txt: This script is meant to run as bootstrap on a freshly installed system
+#      to add tweaks, software sources, install extra packages and external
+#      software which isn't available via PPA and generates a suitable
+#      maintenance script which will be set in cron or anacron
 
+# fun: init
+# txt: declares global constants with program/suite information
+# env: $0 is used to determine basepath and scriptname
+# use: init
+# api: prerun
 init() {
 	################### PROGRAM INFO ##########################################
 	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
@@ -50,37 +47,30 @@ init() {
 	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
 }
 
+
+# fun: prep
+# txt: prep initializes default settings, imports the PBFL index and makes
+#      other preparations needed by the script
+# use: prep
+# api: prerun
 prep() {
 	import "PBFL/default.inc.bash"
 	create_dir "$LOG_DIR"
 	import "$LIB"
 	header
-	goto_base_dir
-	parse_ini $INI_FILE
-	get_args $@
+	parse_ini
+	get_args
 }
 
-import() {
-	local _FILE="$1"
-	if [[ -f "$_FILE" ]]
-	then
-		source "$_FILE"
-	else
-		crit_line "File $_FILE not found!"
-		exit 1
-	fi
-}
-
+# fun: main
+# txt: main thread
+# use: main
+# api: <<script title>>
 main() {
 
-
-
-
-
 }
 
-###############################################################################
+##### BOILERPLATE #####
 init
-prep $@
-
+prep
 main

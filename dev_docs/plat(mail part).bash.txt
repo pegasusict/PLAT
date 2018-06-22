@@ -24,7 +24,7 @@ usage() {
 		   -g or --garbageage defines the age (in days) of garbage (trashbins & temp files) being cleaned, default=7
 		   -l or --logage defines the age (in days) of logs to be purged, default=30
 		   -t or --tmpage define how long temp files should be untouched before they are deleted, default=2
-		   -S or --emailsender defines the gmail account used for sending the logs 
+		   -S or --emailsender defines the gmail account used for sending the logs
 		   -P or --emailpass defines the password for that account
 		   -R or --emailrecipient defines the recipient(s) of those emails
 		   -h or --help prints this message
@@ -32,7 +32,7 @@ usage() {
 		  The options can be used in any order
 EOT
 	exit 3
-}  
+}
 
 ################################################################################
 info_line "installing google api client"

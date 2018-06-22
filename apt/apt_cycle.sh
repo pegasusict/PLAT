@@ -1,9 +1,11 @@
 #!/bin/bash
 ############################################################################
-# Pegasus' Linux Administration Tools #		    apt-get maintenance script #
-# (C)2017-2018 Mattijs Snepvangers    #		     pegasus.ict@gmail.com #
-# License: MIT			      # Please keep my name in the credits #
+# Pegasus' Linux Administration Tools #			apt-get maintenance script #
+# (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
+# License: MIT						  # Please keep my name in the credits #
 ############################################################################
+# Ver 0.0.5-BETA
+# Build	20180621
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 # Making sure this script is run by bash to prevent mishaps
 if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
