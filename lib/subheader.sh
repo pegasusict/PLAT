@@ -13,7 +13,10 @@ set -o errexit	# Exit on most errors (see the manual)
 set -o errtrace	# Make sure any error trap is inherited
 set -o pipefail	# Use last non-zero exit code in a pipeline
 #set -o nounset	# Disallow expansion of unset variables
-
+if [ -z "$BASH_VERSION" ] || [ "$bashVersion" -lt 4 ]; then
+  echo "You need bash v4+ to run this script. Aborting..."
+  exit 1
+fi
 # Making sure this script is run by bash to prevent mishaps
 if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 # Make sure only root can run this script
