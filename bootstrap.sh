@@ -21,13 +21,11 @@ echo "$START_TIME ## Starting Bootstrap Process #######################"
 init() {
 	##### PROGRAM INFO #####
 	declare -gr SCRIPT_TITLE="Bootstrap Script"
-	declare -gr MAINTAINER="Mattijs Snepvangers"
-	declare -gr MAINTAINER_EMAIL="pegasus.ict@gmail.com"
 	declare -gr VERSION_MAJOR=1
 	declare -gr VERSION_MINOR=4
-	declare -gr VERSION_PATCH=39
+	declare -gr VERSION_PATCH=40
 	declare -gr VERSION_STATE="ALPHA"
-	declare -gr VERSION_BUILD=20180622
+	declare -gr VERSION_BUILD=20180626
 	###
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"

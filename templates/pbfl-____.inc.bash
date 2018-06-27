@@ -1,6 +1,6 @@
 #!/bin/bash
 ############################################################################
-# Pegasus' Linux Administration Tools #					<<script title>> #
+# Pegasus' Linux Administration Tools #					LXC command module #
 # (C)2017-<<year>> Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
 # License: MIT						  # Please keep my name in the credits #
 ############################################################################
@@ -14,7 +14,7 @@
 
 #######################################################
 # PROGRAM_SUITE="Pegasus' Linux Administration Tools" #
-# SCRIPT_TITLE="Sscript title>>"					  #
+# SCRIPT_TITLE="LXC command module"					  #
 # MAINTAINER="Mattijs Snepvangers"					  #
 # MAINTAINER_EMAIL="pegasus.ict@gmail.com"			  #
 # VERSION_MAJOR=0									  #
