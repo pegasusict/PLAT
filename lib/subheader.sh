@@ -36,9 +36,9 @@ declare -gr SCRIPT_FULL="${0##*/}"
 declare -gr SCRIPT_EXT="${SCRIPT_FULL##*.}"
 declare -gr SCRIPT="${SCRIPT_FULL%.*}"
 SCRIPT_PATHx="$(readlink -fn -- "$0")"
-SCRIPT_PATH="${SCRIPT_DIRx%x}"
+#SCRIPT_PATH="${SCRIPT_DIRx%x}"
 declare -gr SCRIPT_DIR=(dirname "$SCRIPT_PATH")
-unset SCRIPT_PATHx
+#unset SCRIPT_PATHx
 unset SCRIPT_PATH
 ###
 declare -gr MAINTENANCE_SCRIPT="maintenance.sh"
