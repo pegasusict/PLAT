@@ -23,7 +23,7 @@ init() {
 	declare -gr SCRIPT_TITLE="Bootstrap Script"
 	declare -gr VERSION_MAJOR=1
 	declare -gr VERSION_MINOR=4
-	declare -gr VERSION_PATCH=40
+	declare -gr VERSION_PATCH=43
 	declare -gr VERSION_STATE="ALPHA"
 	declare -gr VERSION_BUILD=20180626
 	###
@@ -41,6 +41,7 @@ init() {
 prep() {
 	declare -g VERBOSITY=5
 	import "PBFL/default.inc.bash"
+	import "lib/$LIB_FILE"
 	create_dir "$LOG_DIR"
 	header
 	read_ini ${SCRIPT_DIR}${INI_FILE}
