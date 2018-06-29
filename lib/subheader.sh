@@ -4,8 +4,8 @@
 # (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
 # License: MIT						  # Please keep my name in the credits #
 ############################################################################
-# Version: 0.1.2-ALPHA
-# Build: 20180622
+# Version: 0.1.5-ALPHA
+# Build: 20180629
 
 # mod: PLAT::subheader
 # txt: subheader to all major scripts in the suite
@@ -13,6 +13,7 @@
 # DEBUG OPTIONS
 if [ "$DEBUG" = true ]
 then
+	declare -gr DBG="echo -e PLAT debug:"
 	set -o xtrace	# Trace the execution of the script
 	set -o errexit	# Exit on most errors (see the manual)
 	set -o errtrace	# Make sure any error trap is inherited
@@ -21,14 +22,26 @@ then
 fi
 
 # Making sure this script is run by bash to prevent mishaps
-if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
+if [ "$(ps -p "$$" -o comm=)" != "bash" ]
+then
+	bash "$0" "$@"
+	exit "$?"
+fi
 
 # Making sure this script is run by bash 4+
 if [ -z "$BASH_VERSION" ] || [ "${BASH_VERSION:0:1}" -lt 4 ]
-then echo "You need bash v4+ to run this script. Aborting..." ; exit 1 ; fi
+then
+	echo "You need bash v4+ to run this script. Aborting..."
+	exit 1
+fi
 
 # Making sure only root/sudo can run this script
-if [[ $EUID -ne 0 ]]; then echo "This script must be run as root / with sudo" ; exit 1 ; fi
+if [[ $EUID -ne 0 ]]
+then
+	echo "This script must be run as root / with sudo"
+	sudo bash "$0" "$@"
+	exit "$?"
+fi
 
 # to prevent mishaps when using cd with relative paths
 unset CDPATH
@@ -41,8 +54,10 @@ declare -g ARGS=$@
 
 # fun: preinit
 # txt: declares global constants with script/suite information
+#      This may look stupid, but this was done to collapse the code in the
+#      editor for readabilities' sake.
 # use: preinit
-# api: prerun
+# api: internal
 preinit() {
 	##### SUITE INFO #####
 	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
