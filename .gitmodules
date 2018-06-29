@@ -7,9 +7,6 @@
 [submodule "PLAT_internet_watchdog"]
 	path = PLAT_internet_watchdog
 	url = https://github.com/pegasusict/PLAT_internet_watchdog
-[submodule "PLAT_Manager"]
-	path = PLAT_Manager
-	url = https://github.com/pegasusict/PLAT_Manager.git
 [submodule "PBFL"]
 	path = PBFL
 	url = https://github.com/pegasusict/PBFL.git
