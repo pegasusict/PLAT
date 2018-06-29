@@ -1,15 +1,15 @@
 [submodule "PLAT_WordPressTools"]
 	path = PLAT_WordPressTools
 	url = https://github.com/pegasusict/PLAT_WordPressTools.git
-[submodule "PLAT_container_toolset"]
-	path = PLAT_Container_ToolSet
-	url = https://github.com/pegasusict/PLAT_container_toolset.git
-[submodule "PLAT_internet_watchdog"]
-	path = PLAT_Internet_WatchDog
-	url = https://github.com/pegasusict/PLAT_internet_watchdog
 [submodule "PBFL"]
 	path = PBFL
 	url = https://github.com/pegasusict/PBFL.git
-[submodule "plat_aptcacher"]
+[submodule "PLAT_Container_ToolSet"]
+	path = PLAT_Container_ToolSet
+	url = https://github.com/pegasusict/PLAT_Container_ToolSet
+[submodule "PLAT_AptCacher"]
 	path = PLAT_AptCacher
-	url = https://github.com/pegasusict/plat_aptcacher
+	url = https://github.com/pegasusict/PLAT_AptCacher
+[submodule "PLAT_Internet_WatchDog"]
+	path = PLAT_Internet_WatchDog
+	url = https://github.com/pegasusict/PLAT_Internet_WatchDog
