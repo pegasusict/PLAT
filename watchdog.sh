@@ -5,16 +5,21 @@
 # License: MIT						  # Please keep my name in the credits #
 ############################################################################
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
-declare -g VERBOSITY=3
-declare -g DO_INSTALL=false
-declare -g LOG_FILE_CREATED=false
 # Making sure this script is run by bash to prevent mishaps
 if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
 # Make sure only root can run this script
 if [[ $EUID -ne 0 ]]; then echo "This script must be run as root" ; exit 1 ; fi
+echo "$START_TIME ########### Starting Watchdog Process ######################################"
+
+# Setting default values
+declare -g VERBOSITY=3
+declare -g DO_INSTALL=false
+declare -g LOG_FILE_CREATED=false
+# Setting constants
 declare -gr LIB_INDEX="default.inc.bash"
 declare -gr LOCAL_LIB="../PBFL/"
 declare -gr SYS_LIB_DIR="/var/lib/plat/"
+
 if [[ -f "$LOCAL_LIB$LIB_INDEX" ]]
 then
 	source "$LOCAL_LIB$LIB_INDEX"
@@ -26,10 +31,8 @@ else
 	exit 1
 fi
 
-echo "$START_TIME # START:    Starting Watchdog Process ######################################"
-### DECLARING FUNCTIONS #######################################################
 
-### INIT ###
+
 init() {
 	dbg_line "INIT start"
 	################### PROGRAM INFO ##############################################
