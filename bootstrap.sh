@@ -5,6 +5,7 @@
 # License: MIT						  # Please keep my name in the credits #
 ############################################################################
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
+DEBUG=true
 source lib/subheader.sh
 echo "$START_TIME ## Starting Bootstrap Process #######################"
 

@@ -1,7 +1,7 @@
 [editor]
 line_wrapping=true
-line_break_column=79
-auto_continue_multiline=false
+line_break_column=80
+auto_continue_multiline=true
 
 [file_prefs]
 final_new_line=true
@@ -19,50 +19,28 @@ indent_mode=3
 
 [project]
 name=PLAT
-base_path=/home/pegasus/[ GitHub ]/PLAT
+base_path=/home/pegasus/Desktop/[ SPOOR 11 ]/[[[ Projects ]]]/PLAT
 description=
-file_patterns=*.ini;*.md;*.bash;*.sh;
+file_patterns=*.sh;*.txt;*.cfg;*.rc;*.md;
 
 [long line marker]
 long_line_behaviour=1
-long_line_column=79
+long_line_column=80
 
 [files]
-current_page=8
-FILE_NAME_0=1133;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPLAT_installer.sh;0;4
-FILE_NAME_1=917;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Fbootstrap.sh;0;4
-FILE_NAME_2=2634;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPLAT_container_toolset%2Fvm_lab_builder.sh;0;4
-FILE_NAME_3=800;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Flib%2Fsubheader.sh;0;4
-FILE_NAME_4=772;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fdefault.inc.bash;0;4
-FILE_NAME_5=1065;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Flib%2Fbootstrap-functions.inc.bash;0;4
-FILE_NAME_6=975;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Flib%2Fplat_manager-functions.inc.bash;0;4
-FILE_NAME_7=637;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-lxc.inc.bash;0;4
-FILE_NAME_8=7632;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-ini.inc.bash;0;4
-FILE_NAME_9=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-apt.inc.bash;0;4
-FILE_NAME_10=909;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-install.inc.bash;0;4
-FILE_NAME_11=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-log.inc.bash;0;4
-FILE_NAME_12=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-mutex.inc.bash;0;4
-FILE_NAME_13=1174;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-net.inc.bash;0;4
-FILE_NAME_14=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-sed.inc.bash;0;4
-FILE_NAME_15=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-term.inc.bash;0;4
-FILE_NAME_16=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-tmp.inc.bash;0;4
-FILE_NAME_17=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-tmpl.inc.bash;0;4
-FILE_NAME_18=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-user.inc.bash;0;4
-FILE_NAME_19=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-vars.inc.bash;0;4
-FILE_NAME_20=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Fplat_aptcacher%2Fclientconfig.bash;0;4
-FILE_NAME_21=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Fplat_aptcacher%2Fserverconfig.bash;0;4
-FILE_NAME_22=1785;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPLAT_container_toolset%2Fcontainer_toolset.sh;0;4
-FILE_NAME_23=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPLAT_container_toolset%2Fcontainer_toolset-functions.inc.bash;0;4
-FILE_NAME_24=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPLAT_internet_watchdog%2Fwatchdog.sh;0;4
-FILE_NAME_25=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPLAT_Manager%2Fplat_manager.sh;0;4
-FILE_NAME_26=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPLAT_WordPressTools%2Fwp-functions.inc.bash;0;4
-FILE_NAME_27=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPLAT_WordPressTools%2Fwp_installer.sh;0;4
-FILE_NAME_28=129;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPLAT_WordPressTools%2Fwp_tools.sh;0;4
-FILE_NAME_29=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-datetime.inc.bash;0;4
-FILE_NAME_30=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-dialog.inc.bash;0;4
-FILE_NAME_31=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-exit.inc.bash;0;4
-FILE_NAME_32=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-file.inc.bash;0;4
-FILE_NAME_33=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-header.inc.bash;0;4
+current_page=1
+FILE_NAME_0=413;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2Fbootstrap.sh;0;4
+FILE_NAME_1=3102;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPBFL%2Fdefault.inc.bash;0;4
+FILE_NAME_2=2979;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2Flib%2Fsubheader.sh;0;4
+FILE_NAME_3=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPBFL%2Fpbfl-lxc.inc.bash;0;4
+FILE_NAME_4=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPLAT_Container_ToolSet%2Fcontainer_builder.sh;0;4
+FILE_NAME_5=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPLAT_Container_ToolSet%2Fcontainer_toolset-functions.inc.bash;0;4
+FILE_NAME_6=0;Conf;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPLAT_Container_ToolSet%2Fcontainer_toolset.ini;0;4
+FILE_NAME_7=2934;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPLAT_Container_ToolSet%2Fcontainer_toolset.sh;0;4
+FILE_NAME_8=3359;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPLAT_Container_ToolSet%2Fvm_lab_builder.sh;0;4
+FILE_NAME_9=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPLAT_Container_ToolSet%2FLXC%20stuff%2Flxc-download.sh;0;4
+FILE_NAME_10=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPLAT_Container_ToolSet%2FLXC%20stuff%2Flxc-local.sh;0;4
+FILE_NAME_11=315;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPLAT_Container_ToolSet%2FLXC%20stuff%2Flxc-ubuntu.sh;0;4
 
 [VTE]
 last_dir=/home/pegasus/[ GitHub ]/PLAT/PBFL
