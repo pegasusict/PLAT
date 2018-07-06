@@ -16,6 +16,3 @@
 [submodule "PLAT_gitbook"]
 	path = PLAT_gitbook
 	url = https://github.com/pegasusict/PLAT_gitbook
-[submodule "pegasusict.github.io"]
-	path = pegasusict.github.io
-	url = https://github.com/pegasusict/pegasusict.github.io
