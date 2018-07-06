@@ -1,6 +1,6 @@
 #!/bin/bash
 ############################################################################
-# Pegasus' Linux Administration Tools #					  bootstrap script #
+# Pegasus' Linux Administration Tools #							 Bootstrap #
 # (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
 # License: MIT						  # Please keep my name in the credits #
 ############################################################################
@@ -21,7 +21,7 @@ echo "$START_TIME ## Starting Bootstrap Process #######################"
 # api: prerun
 init() {
 	##### PROGRAM INFO #####
-	declare -gr SCRIPT_TITLE="Bootstrap Script"
+	declare -gr SCRIPT_TITLE="Bootstrap"
 	declare -gr VERSION_MAJOR=1
 	declare -gr VERSION_MINOR=4
 	declare -gr VERSION_PATCH=43

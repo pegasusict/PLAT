@@ -5,56 +5,31 @@
 # License: MIT						  # Please keep my name in the credits #
 ############################################################################
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
-# Making sure this script is run by bash to prevent mishaps
-if [ "$(ps -p "$$" -o comm=)" != "bash" ]; then bash "$0" "$@" ; exit "$?" ; fi
-# Make sure only root can run this script
-if [[ $EUID -ne 0 ]]; then echo "This script must be run as root" ; exit 1 ; fi
-echo "$START_TIME ########### Starting Watchdog Process ######################################"
-
+DEBUG=true
 # Setting default values
 declare -g VERBOSITY=3
 declare -g DO_INSTALL=false
 declare -g LOG_FILE_CREATED=false
-# Setting constants
-declare -gr LIB_INDEX="default.inc.bash"
-declare -gr LOCAL_LIB="../PBFL/"
-declare -gr SYS_LIB_DIR="/var/lib/plat/"
-
-if [[ -f "$LOCAL_LIB$LIB_INDEX" ]]
-then
-	source "$LOCAL_LIB$LIB_INDEX"
-elif [[ -f "$SYS_LIB_DIR$LIB_INDEX" ]]
-then
-	source "$SYS_LIB_DIR$LIB_INDEX"
-else
-	crit_line "File $LIB_INDEX not found!"
-	exit 1
-fi
-
-
-
+# loading Suite subheader
+source ../lib/subheader.sh
+info_line "### Started Watchdog Process at $START_TIME ###"
 init() {
 	dbg_line "INIT start"
-	################### PROGRAM INFO ##############################################
-	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
 	declare -gr SCRIPT="${0##*/}"
 	declare -gr SCRIPT_DIR="$(pwd -P)"
 	declare -gr SCRIPT_TITLE="Internet Watchdog"
-	declare -gr MAINTAINER="Mattijs Snepvangers"
-	declare -gr MAINTAINER_EMAIL="pegasus.ict@gmail.com"
-	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
 	declare -gr VERSION_MAJOR=1
 	declare -gr VERSION_MINOR=0
 	declare -gr VERSION_PATCH=0
 	declare -gr VERSION_STATE="RC-5"
 	declare -gr VERSION_BUILD=20180507
 	declare -gr LICENSE="MIT"
-	###############################################################################
+	############################################################################
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
 	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
+	###
 	declare -gr DEFAULT_TEST_SERVER="www.google.com"
-
 	###
 	create_constants
 	create_logfile
