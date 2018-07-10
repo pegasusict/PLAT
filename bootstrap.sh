@@ -40,10 +40,10 @@ init() {
 # use: prep
 # api: prerun
 prep() {
-	declare -g VERBOSITY=5
+	declare -g VERBOSITY=4
 	import "$LIB" "$LOCAL_LIB_DIR" true
-	import "lib/$FUNC_FILE"
-	create_dir "$LOG_DIR"
+	import "$FUNC_FILE" "lib/" true
+	create_dir "$LOG_DIR" ### CHECK this should be in log output func
 	header
 	read_ini ${SCRIPT_DIR}${INI_FILE}
 	get_args
