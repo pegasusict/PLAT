@@ -5,7 +5,7 @@
 # License: MIT						  # Please keep my name in the credits #
 ############################################################################
 # Version: 0.2.0-ALPHA
-# Build: 20180706
+# Build: 20180710
 
 # mod: PLAT::subheader
 # txt: subheader to all major scripts in the suite

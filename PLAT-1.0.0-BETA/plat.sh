@@ -17,6 +17,7 @@ declare -gr COMMAND="$0"	# Making the command that called this script portable
 declare -gr ARGS="$@"		# Making ARGS portable
 declare -gr SCRIPT_FULL="${COMMAND##*/}"
 declare -gr SCRIPT="${SCRIPT_FULL%.*}"
+
 { # Making sure this script is run by root/sudo, using bash to prevent mishaps
 	if [ "$(ps -p "$$" -o comm=)" != "bash" ]
 	then
@@ -38,9 +39,10 @@ declare -gr SCRIPT="${SCRIPT_FULL%.*}"
 		exit "$?"
 	fi
 }
-echo "$START_TIME ## Starting PostInstall Process #######################"
-{ # program info, constants & defaults
 
+echo "$START_TIME ## Starting PostInstall Process #######################"
+
+init() {
 	################### PROGRAM INFO ###########################################
 	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
 	declare -gr SCRIPT_TITLE="Post Install Script"
@@ -90,7 +92,8 @@ echo "$START_TIME ## Starting PostInstall Process #######################"
 							[CONTAINER]=false
 							)
 }
-###################### defining functions ######################################
+
+###### FUNCTIONS ###############################################################
 add_to_script() { #adds line or blob to script
 	local _TARGET="$1"
 	local _LINE_OR_BLOB="$2"
@@ -105,6 +108,15 @@ add_to_script() { #adds line or blob to script
 		err_line "unknown value: $_LINE_OR_BLOB"
 	fi
 }
+
+# fun: add_line_to_cron
+# txt: adds a line to (ana)crontab unless it's already there
+# use: add_line_to_cron LINE TARGET
+# opt: var LINE: line to be added
+# opt: var CRON: either /etc/
+# opt: KEY: code needed when using the apt-key method
+# env: LOG_FILE: In case of wget method writes directly to LOG_FILE
+# api: pbfl::apt
 add_line_to_cron() { ### Inserts line into file if it's not there yet
 	_LINE_TO_ADD="$1"
 	_TARGET="$2"
@@ -126,14 +138,26 @@ add_line_to_cron() { ### Inserts line into file if it's not there yet
 		fi
 	fi
 }
-add_ppa(){
-	METHOD=$1; URL=$2; KEY=$3
-	case $METHOD in
-		"wget"		)	wget -q -a "$LOG_FILE" $URL -O- | apt-key add - ;;
-		"apt-key"	)	apt-key adv --keyserver $URL --recv-keys $KEY 2>&1 | verb_line ;;
-		"aar"		)	add-apt-repository $URL | verb_line ;;
+
+# fun: add_ppa_key
+# txt: installs ppa certificate
+# use: add_ppa_key METHOD URL [KEY]
+# opt: METHOD: <wget|apt-key|aar>
+# opt: URL: the URL of the PPA key
+# opt: KEY: code needed when using the apt-key method
+# env: LOG_FILE: In case of wget method writes directly to LOG_FILE
+# api: pbfl::apt
+add_ppa_key() {
+	local _METHOD	;	_METHOD=$1
+	local _URL		;	_URL=$2
+	local _KEY		;	_KEY=$3
+	case $_METHOD in
+		"wget"		)	wget -q -a "$LOG_FILE" $_URL -O- | apt-key add - ;;
+		"apt-key"	)	apt-key adv --keyserver $_URL --recv-keys $_KEY 2>&1 | verb_line ;;
+		"aar"		)	add-apt-repository $_URL 2>&1 | verb_line ;;
 	esac
 }
+
 # fun: apt_inst
 # txt: updates all installed packages
 # use: apt_inst PACKAGES
@@ -143,6 +167,7 @@ apt_inst() {
 	local _PACKAGES	;	_PACKAGES="$@"
 	apt-get install --force-yes -y --no-install-recommends -qq --allow-unauthenticated ${_PACKAGES} 2>&1 | verb_line
 }
+
 build_maintenance_script() {
 	_SCRIPT=$1
 	if [[ $_SCRIPT == $MAINTENANCE_SCRIPT ]]
@@ -233,12 +258,12 @@ create_dir() {
 		mkdir "$_TARGET_DIR"
 	fi
 }
-create_logline() { ### INFO MESSAGES with timestamp
+cr_log_line() { ### INFO MESSAGES with timestamp
     _SUBJECT="$1" ; _LOG_LINE="$(get_timestamp) ## $_SUBJECT #" ; MAX_WIDTH=80
     for (( i=${#_LOG_LINE}; i<MAX_WIDTH; i++ )) ; do _LOG_LINE+="#" ; done
     info_line "$_LOG_LINE"
 }
-create_secline() { ### VERBOSE MESSAGES
+cr_sec_line() { ### VERBOSE MESSAGES
     _SUBJECT=$1 ; _SEC_LINE="# $_SUBJECT #" ; MAXWIDTH=78 ; IMAX=$MAXWIDTH-1
     for (( i=${#_SEC_LINE}; i<IMAX; i+=2 )) ; do _SEC_LINE="#$_SEC_LINE#" ; done
 	for (( i=${#_SEC_LINE}; i<MAXWIDTH; i++ )) ; do _SEC_LINE="$_SEC_LINE#" ; done
@@ -276,9 +301,15 @@ getargs() {
         esac
     done
 }
-get_timestamp(){
+
+# fun: get_timestamp
+# txt: returns something like 2018-03-23_13.37.59.123
+# use: get_timestamp
+# api: pbfl::datetime
+get_timestamp() {
 	echo $(date +"%Y-%m-%d_%H.%M.%S.%3N")
 }
+
 go_home(){
 	dbg_line  "Where are we being called from?"
 	declare -gr SCRIPT_PATH="$(readlink -fn $COMMAND)"
@@ -399,32 +430,36 @@ info_line <<EOT
 
 EOT
 ################################################################################
-if [[ $SYSTEM_ROLE[MAINSERVER == true ]] ; then create_logline "Injecting interfaces file into network config" ; cat lxchost_interfaces.txt > /etc/network/interfaces ; fi
-################################################################################
-create_logline "Installing extra PPA's"
-create_secline "Copying Ubuntu sources and some extras"; cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | dbg_line
-create_secline "Adding GetDeb PPA key";				add_ppa "wget" "http://archive.getdeb.net/getdeb-archive.key"
-create_secline "Adding VirtualBox PPA key";			add_ppa "wget" "http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc"
-create_secline "Adding Webmin PPA key";				add_ppa "wget" "http://www.webmin.com/jcameron-key.asc"
-create_secline "Adding WebUpd8 PPA key";			add_ppa "apt-key" "keyserver.ubuntu.com" "4C9D234C"
-if [[ $SYSTEM_ROLE[WS == true ]] ; then
-   create_secline "Adding FreeCad PPA";				add_ppa "aar" "ppa:freecad-maintainers/freecad-stable"
-   create_secline "Adding GIMP PPA key";			add_ppa "apt-key" "keyserver.ubuntu.com" "614C4B38"
-   create_secline "Adding Gnome3 Extras PPA";		add_ppa "apt-key" "keyserver.ubuntu.com" "3B1510FD"
-   create_secline "Adding Google Chrome PPA";		add_ppa "wget" "https://dl.google.com/linux/linux_signing_key.pub"
-   create_secline "Adding Highly Explosive PPA";	add_ppa "apt-key" "keyserver.ubuntu.com" "93330B78"
-   create_secline "Adding MKVToolnix PPA"; 			add_ppa "wget" "http://www.bunkus.org/gpg-pub-moritzbunkus.txt"
-   create_secline "Adding Opera (Beta) PPA"; 		add_ppa "wget" "http://deb.opera.com/archive.key"
-   create_secline "Adding OwnCloud Desktop PPA";	add_ppa "wget" "http://download.opensuse.org/repositories/isv:ownCloud:community/xUbuntu_16.04/Release.key"
-   create_secline "Adding Wine PPA"; 				add_ppa "apt-key" "keyserver.ubuntu.com" "883E8688397576B6C509DF495A9A06AEF9CB8DB0"
+if [[ $SYSTEM_ROLE[MAINSERVER] == true ]]
+then
+	cr_log_line "Injecting interfaces file"
+	cat lxchost_interfaces.txt > /etc/network/interfaces
 fi
-if [[ $SYSTEM_ROLE[NAS == true ]] ; then create_secline "Adding Syncthing PPA" ; add_ppa "wget" "https://syncthing.net/release-key.txt" ; fi
 ################################################################################
-create_logline "removing duplicate lines from source lists"; perl -i -ne 'print if ! $a{$_}++' "/etc/apt/sources.list /etc/apt/sources.list.d/*" 2>&1 | dbg_line
-create_logline "Updating apt cache"; apt-get update -q 2>&1 | dbg_line
-create_logline "Installing updates"; apt-get --allow-unauthenticated upgrade -qy 2>&1 | dbg_line
+cr_log_line "Installing extra PPA's"
+cr_sec_line "Copying Ubuntu sources and some extras"; cp apt/base.list /etc/apt/sources.list.d/ 2>&1 | dbg_line
+cr_sec_line "Adding GetDeb PPA key";				add_ppa "wget" "http://archive.getdeb.net/getdeb-archive.key"
+cr_sec_line "Adding VirtualBox PPA key";			add_ppa "wget" "http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc"
+cr_sec_line "Adding Webmin PPA key";				add_ppa "wget" "http://www.webmin.com/jcameron-key.asc"
+cr_sec_line "Adding WebUpd8 PPA key";			add_ppa "apt-key" "keyserver.ubuntu.com" "4C9D234C"
+if [[ $SYSTEM_ROLE[WS == true ]] ; then
+   cr_sec_line "Adding FreeCad PPA";				add_ppa "aar" "ppa:freecad-maintainers/freecad-stable"
+   cr_sec_line "Adding GIMP PPA key";			add_ppa "apt-key" "keyserver.ubuntu.com" "614C4B38"
+   cr_sec_line "Adding Gnome3 Extras PPA";		add_ppa "apt-key" "keyserver.ubuntu.com" "3B1510FD"
+   cr_sec_line "Adding Google Chrome PPA";		add_ppa "wget" "https://dl.google.com/linux/linux_signing_key.pub"
+   cr_sec_line "Adding Highly Explosive PPA";	add_ppa "apt-key" "keyserver.ubuntu.com" "93330B78"
+   cr_sec_line "Adding MKVToolnix PPA"; 			add_ppa "wget" "http://www.bunkus.org/gpg-pub-moritzbunkus.txt"
+   cr_sec_line "Adding Opera (Beta) PPA"; 		add_ppa "wget" "http://deb.opera.com/archive.key"
+   cr_sec_line "Adding OwnCloud Desktop PPA";	add_ppa "wget" "http://download.opensuse.org/repositories/isv:ownCloud:community/xUbuntu_16.04/Release.key"
+   cr_sec_line "Adding Wine PPA"; 				add_ppa "apt-key" "keyserver.ubuntu.com" "883E8688397576B6C509DF495A9A06AEF9CB8DB0"
+fi
+if [[ $SYSTEM_ROLE[NAS] == true ]] ; then cr_sec_line "Adding Syncthing PPA" ; add_ppa "wget" "https://syncthing.net/release-key.txt" ; fi
+################################################################################
+cr_log_line "removing duplicate lines from source lists"; perl -i -ne 'print if ! $a{$_}++' "/etc/apt/sources.list /etc/apt/sources.list.d/*" 2>&1 | dbg_line
+cr_log_line "Updating apt cache"; apt-get update -q 2>&1 | dbg_line
+cr_log_line "Installing updates"; apt-get --allow-unauthenticated upgrade -qy 2>&1 | dbg_line
 ######
-create_logline "Installing extra packages";  apt-inst mc trash-cli snapd git
+cr_log_line "Installing extra packages";  apt-inst mc trash-cli snapd git
 if [[ $SYSTEM_ROLE[WS == true ]] ; 		then apt-inst synaptic tilda audacious samba wine-stable playonlinux winetricks; fi
 if [[ $SYSTEM_ROLE[POSEIDON == true ]] ; then apt-inst picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted ; fi
 if [[ $SYSTEM_ROLE[WEB == true ]] ;		then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
@@ -435,31 +470,31 @@ if [[ $SYSTEM_ROLE[SERVER == true ]] ;	then apt-inst ssh-server screen; fi
 if [[ $SYSTEM_ROLE[BASIC == true ]] ;	then echo "" ; fi
 if [[ $SYSTEM_ROLE[ROUTER == true ]];	then apt-inst bridge-utils webmin ufw; fi
 ################################################################################
-create_logline "Installing extra software"
-create_secline "Installing TeamViewer"
+cr_log_line "Installing extra software"
+cr_sec_line "Installing TeamViewer"
 download "https://download.teamviewer.com/download/teamviewer_i386.deb"
 install teamviewer_i386.deb
 apt-get install -fy 2>&1 | dbg_line
 if [[ $SYSTEM_ROLE[POSEIDON == true ]]
 then
-  create_secline "Installing StarUML"
+  cr_sec_line "Installing StarUML"
   download "http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb"
   install libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb
   download "http://staruml.io/download/release/v2.8.1/StarUML-v2.8.1-64-bit.deb"
   install StarUML-v2.8.0-64-bit.deb
-  create_secline "Installing GitKraken"
+  cr_sec_line "Installing GitKraken"
   download "https://release.gitkraken.com/linux/gitkraken-amd64.deb"
   install gitkraken-amd64.deb
 fi
 rm *.deb 2>&1 | dbg_line
 ################################################################################
-create_logline "Building maintenance script"
+cr_log_line "Building maintenance script"
 build_maintenance_script "$MAINTENANCE_SCRIPT"
 if [[ $SYSTEM_ROLE[LXCHOST == true ]] ; then build_maintenance_script "$CONTAINER_SCRIPT" ; fi
 ################################################################################
-if [[ $SYSTEM_ROLE[CONTAINER == true ]] ; then create_secline "NOT adding $MAINTENANCE_SCRIPT to sheduler"
+if [[ $SYSTEM_ROLE[CONTAINER == true ]] ; then cr_sec_line "NOT adding $MAINTENANCE_SCRIPT to sheduler"
 else
-	create_secline "adding $MAINTENANCE_SCRIPT to sheduler"
+	cr_sec_line "adding $MAINTENANCE_SCRIPT to sheduler"
 	if [[ $SYSTEM_ROLE[MAINSERVER == true ]]
 		then CRON_FILE="/etc/crontab" ; LINE_TO_ADD="\n0 * * 4 0 bash $MAINTENANCE_SCRIPT" ; dbg_line "using cron"
 		else CRON_FILE="/etc/anacrontab" ; LINE_TO_ADD="\n@weekly\t10\tplat_maintenance\tbash $MAINTENANCE_SCRIPT" ; dbg_line "using anacron"
@@ -467,5 +502,5 @@ else
 	add_line_to_cron "$LINE_TO_ADD" "$CRON_FILE"
 fi
 ################################################################################
-create_logline "checking for reboot requirement"
-if [ -f /var/run/reboot-required ]; then create_logline "REBOOT REQUIRED" ; shutdown -r 23:30  2>&1 | info_line ; else info_line "No reboot required" ; fi
+cr_log_line "checking for reboot requirement"
+if [ -f /var/run/reboot-required ]; then cr_log_line "REBOOT REQUIRED" ; shutdown -r 23:30  2>&1 | info_line ; else info_line "No reboot required" ; fi
