@@ -29,34 +29,10 @@ long_line_column=79
 
 [files]
 current_page=0
-FILE_NAME_0=1295;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Flib%2Fsubheader.sh;0;4
-FILE_NAME_1=729;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-log.inc.bash;0;4
-FILE_NAME_2=584;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Fbootstrap.sh;0;4
-FILE_NAME_3=637;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Fwatchdog.sh;0;4
-FILE_NAME_4=454;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPLAT_Container_ToolSet%2Fcontainer_builder.sh;0;4
-FILE_NAME_5=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fdefault.inc.bash;0;4
-FILE_NAME_6=1773;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-apt.inc.bash;0;4
-FILE_NAME_7=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-install.inc.bash;0;4
-FILE_NAME_8=3675;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPLAT_Container_ToolSet%2Fcontainer_toolset-functions.inc.bash;0;4
-FILE_NAME_9=2966;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fpbfl-lxc.inc.bash;0;4
-FILE_NAME_10=959;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPLAT_Container_ToolSet%2Fcontainer_toolset.sh;0;4
-FILE_NAME_11=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPLAT_Container_ToolSet%2Fvm_lab_builder.sh;0;4
-FILE_NAME_12=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Fapt%2Fapt_cycle.sh;0;4
-FILE_NAME_13=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Flib%2Fbootstrap-functions.inc.bash;0;4
-FILE_NAME_14=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Flib%2Fplat_manager-functions.inc.bash;0;4
-FILE_NAME_15=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Fresearch%2Foo.bash;0;4
-FILE_NAME_16=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Fresearch%2Fwindscribe.bash;0;4
-FILE_NAME_17=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Ftemplates%2Fbasic%20script.sh;0;4
-FILE_NAME_18=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Ftemplates%2Fmaintenance-backup2tape.sh;0;4
-FILE_NAME_19=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Ftemplates%2Fmaintenance-body-basic.sh;0;4
-FILE_NAME_20=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Ftemplates%2Fmaintenance-body-lxchost0.sh;0;4
-FILE_NAME_21=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Ftemplates%2Fmaintenance-body-lxchost1.sh;0;4
-FILE_NAME_22=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Ftemplates%2Fmaintenance-subheader1.sh;0;4
-FILE_NAME_23=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Ftemplates%2Fmaintenance-subheader2.sh;0;4
-FILE_NAME_24=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPLAT_install.sh;0;4
+FILE_NAME_0=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2FPLAT-1.0.0-BETA%2Fplat.sh;0;4
 
 [VTE]
-last_dir=/home/pegasus/[ GitHub ]/PLAT/lib
+last_dir=/home/pegasus/Desktop/PLAT-1.0.0-BETA
 
 [prjorg]
 source_patterns=
@@ -64,7 +40,7 @@ header_patterns=
 ignored_dirs_patterns=.*;CVS;
 ignored_file_patterns=
 generate_tag_prefs=1
-external_dirs=
+external_dirs=/home/pegasus/Desktop/PLAT-1.0.0-BETA;/home/pegasus/Desktop/PLAT-1.0.0-BETA/apt;
 
 [build-menu]
 NF_00_LB=

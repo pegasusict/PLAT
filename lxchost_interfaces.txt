@@ -1,0 +1,20 @@
+#################################################################
+## Added by Pegasus' Linux Administration Tools       V1.0BETA ##
+## Please modify to incorporate your interfaces accordingly    ##
+#################################################################
+
+# The primary network interface
+auto br0
+iface br0 inet static
+    address 192.168.49.210
+    netmask 255.255.255.0
+    network 192.168.49.0
+    broadcast 192.168.49.255
+    gateway 192.168.49.253
+    dns-nameservers 192.168.49.254 8.8.8.8 8.8.4.4
+
+## Bridge options
+bridge-ports eno1
+
+## primary physical network interface
+iface eno1 inet manual

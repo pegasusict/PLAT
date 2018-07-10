@@ -41,8 +41,8 @@ init() {
 # api: prerun
 prep() {
 	declare -g VERBOSITY=5
-	import "PBFL/default.inc.bash"
-	import "lib/$LIB_FILE"
+	import "$LIB" "$LOCAL_LIB_DIR" true
+	import "lib/$FUNC_FILE"
 	create_dir "$LOG_DIR"
 	header
 	read_ini ${SCRIPT_DIR}${INI_FILE}
@@ -188,6 +188,7 @@ main() {
 }
 
 ##### BOILERPLATE #####
+go_home
 init
 prep
 main

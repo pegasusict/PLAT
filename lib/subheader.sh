@@ -149,10 +149,10 @@ su_check() {
 	fi
 }
 
-unset CDPATH						# prevent mishaps using cd with relative paths
-declare -gr SCRIPT_FULL="${0##*/}"	# Making Commandline "portable"
-declare -g COMMAND="$0"				# Making the command that called this script portable
-declare -g ARGS="$@"				# Making ARGS portable
+unset CDPATH				# prevent mishaps using cd with relative paths
+declare -gr COMMAND="$0"	# Making the command that called this script portable
+declare -gr SCRIPT_FULL="${COMMAND##*/}"	# Making Commandline "portable"
+declare -gr ARGS="$@"				# Making ARGS portable
 
 # fun: preinit
 # txt: declares global constants with script/suite information.
@@ -166,11 +166,11 @@ preinit() {
 	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
 	declare -gr LICENSE="MIT"
 	###
-	declare -gr SCRIPT_EXT="${SCRIPT_FULL##*.}"
 	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
-	local _SCRIPT_PATH	;	_SCRIPT_PATH="$(readlink -fn -- "$SCRIPT_FULL")"
-	declare -gr SCRIPT_DIR=(dirname "$_SCRIPT_PATH")
-	unset _SCRIPT_PATH
+	declare -gr SCRIPT_FULL="${COMMAND##*/}"
+	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
+	declare -gr SCRIPT_PATH="$(readlink -fn $COMMAND)"
+	declare -gr SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
 	###
 	declare -gr MAINTENANCE_SCRIPT="maintenance.sh"
 	declare -gr MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
@@ -182,11 +182,27 @@ preinit() {
 	declare -gr SYS_LIB_DIR="/var/lib/plat/"
 }
 
+go_home(){
+	info_line "go_home: Where are we being called from?"
+	declare -gr SCRIPT_FULL="${COMMAND##*/}"
+	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
+	declare -gr SCRIPT_PATH="$(readlink -fn $COMMAND)"
+	declare -gr SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
+	declare -g CURRENT_DIR=$(pwd)
+	if [[ $SCRIPT_DIR != $CURRENT_DIR ]]
+	then
+		info_line "go_home: We're being called outside our basedir, going home to \"$SCRIPT_DIR\"..."
+		cd "$SCRIPT_DIR"
+	else
+		info_line "go_home: We're right at home. :-) "
+	fi
+}
+
 # fun: import
 # txt: tries to import the file from given location and some standard locations
 #      of this suite. If REQUIRED is set to true, script will exit with a
 #      CRITICAL ERROR message
-# use: import $FILE $DIR
+# use: import $FILE $DIR $REQUIRED
 # opt: var FILE: filename
 # opt: var DIR: directory ( MUST end with slash! )
 # opt: bool REQUIRED ( true/false ) if omitted, REQUIRED is set to false
@@ -213,8 +229,10 @@ import() {
 	then
 		if [[ "$_REQUIRED" = true ]]
 		then
-			crit_line
-		err_line "File $_FILE not found!"
+			crit_line "Required file $_FILE not found, aborting!"
+		else
+			err_line "File $_FILE not found!"
+		fi
 	fi
 }
 
