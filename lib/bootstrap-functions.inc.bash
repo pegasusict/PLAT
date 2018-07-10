@@ -10,11 +10,11 @@
 # SCRIPT_TITLE="BootStrap Functions"				  #
 # MAINTAINER="Mattijs Snepvangers"					  #
 # MAINTAINER_EMAIL="pegasus.ict@gmail.com"			  #
-# VERSION_MAJOR=0									  #
-# VERSION_MINOR=1									  #
-# VERSION_PATCH=40									  #
-# VERSION_STATE="ALPHA"								  #
-# VERSION_BUILD=20180620							  #
+# VER_MAJOR=0									  #
+# VER_MINOR=1									  #
+# VER_PATCH=40									  #
+# VER_STATE="ALPHA"								  #
+# VER_BUILD=20180620							  #
 # LICENSE="MIT"										  #
 #######################################################
 
@@ -75,8 +75,8 @@ build_maintenance_script() { ### TODO(pegasusict): convert to template
 	### generating script header ##############################################
 	add_to_script "$_SCRIPT" line "#!/usr/bin/bash"
 	make_line >> "$_SCRIPT"
-	header_line "$PROGRAM_SUITE - $_SCRIPT_TITLE" "Ver$SHORT_VERSION" >> "$_SCRIPT"
-	header_line "$COPYRIGHT $MAINTAINER" "build $VERSION_BUILD  $MAINTAINER_EMAIL" >> "$_SCRIPT"
+	header_line "$PROGRAM_SUITE - $_SCRIPT_TITLE" "Ver$SHORT_VER" >> "$_SCRIPT"
+	header_line "$COPYRIGHT $MAINTAINER" "build $VER_BUILD  $MAINTAINER_EMAIL" >> "$_SCRIPT"
 	header_line "This maintenance script is dynamically built" "Last build: $TODAY" >> "$_SCRIPT"
 	header_line "License: $LICENSE" "Please keep my name in the credits" >> "$_SCRIPT"
 	make_line >> "$_SCRIPT"
@@ -84,11 +84,11 @@ build_maintenance_script() { ### TODO(pegasusict): convert to template
 	sed -e 1d "${TPL_DIR}${MAINT_PRFX}"subheader1.sh >> "$_SCRIPT"
 	add_to_script "$_SCRIPT" line "PROGRAM_SUITE=\"$PROGRAM_SUITE\""
 	add_to_script "$_SCRIPT" line "SCRIPT_TITLE=\"$_SCRIPT_TITLE\""
-	add_to_script "$_SCRIPT" line "VERSION_MAJOR=$VERSION_MAJOR"
-	add_to_script "$_SCRIPT" line "VERSION_MINOR=$VERSION_MINOR"
-	add_to_script "$_SCRIPT" line "VERSION_PATCH=$VERSION_PATCH"
-	add_to_script "$_SCRIPT" line "VERSION_STATE=$VERSION_STATE"
-	add_to_script "$_SCRIPT" line "VERSION_BUILD=$VERSION_BUILD"
+	add_to_script "$_SCRIPT" line "VER_MAJOR=$VER_MAJOR"
+	add_to_script "$_SCRIPT" line "VER_MINOR=$VER_MINOR"
+	add_to_script "$_SCRIPT" line "VER_PATCH=$VER_PATCH"
+	add_to_script "$_SCRIPT" line "VER_STATE=$VER_STATE"
+	add_to_script "$_SCRIPT" line "VER_BUILD=$VER_BUILD"
 	add_to_script "$_SCRIPT" line "MAINTAINER=\"$MAINTAINER\""
 	add_to_script "$_SCRIPT" line "MAINTAINER_EMAIL=\"$MAINTAINER_EMAIL\""
 	make_line >> "$_SCRIPT"
@@ -108,8 +108,8 @@ build_maintenance_script() { ### TODO(pegasusict): convert to template
 	### adding header to be printed by maintenance file #######################
 	add_to_script "$_SCRIPT" line "verb_line <<EOH"
 	make_line >> "$_SCRIPT"
-	header_line "$PROGRAM_SUITE - $_SCRIPT_TITLE" "Ver$SHORT_VERSION" >> "$_SCRIPT"
-	header_line "$COPYRIGHT $MAINTAINER" "build $VERSION_BUILD  $MAINTAINER_EMAIL" >> "$_SCRIPT"
+	header_line "$PROGRAM_SUITE - $_SCRIPT_TITLE" "Ver$SHORT_VER" >> "$_SCRIPT"
+	header_line "$COPYRIGHT $MAINTAINER" "build $VER_BUILD  $MAINTAINER_EMAIL" >> "$_SCRIPT"
 	header_line "This maintenance script is dynamically built" "Last build: $TODAY" >> "$_SCRIPT"
 	header_line "License: $LICENSE" "Please keep my name in the credits" >> "$_SCRIPT"
 	make_line >> "$_SCRIPT"

@@ -22,15 +22,15 @@ echo "$START_TIME ## Starting Bootstrap Process #######################"
 init() {
 	##### PROGRAM INFO #####
 	declare -gr SCRIPT_TITLE="Bootstrap"
-	declare -gr VERSION_MAJOR=1
-	declare -gr VERSION_MINOR=4
-	declare -gr VERSION_PATCH=43
-	declare -gr VERSION_STATE="ALPHA"
-	declare -gr VERSION_BUILD=20180626
+	declare -gr VER_MAJOR=1
+	declare -gr VER_MINOR=4
+	declare -gr VER_PATCH=43
+	declare -gr VER_STATE="ALPHA"
+	declare -gr VER_BUILD=20180626
 	###
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
-	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
-	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
+	declare -gr SHORT_VER="$VER_MAJOR.$VER_MINOR.$VER_PATCH-$VER_STATE"
+	declare -gr VER="Ver$SHORT_VER build $VER_BUILD"
 	###
 }
 
@@ -41,6 +41,15 @@ init() {
 # api: prerun
 prep() {
 	declare -g VERBOSITY=4
+	declare -Ag SYSTEM_ROLE(
+		[BASIC]=false
+		[WS]=false
+		[SERVER]=false
+		[NAS]=false
+		[WEB]=false
+		[PXE]=false
+		[X11]=false
+	)
 	import "$LIB" "$LOCAL_LIB_DIR" true
 	import "$FUNC_FILE" "lib/" true
 	create_dir "$LOG_DIR" ### CHECK this should be in log output func

@@ -1,10 +1,10 @@
 #!/bin/bash
-############################################################################
-# Pegasus' Linux Administration Tools #						PLAT Installer #
-# pegasus.ict@gmail.com				  #	https://pegasusict.github.io/PLAT/ #
-# (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
-# License: MIT						  #	Please keep my name in the credits #
-############################################################################
+################################################################################
+# Pegasus' Linux Administration Tools	#						PLAT Installer #
+# pegasus.ict@gmail.com					#	https://pegasusict.github.io/PLAT/ #
+# (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
+# License: MIT							#	Please keep my name in the credits #
+################################################################################
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 source lib/subheader.sh
 echo "$START_TIME ## Starting PLAT Install Process #######################"
@@ -18,15 +18,15 @@ echo "$START_TIME ## Starting PLAT Install Process #######################"
 # api: prerun
 init() {
 	declare -gr SCRIPT_TITLE="PLAT Installer"
-	declare -gr VERSION_MAJOR=0
-	declare -gr VERSION_MINOR=0
-	declare -gr VERSION_PATCH=9
-	declare -gr VERSION_STATE="PRE-ALPHA"
-	declare -gr VERSION_BUILD=20180709
+	declare -gr VER_MAJOR=0
+	declare -gr VER_MINOR=0
+	declare -gr VER_PATCH=9
+	declare -gr VER_STATE="PRE-ALPHA"
+	declare -gr BUILD=20180709
 	###
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
-	declare -gr SHORT_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH-$VERSION_STATE"
-	declare -gr VERSION="Ver$SHORT_VERSION build $VERSION_BUILD"
+	declare -gr SHORT_VER="$VER_MAJOR.$VER_MINOR.$VER_PATCH-$VER_STATE"
+	declare -gr VER="Ver$SHORT_VER build $BUILD"
 }
 
 # fun: prep

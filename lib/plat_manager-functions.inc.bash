@@ -5,18 +5,18 @@
 # License: MIT							#	Please keep my name in the credits #
 ################################################################################
 
-#########################################################
-# PROGRAM_SUITE="Pegasus' Linux Administration Tools"	#
-# SCRIPT_TITLE="Plat Manager Functions"					#
-# MAINTAINER="Mattijs Snepvangers"						#
-# MAINTAINER_EMAIL="pegasus.ict@gmail.com"				#
-# VERSION_MAJOR=0										#
-# VERSION_MINOR=0										#
-# VERSION_PATCH=5										#
-# VERSION_STATE="ALPHA"									#
-# VERSION_BUILD=20180620								#
-# LICENSE="MIT"											#
-#########################################################
+################################################################################
+# PROGRAM_SUITE="Pegasus' Linux Administration Tools"
+# SCRIPT_TITLE="Plat Manager Functions"
+# MAINTAINER="Mattijs Snepvangers"
+# MAINTAINER_EMAIL="pegasus.ict@gmail.com"
+# VER_MAJOR=0
+# VER_MINOR=0
+# VER_PATCH=5
+# VER_STATE="ALPHA"
+# BUILD=20180620
+# LICENSE="MIT"
+################################################################################
 
 # mod: PLAT_manager functions
 # txt: This script is contains functions made specific for the script with the
