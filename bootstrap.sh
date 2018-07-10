@@ -80,7 +80,7 @@ main() {
 	if [[ $SYSTEM_ROLE[MAINSERVER] == true ]]
 	then
 		info_line "Injecting interfaces file into network config"
-		cat lxchost_interfaces.txt > /etc/network/interfaces ### TODO(pegasusict): convert to sed insert/replace
+		cat templates/lxchost_interfaces.txt > /etc/network/interfaces ### TODO(pegasusict): convert to sed insert/replace
 	fi
 	############################################################################
 	############################################################################

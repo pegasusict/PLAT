@@ -1,49 +1,22 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6975700247d543379109da35892a2e73)](https://www.codacy.com/app/pegasus.ict/PLAT?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pegasusict/PLAT&amp;utm_campaign=Badge_Grade)
 
 # PLAT
-<<<<<<< HEAD
-Pegasus' Linux Administration Tools is a set of bash scripts that make life easier for the "lazy" admin/new user on Ubuntu.
-PLAT is a suite of scripts which help with tedious repetitive tasks which make up a large portion of Linux administration.
-Currently there's a Post Install script which, as the name suggests, is run right after installing Linux on a computer.
-=======
-Pegasus' Linux Administration Tools is a set of bash scripts that make life easier for the lazy/newbie user on Ubuntu
-PLAT is a suite of scripts which help with tedious repetitive tasks which make up a large portion of Linux administration.
-Currently there's a Post Install script which, as the name suggests, is run right after installing Linux on a computer.
-This script:	-	adds apt lines to /etc/sources.list,
-				-	adds ppa's incl keys,
-				-	does an apt update/upgrade/auto-remove/clean cycle,
-				-	installs extra packages and software,
-				-	generates maintenance script and adds this to cron(server) or anacron(workstation)
-				-	in case of a lxc host generates a container maintenance script as well
-
-More information can be found after the news updates.
->>>>>>> 2cc6af9... BASH version is now V1.0.0-BETA \o/
+Pegasus' Linux Administration Tools is a set of bash scripts that make life easier for the Admin/new user on Ubuntu Server/Desktop derivatives.
+It's main purpose is to help with bootstrapping systems and tedious repetitive tasks which make up a large portion of Linux administration.
+Currently there's a Bootstrap script which, as the name suggests, is run right after installing Linux on a computer.
+This script also generates a maintenance & backup script tailormade to the systems' particular characteristics and roles it will preform.
 
 More information can be found under the news messages.
 <<updated: 22nd of march 2018>>
 ---
 # NEWS
 
-<<<<<<< HEAD
  ## 20180313 UPDATE: The BASH version is now V1.0.0-beta
 
 ### 20180312 update:
 * Issue #2 & commit e468f7d22e550d860deda08dc2c4d0def20d797a.
 * Email functionality broken, has been removed for now, will be added again with a later release.
 * All references to the email funtionality have been commented out or moved to a temporary file.
-=======
-**20180313 UPDATE: The BASH version is now V1.0.0-BETA**
-
-> 20180312 update:
-Issue #2 & commit e468f7d22e550d860deda08dc2c4d0def20d797a
-Email functionality broken, has been removed for now, will be added again with a later release.
-All references to the email funtionality have been commented out or moved to a temporary file.
----
-> 20180305 Update:
-Most of the issues should be gone now, I've added tonnes of functionality based on and/or inspired by 
-feedback I recieved through various channels.
-Constructive criticism and suggestions are very welcome!
->>>>>>> 2cc6af9... BASH version is now V1.0.0-BETA \o/
 ---
 * 20180305 Update:
 * Most of the issues should be gone now.
@@ -67,7 +40,7 @@ Constructive criticism and suggestions are very welcome!
 			  Valid options are: basic, nas, web, x11, pxe << REQUIRED if -r=container >>
 		   -v or --verbosity defines the amount of chatter. 0=CRITICAL, 1=WARNING, 2=INFO, 3=VERBOSE,
 		   			4=DEBUG. default=2
-		   -g or --garbageage defines the age (in days) of garbage (trashbins & temp files) being 
+		   -g or --garbageage defines the age (in days) of garbage (trashbins & temp files) being
 		   			cleaned, default=7
 		   -l or --logage defines the age (in days) of logs to be purged, default=30
 		   -t or --tmpage define how long temp files should be untouched before they are deleted,
