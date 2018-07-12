@@ -1,18 +1,23 @@
 #!/bin/bash
-############################################################################
-# Pegasus' Linux Administration Tools #						PLAT subheader #
-# (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
-# License: MIT						  # Please keep my name in the credits #
-############################################################################
-# Version: 0.2.0-ALPHA
-# Build: 20180710
+################################################################################
+# Pegasus' Linux Administration Tools	#						PLAT subheader #
+# (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
+# License: MIT							#	Please keep my name in the credits #
+################################################################################
+# Version: 0.2.1-ALPHA
+# Build: 20180712
+
+unset CDPATH				# prevent mishaps using cd with relative paths
+declare -gr COMMAND="$0"	# Making the command that called this script portable
+declare -gr SCRIPT_FULL="${COMMAND##*/}"	# Making Commandline "portable"
+declare -gr ARGS="$@"				# Making ARGS portable
 
 # mod: PLAT::subheader
 # txt: subheader to all major scripts in the suite
 
 ### TEMPORARY LOGGING FUNCTIONS
 get_timestamp() {
-	 $(date +"%Y-%m-%d_%H.%M.%S.%3N")
+	echo $(date +"%Y-%m-%d_%H.%M.%S.%3N")
 }
 
 # fun: log_line IMPORTANCE MESSAGE
@@ -31,13 +36,14 @@ log_line() {
 		3	)	_LABEL="WARNING: "	;;
 		4	)	_LABEL="INFO:    "	;;
 		5	)	_LABEL="DEBUG:   "	;;
+
 		*	)	_LABEL="INFO:    "	;;
 	esac
 	_LOG_OUTPUT="$(get_timestamp) # $_LABEL $_MESSAGE"
 	### screen output
 	if (( "$_IMPORTANCE" <= "$VERBOSITY" ))
 	then
-		if (( IMPORTANCE >= 1 && IMPORTANCE <= 2 ))
+		if (( $_IMPORTANCE >= 1 && $_IMPORTANCE <= 2 ))
 		then
 			echo -e "$_MESSAGE" >&2
 		else
@@ -85,16 +91,16 @@ dbg_line() {
 	:
 }
 info_line() {
-	log_line "Info:: $1"
+	log_line 4 "Info:: $1"
 }
 warn_line() {
-	log_line "WARNING: $1"
+	log_line 3 "WARNING: $1"
 }
 err_line() {
-	log_line "ERROR: $1"
+	log_line 2 "ERROR: $1"
 }
 crit_line() {
-	log_line "CRITICAL ERROR: $1" 1>&2
+	log_line 1 "CRITICAL ERROR: $1" 1>&2
 	exit 1
 }
 
@@ -149,11 +155,6 @@ su_check() {
 	fi
 }
 
-unset CDPATH				# prevent mishaps using cd with relative paths
-declare -gr COMMAND="$0"	# Making the command that called this script portable
-declare -gr SCRIPT_FULL="${COMMAND##*/}"	# Making Commandline "portable"
-declare -gr ARGS="$@"				# Making ARGS portable
-
 # fun: preinit
 # txt: declares global constants with script/suite information.
 # use: preinit
@@ -166,8 +167,6 @@ preinit() {
 	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
 	declare -gr LICENSE="MIT"
 	###
-	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
-	declare -gr SCRIPT_FULL="${COMMAND##*/}"
 	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
 	declare -gr SCRIPT_PATH="$(readlink -fn $COMMAND)"
 	declare -gr SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
@@ -184,10 +183,6 @@ preinit() {
 
 go_home(){
 	info_line "go_home: Where are we being called from?"
-	declare -gr SCRIPT_FULL="${COMMAND##*/}"
-	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
-	declare -gr SCRIPT_PATH="$(readlink -fn $COMMAND)"
-	declare -gr SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
 	declare -g CURRENT_DIR=$(pwd)
 	if [[ $SCRIPT_DIR != $CURRENT_DIR ]]
 	then
@@ -235,6 +230,10 @@ import() {
 		fi
 	fi
 }
+
+################################################################################
+
+
 
 su_check
 dbg_check
