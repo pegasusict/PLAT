@@ -15,6 +15,39 @@ declare -gr ARGS="$@"				# Making ARGS portable
 # mod: PLAT::subheader
 # txt: subheader to all major scripts in the suite
 
+# fun: preinit
+# txt: declares global constants with script/suite information.
+# use: preinit
+# api: internal
+preinit() {
+	##### SUITE INFO #####
+	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
+	declare -gr MAINTAINER="Mattijs Snepvangers"
+	declare -gr MAINTAINER_EMAIL="pegasus.ict@gmail.com"
+	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
+	declare -gr LICENSE="MIT"
+	###
+	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
+	declare -gr SCRIPT_PATH="$(readlink -fn $COMMAND)"
+	declare -gr SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
+	###
+	declare -gr MAINTENANCE_SCRIPT="maintenance.sh"
+	declare -gr MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
+	declare -gr CONTAINER_SCRIPT="maintenance_container.sh"
+	declare -gr CONTAINER_SCRIPT_TITLE="Container Maintenance Script"
+	##################################################################
+	declare -gr LIB="default.inc.bash"
+	declare -gr LOCAL_LIB_DIR="PBFL/"
+	declare -gr BASE="plat/"
+	declare -gr SYS_BIN_DIR="/bin/$BASE"
+	declare -gr SYS_CFG_DIR="/etc/$BASE"
+	declare -gr SYS_LIB_DIR="/var/lib/$BASE"
+	declare -gr SYS_LOG_DIR="/var/log/$BASE"
+	declare -gr SYS_DOC_DIR="/usr/share/doc/$BASE"
+	##################################################################
+	declare -g SCREEN_WIDTH=80
+}
+
 ### TEMPORARY LOGGING FUNCTIONS
 get_timestamp() {
 	echo $(date +"%Y-%m-%d_%H.%M.%S.%3N")
@@ -43,7 +76,7 @@ log_line() {
 	### screen output
 	if (( "$_IMPORTANCE" <= "$VERBOSITY" ))
 	then
-		if (( $_IMPORTANCE >= 1 && $_IMPORTANCE <= 2 ))
+		if $(( _IMPORTANCE >= 1 )) && $(( _IMPORTANCE <= 2 ))
 		then
 			echo -e "$_MESSAGE" >&2
 		else
@@ -54,6 +87,15 @@ log_line() {
 	to_log "$_LOG_OUTPUT"
 }
 
+
+exeqt() {
+	local _CMD		; _CMD="$1"
+	local _RESULT	; _RESULT=$($_CMD) 2>&1
+	if [[ $? > 0 ]]
+	then
+		err_line $_RESULT
+	fi
+}
 # fun: to_log
 # txt: Checks whether the log file has been created yet and whether the log
 #      buffer exists. The log entry will be added to the logfile if exist,
@@ -91,16 +133,16 @@ dbg_line() {
 	:
 }
 info_line() {
-	log_line 4 "Info:: $1"
+	log_line 4 "$1"
 }
 warn_line() {
-	log_line 3 "WARNING: $1"
+	log_line 3 "$1"
 }
 err_line() {
-	log_line 2 "ERROR: $1"
+	log_line 2 "$1"
 }
 crit_line() {
-	log_line 1 "CRITICAL ERROR: $1" 1>&2
+	log_line 1 "$1" 1>&2
 	exit 1
 }
 
@@ -131,18 +173,19 @@ dbg_check() {
 	if [ "$DEBUG" = true ]
 	then
 		dbg_line() {
-			log_line "Debug: $1"
+			log_line 5 "$1"
 		}
 		set -o xtrace	# Trace the execution of the script
 		set -o errexit	# Exit on most errors (see the manual)
 		set -o errtrace	# Make sure any error trap is inherited
 		set -o pipefail	# Use last non-zero exit code in a pipeline
-		set -o nounset	# Disallow expansion of unset variables
+#		set -o nounset	# Disallow expansion of unset variables
 	fi
 }
 
 # fun: su_check
-# txt: Checks if the script is being run by root or sudo. If not, issues warning and reruns command using sudo
+# txt: Checks if the script is being run by root or sudo.
+#      If not, issues warning and reruns command using sudo
 # use: su_check
 # api: internal
 su_check() {
@@ -155,32 +198,11 @@ su_check() {
 	fi
 }
 
-# fun: preinit
-# txt: declares global constants with script/suite information.
-# use: preinit
+# fun: go_home
+# txt: determins where the script is called from and if this is the same
+#      location the script resides. If not, moves to that directory.
+# use: go_home
 # api: internal
-preinit() {
-	##### SUITE INFO #####
-	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
-	declare -gr MAINTAINER="Mattijs Snepvangers"
-	declare -gr MAINTAINER_EMAIL="pegasus.ict@gmail.com"
-	declare -gr COPYRIGHT="(c)2017-$(date +"%Y")"
-	declare -gr LICENSE="MIT"
-	###
-	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
-	declare -gr SCRIPT_PATH="$(readlink -fn $COMMAND)"
-	declare -gr SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
-	###
-	declare -gr MAINTENANCE_SCRIPT="maintenance.sh"
-	declare -gr MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
-	declare -gr CONTAINER_SCRIPT="maintenance_container.sh"
-	declare -gr CONTAINER_SCRIPT_TITLE="Container Maintenance Script"
-	##################################################################
-	declare -gr LIB="default.inc.bash"
-	declare -gr LOCAL_LIB_DIR="PBFL/"
-	declare -gr SYS_LIB_DIR="/var/lib/plat/"
-}
-
 go_home(){
 	info_line "go_home: Where are we being called from?"
 	declare -g CURRENT_DIR=$(pwd)
@@ -197,9 +219,9 @@ go_home(){
 # txt: tries to import the file from given location and some standard locations
 #      of this suite. If REQUIRED is set to true, script will exit with a
 #      CRITICAL ERROR message
-# use: import $FILE $DIR $REQUIRED
-# opt: var FILE: filename
-# opt: var DIR: directory ( MUST end with slash! )
+# use: import $FILE $DIR [ $REQUIRED ]
+# opt: str FILE: filename
+# opt: str DIR: directory ( MUST end with slash! )
 # opt: bool REQUIRED ( true/false ) if omitted, REQUIRED is set to false
 # api: internal
 import() {
@@ -231,9 +253,7 @@ import() {
 	fi
 }
 
-################################################################################
-
-
+##### BOILERPLATE ##############################################################
 
 su_check
 dbg_check

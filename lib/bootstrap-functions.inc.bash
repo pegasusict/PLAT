@@ -27,12 +27,12 @@
 # use: init
 # api: prerun
 get_args() {
-	getopt --test > /dev/null
-	if [[ $? -ne 4 ]]
-	then
-		err_line "I’m sorry, \"getopt --test\" failed in this environment."
-		exit 1
-	fi
+	#getopt --test > /dev/null
+	#if [[ $? -ne 4 ]]
+	#then
+		#err_line "I’m sorry, \"getopt --test\" failed in this environment."
+		#exit 1
+	#fi
 	OPTIONS="hv:r:c:g:l:t:"
 	LONG_OPTIONS="help,verbosity:,role:,containertype:garbageage:logage:tmpage:"
 	PARSED=$(getopt -o $OPTIONS --long $LONG_OPTIONS -n "$COMMAND" -- "$ARGS")
@@ -43,9 +43,9 @@ get_args() {
 	while true; do
 		case "$1" in
 			-h|--help			) usage ; shift ;;
-			-v|--verbosity		) setverbosity $2 ; shift 2 ;;
-			-r|--role			) checkrole $2; shift 2 ;;
-			-c|--containertype	) checkcontainer $2; shift 2 ;;
+			-v|--verbosity		) set_verbosity $2 ; shift 2 ;;
+			-r|--role			) check_role $2; shift 2 ;;
+			-c|--containertype	) check_container $2; shift 2 ;;
 			-g|--garbageage		) GABAGE_AGE=$2; shift 2 ;;
 			-l|--logage			) LOG_AGE=$2; shift 2 ;;
 			-t|--tmpage			) TMP_AGE=$2; shift 2 ;;
@@ -155,7 +155,7 @@ check_container() {
 
 # fun: check_role
 # txt: parses systemrole and sets additional systemroles accordingly
-# use: check_container containertype
+# use: check_container ROLE
 # api: bootstrap
 check_role() {
 	local _ROLE=$1

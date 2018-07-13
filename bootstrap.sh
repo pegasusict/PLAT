@@ -1,6 +1,7 @@
 #!/bin/bash
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
-DEBUG=true	;	VERBOSITY=5	# VERBOSITY=2
+DEBUG=true
+declare -g VERBOSITY=2
 declare -g LOG_FILE_CREATED=false
 ############################################################################
 # Pegasus' Linux Administration Tools #							 Bootstrap #
@@ -41,21 +42,27 @@ init() {
 # use: prep
 # api: prerun
 prep() {
-	declare -g VERBOSITY=4
 	declare -Ag SYSTEM_ROLE=(
 		[BASIC]=false
 		[WS]=false
+		[POSEIDON]=fasle
 		[SERVER]=false
+		[LXCHOST]=false
+		[MAINSERVER]=false
+		[CONTAINER]=false
 		[NAS]=false
 		[WEB]=false
 		[PXE]=false
 		[X11]=false
+		[HONEY]=false
+		[ROUTER]=false
+		[FIREWALL]=false
 	)
 	import "$LIB" "$LOCAL_LIB_DIR" true
 	import "$FUNC_FILE" "lib/" true
 	create_dir "$LOG_DIR" ### CHECK this should be in log output func
 	header
-	read_ini ${SCRIPT_DIR}${INI_FILE}
+	#read_ini ${SCRIPT_DIR}${INI_FILE}
 	get_args
 }
 
@@ -66,14 +73,14 @@ prep() {
 main() {
 	# check whether SYSTEM_ROLE_container has been checked and if yes,
 	#+ nas,web,ws,pxe,basic or router have been checked
-	create_dir "$TARGET_SCRIPT_DIR"
-	if [[ $SYSTEM_ROLE[CONTAINER] == true ]]
+	create_dir "$SYS_BIN_DIR"
+	if [[ ${SYSTEM_ROLE[CONTAINER]} == true ]]
 	then
 		dbg_line "SYSTEM_ROLE CONTAINER was chosen, see if there's a containerrole as well"
 		declare -g CONTAINER_ROLE_CHOSEN=false
 		for ROLE in BASIC WS SERVER NAS PXE ROUTER WEB X11
 		do
-			if [[ $SYSTEM_ROLE["$ROLE"] == true ]]
+			if [[ ${SYSTEM_ROLE["$ROLE"]} == true ]]
 			then
 				CONTAINER_ROLE_CHOSEN=true
 			fi
@@ -87,7 +94,7 @@ main() {
 		fi
 	fi
 	############################################################################
-	if [[ $SYSTEM_ROLE[MAINSERVER] == true ]]
+	if [[ ${SYSTEM_ROLE[MAINSERVER]} == true ]]
 	then
 		info_line "Injecting interfaces file into network config"
 		cat templates/lxchost_interfaces.txt > /etc/network/interfaces ### TODO(pegasusict): convert to sed insert/replace
@@ -95,10 +102,11 @@ main() {
 	############################################################################
 	############################################################################
 	info_line "Copying Ubuntu sources and some extras"
-	cp apt/base.list /etc/apt/sources.list.d/ >&2 | err_line
+	exeqt "cp apt/base.list /etc/apt/sources.list.d/"
+
 	############################################################################
 	info_line "Installing extra PPA's"
-	for ROLE in $SYSTEM_ROLE
+	for ROLE in ${SYSTEM_ROLE[@]}
 	do
 		if [[ "$ROLE"==true ]]
 		then
@@ -121,14 +129,14 @@ main() {
 	############################################################################
 	info_line "Installing extra packages"
 	### TODO(pegasusict): Rewrite to incorporate INI
-	if [[ $SYSTEM_ROLE_POSEIDON == true ]]	;	then apt-inst audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full gparted picard ; fi
-	if [[ $SYSTEM_ROLE_WEB == true ]]		;	then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
-	if [[ $SYSTEM_ROLE_NAS == true ]]		;	then apt-inst samba nfsd proftpd ; fi
-	if [[ $SYSTEM_ROLE_PXE == true ]]		;	then apt-inst atftpd ; fi
-	if [[ $SYSTEM_ROLE_LXCHOST == true ]]	;	then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
-	if [[ $SYSTEM_ROLE_SERVER == true ]]	;	then apt-inst ssh-server screen webmin; fi
-	if [[ $SYSTEM_ROLE_BASIC == true ]]		;	then echo "" ; fi
-	if [[ $SYSTEM_ROLE_ROUTER == true ]]	;	then apt-inst bridge-utils ufw; fi
+	if [[ ${SYSTEM_ROLE[POSEIDON]} == true ]]	;	then apt-inst audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full gparted picard ; fi
+	if [[ ${SYSTEM_ROLE[WEB]} == true ]]		;	then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
+	if [[ ${SYSTEM_ROLE[NAS]} == true ]]		;	then apt-inst samba nfsd proftpd ; fi
+	if [[ ${SYSTEM_ROLE[PXE]} == true ]]		;	then apt-inst atftpd ; fi
+	if [[ ${SYSTEM_ROLE[LXC_HOST]} == true ]]	;	then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
+	if [[ ${SYSTEM_ROLE[SERVER]} == true ]]		;	then apt-inst ssh-server screen webmin; fi
+	if [[ ${SYSTEM_ROLE[BASIC]} == true ]]		;	then echo "" ; fi
+	if [[ ${SYSTEM_ROLE[ROUTER]} == true ]]		;	then apt-inst bridge-utils ufw; fi
 	############################################################################
 	info_line "Cleaning up obsolete packages"
 	apt-get -qqy autoremove 2>&1 | dbg_line
@@ -160,26 +168,26 @@ main() {
 	############################################################################
 	info_line "Building maintenance script"
 	build_maintenance_script "$MAINTENANCE_SCRIPT"
-	if [[ $SYSTEM_ROLE_LXCHOST == true ]]
+	if [[ ${SYSTEM_ROLE[LXC_HOST]} == true ]]
 	then
 		build_maintenance_script "$CONTAINER_SCRIPT"
 	fi
-	cp "$LIB_DIR$LIB" "$TARGET_SCRIPT_DIR$LIB_DIR"
+	cp "$LIB_DIR$LIB" "$SYS_LIB_DIR"
 	############################################################################
 	############################################################################
-	if [[ $SYSTEM_ROLE_CONTAINER == true ]]
+	if [[ ${SYSTEM_ROLE[CONTAINER]} == true ]]
 	then
 		dbg_line "This is a container; NOT adding $MAINTENANCE_SCRIPT to a sheduler"
 	else
 		verb_line "adding $MAINTENANCE_SCRIPT to sheduler"
-		if [[ $SYSTEM_ROLE_MAINSERVER == true ]]
+		if [[ ${SYSTEM_ROLE[MAIN_SERVER]} == true ]]
 		then
 			CRON_FILE="/etc/crontab"
-			LINE_TO_ADD="\n0 6 * * 0 root bash $TARGET_SCRIPT_DIR$MAINTENANCE_SCRIPT #PLAT maintenance"
+			LINE_TO_ADD="\n0 6 * * 0 root bash $SYS_BIN_DIR$MAINTENANCE_SCRIPT #PLAT maintenance"
 			verb_line "using cron"
 		else
 			CRON_FILE="/etc/anacrontab"
-			LINE_TO_ADD="\n@weekly\t10\tplat_maintenance\tbash $MAINTENANCE_SCRIPT"
+			LINE_TO_ADD="\n@weekly\t10\tplat_maintenance\tbash $SYS_BIN_DIR$MAINTENANCE_SCRIPT"
 			verb_line "using anacron"
 		fi
 		add_line_to_file "$LINE_TO_ADD" "$CRON_FILE"
