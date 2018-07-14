@@ -49,7 +49,7 @@ echo "checking for reboot requirement"
 if [ -f /var/run/reboot-required ]
 then
 	echo "REBOOT REQUIRED, sheduled for 23:59"
-	shutdown -r 23:59 2>&1 | echo
+	shutdown -r 23:59 2>&1
 else
 	echo "No reboot required"
 fi
