@@ -4,13 +4,13 @@
 # (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
 # License: MIT							#	Please keep my name in the credits #
 ################################################################################
-# Version: 0.2.1-ALPHA
-# Build: 20180712
+# Version: 0.2.2-ALPHA
+# Build: 20180715
 
 unset CDPATH				# prevent mishaps using cd with relative paths
 declare -gr COMMAND="$0"	# Making the command that called this script portable
 declare -gr SCRIPT_FULL="${COMMAND##*/}"	# Making Commandline "portable"
-declare -gr ARGS="$@"				# Making ARGS portable
+declare -gr ARGS="$@"		# Making ARGS portable
 
 # mod: PLAT::subheader
 # txt: subheader to all major scripts in the suite
@@ -45,7 +45,7 @@ preinit() {
 	declare -gr SYS_LOG_DIR="/var/log/$BASE"
 	declare -gr SYS_DOC_DIR="/usr/share/doc/$BASE"
 	##################################################################
-	declare -g SCREEN_WIDTH=80
+	declare -g SCREEN_WIDTH	;	SCREEN_WIDTH=80
 }
 
 ### TEMPORARY LOGGING FUNCTIONS
@@ -111,7 +111,7 @@ to_log() {
 			declare -g LOG_BUFFER
 			LOG_BUFFER="$START_TIME - $COMMAND Process started\n"
 		fi
-		LOG_BUFFER+="$_LOG_ENTRY"
+		LOG_BUFFER+="$_LOG_ENTRY\n"
 	else
 		to_log() {
 			if [ -n "$LOG_BUFFER" ]
@@ -120,7 +120,7 @@ to_log() {
 				unset $LOG_BUFFER
 			else
 				to_log() {
-					echo "$_LOG_ENTRY" >> "$LOG_FILE"
+					echo -e "$_LOG_ENTRY" >> "$LOG_FILE"
 				}
 			fi
 			echo "$_LOG_ENTRY" >> "$LOG_FILE"
@@ -251,6 +251,22 @@ import() {
 			err_line "File $_FILE not found!"
 		fi
 	fi
+}
+
+trace_stack () {
+	local _STACK	;	_STACK=""
+	local i message="${1:-""}"
+	local stack_size=${#FUNCNAME[@]}
+	# to avoid noise we start with 1 to skip the get_stack function
+	for (( i=1; i<$stack_size; i++ )); do
+		local func="${FUNCNAME[$i]}"
+		[ x$func = x ] && func=MAIN
+		local linen="${BASH_LINENO[$(( i - 1 ))]}"
+		local src="${BASH_SOURCE[$i]}"
+		[ x"$src" = x ] && src=non_file_source
+		STACK+=$'\n'"   at: "$func" "$src" "$linen
+	done
+	echo "${message}${STACK}"
 }
 
 ##### BOILERPLATE ##############################################################

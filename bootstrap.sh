@@ -2,7 +2,7 @@
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 DEBUG=true
 declare -g VERBOSITY=2
-declare -g LOG_FILE_CREATED=false
+declare -g LOG_FILE_CREATED	;	LOG_FILE_CREATED=false
 ############################################################################
 # Pegasus' Linux Administration Tools #							 Bootstrap #
 # (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
@@ -26,9 +26,9 @@ init() {
 	declare -gr SCRIPT_TITLE="Bootstrap"
 	declare -gr VER_MAJOR=1
 	declare -gr VER_MINOR=4
-	declare -gr VER_PATCH=45
+	declare -gr VER_PATCH=46
 	declare -gr VER_STATE="ALPHA"
-	declare -gr BUILD=20180710
+	declare -gr BUILD=20180715
 	###
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VER="$VER_MAJOR.$VER_MINOR.$VER_PATCH-$VER_STATE"
