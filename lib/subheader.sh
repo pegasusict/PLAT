@@ -4,8 +4,8 @@
 # (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
 # License: MIT							#	Please keep my name in the credits #
 ################################################################################
-# Version: 0.2.2-ALPHA
-# Build: 20180715
+# Version: 0.2.15-ALPHA
+# Build: 20180803
 
 unset CDPATH				# prevent mishaps using cd with relative paths
 declare -gr COMMAND="$0"	# Making the command that called this script portable
@@ -29,7 +29,7 @@ preinit() {
 	###
 	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
 	declare -gr SCRIPT_PATH="$(readlink -fn $COMMAND)"
-	declare -gr SCRIPT_DIR=$(dirname "$SCRIPT_PATH")
+	declare -gr SCRIPT_DIR="$(dirname "$SCRIPT_PATH")/"
 	###
 	declare -gr MAINTENANCE_SCRIPT="maintenance.sh"
 	declare -gr MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
@@ -48,7 +48,7 @@ preinit() {
 	declare -g SCREEN_WIDTH	;	SCREEN_WIDTH=80
 }
 
-### TEMPORARY LOGGING FUNCTIONS
+### LOGGING FUNCTIONS
 get_timestamp() {
 	echo $(date +"%Y-%m-%d_%H.%M.%S.%3N")
 }
@@ -87,7 +87,11 @@ log_line() {
 	to_log "$_LOG_OUTPUT"
 }
 
-
+# fun: exeqt
+# txt: Executes COMMAND.
+#      If COMMAND returns an error code, the output is sent to the error log.
+# use: exeqt COMMAND
+# api: logging internal
 exeqt() {
 	local _CMD		; _CMD="$1"
 	local _RESULT	; _RESULT=$($_CMD) 2>&1
@@ -96,6 +100,7 @@ exeqt() {
 		err_line $_RESULT
 	fi
 }
+
 # fun: to_log
 # txt: Checks whether the log file has been created yet and whether the log
 #      buffer exists. The log entry will be added to the logfile if exist,
@@ -120,7 +125,7 @@ to_log() {
 				unset $LOG_BUFFER
 			else
 				to_log() {
-					echo -e "$_LOG_ENTRY" >> "$LOG_FILE"
+					echo "$_LOG_ENTRY" >> "$LOG_FILE"
 				}
 			fi
 			echo "$_LOG_ENTRY" >> "$LOG_FILE"
@@ -129,22 +134,54 @@ to_log() {
 	fi
 }
 
+# fun: crit_line MESSAGE
+# txt: Passes MESSAGE on to 'log_line 1'
+# use: crit_line <var> MESSAGE
+# api: logging
+crit_line() {
+	local _MESSAGE="$1"
+	log_line 1 "$_MESSAGE"
+}
+
+# fun: err_line MESSAGE
+# txt: Passes MESSAGE on to 'log_line 2'
+# use: err_line <var> MESSAGE
+# api: logging
+err_line() {
+	if [[ -n "$1" ]]
+	then
+		local _MESSAGE="$1"
+		log_line 2 "$_MESSAGE"
+	fi
+}
+
+# fun: warn_line MESSAGE
+# txt: Passes MESSAGE on to 'log_line 3'
+# use: warn_line <var> MESSAGE
+# api: logging
+warn_line() {
+	local _MESSAGE="$1"
+	log_line 3 "$_MESSAGE"
+}
+
+# fun: info_line MESSAGE
+# txt: Passes MESSAGE on to 'log_line 4'
+# use: info_line <var> MESSAGE
+# api: logging
+info_line() {
+	local _MESSAGE="$1"
+	log_line 4 "$_MESSAGE"
+}
+
+# fun: dbg_line MESSAGE
+# txt: Passes MESSAGE on to 'log_line 5' if VERBOSITY is 5+
+# use: dbg_line <var> MESSAGE
+# api: logging
 dbg_line() {
 	:
 }
-info_line() {
-	log_line 4 "$1"
-}
-warn_line() {
-	log_line 3 "$1"
-}
-err_line() {
-	log_line 2 "$1"
-}
-crit_line() {
-	log_line 1 "$1" 1>&2
-	exit 1
-}
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # fun: bash_check
 # txt: Checks if the script is being run using Bash v4+
@@ -198,6 +235,8 @@ su_check() {
 	fi
 }
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 # fun: go_home
 # txt: determins where the script is called from and if this is the same
 #      location the script resides. If not, moves to that directory.
@@ -205,10 +244,11 @@ su_check() {
 # api: internal
 go_home(){
 	info_line "go_home: Where are we being called from?"
-	declare -g CURRENT_DIR=$(pwd)
-	if [[ $SCRIPT_DIR != $CURRENT_DIR ]]
+	declare -g CURRENT_DIR	;	CURRENT_DIR=$(pwd)
+	if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]
 	then
-		info_line "go_home: We're being called outside our basedir, going home to \"$SCRIPT_DIR\"..."
+		info_line "go_home: We're being called outside our basedir, \
+		going home to \"$SCRIPT_DIR\"..."
 		cd "$SCRIPT_DIR"
 	else
 		info_line "go_home: We're right at home. :-) "
@@ -257,7 +297,7 @@ trace_stack () {
 	local _STACK	;	_STACK=""
 	local i message="${1:-""}"
 	local stack_size=${#FUNCNAME[@]}
-	# to avoid noise we start with 1 to skip the get_stack function
+	# to avoid noise we start with 1 to skip the trace_stack function
 	for (( i=1; i<$stack_size; i++ )); do
 		local func="${FUNCNAME[$i]}"
 		[ x$func = x ] && func=MAIN
@@ -270,7 +310,6 @@ trace_stack () {
 }
 
 ##### BOILERPLATE ##############################################################
-
 su_check
 dbg_check
 bash_check
