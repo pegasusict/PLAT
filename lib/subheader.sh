@@ -4,7 +4,7 @@
 # (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
 # License: MIT							#	Please keep my name in the credits #
 ################################################################################
-# Version: 0.2.19-ALPHA
+# Version: 0.2.20-ALPHA
 # Build: 20180804
 
 unset CDPATH				# prevent mishaps using cd with relative paths
@@ -265,7 +265,7 @@ restore_dbg() {
 # api: internal
 go_home(){
 	info_line "go_home: Where are we being called from?"
-	declare -g CURRENT_DIR	;	CURRENT_DIR=$(pwd)
+	declare -g CURRENT_DIR	;	CURRENT_DIR="$(pwd)/"
 	if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]
 	then
 		info_line "go_home: We're being called outside our basedir, \
