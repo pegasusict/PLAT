@@ -4,8 +4,8 @@
 # (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
 # License: MIT							#	Please keep my name in the credits #
 ################################################################################
-# Version: 0.2.15-ALPHA
-# Build: 20180803
+# Version: 0.2.19-ALPHA
+# Build: 20180804
 
 unset CDPATH				# prevent mishaps using cd with relative paths
 declare -gr COMMAND="$0"	# Making the command that called this script portable
@@ -139,8 +139,10 @@ to_log() {
 # use: crit_line <var> MESSAGE
 # api: logging
 crit_line() {
+	stop_dbg
 	local _MESSAGE="$1"
 	log_line 1 "$_MESSAGE"
+	exit 1
 }
 
 # fun: err_line MESSAGE
@@ -148,11 +150,13 @@ crit_line() {
 # use: err_line <var> MESSAGE
 # api: logging
 err_line() {
+	stop_dbg
 	if [[ -n "$1" ]]
 	then
 		local _MESSAGE="$1"
 		log_line 2 "$_MESSAGE"
 	fi
+	restore_dbg
 }
 
 # fun: warn_line MESSAGE
@@ -160,8 +164,10 @@ err_line() {
 # use: warn_line <var> MESSAGE
 # api: logging
 warn_line() {
+	stop_dbg
 	local _MESSAGE="$1"
 	log_line 3 "$_MESSAGE"
+	restore_dbg
 }
 
 # fun: info_line MESSAGE
@@ -169,8 +175,10 @@ warn_line() {
 # use: info_line <var> MESSAGE
 # api: logging
 info_line() {
+	stop_dbg
 	local _MESSAGE="$1"
 	log_line 4 "$_MESSAGE"
+	restore_dbg
 }
 
 # fun: dbg_line MESSAGE
@@ -210,13 +218,15 @@ dbg_check() {
 	if [ "$DEBUG" = true ]
 	then
 		dbg_line() {
+			stop_dbg
 			log_line 5 "$1"
+			restore_dbg
 		}
-		set -o xtrace	# Trace the execution of the script
-		set -o errexit	# Exit on most errors (see the manual)
-		set -o errtrace	# Make sure any error trap is inherited
+		set -x # -o xtrace	# Trace the execution of the script
+		set -e # -o errexit	# Exit on most errors (see the manual)
+		set -E # -o errtrace	# Make sure any error trap is inherited
 		set -o pipefail	# Use last non-zero exit code in a pipeline
-#		set -o nounset	# Disallow expansion of unset variables
+#		set -u # -o nounset	# Disallow expansion of unset variables
 	fi
 }
 
@@ -235,6 +245,17 @@ su_check() {
 	fi
 }
 
+stop_dbg() {
+	set +e	# stop exiting on most errors ( can be a nusance with (getopt) tests)
+	set +x	# Disable tracing execution of the script
+}
+restore_dbg() {
+	if [ "$DEBUG" = true ]
+	then
+		set -e	# Exit on most errors (see the manual)
+		set -x	# Disable tracing execution of the script
+	fi
+}
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # fun: go_home

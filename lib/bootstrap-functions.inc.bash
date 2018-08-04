@@ -1,20 +1,20 @@
 #!/bin/bash
-############################################################################
-# Pegasus' Linux Administration Tools #		   Bootstrap Functions Library #
-# (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
-# License: MIT						  #	Please keep my name in the credits #
-############################################################################
+################################################################################
+# Pegasus' Linux Administration Tools	#		   Bootstrap Functions Library #
+# (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
+# License: MIT							#	Please keep my name in the credits #
+################################################################################
 
 #######################################################
 # PROGRAM_SUITE="Pegasus' Linux Administration Tools" #
 # SCRIPT_TITLE="BootStrap Functions"				  #
 # MAINTAINER="Mattijs Snepvangers"					  #
 # MAINTAINER_EMAIL="pegasus.ict@gmail.com"			  #
-# VER_MAJOR=0									  #
-# VER_MINOR=1									  #
-# VER_PATCH=40									  #
-# VER_STATE="ALPHA"								  #
-# VER_BUILD=20180620							  #
+# VER_MAJOR=0										  #
+# VER_MINOR=1										  #
+# VER_PATCH=44										  #
+# VER_STATE="ALPHA"									  #
+# VER_BUILD=20180804								  #
 # LICENSE="MIT"										  #
 #######################################################
 
@@ -22,23 +22,24 @@
 # txt: This script is contains functions made specific for the script with the
 #      same name.
 
-# fun: getargs
+# fun: get_args
 # txt: parses commandline arguments
-# use: init
+# use: get_args
 # api: prerun
 get_args() {
-	#getopt --test > /dev/null
-	#if [[ $? -ne 4 ]]
-	#then
-		#err_line "I’m sorry, \"getopt --test\" failed in this environment."
-		#exit 1
-	#fi
-	OPTIONS="hv:r:c:g:l:t:"
-	LONG_OPTIONS="help,verbosity:,role:,containertype:garbageage:logage:tmpage:"
+	getopt_test
+	local _OPTIONS		;	_OPTIONS="r:c:g:l:t:"
+	local _LONG_OPTIONS
+	_LONG_OPTIONS="role:,containertype:garbageage:logage:tmpage:"
+	PARSED=$(arg_parse "$_OPTIONS" "$_LONG_OPTIONS")
+arg_parse() {
+	local _OPTIONS		;	_OPTIONS="hv:$1"
+	local _LONG_OPTIONS	;	_LONG_OPTIONS="help,verbosity:,$2"
 	PARSED=$(getopt -o $OPTIONS --long $LONG_OPTIONS -n "$COMMAND" -- "$ARGS")
 	if [ $? -ne 0 ]
 		then usage
 	fi
+
 	eval set -- "$PARSED"
 	while true; do
 		case "$1" in
