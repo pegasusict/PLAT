@@ -4,13 +4,13 @@
 # (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
 # License: MIT							#	Please keep my name in the credits #
 ################################################################################
-# Version: 0.2.22-ALPHA
+# Version: 0.2.28-ALPHA
 # Build: 20180806
 
 unset CDPATH				# prevent mishaps using cd with relative paths
 declare -gr COMMAND="$0"	# Making the command that called this script portable
 declare -gr SCRIPT_FULL="${COMMAND##*/}"	# Making Commandline "portable"
-declare -gr ARGS="$@"		# Making ARGS portable
+declare -agr ARGS=$@		# Making ARGS portable
 
 # mod: PLAT::subheader
 # txt: subheader to all major scripts in the suite
@@ -29,7 +29,7 @@ preinit() {
 	###
 	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
 	declare -gr SCRIPT_PATH="$(readlink -fn $COMMAND)"
-	declare -gr SCRIPT_DIR="$(dirname "$SCRIPT_PATH")/"
+	declare -gr SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
 	###
 	declare -gr MAINTENANCE_SCRIPT="maintenance.sh"
 	declare -gr MAINTENANCE_SCRIPT_TITLE="Maintenance Script"
@@ -245,17 +245,13 @@ su_check() {
 	fi
 }
 
-stop_dbg() {
-	set +e	# stop exiting on most errors ( can be a nusance with (getopt) tests)
-	set +x	# Disable tracing execution of the script
-}
-restore_dbg() {
-	if [ "$DEBUG" = true ]
-	then
-		set -e	# Exit on most errors (see the manual)
-		set -x	# Disable tracing execution of the script
-	fi
-}
+# stop exiting on most errors ( can be a nusance with (getopt) tests)
+# Disable tracing execution of the script
+stop_dbg() { set +ex; }
+
+# Exit on most errors (see the manual)
+# Disable tracing execution of the script
+restore_dbg() { if [ "$DEBUG" = true ]; then set -ex; fi; }
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # fun: go_home
@@ -264,16 +260,16 @@ restore_dbg() {
 # use: go_home
 # api: internal
 go_home(){
-	info_line "go_home: Where are we being called from?"
-	declare -g CURRENT_DIR	;	CURRENT_DIR="$(pwd)/"
-	if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]
-	then
-		info_line "go_home: We're being called outside our basedir, \
-		going home to \"$SCRIPT_DIR\"..."
+	#info_line "go_home: Where are we being called from?"
+	#declare -g CURRENT_DIR=$(pwd)
+	##CURRENT_DIR+="/"
+	#if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]
+	#then
+		#info_line "go_home: We're being called outside our basedir, going home to \"$SCRIPT_DIR\"..."
 		cd "$SCRIPT_DIR"
-	else
-		info_line "go_home: We're right at home. :-) "
-	fi
+	#else
+		#info_line "go_home: We're right at home. :-) "
+	#fi
 }
 
 # fun: import
@@ -286,6 +282,7 @@ go_home(){
 # opt: bool REQUIRED ( true/false ) if omitted, REQUIRED is set to false
 # api: internal
 import() {
+	stop_dbg
 	local _FILE	;	_FILE="$1"
 	local _DIR	;	_DIR="$2"
 	local _REQUIRED	;	_REQUIRED="$3"
@@ -312,6 +309,7 @@ import() {
 			err_line "File $_FILE not found!"
 		fi
 	fi
+	restore_dbg
 }
 
 trace_stack () {

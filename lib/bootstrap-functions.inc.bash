@@ -12,9 +12,9 @@
 # MAINTAINER_EMAIL="pegasus.ict@gmail.com"			  #
 # VER_MAJOR=0										  #
 # VER_MINOR=1										  #
-# VER_PATCH=44										  #
+# VER_PATCH=45										  #
 # VER_STATE="ALPHA"									  #
-# VER_BUILD=20180804								  #
+# VER_BUILD=20180806								  #
 # LICENSE="MIT"										  #
 #######################################################
 
@@ -32,14 +32,6 @@ get_args() {
 	local _LONG_OPTIONS
 	_LONG_OPTIONS="role:,containertype:garbageage:logage:tmpage:"
 	PARSED=$(arg_parse "$_OPTIONS" "$_LONG_OPTIONS")
-arg_parse() {
-	local _OPTIONS		;	_OPTIONS="hv:$1"
-	local _LONG_OPTIONS	;	_LONG_OPTIONS="help,verbosity:,$2"
-	PARSED=$(getopt -o $OPTIONS --long $LONG_OPTIONS -n "$COMMAND" -- "$ARGS")
-	if [ $? -ne 0 ]
-		then usage
-	fi
-
 	eval set -- "$PARSED"
 	while true; do
 		case "$1" in

@@ -26,9 +26,9 @@ init() {
 	declare -gr SCRIPT_TITLE="Bootstrap"
 	declare -gr VER_MAJOR=1
 	declare -gr VER_MINOR=4
-	declare -gr VER_PATCH=46
+	declare -gr VER_PATCH=47
 	declare -gr VER_STATE="ALPHA"
-	declare -gr BUILD=20180715
+	declare -gr BUILD=20180806
 	###
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VER="$VER_MAJOR.$VER_MINOR.$VER_PATCH-$VER_STATE"
@@ -42,7 +42,7 @@ init() {
 # use: prep
 # api: prerun
 prep() {
-	declare -Ag SYSTEM_ROLE=(
+	declare -Ag SYSTEM_ROLE; SYSTEM_ROLE=(
 		[BASIC]=false
 		[WS]=false
 		[POSEIDON]=fasle
