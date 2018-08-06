@@ -75,7 +75,7 @@ init() {
 	declare -g TMP_AGE=2
 	declare -g GARBAGE_AGE=7
 	declare -g LOG_AGE=30
-	declare -Ag SYSTEM_ROLE(
+	declare -Ag SYSTEM_ROLE=(
 							[BASIC]=false
 							[WS]=false
 							[SERVER]=false

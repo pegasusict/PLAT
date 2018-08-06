@@ -4,8 +4,8 @@
 # (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
 # License: MIT							#	Please keep my name in the credits #
 ################################################################################
-# Version: 0.2.20-ALPHA
-# Build: 20180804
+# Version: 0.2.22-ALPHA
+# Build: 20180806
 
 unset CDPATH				# prevent mishaps using cd with relative paths
 declare -gr COMMAND="$0"	# Making the command that called this script portable
@@ -319,13 +319,13 @@ trace_stack () {
 	local i message="${1:-""}"
 	local stack_size=${#FUNCNAME[@]}
 	# to avoid noise we start with 1 to skip the trace_stack function
-	for (( i=1; i<$stack_size; i++ )); do
+	for (( i=1; i<stack_size; i++ )); do
 		local func="${FUNCNAME[$i]}"
 		[ x$func = x ] && func=MAIN
 		local linen="${BASH_LINENO[$(( i - 1 ))]}"
 		local src="${BASH_SOURCE[$i]}"
 		[ x"$src" = x ] && src=non_file_source
-		STACK+=$'\n'"   at: "$func" "$src" "$linen
+		STACK+="\n   at: $func $src $linen"
 	done
 	echo "${message}${STACK}"
 }
