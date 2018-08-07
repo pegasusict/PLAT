@@ -4,8 +4,8 @@
 # (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
 # License: MIT							#	Please keep my name in the credits #
 ################################################################################
-# Version: 0.2.28-ALPHA
-# Build: 20180806
+# Version: 0.2.34-ALPHA
+# Build: 20180807
 
 unset CDPATH				# prevent mishaps using cd with relative paths
 declare -gr COMMAND="$0"	# Making the command that called this script portable
@@ -139,7 +139,7 @@ to_log() {
 # use: crit_line <var> MESSAGE
 # api: logging
 crit_line() {
-	stop_dbg
+	dbg_pause
 	local _MESSAGE="$1"
 	log_line 1 "$_MESSAGE"
 	exit 1
@@ -150,13 +150,13 @@ crit_line() {
 # use: err_line <var> MESSAGE
 # api: logging
 err_line() {
-	stop_dbg
+	dbg_pause
 	if [[ -n "$1" ]]
 	then
 		local _MESSAGE="$1"
 		log_line 2 "$_MESSAGE"
 	fi
-	restore_dbg
+	dbg_restore
 }
 
 # fun: warn_line MESSAGE
@@ -164,10 +164,10 @@ err_line() {
 # use: warn_line <var> MESSAGE
 # api: logging
 warn_line() {
-	stop_dbg
+	dbg_pause
 	local _MESSAGE="$1"
 	log_line 3 "$_MESSAGE"
-	restore_dbg
+	dbg_restore
 }
 
 # fun: info_line MESSAGE
@@ -175,10 +175,10 @@ warn_line() {
 # use: info_line <var> MESSAGE
 # api: logging
 info_line() {
-	stop_dbg
+	dbg_pause
 	local _MESSAGE="$1"
 	log_line 4 "$_MESSAGE"
-	restore_dbg
+	dbg_restore
 }
 
 # fun: dbg_line MESSAGE
@@ -218,15 +218,16 @@ dbg_check() {
 	if [ "$DEBUG" = true ]
 	then
 		dbg_line() {
-			stop_dbg
+			dbg_pause
 			log_line 5 "$1"
-			restore_dbg
+			dbg_restore
 		}
 		set -x # -o xtrace	# Trace the execution of the script
 		set -e # -o errexit	# Exit on most errors (see the manual)
 		set -E # -o errtrace	# Make sure any error trap is inherited
 		set -o pipefail	# Use last non-zero exit code in a pipeline
-#		set -u # -o nounset	# Disallow expansion of unset variables
+		#set -u # -o nounset	# Disallow expansion of unset variables
+		declare -g DEBUG_PAUSE	;	DEBUG_PAUSE=0
 	fi
 }
 
@@ -247,11 +248,22 @@ su_check() {
 
 # stop exiting on most errors ( can be a nusance with (getopt) tests)
 # Disable tracing execution of the script
-stop_dbg() { set +ex; }
+dbg_pause() { set +ex; DEBUG_PAUSE++; }
 
 # Exit on most errors (see the manual)
 # Disable tracing execution of the script
-restore_dbg() { if [ "$DEBUG" = true ]; then set -ex; fi; }
+dbg_restore() {
+	if [ "$DEBUG" = true ]
+	then
+		if [ $DEBUG_PAUSE > 1 ]
+		then
+			$DEBUG_PAUSE--
+		else
+			set -ex
+		fi
+	fi
+}
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # fun: go_home
@@ -282,7 +294,7 @@ go_home(){
 # opt: bool REQUIRED ( true/false ) if omitted, REQUIRED is set to false
 # api: internal
 import() {
-	stop_dbg
+	dbg_pause
 	local _FILE	;	_FILE="$1"
 	local _DIR	;	_DIR="$2"
 	local _REQUIRED	;	_REQUIRED="$3"
@@ -309,7 +321,7 @@ import() {
 			err_line "File $_FILE not found!"
 		fi
 	fi
-	restore_dbg
+	dbg_restore
 }
 
 trace_stack () {
