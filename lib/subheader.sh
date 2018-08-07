@@ -4,7 +4,7 @@
 # (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
 # License: MIT							#	Please keep my name in the credits #
 ################################################################################
-# Version: 0.2.34-ALPHA
+# Version: 0.2.38-ALPHA
 # Build: 20180807
 
 unset CDPATH				# prevent mishaps using cd with relative paths
@@ -20,6 +20,7 @@ declare -agr ARGS=$@		# Making ARGS portable
 # use: preinit
 # api: internal
 preinit() {
+	dbg_pause
 	##### SUITE INFO #####
 	declare -gr PROGRAM_SUITE="Pegasus' Linux Administration Tools"
 	declare -gr MAINTAINER="Mattijs Snepvangers"
@@ -46,6 +47,7 @@ preinit() {
 	declare -gr SYS_DOC_DIR="/usr/share/doc/$BASE"
 	##################################################################
 	declare -g SCREEN_WIDTH	;	SCREEN_WIDTH=80
+	dbg_restore
 }
 
 ### LOGGING FUNCTIONS
@@ -248,20 +250,25 @@ su_check() {
 
 # stop exiting on most errors ( can be a nusance with (getopt) tests)
 # Disable tracing execution of the script
-dbg_pause() { set +ex; DEBUG_PAUSE++; }
+dbg_pause() {
+	#set +ex
+	#DEBUG_PAUSE=$(( DEBUG_PAUSE + 1 ))
+	#echo "dbg_pause: DEBUG_PAUSE=$DEBUG_PAUSE"
+}
 
 # Exit on most errors (see the manual)
 # Disable tracing execution of the script
 dbg_restore() {
-	if [ "$DEBUG" = true ]
-	then
-		if [ $DEBUG_PAUSE > 1 ]
-		then
-			$DEBUG_PAUSE--
-		else
-			set -ex
-		fi
-	fi
+	#if [ "$DEBUG" = true ]
+	#then
+		#if [ $DEBUG_PAUSE > 1 ]
+		#then
+			#DEBUG_PAUSE=$(( DEBUG_PAUSE - 1 ))
+			#echo "dbg_restore: DEBUG_PAUSE=$DEBUG_PAUSE"
+		#else
+			#set -ex
+		#fi
+	#fi
 }
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -322,22 +329,6 @@ import() {
 		fi
 	fi
 	dbg_restore
-}
-
-trace_stack () {
-	local _STACK	;	_STACK=""
-	local i message="${1:-""}"
-	local stack_size=${#FUNCNAME[@]}
-	# to avoid noise we start with 1 to skip the trace_stack function
-	for (( i=1; i<stack_size; i++ )); do
-		local func="${FUNCNAME[$i]}"
-		[ x$func = x ] && func=MAIN
-		local linen="${BASH_LINENO[$(( i - 1 ))]}"
-		local src="${BASH_SOURCE[$i]}"
-		[ x"$src" = x ] && src=non_file_source
-		STACK+="\n   at: $func $src $linen"
-	done
-	echo "${message}${STACK}"
 }
 
 ##### BOILERPLATE ##############################################################

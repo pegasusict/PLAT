@@ -22,18 +22,20 @@ echo "$START_TIME ## Starting Bootstrap Process #######################"
 # use: init
 # api: prerun
 init() {
+	dbg_pause
 	##### PROGRAM INFO #####
 	declare -gr SCRIPT_TITLE="Bootstrap"
-	declare -gr VER_MAJOR=1
-	declare -gr VER_MINOR=4
-	declare -gr VER_PATCH=47
+	declare -gir VER_MAJOR=1
+	declare -gir VER_MINOR=4
+	declare -gir VER_PATCH=58
 	declare -gr VER_STATE="ALPHA"
-	declare -gr BUILD=20180806
+	declare -gir BUILD=20180807
 	###
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VER="$VER_MAJOR.$VER_MINOR.$VER_PATCH-$VER_STATE"
 	declare -gr VER="Ver$SHORT_VER build $BUILD"
 	###
+	dbg_restore
 }
 
 # fun: prep
@@ -42,6 +44,7 @@ init() {
 # use: prep
 # api: prerun
 prep() {
+	#dbg_pause
 	declare -Ag SYSTEM_ROLE; SYSTEM_ROLE=(
 		[BASIC]=false
 		[WS]=false
@@ -50,6 +53,7 @@ prep() {
 		[LXCHOST]=false
 		[MAINSERVER]=false
 		[CONTAINER]=false
+
 		[NAS]=false
 		[WEB]=false
 		[PXE]=false
@@ -62,8 +66,9 @@ prep() {
 	import "$FUNC_FILE" "lib/" true
 	create_dir "$LOG_DIR" ### CHECK this should be in log output func
 	header
-	#read_ini ${SCRIPT_DIR}${INI_FILE}
+	read_ini "${SCRIPT_DIR}${INI_FILE}"
 	get_args
+	#dbg_restore
 }
 
 # fun: main
@@ -78,7 +83,7 @@ main() {
 	then
 		dbg_line "SYSTEM_ROLE CONTAINER was chosen, see if there's a containerrole as well"
 		declare -g CONTAINER_ROLE_CHOSEN=false
-		for ROLE in BASIC WS SERVER NAS PXE ROUTER WEB X11
+		for ROLE in BASIC WS SERVER NAS PXE ROUTER WEB X11 FIREWALL
 		do
 			if [[ ${SYSTEM_ROLE["$ROLE"]} == true ]]
 			then
@@ -103,7 +108,6 @@ main() {
 	############################################################################
 	info_line "Copying Ubuntu sources and some extras"
 	exeqt "cp apt/base.list /etc/apt/sources.list.d/"
-
 	############################################################################
 	info_line "Installing extra PPA's"
 	for ROLE in ${SYSTEM_ROLE[@]}
@@ -129,13 +133,46 @@ main() {
 	############################################################################
 	info_line "Installing extra packages"
 	### TODO(pegasusict): Rewrite to incorporate INI
-	if [[ ${SYSTEM_ROLE[POSEIDON]} == true ]]	;	then apt-inst audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full gparted picard ; fi
-	if [[ ${SYSTEM_ROLE[WEB]} == true ]]		;	then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
-	if [[ ${SYSTEM_ROLE[NAS]} == true ]]		;	then apt-inst samba nfsd proftpd ; fi
-	if [[ ${SYSTEM_ROLE[PXE]} == true ]]		;	then apt-inst atftpd ; fi
-	if [[ ${SYSTEM_ROLE[LXC_HOST]} == true ]]	;	then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
+	if [[ ${SYSTEM_ROLE[BASIC]} == true ]]
+	then
+		info_line "Installing packages for SYSTEM_ROLE POSEIDON"
+		apt-inst mc
+	fi
+	if [[ ${SYSTEM_ROLE[WS]} == true ]]
+	then
+		info_line "Installing packages for SYSTEM_ROLE POSEIDON"
+		apt-inst mc
+	fi
 	if [[ ${SYSTEM_ROLE[SERVER]} == true ]]		;	then apt-inst ssh-server screen webmin; fi
-	if [[ ${SYSTEM_ROLE[BASIC]} == true ]]		;	then echo "" ; fi
+	if [[ ${SYSTEM_ROLE[LXC_HOST]} == true ]]	;	then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
+
+	if [[ ${SYSTEM_ROLE[POSEIDON]} == true ]]
+	then
+		info_line "Installing packages for SYSTEM_ROLE POSEIDON"
+		apt-inst audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full gparted picard
+	fi
+	if [[ ${SYSTEM_ROLE[CONTAINER]} == true ]]
+	then
+		info_line "Installing packages for SYSTEM_ROLE POSEIDON"
+		apt-inst mc
+	fi
+
+	if [[ ${SYSTEM_ROLE[WEB]} == true ]]
+	then
+		info_line "Installing packages for SYSTEM_ROLE WEB"
+		apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin
+	fi
+	if [[ ${SYSTEM_ROLE[NAS]} == true ]]
+	then
+		info_line "Installing packages for SYSTEM_ROLE NAS"
+		apt-inst samba nfsd proftpd
+	fi
+	if [[ ${SYSTEM_ROLE[PXE]} == true ]]
+	then
+		info_line "Installing packages for SYSTEM_ROLE PXE"
+		apt-inst atftpd ; fi
+
+
 	if [[ ${SYSTEM_ROLE[ROUTER]} == true ]]		;	then apt-inst bridge-utils ufw; fi
 	############################################################################
 	info_line "Cleaning up obsolete packages"
@@ -144,16 +181,17 @@ main() {
 	apt-get -qqy autoclean 2>&1 | dbg_line
 	### GARBAGE ################################################################
 	info_line "Taking out the trash."
-	verb_line "Removing files from trash older than $GARBAGE_AGE days"
+	dbg_line "Removing files from trash older than $GARBAGE_AGE days"
+	apt_inst trash-cli
 	trash-empty "$GARBAGE_AGE" 2>&1 dbg_line
 	###
-	verb_line "Clearing user cache"
+	dbg_line "Clearing user cache"
 	find /home/* -type f \( -name '*.tmp' -o -name '*.temp' -o -name '*.swp' -o -name '*~' -o -name '*.bak' -o -name '..netrwhist' \) -delete 2>&1 | dbg_line
 	###
-	verb_line "Deleting logs older than $LOG_AGE"
+	dbg_line "Deleting logs older than $LOG_AGE"
 	find /var/log -name "*.log" -mtime +"$LOG_AGE" -a ! -name "SQLUpdate.log" -a ! -name "updated_days*" -a ! -name "qadirectsvcd*" -exec rm -f {} \ 2>&1 dbg_line
 	###
-	verb_line "Purging TMP dirs of files unchanged for at least $TMP_AGE days"
+	dbg_line "Purging TMP dirs of files unchanged for at least $TMP_AGE days"
 	CRUNCHIFY_TMP_DIRS="/tmp /var/tmp"	# List of directories to search
 	find $CRUNCHIFY_TMP_DIRS -depth -type f -a -ctime $TMP_AGE -print -delete 2>&1 dbg_line
 	find $CRUNCHIFY_TMP_DIRS -depth -type l -a -ctime $TMP_AGE -print -delete 2>&1 dbg_line
@@ -179,16 +217,16 @@ main() {
 	then
 		dbg_line "This is a container; NOT adding $MAINTENANCE_SCRIPT to a sheduler"
 	else
-		verb_line "adding $MAINTENANCE_SCRIPT to sheduler"
+		dbg_line "adding $MAINTENANCE_SCRIPT to sheduler"
 		if [[ ${SYSTEM_ROLE[MAIN_SERVER]} == true ]]
 		then
 			CRON_FILE="/etc/crontab"
 			LINE_TO_ADD="\n0 6 * * 0 root bash $SYS_BIN_DIR$MAINTENANCE_SCRIPT #PLAT maintenance"
-			verb_line "using cron"
+			dbg_line "using cron"
 		else
 			CRON_FILE="/etc/anacrontab"
 			LINE_TO_ADD="\n@weekly\t10\tplat_maintenance\tbash $SYS_BIN_DIR$MAINTENANCE_SCRIPT"
-			verb_line "using anacron"
+			dbg_line "using anacron"
 		fi
 		add_line_to_file "$LINE_TO_ADD" "$CRON_FILE"
 		unset $LINE_TO_ADD

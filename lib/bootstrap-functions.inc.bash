@@ -12,9 +12,9 @@
 # MAINTAINER_EMAIL="pegasus.ict@gmail.com"			  #
 # VER_MAJOR=0										  #
 # VER_MINOR=1										  #
-# VER_PATCH=45										  #
+# VER_PATCH=46										  #
 # VER_STATE="ALPHA"									  #
-# VER_BUILD=20180806								  #
+# VER_BUILD=20180807								  #
 # LICENSE="MIT"										  #
 #######################################################
 
@@ -99,7 +99,7 @@ build_maintenance_script() { ### TODO(pegasusict): convert to template
 	add_to_script "$_SCRIPT" line "LOG_DIR=\"$LOG_DIR\""
 	sed -e 1d "${TPL_DIR}${MAINT_PRFX}"subheader2.sh >> "$_SCRIPT"
 	### adding header to be printed by maintenance file #######################
-	add_to_script "$_SCRIPT" line "verb_line <<EOH"
+	add_to_script "$_SCRIPT" line "dbg_line <<EOH"
 	make_line >> "$_SCRIPT"
 	header_line "$PROGRAM_SUITE - $_SCRIPT_TITLE" "Ver$SHORT_VER" >> "$_SCRIPT"
 	header_line "$COPYRIGHT $MAINTAINER" "build $VER_BUILD  $MAINTAINER_EMAIL" >> "$_SCRIPT"
