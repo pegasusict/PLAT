@@ -4,8 +4,8 @@
 # (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
 # License: MIT							#	Please keep my name in the credits #
 ################################################################################
-# Version: 0.2.38-ALPHA
-# Build: 20180807
+# Version: 0.2.40-ALPHA
+# Build: 20180808
 
 unset CDPATH				# prevent mishaps using cd with relative paths
 declare -gr COMMAND="$0"	# Making the command that called this script portable
@@ -145,6 +145,7 @@ crit_line() {
 	local _MESSAGE="$1"
 	log_line 1 "$_MESSAGE"
 	exit 1
+	dbg_restore
 }
 
 # fun: err_line MESSAGE
@@ -198,6 +199,7 @@ dbg_line() {
 # use: bash_check
 # api: internal
 bash_check() {
+	dbg_pause
 	# Making sure this script is run by bash to prevent mishaps
 	if [ "$(ps -p "$$" -o comm=)" != "bash" ]
 	then
@@ -210,6 +212,7 @@ bash_check() {
 		echo "You need bash v4+ to run this script. Aborting..."
 		exit 1
 	fi
+	dbg_restore
 }
 
 # fun: dbg_check
@@ -239,6 +242,7 @@ dbg_check() {
 # use: su_check
 # api: internal
 su_check() {
+	dbg_pause
 	if [[ $EUID -ne 0 ]]
 	then
 		echo "This script must be run as root / with sudo"
@@ -246,29 +250,30 @@ su_check() {
 		sudo bash "$COMMAND" "$ARGS"
 		exit "$?"
 	fi
+	dbg_restore
 }
 
 # stop exiting on most errors ( can be a nusance with (getopt) tests)
 # Disable tracing execution of the script
 dbg_pause() {
-	#set +ex
-	#DEBUG_PAUSE=$(( DEBUG_PAUSE + 1 ))
-	#echo "dbg_pause: DEBUG_PAUSE=$DEBUG_PAUSE"
+	set +ex
+	DEBUG_PAUSE=$(( DEBUG_PAUSE + 1 ))
+	echo "dbg_pause: DEBUG_PAUSE=$DEBUG_PAUSE"
 }
 
 # Exit on most errors (see the manual)
 # Disable tracing execution of the script
 dbg_restore() {
-	#if [ "$DEBUG" = true ]
-	#then
-		#if [ $DEBUG_PAUSE > 1 ]
-		#then
-			#DEBUG_PAUSE=$(( DEBUG_PAUSE - 1 ))
-			#echo "dbg_restore: DEBUG_PAUSE=$DEBUG_PAUSE"
-		#else
-			#set -ex
-		#fi
-	#fi
+	if [ "$DEBUG" = true ]
+	then
+		if [ $DEBUG_PAUSE > 1 ]
+		then
+			DEBUG_PAUSE=$(( DEBUG_PAUSE - 1 ))
+			echo "dbg_restore: DEBUG_PAUSE=$DEBUG_PAUSE"
+		else
+			set -ex
+		fi
+	fi
 }
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
