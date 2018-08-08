@@ -4,7 +4,7 @@
 # (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
 # License: MIT							#	Please keep my name in the credits #
 ################################################################################
-# Version: 0.2.40-ALPHA
+# Version: 0.2.41-ALPHA
 # Build: 20180808
 
 unset CDPATH				# prevent mishaps using cd with relative paths
@@ -284,16 +284,16 @@ dbg_restore() {
 # use: go_home
 # api: internal
 go_home(){
-	#info_line "go_home: Where are we being called from?"
-	#declare -g CURRENT_DIR=$(pwd)
-	##CURRENT_DIR+="/"
-	#if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]
-	#then
-		#info_line "go_home: We're being called outside our basedir, going home to \"$SCRIPT_DIR\"..."
+	info_line "go_home: Where are we being called from?"
+	declare -g CURRENT_DIR=$(pwd)
+	#CURRENT_DIR+="/"
+	if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]
+	then
+		info_line "go_home: We're being called outside our basedir, going home to \"$SCRIPT_DIR\"..."
 		cd "$SCRIPT_DIR"
-	#else
-		#info_line "go_home: We're right at home. :-) "
-	#fi
+	else
+		info_line "go_home: We're right at home. :-) "
+	fi
 }
 
 # fun: import

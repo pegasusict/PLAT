@@ -27,7 +27,7 @@ init() {
 	declare -gr SCRIPT_TITLE="Bootstrap"
 	declare -gir VER_MAJOR=1
 	declare -gir VER_MINOR=4
-	declare -gir VER_PATCH=59
+	declare -gir VER_PATCH=60
 	declare -gr VER_STATE="ALPHA"
 	declare -gir BUILD=20180808
 	###
@@ -66,8 +66,9 @@ prep() {
 	import "$FUNC_FILE" "lib/" true
 	create_dir "$LOG_DIR" ### CHECK this should be in log output func
 	header
-	echo "parsing ${SCRIPT_DIR}/${INI_FILE}"
-	read_ini "${SCRIPT_DIR}/${INI_FILE}"
+	declare -gr INI_PATH="${SCRIPT_DIR}/INI/${INI_FILE}"
+
+	read_ini "$INI_PATH"
 	get_args
 	#dbg_restore
 }
