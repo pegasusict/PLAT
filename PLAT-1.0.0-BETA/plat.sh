@@ -401,16 +401,16 @@ version() { echo -e "\n$PROGRAM $VER - (c)$CURR_YEAR $MAINTAINER"; }
 
  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-main() {
+#main() {
 
-}
+#}
 ################################################################################
 #### BOILERPLATE ###############################################################
 
 go_home
 create_dir "$TRGT_DIR"
 getargs "$@"
-main
+#main
 
 # check whether systemrole_container has been checked and if yes,
 #+ whether nas,web,ws,pxe,basic or router have been checked

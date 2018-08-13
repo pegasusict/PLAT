@@ -21,12 +21,12 @@ echo "$START_TIME ## Starting Bootstrap Process #######################"
 # api: prerun
 init() {
 	##### PROGRAM INFO #####
-	declare -gr SCRIPT_TITLE="Bootstrap"
+	declare -gr SCRIPT_TITLE="Bootstrap Core"
 	declare -gir VER_MAJOR=0
 	declare -gir VER_MINOR=0
 	declare -gir VER_PATCH=0
 	declare -gr VER_STATE="PRE-ALPHA"
-	declare -gir BUILD=20180812
+	declare -gir BUILD=20180813
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VER="$VER_MAJOR.$VER_MINOR.$VER_PATCH-$VER_STATE"
 	declare -gr VER="Ver$SHORT_VER build $BUILD"
@@ -50,6 +50,10 @@ prep() {
 # api: bootstrap
 main() {
 	import "bootstrap_cfg.sh"
+
+
+
+
 	create_dir "$SYS_BIN_DIR"
 	if [[ ${SYSTEM_ROLE[CONTAINER]} == true ]]
 	then

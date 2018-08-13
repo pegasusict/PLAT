@@ -7,25 +7,25 @@
 # cfg ver: 0.0.0 PRE-ALPHA
 # cfg build 20180812
 
-declare -Ag INI=(
+declare -Ag CFG=(
 	### GENERAL SETTINGS #######################################################
 	# Verbosity: 1=CRITICAL 2=ERROR 3=WARNING 4=VERBOSE 5=DEBUG
 	[MAIN__VERBOSITY]=2
 	[MAIN__REBOOT_TIME]="23:59"
 
 	### SYSTEM ROLE DEFINITIONS ################################################
-    # CHOSEN_ROLE => BASIC | WS | SERVER | LXC_HOST | MAIN_SERVER | POSEIDON | CONTAINER
+    # CHOSEN_ROLE => BASIC | WS | SERVER | LXCHOST | HOOFDSERVER | POSEIDON | CONTAINER
     [SYSTEM_ROLE__CHOSEN_ROLE]="POSEIDON"
     # CONTAINER_ROLE => NAS | WEB | ROUTER | PXE | FIREWALL
     [SYSTEM_ROLE__CONTAINER_ROLE]=""
 	############################################################################
-	[SYSTEM_ROLE__BASIC=false
-	[SYSTEM_ROLE__WS=false
-	[SYSTEM_ROLE__SERVER=false
-	[SYSTEM_ROLE__LXCHOST=false
+	[SYSTEM_ROLE__BASIC]=false
+	[SYSTEM_ROLE__WS]=false
+	[SYSTEM_ROLE__SERVER]=false
+	[SYSTEM_ROLE__LXCHOST]=false
 
-	[SYSTEM_ROLE__POSEIDON=false
-	[SYSTEM_ROLE__MAINSERVER=false
+	[SYSTEM_ROLE__POSEIDON]=false
+	[SYSTEM_ROLE__HOOFDSERVER]=false
 
 	[SYSTEM_ROLE__CONTAINER]=false
 	[SYSTEM_ROLE__FIREWALL]=false
@@ -36,8 +36,64 @@ declare -Ag INI=(
 	[SYSTEM_ROLE__WEB]=false
 	[SYSTEM_ROLE__X11]=false
 	############################################################################
+)
 
-	### PPA_KEYS ###################################################################
+	case "$CFG[SYSTEM_ROLE__CHOSEN_ROLE]" in
+		"WS"|"ws"	)
+						CFG[SYSTEM_ROLE__WS]=true			;
+						CFG[SYSTEM_ROLE__BASIC]=true		;
+						dbg_line "role=WS"	;;
+		"POSEIDON"|"poseidon"	)
+						CFG[SYSTEM_ROLE__BASIC]=true		;
+						CFG[SYSTEM_ROLE__WS]=true			;
+						CFG[SYSTEM_ROLE__SERVER]=true		;
+						CFG[SYSTEM_ROLE__LXC_HOST]=true		;
+						CFG[SYSTEM_ROLE__POSEIDON]=true		;
+						CFG[SYSTEM_ROLE__NAS]=true			;
+						dbg_line "role=POSEIDON"	;;
+		"HOOFDSERVER"|"hoofdserver"	)
+						CFG[SYSTEM_ROLE__BASIC]=true		;
+						CFG[SYSTEM_ROLE__SERVER]=true		;
+						CFG[SYSTEM_ROLE__MAIN_SERVER]=true	;
+						CFG[SYSTEM_ROLE__LXC_HOST]=true		;
+						dbg_line "role=HOOFDSERVER"	;;
+		"CONTAINER"|"container"	)
+						CFG[SYSTEM_ROLE__BASIC]=true		;
+						CFG[SYSTEM_ROLE__SERVER]=true		;
+						CFG[SYSTEM_ROLE__CONTAINER]=true	;
+						dbg_line "role=CONTAINER"	;;
+		*			)	critline "CRITICAL: Unknown system role, exiting...";
+						exit 1;;
+	esac
+
+if [[ "$CFG[SYSTEM_ROLE__CHOSEN_ROLE]" == CONTAINER ]]
+then
+	case "$CFG[SYSTEM_ROLE__CONTAINER_ROLE]" in
+		"NAS"|"nas"		)
+						CFG[SYSTEM_ROLE__NAS]=true		;
+						dbg_line "CONTAINER=NAS"		;;
+		"WEB"|"web"		)
+						CFG[SYSTEM_ROLE__NAS]=true		;
+						CFG[SYSTEM_ROLE__WEB]=true		;
+						dbg_line "CONTAINER=WEB"		;;
+		"X11"|"x11"		)
+						CFG[SYSTEM_ROLE__WS]=true		;
+						dbg_line "CONTAINER=X11"		;;
+		"PXE"|"pxe"		)
+						CFG[SYSTEM_ROLE__PXE]=true		;
+						dbg_line "CONTAINER=PXE"		;;
+		"BASIC"|"basic"		)
+						dbg_line "CONTAINER=BASIC"		;;
+		"ROUTER"|"router"	)
+						CFG[SYSTEM_ROLE__ROUTER]=true	;
+						dbg_line "CONTAINER=ROUTER"		;;
+		*)	err_line "WARNING: Unknown containertype, selecting BASIC"	;;
+	esac;
+}
+
+if [[ CFG[SYSTEM_ROLE__BASIC] = true ]]
+then
+	### PPA_KEYS ###############################################################
 	[PPA_LIST__BASIC]
 	GetDeb="http://www.getdeb.net" "deb http://archive.getdeb.net/ubuntu bionic-getdeb apps"
 	Syncthing="https://syncthing.net/" "deb http://apt.syncthing.net/ syncthing release"

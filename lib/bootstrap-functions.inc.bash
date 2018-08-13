@@ -19,34 +19,8 @@
 #######################################################
 
 # mod: bootstrap_functions
-# txt: This script is contains functions made specific for the script with the
-#      same name.
-
-# fun: get_args
-# txt: parses commandline arguments
-# use: get_args
-# api: prerun
-get_args() {
-	getopt_test
-	local _OPTIONS		;	_OPTIONS="r:c:g:l:t:"
-	local _LONG_OPTIONS
-	_LONG_OPTIONS="role:,containertype:garbageage:logage:tmpage:"
-	PARSED=$(arg_parse "$_OPTIONS" "$_LONG_OPTIONS")
-	eval set -- "$PARSED"
-	while true; do
-		case "$1" in
-			-h|--help			) usage ; shift ;;
-			-v|--verbosity		) set_verbosity $2 ; shift 2 ;;
-			-r|--role			) check_role $2; shift 2 ;;
-			-c|--containertype	) check_container $2; shift 2 ;;
-			-g|--garbageage		) GABAGE_AGE=$2; shift 2 ;;
-			-l|--logage			) LOG_AGE=$2; shift 2 ;;
-			-t|--tmpage			) TMP_AGE=$2; shift 2 ;;
-			--					) shift; break ;;
-			*					) break ;;
-		esac
-	done
-}
+# txt: This script is contains functions made specific for the script
+#      with the same name.
 
 # fun: build_maintenance_script
 # txt: Generates maintenance script for workstations, servers and containers.
@@ -54,7 +28,7 @@ get_args() {
 # api: bootstrap
 build_maintenance_script() { ### TODO(pegasusict): convert to template
 	local _SCRIPT		;	_SCRIPT=$1
-	local _SCRIPT_INI	;	_SCRIPT_INI="${_SCRIPT%.*}.ini"
+	#local _SCRIPT_INI	;	_SCRIPT_INI="${_SCRIPT%.*}.ini"
 	local _SCRIPT_TITLE
 	if [[ "$_SCRIPT" == "$MAINTENANCE_SCRIPT" ]]
 	then _SCRIPT_TITLE="$MAINTENANCE_SCRIPT_TITLE"
@@ -125,73 +99,4 @@ build_maintenance_script() { ### TODO(pegasusict): convert to template
 		fi
 	fi
 	sed -e 1d "${TPL_DIR}${MAINT_PRFX}"body-basic.sh >> "$_SCRIPT"
-}
-
-# fun: check_container
-# txt: parses containertype and sets systemroles accordingly
-# use: check_container containertype
-# api: bootstrap
-check_container() {
-	_CONTAINER=$1
-	case "$_CONTAINER" in
-		"nas"		)	SYSTEMROLE_NAS=true		;	dbg_line "container=nas"	;;
-		"web"		)	SYSTEMROLE_NAS=true		;
-						SYSTEMROLE_WEB=true		;	dbg_line "container=web"	;;
-		"x11"		)	SYSTEMROLE_WS=true		;	dbg_line "container=x11"	;;
-		"pxe"		)	SYSTEMROLE_NAS=true		;
-						SYSTEMROLE_PXE=true		;	dbg_line "container=pxe"	;;
-		"basic"		)	SYSTEMROLE_BASIC=true	;	dbg_line "container=basic"	;;
-		"router"	)	SYSTEMROLE_ROUTER=true	;	dbg_line "container=router"	;;
-		*			)	crit_line "CRITICAL: Unknown containertype $CONTAINER, exiting..."	;	exit 1	;;
-	esac;
-}
-
-# fun: check_role
-# txt: parses systemrole and sets additional systemroles accordingly
-# use: check_container ROLE
-# api: bootstrap
-check_role() {
-	local _ROLE=$1
-	case "$_ROLE" in
-		"ws"			)	SYSTEMROLE_WS=true			;	dbg_line "role=ws"			;;
-		"poseidon"		)	SYSTEMROLE_WS=true			;
-							SYSTEMROLE_SERVER=true		;
-							SYSTEMROLE_LXCHOST=true		;
-							SYSTEMROLE_POSEIDON=true	;
-							SYSTEMROLE_NAS=true			;	dbg_line "role=poseidon"	;;
-		"mainserver"	)	SYSTEMROLE_SERVER=true		;
-							SYSTEMROLE_MAINSERVER=true	;
-							SYSTEMROLE_LXCHOST=true		;	dbg_line "role=mainserver"	;;
-		"container"		)	SYSTEMROLE_SERVER=true		;
-							SYSTEMROLE_CONTAINER=true	;	dbg_line "role=container"	;;
-		*				)	critline "CRITICAL: Unknown systemrole $ROLE, exiting..."	;	exit 1;;
-	esac
-}
-
-# fun: usage
-# txt: outputs usage information
-# use: usage
-# api: prerun
-usage() {
-	version
-	cat <<-EOT
-		USAGE: sudo bash $SCRIPT -h
-		        or
-		       sudo bash $SCRIPT -r <systemrole> [ -c <containertype> ] [ -v INT ] [ -g <garbageage> ] [ -l <logage> ] [ -t <tmpage> ]
-
-		OPTIONS
-
-		   -r or --role tells the script what kind of system we are dealing with.
-		      Valid options: ws, poseidon, mainserver, container << REQUIRED >>
-		   -c or --containertype tells the script what kind of container we are working on.
-		      Valid options are: basic, nas, web, x11, pxe, router << REQUIRED if -r=container >>
-		   -v or --verbosity defines the amount of chatter. 0=CRITICAL, 1=WARNING, 2=INFO, 3=VERBOSE, 4=DEBUG. default=2
-		   -g or --garbageage defines the age (in days) of garbage (trashbins & temp files) being cleaned, default=7
-		   -l or --logage defines the age (in days) of logs to be purged, default=30
-		   -t or --tmpage define how long temp files should be untouched before they are deleted, default=2
-		   -h or --help prints this message
-
-		  The options can be used in any order
-		EOT
-	exit 3
 }
