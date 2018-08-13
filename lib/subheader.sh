@@ -61,32 +61,33 @@ get_timestamp() {
 # use: log_line <INT> IMPORTANCE <VAR> MESSAGE
 # api: logging_internal
 log_line() {
-	local _IMPORTANCE=$1
-	local _LABEL=""
-	local _LOG_OUTPUT=""
-	local _MESSAGE="$2"
-	case $_IMPORTANCE in
-		1	)	_LABEL="CRITICAL:"	;;
-		2	)	_LABEL="ERROR:   "	;;
-		3	)	_LABEL="WARNING: "	;;
-		4	)	_LABEL="INFO:    "	;;
-		5	)	_LABEL="DEBUG:   "	;;
+	:
+	#local _IMPORTANCE=$1
+	#local _LABEL=""
+	#local _LOG_OUTPUT=""
+	#local _MESSAGE="$2"
+	#case $_IMPORTANCE in
+		#1	)	_LABEL="CRITICAL:"	;;
+		#2	)	_LABEL="ERROR:   "	;;
+		#3	)	_LABEL="WARNING: "	;;
+		#4	)	_LABEL="INFO:    "	;;
+		#5	)	_LABEL="DEBUG:   "	;;
 
-		*	)	_LABEL="INFO:    "	;;
-	esac
-	_LOG_OUTPUT="$(get_timestamp) # $_LABEL $_MESSAGE"
-	### screen output
-	if (( "$_IMPORTANCE" <= "$VERBOSITY" ))
-	then
-		#if $(( _IMPORTANCE >= 1 )) && $(( _IMPORTANCE <= 2 ))
-		#then
-		#	echo -e "$_LOG_OUTPUT" >&2
-		#else
-			echo -e "$_LOG_OUTPUT"
-		#fi
-	fi
-	### file output
-	to_log "$_LOG_OUTPUT"
+		#*	)	_LABEL="INFO:    "	;;
+	#esac
+	#_LOG_OUTPUT="$(get_timestamp) # $_LABEL $_MESSAGE"
+	#### screen output
+	#if (( "$_IMPORTANCE" <= "$VERBOSITY" ))
+	#then
+		##if $(( _IMPORTANCE >= 1 )) && $(( _IMPORTANCE <= 2 ))
+		##then
+		##	echo -e "$_LOG_OUTPUT" >&2
+		##else
+			#echo -e "$_LOG_OUTPUT"
+		##fi
+	#fi
+	#### file output
+	#to_log "$_LOG_OUTPUT"
 }
 
 # fun: exeqt
@@ -110,30 +111,31 @@ exeqt() {
 # use: log_line IMPORTANCE LOG_ENTRY
 # api: logging_internal
 to_log() {
-	local _LOG_ENTRY	;	_LOG_ENTRY="$1"
-	if [ "$LOG_FILE_CREATED" != true ]
-	then
-		if [ -z ${LOG_BUFFER+x} ]
-		then
-			declare -g LOG_BUFFER
-			LOG_BUFFER="$START_TIME - $COMMAND Process started\n"
-		fi
-		LOG_BUFFER+="$_LOG_ENTRY\n"
-	else
-		to_log() {
-			if [ -n "$LOG_BUFFER" ]
-			then
-				cat "$LOG_BUFFER" > "$LOG_FILE"
-				unset $LOG_BUFFER
-			else
-				to_log() {
-					echo "$_LOG_ENTRY" >> "$LOG_FILE"
-				}
-			fi
-			echo "$_LOG_ENTRY" >> "$LOG_FILE"
-		}
-		to_log "$_LOG_ENTRY"
-	fi
+	:
+	#local _LOG_ENTRY	;	_LOG_ENTRY="$1"
+	#if [ "$LOG_FILE_CREATED" != true ]
+	#then
+		#if [ -z ${LOG_BUFFER+x} ]
+		#then
+			#declare -g LOG_BUFFER
+			#LOG_BUFFER="$START_TIME - $COMMAND Process started\n"
+		#fi
+		#LOG_BUFFER+="$_LOG_ENTRY\n"
+	#else
+		#to_log() {
+			#if [ -n "$LOG_BUFFER" ]
+			#then
+				#cat "$LOG_BUFFER" > "$LOG_FILE"
+				#unset $LOG_BUFFER
+			#else
+				#to_log() {
+					#echo "$_LOG_ENTRY" >> "$LOG_FILE"
+				#}
+			#fi
+			#echo "$_LOG_ENTRY" >> "$LOG_FILE"
+		#}
+		#to_log "$_LOG_ENTRY"
+	#fi
 }
 
 # fun: crit_line MESSAGE
@@ -284,18 +286,19 @@ dbg_restore() {
 # use: go_home
 # api: internal
 go_home(){
-	dbg_pause
-	info_line "go_home: Where are we being called from?"
-	declare -g CURRENT_DIR=$(pwd)
-	#CURRENT_DIR+="/"
-	if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]
-	then
-		info_line "go_home: We're being called outside our basedir, going home to \"$SCRIPT_DIR\"..."
-		cd "$SCRIPT_DIR"
-	else
-		info_line "go_home: We're right at home. :-) "
-	fi
-	dbg_restore
+	:
+	#dbg_pause
+	#info_line "go_home: Where are we being called from?"
+	#declare -g CURRENT_DIR=$(pwd)
+	##CURRENT_DIR+="/"
+	#if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]
+	#then
+		#info_line "go_home: We're being called outside our basedir, going home to \"$SCRIPT_DIR\"..."
+		#cd "$SCRIPT_DIR"
+	#else
+		#info_line "go_home: We're right at home. :-) "
+	#fi
+	#dbg_restore
 }
 
 # fun: import
