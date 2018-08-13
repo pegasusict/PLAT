@@ -1,35 +1,36 @@
 #!/bin/bash
 ################################################################################
-# Pegasus' Linux Administration Tools	#				      Bootstrap Config #
-# (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
-# License: MIT							#   Please keep my name in the credits #
+# Pegasus' Linux Administration Tools	#		      Bootstrap Config #
+# (C)2017-2018 Mattijs Snepvangers	#		 pegasus.ict@gmail.com #
+# License: MIT				#   Please keep my name in the credits #
 ################################################################################
 # cfg ver: 0.0.0 PRE-ALPHA
 # cfg build 20180812
 
 declare -Ag CFG=(
-	### GENERAL SETTINGS #######################################################
-	# Verbosity: 1=CRITICAL 2=ERROR 3=WARNING 4=VERBOSE 5=DEBUG
-	[MAIN__VERBOSITY]=2
-	[MAIN__REBOOT_TIME]="23:59"
+    ### GENERAL SETTINGS #######################################################
+    # Verbosity: 1=CRITICAL 2=ERROR 3=WARNING 4=VERBOSE 5=DEBUG
+    [MAIN__VERBOSITY]=2
+    [MAIN__REBOOT_TIME]="23:59"
 
-	### SYSTEM ROLE DEFINITIONS ################################################
-    # CHOSEN_ROLE => BASIC | WS | SERVER | LXCHOST | HOOFDSERVER | POSEIDON | CONTAINER
+    ### SYSTEM ROLE DEFINITIONS ################################################
+    # CHOSEN_ROLE => BASIC | WS | SERVER | LXCHOST | HOOFDSERVER | POSEIDON |
+    #                 CONTAINER
     [SYSTEM_ROLE__CHOSEN_ROLE]="POSEIDON"
-    # CONTAINER_ROLE => NAS | WEB | ROUTER | PXE | FIREWALL
+    # CONTAINER_ROLE => NAS | WEB | ROUTER | PXE | FIREWALL | HONEY_POT
     [SYSTEM_ROLE__CONTAINER_ROLE]=""
 	############################################################################
 	[SYSTEM_ROLE__BASIC]=false
 	[SYSTEM_ROLE__WS]=false
 	[SYSTEM_ROLE__SERVER]=false
-	[SYSTEM_ROLE__LXCHOST]=false
+	[SYSTEM_ROLE__LXC_HOST]=false
 
 	[SYSTEM_ROLE__POSEIDON]=false
-	[SYSTEM_ROLE__HOOFDSERVER]=false
+	[SYSTEM_ROLE__MAIN_SERVER]=false
 
 	[SYSTEM_ROLE__CONTAINER]=false
 	[SYSTEM_ROLE__FIREWALL]=false
-	[SYSTEM_ROLE__HONEY]=false
+	[SYSTEM_ROLE__HONEY_POT]=false
 	[SYSTEM_ROLE__NAS]=false
 	[SYSTEM_ROLE__PXE]=false
 	[SYSTEM_ROLE__ROUTER]=false
@@ -51,12 +52,12 @@ declare -Ag CFG=(
 						CFG[SYSTEM_ROLE__POSEIDON]=true		;
 						CFG[SYSTEM_ROLE__NAS]=true			;
 						dbg_line "role=POSEIDON"	;;
-		"HOOFDSERVER"|"hoofdserver"	)
+		"MAINSERVER"|"mainserver"	)
 						CFG[SYSTEM_ROLE__BASIC]=true		;
 						CFG[SYSTEM_ROLE__SERVER]=true		;
 						CFG[SYSTEM_ROLE__MAIN_SERVER]=true	;
 						CFG[SYSTEM_ROLE__LXC_HOST]=true		;
-						dbg_line "role=HOOFDSERVER"	;;
+						dbg_line "role=MAIN_SERVER"	;;
 		"CONTAINER"|"container"	)
 						CFG[SYSTEM_ROLE__BASIC]=true		;
 						CFG[SYSTEM_ROLE__SERVER]=true		;
@@ -87,19 +88,16 @@ then
 		"ROUTER"|"router"	)
 						CFG[SYSTEM_ROLE__ROUTER]=true	;
 						dbg_line "CONTAINER=ROUTER"		;;
+		"HONEYPOT"|"honeypot"	)
+						CFG[SYSTEM_ROLE__HONEY_POT]=true	;
+						dbg_line "CONTAINER=HONEY POT"		;;
 		*)	err_line "WARNING: Unknown containertype, selecting BASIC"	;;
 	esac;
 }
 
 if [[ CFG[SYSTEM_ROLE__BASIC] = true ]]
 then
-	### PPA_KEYS ###############################################################
-	[PPA_LIST__BASIC]
-	GetDeb="http://www.getdeb.net" "deb http://archive.getdeb.net/ubuntu bionic-getdeb apps"
-	Syncthing="https://syncthing.net/" "deb http://apt.syncthing.net/ syncthing release"
-	TeamViewer="https://teamviewer.com" "deb http://linux.teamviewer.com/deb stable main\ndeb http://linux.teamviewer.com/deb preview main"
-	Webmin="http://www.webmin.com" "deb http://download.webmin.com/download/repository sarge contrib"
-	WebUpd8="http://www.webupd8.org/" "deb http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu bionic main\ndeb-src http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu bionic main"
+    cpapt/base.lst /etc/apt/sources.list.d/
 	[PPA_LIST_WS]
 	DropBox="http://dropbox.com" "deb http://linux.dropbox.com/ubuntu/ bionic main"
 	GIMP="https://launchpad.net/~otto-kesselgulasch/+archive/gimp" "deb http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu bionic main\ndeb-src http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu bionic main"

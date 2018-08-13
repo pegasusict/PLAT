@@ -28,15 +28,16 @@ long_line_behaviour=1
 long_line_column=79
 
 [files]
-current_page=1
-FILE_NAME_0=1577;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2Fbootstrap.sh;0;4
-FILE_NAME_1=2467;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2Flib%2Fsubheader.sh;0;4
-FILE_NAME_2=757;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2Flib%2Fbootstrap-functions.inc.bash;0;4
-FILE_NAME_3=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPBFL%2Fdefault.inc.bash;0;4
-FILE_NAME_4=1258;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPBFL%2Fpbfl-argparse.inc.bash;0;4
-FILE_NAME_5=4282;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPBFL%2Fpbfl-ini.inc.bash;0;4
-FILE_NAME_6=911;Conf;0;EUTF-8;2;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FINI%2Fbootstrap.ini;0;4
-FILE_NAME_7=2997;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPBFL%2Fpbfl-log.inc.bash;0;4
+current_page=0
+FILE_NAME_0=3404;Sh;0;EUTF-8;2;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2Fbootstrap_cfg.sh;0;4
+FILE_NAME_1=1577;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2Fbootstrap.sh;0;4
+FILE_NAME_2=2467;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2Flib%2Fsubheader.sh;0;4
+FILE_NAME_3=757;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2Flib%2Fbootstrap-functions.inc.bash;0;4
+FILE_NAME_4=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPBFL%2Fdefault.inc.bash;0;4
+FILE_NAME_5=1258;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPBFL%2Fpbfl-argparse.inc.bash;0;4
+FILE_NAME_6=4282;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPBFL%2Fpbfl-ini.inc.bash;0;4
+FILE_NAME_7=911;Conf;0;EUTF-8;2;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FINI%2Fbootstrap.ini;0;4
+FILE_NAME_8=2997;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2FDesktop%2F%5B%20SPOOR%2011%20%5D%2F%5B%5B%5B%20Projects%20%5D%5D%5D%2FPLAT%2FPBFL%2Fpbfl-log.inc.bash;0;4
 
 [VTE]
 last_dir=/home/pegasus/[ GitHub ]/PLAT/PBFL
