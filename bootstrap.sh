@@ -1,8 +1,6 @@
 #!/bin/bash
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 DEBUG=true
-declare -g VERBOSITY=2
-declare -g LOG_FILE_CREATED	;	LOG_FILE_CREATED=false
 ############################################################################
 # Pegasus' Linux Administration Tools #							 Bootstrap #
 # (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
@@ -22,20 +20,16 @@ echo "$START_TIME ## Starting Bootstrap Process #######################"
 # use: init
 # api: prerun
 init() {
-	dbg_pause
 	##### PROGRAM INFO #####
 	declare -gr SCRIPT_TITLE="Bootstrap"
-	declare -gir VER_MAJOR=1
-	declare -gir VER_MINOR=4
-	declare -gir VER_PATCH=60
-	declare -gr VER_STATE="ALPHA"
-	declare -gir BUILD=20180808
-	###
+	declare -gir VER_MAJOR=0
+	declare -gir VER_MINOR=0
+	declare -gir VER_PATCH=0
+	declare -gr VER_STATE="PRE-ALPHA"
+	declare -gir BUILD=20180812
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VER="$VER_MAJOR.$VER_MINOR.$VER_PATCH-$VER_STATE"
 	declare -gr VER="Ver$SHORT_VER build $BUILD"
-	###
-	dbg_restore
 }
 
 # fun: prep
@@ -44,33 +38,10 @@ init() {
 # use: prep
 # api: prerun
 prep() {
-	#dbg_pause
-	declare -Ag SYSTEM_ROLE; SYSTEM_ROLE=(
-		[BASIC]=false
-		[WS]=false
-		[POSEIDON]=fasle
-		[SERVER]=false
-		[LXCHOST]=false
-		[MAINSERVER]=false
-		[CONTAINER]=false
-
-		[NAS]=false
-		[WEB]=false
-		[PXE]=false
-		[X11]=false
-		[HONEY]=false
-		[ROUTER]=false
-		[FIREWALL]=false
-	)
 	import "$LIB" "$LOCAL_LIB_DIR" true
 	import "$FUNC_FILE" "lib/" true
-	create_dir "$LOG_DIR" ### CHECK this should be in log output func
+	create_dir "$LOG_DIR"
 	header
-	declare -gr INI_PATH="${SCRIPT_DIR}/INI/${INI_FILE}"
-
-	read_ini "$INI_PATH"
-	get_args
-	#dbg_restore
 }
 
 # fun: main
@@ -78,8 +49,7 @@ prep() {
 # use: main
 # api: bootstrap
 main() {
-	# check whether SYSTEM_ROLE_container has been checked and if yes,
-	#+ nas,web,ws,pxe,basic or router have been checked
+	import "bootstrap_cfg.sh"
 	create_dir "$SYS_BIN_DIR"
 	if [[ ${SYSTEM_ROLE[CONTAINER]} == true ]]
 	then
@@ -92,12 +62,9 @@ main() {
 				CONTAINER_ROLE_CHOSEN=true
 			fi
 		done
-		if [[ $CONTAINER_ROLE_CHOSEN == true ]]
+		if [[ $CONTAINER_ROLE_CHOSEN != true ]]
 		then
-			dbg_line "CONTAINER ROLE(s) was/were chosen, we're good"
-		else
 			crit_line "NO CONTAINER ROLE was chosen"
-			exit 1
 		fi
 	fi
 	############################################################################

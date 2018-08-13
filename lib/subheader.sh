@@ -78,12 +78,12 @@ log_line() {
 	### screen output
 	if (( "$_IMPORTANCE" <= "$VERBOSITY" ))
 	then
-		if $(( _IMPORTANCE >= 1 )) && $(( _IMPORTANCE <= 2 ))
-		then
-			echo -e "$_MESSAGE" >&2
-		else
-			echo -e "$_MESSAGE"
-		fi
+		#if $(( _IMPORTANCE >= 1 )) && $(( _IMPORTANCE <= 2 ))
+		#then
+		#	echo -e "$_LOG_OUTPUT" >&2
+		#else
+			echo -e "$_LOG_OUTPUT"
+		#fi
 	fi
 	### file output
 	to_log "$_LOG_OUTPUT"
@@ -141,11 +141,11 @@ to_log() {
 # use: crit_line <var> MESSAGE
 # api: logging
 crit_line() {
-	dbg_pause
+	#dbg_pause
 	local _MESSAGE="$1"
 	log_line 1 "$_MESSAGE"
 	exit 1
-	dbg_restore
+	#dbg_restore
 }
 
 # fun: err_line MESSAGE
@@ -153,13 +153,13 @@ crit_line() {
 # use: err_line <var> MESSAGE
 # api: logging
 err_line() {
-	dbg_pause
+	#dbg_pause
 	if [[ -n "$1" ]]
 	then
 		local _MESSAGE="$1"
 		log_line 2 "$_MESSAGE"
 	fi
-	dbg_restore
+	#dbg_restore
 }
 
 # fun: warn_line MESSAGE
@@ -167,10 +167,10 @@ err_line() {
 # use: warn_line <var> MESSAGE
 # api: logging
 warn_line() {
-	dbg_pause
+	#dbg_pause
 	local _MESSAGE="$1"
 	log_line 3 "$_MESSAGE"
-	dbg_restore
+	#dbg_restore
 }
 
 # fun: info_line MESSAGE
@@ -178,10 +178,10 @@ warn_line() {
 # use: info_line <var> MESSAGE
 # api: logging
 info_line() {
-	dbg_pause
+	#dbg_pause
 	local _MESSAGE="$1"
 	log_line 4 "$_MESSAGE"
-	dbg_restore
+	#dbg_restore
 }
 
 # fun: dbg_line MESSAGE
@@ -199,7 +199,7 @@ dbg_line() {
 # use: bash_check
 # api: internal
 bash_check() {
-	dbg_pause
+	#dbg_pause
 	# Making sure this script is run by bash to prevent mishaps
 	if [ "$(ps -p "$$" -o comm=)" != "bash" ]
 	then
@@ -212,7 +212,7 @@ bash_check() {
 		echo "You need bash v4+ to run this script. Aborting..."
 		exit 1
 	fi
-	dbg_restore
+	#dbg_restore
 }
 
 # fun: dbg_check
@@ -223,9 +223,9 @@ dbg_check() {
 	if [ "$DEBUG" = true ]
 	then
 		dbg_line() {
-			dbg_pause
+			#dbg_pause
 			log_line 5 "$1"
-			dbg_restore
+			#dbg_restore
 		}
 		set -x # -o xtrace	# Trace the execution of the script
 		set -e # -o errexit	# Exit on most errors (see the manual)
@@ -242,7 +242,7 @@ dbg_check() {
 # use: su_check
 # api: internal
 su_check() {
-	dbg_pause
+	#dbg_pause
 	if [[ $EUID -ne 0 ]]
 	then
 		echo "This script must be run as root / with sudo"
@@ -250,7 +250,7 @@ su_check() {
 		sudo bash "$COMMAND" "$ARGS"
 		exit "$?"
 	fi
-	dbg_restore
+	#dbg_restore
 }
 
 # stop exiting on most errors ( can be a nusance with (getopt) tests)
@@ -284,6 +284,7 @@ dbg_restore() {
 # use: go_home
 # api: internal
 go_home(){
+	dbg_pause
 	info_line "go_home: Where are we being called from?"
 	declare -g CURRENT_DIR=$(pwd)
 	#CURRENT_DIR+="/"
@@ -294,6 +295,7 @@ go_home(){
 	else
 		info_line "go_home: We're right at home. :-) "
 	fi
+	dbg_restore
 }
 
 # fun: import
