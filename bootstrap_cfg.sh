@@ -16,28 +16,10 @@ declare -Ag CFG=(
 	### SYSTEM ROLE DEFINITIONS ################################################
     # CHOSEN_ROLE => BASIC | WS | SERVER | LXCHOST | HOOFDSERVER | POSEIDON | CONTAINER
     [SYSTEM_ROLE__CHOSEN_ROLE]="POSEIDON"
-    # CONTAINER_ROLE => NAS | WEB | ROUTER | PXE | FIREWALL
+    # CONTAINER_ROLE => BASIC | FIREWALL | HONEY | NAS | PXE | ROUTER | WEB | X11
     [SYSTEM_ROLE__CONTAINER_ROLE]=""
-	############################################################################
-	[SYSTEM_ROLE__BASIC]=false
-	[SYSTEM_ROLE__WS]=false
-	[SYSTEM_ROLE__SERVER]=false
-	[SYSTEM_ROLE__LXCHOST]=false
-
-	[SYSTEM_ROLE__POSEIDON]=false
-	[SYSTEM_ROLE__HOOFDSERVER]=false
-
-	[SYSTEM_ROLE__CONTAINER]=false
-	[SYSTEM_ROLE__FIREWALL]=false
-	[SYSTEM_ROLE__HONEY]=false
-	[SYSTEM_ROLE__NAS]=false
-	[SYSTEM_ROLE__PXE]=false
-	[SYSTEM_ROLE__ROUTER]=false
-	[SYSTEM_ROLE__WEB]=false
-	[SYSTEM_ROLE__X11]=false
-	############################################################################
 )
-
+################################################################################
 	case "$CFG[SYSTEM_ROLE__CHOSEN_ROLE]" in
 		"WS"|"ws"	)
 						CFG[SYSTEM_ROLE__WS]=true			;
@@ -89,22 +71,37 @@ then
 						dbg_line "CONTAINER=ROUTER"		;;
 		*)	err_line "WARNING: Unknown containertype, selecting BASIC"	;;
 	esac;
-}
+
 
 if [[ CFG[SYSTEM_ROLE__BASIC] = true ]]
 then
-	### PPA_KEYS ###############################################################
-	[PPA_LIST__BASIC]
-	GetDeb="http://www.getdeb.net" "deb http://archive.getdeb.net/ubuntu bionic-getdeb apps"
-	Syncthing="https://syncthing.net/" "deb http://apt.syncthing.net/ syncthing release"
-	TeamViewer="https://teamviewer.com" "deb http://linux.teamviewer.com/deb stable main\ndeb http://linux.teamviewer.com/deb preview main"
-	Webmin="http://www.webmin.com" "deb http://download.webmin.com/download/repository sarge contrib"
-	WebUpd8="http://www.webupd8.org/" "deb http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu bionic main\ndeb-src http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu bionic main"
-	[PPA_LIST_WS]
-	DropBox="http://dropbox.com" "deb http://linux.dropbox.com/ubuntu/ bionic main"
-	GIMP="https://launchpad.net/~otto-kesselgulasch/+archive/gimp" "deb http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu bionic main\ndeb-src http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu bionic main"
-	Gnome3="https://launchpad.net/~gnome3-team/+archive/gnome3" "deb http://ppa.launchpad.net/gnome3-team/gnome3/ubuntu bionic main\ndeb-src http://ppa.launchpad.net/gnome3-team/gnome3/ubuntu bionic main"
-	Google_Chrome="http://www.google.com/linuxrepositories/" "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
+	SOURCES_LIST=<<-EOT
+	### GetDeb http://www.getdeb.net
+	deb http://archive.getdeb.net/ubuntu bionic-getdeb apps
+	### Syncthing https://syncthing.net/
+	deb http://apt.syncthing.net/ syncthing release
+	### TeamViewer https://teamviewer.com
+	deb http://linux.teamviewer.com/deb stable main
+	deb http://linux.teamviewer.com/deb preview main
+	### Webmin http://www.webmin.com
+	deb http://download.webmin.com/download/repository sarge contrib
+	### WebUpd8 http://www.webupd8.org/
+	deb http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu bionic main
+	deb-src http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu bionic main
+	EOT
+fi
+if [[ CFG[SYSTEM_ROLE__WS] = true ]]
+then
+	SOURCES_LIST+=<<-EOT
+	### DropBox http://dropbox.com
+	deb http://linux.dropbox.com/ubuntu/ bionic main
+	### GIMP https://launchpad.net/~otto-kesselgulasch/+archive/gimp
+	deb http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu bionic main
+	deb-src http://ppa.launchpad.net/otto-kesselgulasch/gimp/ubuntu bionic main
+	### Gnome3 https://launchpad.net/~gnome3-team/+archive/gnome3
+	deb http://ppa.launchpad.net/gnome3-team/gnome3/ubuntu bionic main
+	deb-src http://ppa.launchpad.net/gnome3-team/gnome3/ubuntu bionic main
+	### Google_Chrome="http://www.google.com/linuxrepositories/" "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
 	Google_Webdesigner="http://www.google.com/linuxrepositories/" "deb [arch=amd64] http://dl.google.com/linux/webdesigner/deb/ stable main"
 	Highly_Explosive="https://launchpad.net/~dhor/+archive/myway" "deb http://ppa.launchpad.net/dhor/myway/ubuntu bionic main\ndeb-src http://ppa.launchpad.net/dhor/myway/ubuntu bionic main"
 	Mega="https://mega.co.nz/" "deb http://mega.nz/linux/MEGAsync/xUbuntu_16.04/ ./"

@@ -30,6 +30,25 @@ init() {
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VER="$VER_MAJOR.$VER_MINOR.$VER_PATCH-$VER_STATE"
 	declare -gr VER="Ver$SHORT_VER build $BUILD"
+	###
+	declare -Ag CFG=(
+		[SYSTEM_ROLE__BASIC]=false
+		[SYSTEM_ROLE__WS]=false
+		[SYSTEM_ROLE__SERVER]=false
+		[SYSTEM_ROLE__LXCHOST]=false
+
+		[SYSTEM_ROLE__POSEIDON]=false
+		[SYSTEM_ROLE__HOOFDSERVER]=false
+
+		[SYSTEM_ROLE__CONTAINER]=false
+		[SYSTEM_ROLE__FIREWALL]=false
+		[SYSTEM_ROLE__HONEY]=false
+		[SYSTEM_ROLE__NAS]=false
+		[SYSTEM_ROLE__PXE]=false
+		[SYSTEM_ROLE__ROUTER]=false
+		[SYSTEM_ROLE__WEB]=false
+		[SYSTEM_ROLE__X11]=false
+	)
 }
 
 # fun: prep
