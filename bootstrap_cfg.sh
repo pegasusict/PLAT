@@ -1,20 +1,21 @@
 #!/bin/bash
 ################################################################################
-# Pegasus' Linux Administration Tools	#				      Bootstrap Config #
-# (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
-# License: MIT							#   Please keep my name in the credits #
+# Pegasus' Linux Administration Tools	#		      Bootstrap Config #
+# (C)2017-2018 Mattijs Snepvangers	#		 pegasus.ict@gmail.com #
+# License: MIT				#   Please keep my name in the credits #
 ################################################################################
 # cfg ver: 0.0.0 PRE-ALPHA
 # cfg build 20180812
 
 declare -Ag CFG=(
-	### GENERAL SETTINGS #######################################################
-	# Verbosity: 1=CRITICAL 2=ERROR 3=WARNING 4=VERBOSE 5=DEBUG
-	[MAIN__VERBOSITY]=2
-	[MAIN__REBOOT_TIME]="23:59"
+    ### GENERAL SETTINGS #######################################################
+    # Verbosity: 1=CRITICAL 2=ERROR 3=WARNING 4=VERBOSE 5=DEBUG
+    [MAIN__VERBOSITY]=2
+    [MAIN__REBOOT_TIME]="23:59"
 
-	### SYSTEM ROLE DEFINITIONS ################################################
-    # CHOSEN_ROLE => BASIC | WS | SERVER | LXCHOST | HOOFDSERVER | POSEIDON | CONTAINER
+    ### SYSTEM ROLE DEFINITIONS ################################################
+    # CHOSEN_ROLE => BASIC | WS | SERVER | LXCHOST | HOOFDSERVER | POSEIDON |
+    #                 CONTAINER
     [SYSTEM_ROLE__CHOSEN_ROLE]="POSEIDON"
     # CONTAINER_ROLE => BASIC | FIREWALL | HONEY | NAS | PXE | ROUTER | WEB | X11
     [SYSTEM_ROLE__CONTAINER_ROLE]=""
@@ -33,12 +34,12 @@ declare -Ag CFG=(
 						CFG[SYSTEM_ROLE__POSEIDON]=true		;
 						CFG[SYSTEM_ROLE__NAS]=true			;
 						dbg_line "role=POSEIDON"	;;
-		"HOOFDSERVER"|"hoofdserver"	)
+		"MAINSERVER"|"mainserver"	)
 						CFG[SYSTEM_ROLE__BASIC]=true		;
 						CFG[SYSTEM_ROLE__SERVER]=true		;
 						CFG[SYSTEM_ROLE__MAIN_SERVER]=true	;
 						CFG[SYSTEM_ROLE__LXC_HOST]=true		;
-						dbg_line "role=HOOFDSERVER"	;;
+						dbg_line "role=MAIN_SERVER"	;;
 		"CONTAINER"|"container"	)
 						CFG[SYSTEM_ROLE__BASIC]=true		;
 						CFG[SYSTEM_ROLE__SERVER]=true		;
@@ -69,6 +70,9 @@ then
 		"ROUTER"|"router"	)
 						CFG[SYSTEM_ROLE__ROUTER]=true	;
 						dbg_line "CONTAINER=ROUTER"		;;
+		"HONEYPOT"|"honeypot"	)
+						CFG[SYSTEM_ROLE__HONEY_POT]=true	;
+						dbg_line "CONTAINER=HONEY POT"		;;
 		*)	err_line "WARNING: Unknown containertype, selecting BASIC"	;;
 	esac;
 
