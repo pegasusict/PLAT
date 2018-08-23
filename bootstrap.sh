@@ -64,9 +64,9 @@ prep() {
 }
 
 # fun: main
-# txt: main bootstrap thread
+# txt: main thread
 # use: main
-# api: bootstrap
+# api: plat
 main() {
 	import "bootstrap_cfg.sh"
 
