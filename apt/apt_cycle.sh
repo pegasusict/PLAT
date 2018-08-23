@@ -180,7 +180,7 @@ apt_upgrade() {
 # use: apt_remove
 # api: pbfl::apt
 apt_remove() {
-	info_line "Cleaning up obsolete packages"
+	info_line "apt_remove: Cleaning up obsolete packages"
 	apt-get -qqy auto-remove --purge 2>&1 | dbg_line
 }
 
@@ -189,7 +189,7 @@ apt_remove() {
 # use: apt_clean
 # api: pbfl::apt
 apt_clean() {
-	info_line "Clearing old/obsolete package cache"
+	info_line "apt_clean: Clearing old/obsolete package cache"
 	apt_cmd autoclean
 }
 
@@ -198,7 +198,7 @@ apt_clean() {
 # use: apt_fix_deps
 # api: pbfl::apt
 apt_fix_deps() {
-	info_line "Fixing any broken dependencies if needed"
+	info_line "apt_fix_deps:  Fixing any broken dependencies if needed"
 	apt_cmd --fix-broken install
 }
 
@@ -233,7 +233,9 @@ apt_cycle() {
 	clean_sources
 	apt_update
 	apt_fix_deps
+
 	apt_upgrade
+
 	apt_remove
 	apt_clean
 	reboot_check
@@ -247,7 +249,7 @@ main() {
 	info_line "$START_TIME ## Starting Update Process #######################"
 	apt_cycle
 	END_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
-	info_line"$END_TIME ## Update Process Finished ########################"
+	info_line "$END_TIME ## Update Process Finished ########################"
 }
 #############################################################
 prep
