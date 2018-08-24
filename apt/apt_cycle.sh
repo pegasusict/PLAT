@@ -29,11 +29,13 @@ init() {
 	declare -gr VER="Ver$SHORT_VER build $BUILD"
 }
 
-dbg_line() {	echo $1	; }
+dbg_line() {	:	; }
 info_line() {	echo $1	; }
 warn_line() {	echo $1	; }
 err_line() {	echo $1	; }
 crit_line() {	echo $1	;	exit 1;	}
+dbg_pause() { :; }
+dbg_restore() { :; }
 
 # fun: bash_check
 # txt: Checks if the script is being run using Bash v4+
@@ -76,8 +78,8 @@ reboot_check() {
 	info_line "checking for reboot requirement"
 	if [ -f /var/run/reboot-required ]
 	then
-		info_line "REBOOT REQUIRED, sheduled for 23:59"
-		shutdown -r 23:59 2>&1
+		info_line "REBOOT REQUIRED, sheduled for 23:59, use shutdown -c to cancel"
+		shutdown -r --no-wall 23:59 > /dev/null
 	else
 		info_line "No reboot required"
 	fi
@@ -233,9 +235,7 @@ apt_cycle() {
 	clean_sources
 	apt_update
 	apt_fix_deps
-
 	apt_upgrade
-
 	apt_remove
 	apt_clean
 	reboot_check
