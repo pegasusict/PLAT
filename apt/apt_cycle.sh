@@ -22,7 +22,7 @@ init() {
 	declare -gir VER_MAJOR=1
 	declare -gir VER_MINOR=0
 	declare -gir VER_PATCH=0
-	declare -gr VER_STATE="ALPHA"
+	declare -gr VER_STATE="RC1"
 	declare -gir BUILD=20180823
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VER="$VER_MAJOR.$VER_MINOR.$VER_PATCH-$VER_STATE"
