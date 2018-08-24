@@ -1,0 +1,85 @@
+apt install lxd zfsutils-linux juju
+
+lxd init
+
+lxc config set core.https_address [::]
+lxc config set core.trust_password some-secret-string
+
+lxc config set images.remote_cache_expiry 30
+lxc config set images.auto_update_interval 24
+lxc config set images.auto_update_cached true
+
+####
+
+A full list of the Ubuntu images can be obtained with:
+lxc image list ubuntu:
+
+A list of all the aliases (friendly names) available on a given remote can also be obtained with (for the “ubuntu:” remote):
+lxc image alias list ubuntu:
+
+
+###
+
+lxc profile list
+lxc profile show <profile>
+lxc profile edit <profile>
+
+lxc profile apply <container> <profile1>,<profile2>,<profile3>,...
+
+#####
+lxc config show <container>
+lxc config show --expanded <container>
+lxc config edit <container>
+lxc config set <container> <key> <value>
+lxc config device add my-container kvm unix-char path=/dev/kvm
+
+
+
+#create & start
+lxc launch ubuntu: <container-name>
+
+# just create, don't start
+lxc init ubuntu: <container-name>
+
+##################
+
+lxc list
+
+lxc info <container>
+
+#################
+
+lxc start <container>
+lxc stop <container> [--force]
+lxc restart <container> [--force]
+lxc pause <container>
+lxc delete <container> [--force (if running)]
+
+#####################
+
+lxc exec <container> bash
+lxc exec <container> -- ls -lh /
+################
+lxc file pull <container>/<path> <dest>\
+lxc file push <source> <container>/<path>
+lxc file edit <container>/<path>
+
+############################
+
+lxc snapshot <container> <snapshot name>
+lxc info <container>
+lxc restore <container> <snapshot name>
+lxc move <container>/<snapshot name> <container>/<new snapshot name>
+lxc copy <source container>/<snapshot name> <destination container>
+lxc delete <container>/<snapshot name>
+
+##################################
+
+lxc copy <source container> <destination container>
+lxc move <old name> <new name>
+
+### RESOURCE LIMITS
+lxc config set CONTAINER KEY VALUE
+lxc profile set PROFILE KEY VALUE
+lxc config device set CONTAINER DEVICE KEY VALUE
+lxc profile device set PROFILE DEVICE KEY VALUE
