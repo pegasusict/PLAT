@@ -28,14 +28,15 @@ long_line_behaviour=1
 long_line_column=79
 
 [files]
-current_page=4
+current_page=5
 FILE_NAME_0=954;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Fbootstrap_cfg.sh;0;4
 FILE_NAME_1=0;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Fbootstrap.sh;0;4
 FILE_NAME_2=688;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Flib%2Fsubheader.sh;0;4
 FILE_NAME_3=1167;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Fdefault.inc.bash;0;4
 FILE_NAME_4=708;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Frsync.sh;0;4
-FILE_NAME_5=5661;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Findex.inc.bash;0;4
-FILE_NAME_6=2287;PHP;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2Findex%202.php;0;4
+FILE_NAME_5=231;None;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2Flxc.txt;0;4
+FILE_NAME_6=5661;Sh;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2F%5B%20GitHub%20%5D%2FPLAT%2FPBFL%2Findex.inc.bash;0;4
+FILE_NAME_7=2287;PHP;0;EUTF-8;1;1;1;%2Fhome%2Fpegasus%2Findex%202.php;0;4
 
 [VTE]
 last_dir=/home/pegasus/[ GitHub ]/PLAT
