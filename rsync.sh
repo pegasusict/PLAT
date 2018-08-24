@@ -11,8 +11,8 @@ declare -gr LOG_DATE=$(date +"%Y%m%d_%H%M%S")
 init() {
 	declare -gr VER_MAJOR=0
 	declare -gr VER_MINOR=4
-	declare -gr VER_PATCH=2
-	declare -gr BUILD=20180825
+	declare -gr VER_PATCH=3
+	declare -gr BUILD=20180824
 	######################################
 	declare -gr	SCRIPT_TITLE="RSync Script"
 }
