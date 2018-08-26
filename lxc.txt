@@ -1,16 +1,3 @@
-apt install lxd zfsutils-linux juju
-
-lxd init
-
-lxc config set core.https_address [::]
-lxc config set core.trust_password some-secret-string
-
-lxc config set images.remote_cache_expiry 30
-lxc config set images.auto_update_interval 24
-lxc config set images.auto_update_cached true
-
-####
-
 A full list of the Ubuntu images can be obtained with:
 lxc image list ubuntu:
 
