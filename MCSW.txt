@@ -1,33 +1,22 @@
-Current: working on CORE branch, CFG file (array style)
+>>> Current:
+Working on CORE branch, CFG file (array style)
+>>>> TODO:
+clean up master
+update readme
+
 ##################################################################
 > Must:
 Bootstrap
 Maintenance
 
-
-
 ##################################################################
 > Could:
 cfg parsing, ini style
 
-
-
-
 #################################################################
 > Should:
-
-
-
-
 
 #################################################################
 > Would:
 email reports
 
-
-
-
-#################################################################
->>>> TODO:
-clean up master
-update readme
