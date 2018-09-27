@@ -69,12 +69,12 @@ init() {
 ##### FUNCTIONS #################################################################
 apt_cycle() {
     cr_log_line "Starting Update Process"
-    cr_sec_line "Updating apt cache"				; apt-get -qqy update
-    cr_sec_line "Fixing any broken dependencies if needed"	; apt-get -qqy --fix-broken install
-    cr_sec_line "checking for distribution upgrade"		; apt-get -qqy dist-upgrade
-    cr_sec_line "Updating installed packages"			; apt-get -qqy --allow-unauthenticated upgrade
-    cr_sec_line "Cleaning up obsolete packages"			; apt-get -qqy auto-remove
-    cr_sec_line "Clearing old/obsolete package cache"		; apt-get -qqy autoclean
+    cr_sec_line "Updating apt cache"                        ; apt-get -qqy update
+    cr_sec_line "Fixing any broken dependencies if needed"  ; apt-get -qqy --fix-broken install
+    cr_sec_line "checking for distribution upgrade"         ; apt-get -qqy dist-upgrade
+    cr_sec_line "Updating installed packages"               ; apt-get -qqy --allow-unauthenticated upgrade
+    cr_sec_line "Cleaning up obsolete packages"             ; apt-get -qqy auto-remove
+    cr_sec_line "Clearing old/obsolete package cache"       ; apt-get -qqy autoclean
 }
 chk_result() { if [[ $1 -gt 0 ]] ; then cr_sec_line "$2" ; fi ; }
 cleanup() {
@@ -82,7 +82,7 @@ cleanup() {
     ### GARBAGE ####################################################################
     cr_log_line "Removing files from trash older than $TRASH_AGE days"
     _RESULT=$(trash-empty "$TRASH_AGE")
-    chk_result $? "$_RESULT"`
+    chk_result $? "$_RESULT"
     ###
     cr_log_line "Clearing user cache"
     _RESULT=$(find /home/* -type f \( -name '*.tmp' -o -name '*.temp' -o -name '*.swp' -o -name '*~' -o -name '*.bak' -o -name '..netrwhist' \) -delete)
@@ -106,34 +106,49 @@ cleanup() {
     chk_result $? "$_RESULT"
 }
 cont_list() {
+    ### TODO ### (20180926 pegasusict) add special operations for frozen containers
     cr_log_line "Scanning for containers"
-    declare -g ACT_CONT		; declare -g ACT_CONT_CNT
-    declare -g INACT_CONT	; declare -g INACT__CONT	; declare -g INACT_CONT_CNT
-    #
-    local _GREP1	;	local _GREP2
-    _GREP1=" | grep -Po \"\b[a-zA-Z][-a-zA-Z0-9]{0,61}[a-zA-Z0-9](?=\s*\| " ; _GREP2=")\"" ; IFS=$'\n'
-    #
-    ACT_CONT="$(lxc list -c ns | grep -i running)"
-    INACT_CONT="$(lxc list -c ns | grep -i stopped)" ; INACT_CONT+="$(lxc list -c ns | grep -i frozen)"
-    ACT_CONT=$(echo "${ACT_CONT}${GREP1}RUNNING${_GREP2}")
-    INACT__CONT=$(echo "${INACT_CONT}${GREP1}STOPPED${_GREP2}") ; INACT__CONT+=$(echo "${INACT_CONT}${GREP1}FROZEN${_GREP2}")
-    INACT_CONT="$_INACT__CONT"		;	unset INACT__CONT
-    ACT_CONT_CNT=${#ACT_CONT[@]}	;	INACT_CONT_CNT=${#INACT_CONT[@]}
-    #
-    if [ $ACT_CONT_CNT -gt 0 ] ; then
-        create_sec_line "$ACT_CONT_CNT active containers found:"
-        for (( i=0; i<ACT_CONT_CNT; i++ )) ; do create_sec_line "-> ${ACT_CONT[$i]}" ; done
-    else create_sec_line "No active containers found" ; fi
-    if [ $INACT_CONT_CNT -gt 0 ] ; then
-        create_sec_line "$INACT_CONT_CNT inactive containers found:"
-        for (( i=0; i<INACT_CONT_CNT; i++ )) ; do create_sec_line "-> ${INACT_CONT[$i]}" ; done
-    else create_sec_line "No inactive containers found" ; fi
+    declare -g ACT_CONT     ; declare -g ACT__CONT      ;declare -g ACT_CONT_CNT
+    declare -g INACT_CONT   ; declare -g INACT__CONT    ; declare -g INACT_CONT_CNT
+
+    ACT__CONT=$(lxc list -c ns | grep -i running)
+    INACT__CONT=$(lxc list -c ns | grep -i stopped)
+    ACT__CONT=$(echo "$ACT__CONT" | grep -Po "\b[a-zA-Z][-a-zA-Z0-9]{0,61}[a-zA-Z0-9](?=\s*\| RUNNING)")
+    INACT__CONT=$(echo "$INACT__CONT" | grep -Po "\b[a-zA-Z][-a-zA-Z]{0,61}[a-zA-Z0-9](?=\s*\| STOPPED)")
+
+    IFS=$'\n'
+    ACT_CONT=($ACT__CONT)
+    unset ACT__CONT
+    INACT_CONT=($INACT__CONT)
+    unset INACT__CONT
+    ACT_CONT_CNT=${#ACT_CONT[@]}
+    INACT_CONT_CNT=${#INACT_CONT[@]}
+    if [ $ACT_CONT_CNT -gt 0 ]
+    then
+        cr_sec_line "$ACT_CONT_CNT active containers found:"
+        for (( i=0; i<ACT_CONT_CNT; i++ ))
+        do
+            cr_sec_line "-> ${ACT_CONT[$i]}"
+        done
+    else
+        cr_sec_line "No active containers found"
+    fi
+    if [ $INACT_CONT_CNT -gt 0 ]
+    then
+        cr_sec_line "$INACT_CONT_CNT inactive containers found:"
+        for (( i=0; i<INACT_CONT_CNT; i++ ))
+        do
+            cr_sec_line "-> ${INACT_CONT[$i]}"
+        done
+    else
+        cr_sec_line "No inactive containers found"
+    fi
 }
 cont_maintenance() {
     cr_log_line "Starting Maintenance on active containers"
     for (( i=0; i<ACT_CONT_CNT; i++ )) ; do
         lxc file push "${SYS_BIN_DIR}${C_SCRIPT}" "${ACT_CONT[$i]}${SYS_BIN_DIR}${M_SCRIPT}"
-        lxc exec "${ACT_CONT[$i]}${SYS_BIN_DIR}${M_SCRIPT}"
+        lxc exec "${ACT_CONT[$i]}" "${SYS_BIN_DIR}${M_SCRIPT}"
     done
 }
 cr_line() {
@@ -144,7 +159,7 @@ cr_line() {
     for (( i=${#_LINE}; i<$((_LEN-11));	i+=10 )) ; do _LINE+="##########"							; done
     for (( i=${#_LINE}; i<$((_LEN-6));	i+=5 ))  ; do _LINE+="#####"								; done
     for (( i=${#_LINE}; i<$((_LEN-1));	i+=2 ))  ; do _LINE+="##"								; done
-    for (( i=${#_LINE}; i<$((_LEN-0));	i+1 ))   ; do _LINE+="#"								; done
+    for (( i=${#_LINE}; i<$((_LEN-0));	i+=1 ))  ; do _LINE+="#"								; done
     echo "$_LINE"
 }
 cr_log_line() { local _MSG ; _MSG="$1" ; local _LINE ; _LINE="$(get_time) ## $_MSG #" ; _LINE=$(cr_line 80 "$_LINE") ; to_log "$_LINE" ; }
@@ -165,12 +180,12 @@ sys_bak() {
     local _OLD_PWD ; _OLD_PWD=$(pwd) ; local _RESULT
     #
     cr_log_line "Perform full system backup to tape"
-    _RESULT=$(mt -f /dev/st0 rewind 2>&1) ; check_output $? "$_RESULT" ; _RESULT=""
+    _RESULT=$(mt -f /dev/st0 rewind 2>&1) ; chk_result $? "$_RESULT" ; _RESULT=""
     cd /
-    check_output $(tar -cpzf /dev/st0 -v –exclude=cache –exclude=/dev/ –exclude=/lost+found/ \
-    –exclude=/media/ –exclude=/mnt/ –exclude=/proc/ –exclude=/sys/ –exclude=/tmp/ \
-    –exclude=/var/cache/apt/ –exclude="$LOG_FILE" 2>&1) ; check_output $? "$_RESULT" ; _RESULT=""
-    #mt -f /dev/st0 offline
+    _RESULT=$(tar -cpzf /dev/st0 -v --exclude-caches --exclude=/dev --exclude=/lost+found\
+    --exclude=/proc --exclude=/sys --exclude=/tmp --exclude=/var/cache --exclude=/var/lib/lxcfs \
+    --exclude="$LOG_FILE" --exclude=/var/lib/lxd/storage-pools/lxd/containers /) ; chk_result $? "$_RESULT" ; _RESULT=""
+    mt -f /dev/st0 offline
     cd $_OLD_PWD
 }
 to_log() { if [[ "$debug" == true ]] ; then echo "$1" | tee -a "$LOG_FILE" ; else echo "$1" >> "$LOG_FILE" ; fi; }
@@ -185,5 +200,5 @@ cr_snapshots
 sys_bak
 cont_maintenance
 cleanup
-sh_reboot
+shed_reboot
 cr_log_line "Maintenance Complete"
