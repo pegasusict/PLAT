@@ -414,8 +414,8 @@ main
 
 # check whether systemrole_container has been checked and if yes,
 #+ whether nas,web,ws,pxe,basic or router have been checked
-if [[ $SYSTEM_ROLE[CONTAINER == true ]] ; then
-	if [[ $SYSTEM_ROLE[NAS == true ]] || [[ $SYSTEM_ROLE[WEB == true ]] || [[ $SYSTEM_ROLE[WS == true ]] || [[ $SYSTEM_ROLE[NAS == true ]] || [[ $SYSTEM_ROLE[PXE == true ]] || [[ $SYSTEM_ROLE[BASIC == true ]] || [[ $SYSTEM_ROLE[ROUTER == true ]]
+if [[ $SYSTEM_ROLE[CONTAINER] == true ]] ; then
+	if [[ $SYSTEM_ROLE[NAS] == true ]] || [[ $SYSTEM_ROLE[WEB] == true ]] || [[ $SYSTEM_ROLE[WS] == true ]] || [[ $SYSTEM_ROLE[NAS] == true ]] || [[ $SYSTEM_ROLE[PXE] == true ]] || [[ $SYSTEM_ROLE[BASIC] == true ]] || [[ $SYSTEM_ROLE[ROUTER] == true ]]
 	then
 		echo '' # we're good :-)
 	else # somebody SNAFU'd
