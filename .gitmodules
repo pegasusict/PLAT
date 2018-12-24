@@ -19,9 +19,6 @@
 [submodule "plat_aptcacher"]
 	path = plat_aptcacher
 	url = https://github.com/pegasusict/plat_aptcacher
-[submodule "PLAT_container_toolset"]
-	path = PLAT_container_toolset
-	url = https://github.com/pegasusict/PLAT_container_toolset
 [submodule "PLAT_internet_watchdog"]
 	path = PLAT_internet_watchdog
 	url = https://github.com/pegasusict/PLAT_internet_watchdog
