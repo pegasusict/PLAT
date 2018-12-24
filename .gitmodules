@@ -13,6 +13,3 @@
 [submodule "PLAT_Internet_WatchDog"]
 	path = PLAT_Internet_WatchDog
 	url = https://github.com/pegasusict/PLAT_Internet_WatchDog
-[submodule "PLAT_Manager"]
-	path = PLAT_Manager
-	url = https://github.com/pegasusict/PLAT_Manager
