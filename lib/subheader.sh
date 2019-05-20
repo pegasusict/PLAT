@@ -7,6 +7,9 @@
 # Version: 0.2.41-ALPHA
 # Build: 20180808
 
+# enable bash strict mode
+set -euo pipefail; IFS=$'\n\t'
+
 unset CDPATH				# prevent mishaps using cd with relative paths
 declare -gr COMMAND="$0"	# Making the command that called this script portable
 declare -gr SCRIPT_FULL="${COMMAND##*/}"	# Making Commandline "portable"
