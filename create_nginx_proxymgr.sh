@@ -2,6 +2,7 @@
 
 mkdir -p /var/nginxproxymanager
 cd /var/nginxproxymanager/
+
 YAML = <<<EOT
   version: '3'
 services:
@@ -32,6 +33,7 @@ services:
     volumes:
       - ./data/mysql:/var/lib/mysql
 EOT
+
 echo -e $YAML > docker-compose.yml
 
 docker-compose up -d
