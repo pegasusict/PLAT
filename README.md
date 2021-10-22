@@ -1,5 +1,45 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6975700247d543379109da35892a2e73)](https://www.codacy.com/app/pegasus.ict/PLAT?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=pegasusict/PLAT&amp;utm_campaign=Badge_Grade)
 
+```
+                             .:/- `:+shdddhys+-             
+                          .+yy: :sdddddhyoooosyh+`          
+                        -sdd/ -yddddh+-         ./-         
+                       +ddd- +dddddy.                       
+                    ` oddd/ /dddddh`                        
+                   :o.dddh `dddddd+                         
+                  :d./ddds /dddddd/     ....`  ./-          
+                  hy +ddds /dddddds   `+hhhyyyysdhy+.       
+      --         `dy /dddd``ddddddd-/yhhyso/```-//.+y+      
+     +y          `dd``dddds /ddddddy-sdd+`         ssyo     
+    +d:           ydo +dddds`/hdddddyodd/`     `-:.-//d`    
+   .dd            /dd/ oddddy/-ohddddy+hy-    ohohhs..d:    
+   +dh             ydho./hddddho:+ydddh+oh+`  dh `-+y-sh.   
+/: sdh             .hddh+:ohddddhs//ydddy+yy- +d-   /yyo-`  
+h/ sdd-             :hdddhs/+shddddy/:sddhssh+`oh.   `-/ys+`
+yy`+dds             /-hdddddyo/+shdddy//yddhohs.+h:-/ss+-`hs
++dy/ddd/            /o-ohdddddhy+::ohdds:oddh/yh.:o+/.-+y ho
+oydhdddh/            sy::shddddddhs:-/ydh/:hdh-yh`   -hyd.ys
+sshdddddds.        ```sdy/:oydddddddy/.:hd+-hdy.hs  .yy:dood
+.yddddddddho-`    .yys.+hdyo:/+syhddddy/-hd-/dd-od/+hs`hhoy/
+ `+hddddddddhyo++ohyohy::ydddys+/:/+yddd:+do dd++ddhs+.://` 
+   .:oyyhhhhhhyddd/` -yds:/yddddddys//yd:-d/ hd:ydd/hhy+-.  
+       `.----.`hds    `:yhy+/shddddddy:+ -o`/ho+dd//hh+:hh` 
+               yd/       -ohhs.:oyhddds  ` ./:sdh/ `ho-ydy` 
+               od+         /dd-   .:/:.   `:ohhs. `sy-hh+`  
+               -dh`        .ddy+:-....-/+shhy+.  +ys+hy-    
+                +ds`        sddhhhhhhhhys+:.    .hhy+-      
+                 :yy:`      .hdy-...:/:         `.-.        
+                   :ss/.     -hds` :hh-                     
+                     .ydo     :ddo:dd+-----::`              
+                      /dh    -hdo`++oooo++//oy-`            
+                      /dd` .sdd/.ooooooooooysydy/           
+                      -hd/..:oys+:`         //-`            
+                        .:osso/::+ss+:`                     
+                             .:+syo/:/hs                    
+                                  ./dy:do`                  
+                                    /osyho                  
+
+```
 # PLAT
 Pegasus' Linux Administration Tools is a set of bash scripts that make life easier for the Admin/new user on Ubuntu Server/Desktop derivatives.
 It's main purpose is to help with bootstrapping systems and tedious repetitive tasks which make up a large portion of Linux administration.
