@@ -1,7 +1,9 @@
-#!/usr/bin/env bash
-clear
-apt-get update; apt-get install -qy apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+#!/bin/sh
 
+clear
+apt-get update; apt-get install -qy apt-transport-https ca-certificates curl gnupg-agent software-properties-common screen mc
+
+#curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
@@ -38,4 +40,3 @@ export CONT_NAME="portainer"
 
 docker run -d -p 9000:9000 --restart always -v /var/run/docker.sock:/var/run/docker.sock -v ~/portainer:/data \
 --name ${CONT_NAME} portainer
-
