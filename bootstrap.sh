@@ -5,7 +5,7 @@ declare -g VERBOSITY=2
 declare -g LOG_FILE_CREATED	;	LOG_FILE_CREATED=false
 ############################################################################
 # Pegasus' Linux Administration Tools #							 Bootstrap #
-# (C)2017-2018 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
+# (C)2017-2024 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
 # License: MIT						  # Please keep my name in the credits #
 ############################################################################
 source lib/subheader.sh
@@ -26,10 +26,10 @@ init() {
 	##### PROGRAM INFO #####
 	declare -gr SCRIPT_TITLE="Bootstrap"
 	declare -gir VER_MAJOR=1
-	declare -gir VER_MINOR=4
-	declare -gir VER_PATCH=60
+	declare -gir VER_MINOR=5
+	declare -gir VER_PATCH=0
 	declare -gr VER_STATE="ALPHA"
-	declare -gir BUILD=20180808
+	declare -gir BUILD=20240126
 	###
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VER="$VER_MAJOR.$VER_MINOR.$VER_PATCH-$VER_STATE"
@@ -53,7 +53,6 @@ prep() {
 		[LXCHOST]=false
 		[MAINSERVER]=false
 		[CONTAINER]=false
-
 		[NAS]=false
 		[WEB]=false
 		[PXE]=false
@@ -63,12 +62,14 @@ prep() {
 		[FIREWALL]=false
 	)
 	import "$LIB" "$LOCAL_LIB_DIR" true
-	import "$FUNC_FILE" "lib/" true
-	create_dir "$LOG_DIR" ### CHECK this should be in log output func
+	import "$FUNC_FILE" "${SCRIPT_DIR}/lib/" true
+	create_log_file "${SCRIPT_DIR}/LOGS"
 	header
+	declare -gr INI_PREFIX="INI"
 	declare -gr INI_PATH="${SCRIPT_DIR}/INI/${INI_FILE}"
-
 	read_ini "$INI_PATH"
+
+	merge_ini_vals SYSTEM_ROLE
 	get_args
 	#dbg_restore
 }
@@ -119,8 +120,8 @@ main() {
 			for PPA_KEY in $INI_PPA_KEYS
 			do
 				info_line "Adding $PPA_KEY PPA key"
-				echo "add_ppa" "$PPA_KEYS[PPA_KEY][0]" "$PPA_KEYS[PPA_KEY][1]" "$PPA_KEYS[PPA_KEY][2]"
-				add_ppa_key "$PPA_KEYS[PPA_KEY][0]" "$PPA_KEYS[PPA_KEY][1]" "$PPA_KEYS[PPA_KEY][2]"
+				info_line "add_ppa $INI_PPA_KEYS[PPA_KEY][0] $INI_PPA_KEYS[PPA_KEY][1] $INI_PPA_KEYS[PPA_KEY][2]"
+				add_ppa_key "$INI_PPA_KEYS[PPA_KEY][0]" "$INI_PPA_KEYS[PPA_KEY][1]" "$INI_PPA_KEYS[PPA_KEY][2]"
 			done
 		fi
 	done
@@ -134,11 +135,22 @@ main() {
 	############################################################################
 	############################################################################
 	info_line "Installing extra packages"
+	for ROLE in ${SYSTEM_ROLE[@]}
+	do
+		if [[ "$ROLE"==true ]]
+		then
+		info_line "Installing packages for SYSTEM_ROLE $ROLE"
+			for PKG in $INI_PACKAGES
+			do
+				i
+			done
+		fi
+	done
 	### TODO(pegasusict): Rewrite to incorporate INI
 	if [[ ${SYSTEM_ROLE[BASIC]} == true ]]
 	then
-		info_line "Installing packages for SYSTEM_ROLE POSEIDON"
-		apt-inst mc
+		info_line "Installing packages for SYSTEM_ROLE BASIC"
+		apt-inst "${PACKAGES[SYSTEMROLE]}"
 	fi
 	if [[ ${SYSTEM_ROLE[WS]} == true ]]
 	then

@@ -2,10 +2,12 @@
 ################################################################################
 # Pegasus' Linux Administration Tools	#						PLAT Installer #
 # pegasus.ict@gmail.com					#	https://pegasusict.github.io/PLAT/ #
-# (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
+# (C)2017-2024 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
 # License: MIT							#	Please keep my name in the credits #
 ################################################################################
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
+declare -g VERBOSITY=5
+
 source lib/subheader.sh
 echo "$START_TIME ## Starting PLAT Install Process #######################"
 
@@ -20,9 +22,9 @@ init() {
 	declare -gr SCRIPT_TITLE="PLAT Installer"
 	declare -gr VER_MAJOR=0
 	declare -gr VER_MINOR=0
-	declare -gr VER_PATCH=9
+	declare -gr VER_PATCH=10
 	declare -gr VER_STATE="PRE-ALPHA"
-	declare -gr BUILD=20180709
+	declare -gr BUILD=20240124
 	###
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VER="$VER_MAJOR.$VER_MINOR.$VER_PATCH-$VER_STATE"
@@ -35,7 +37,6 @@ init() {
 # use: prep
 # api: prerun
 prep() {
-	declare -g VERBOSITY=5
 	import "PBFL/default.inc.bash"
 	create_dir "$LOG_DIR"
 	header
@@ -48,7 +49,6 @@ prep() {
 # use: main
 # api: PLAT::install
 main(){
-	import "PBFL/default.inc.bash"
 	# askuser install complete suite or just some bits?
 	# default install: PLAT & PBFL
 	# optional: WordPress, Container, apt_cacher, Internet_Watchdog,

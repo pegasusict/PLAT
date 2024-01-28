@@ -155,10 +155,11 @@ check_role() {
 	case "$_ROLE" in
 		"ws"			)	SYSTEMROLE_WS=true			;	dbg_line "role=ws"			;;
 		"poseidon"		)	SYSTEMROLE_WS=true			;
-							SYSTEMROLE_SERVER=true		;
-							SYSTEMROLE_LXCHOST=true		;
+							#SYSTEMROLE_SERVER=true		;
+							#SYSTEMROLE_LXCHOST=true		;
 							SYSTEMROLE_POSEIDON=true	;
-							SYSTEMROLE_NAS=true			;	dbg_line "role=poseidon"	;;
+							#SYSTEMROLE_NAS=true			;
+							dbg_line "role=poseidon"	;;
 		"mainserver"	)	SYSTEMROLE_SERVER=true		;
 							SYSTEMROLE_MAINSERVER=true	;
 							SYSTEMROLE_LXCHOST=true		;	dbg_line "role=mainserver"	;;

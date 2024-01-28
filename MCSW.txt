@@ -6,6 +6,7 @@ update readme
 
 ##################################################################
 > Must:
+preinstall
 Bootstrap
 Maintenance
 

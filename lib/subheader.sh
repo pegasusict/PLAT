@@ -1,11 +1,11 @@
 #!/bin/bash
 ################################################################################
 # Pegasus' Linux Administration Tools	#						PLAT subheader #
-# (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
+# (C)2017-2024 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
 # License: MIT							#	Please keep my name in the credits #
 ################################################################################
-# Version: 0.2.41-ALPHA
-# Build: 20180808
+# Version: 0.3.0-ALPHA
+# Build: 20240126
 
 # enable bash strict mode
 set -euo pipefail; IFS=$'\n\t'
@@ -195,6 +195,27 @@ dbg_line() {
 	:
 }
 
+# fun: create_log_file
+# txt: Creates the log file
+# use: log_file [LOG_DIR]
+# api: logging_internal
+create_log_file() {
+    if [[ ! -v LOG_DIR ]]
+    then
+        if [[ ! -v $1 ]]
+        then
+            declare -gr LOG_DIR="$1"
+        else
+            declare -gr LOG_DIR="${SCRIPT_DIR}/LOGS/"
+        fi
+    fi
+    if [[ ! -d "$LOG_DIR" ]]
+	then
+	    mkdir -p "$LOG__DIR"
+	fi
+	declare -gr LOG_FILE="$LOG_DIR/${SCRIPT}_$START_TIME.log"
+	declare -gr LOG_FILE_CREATED=true
+}
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # fun: bash_check
@@ -234,7 +255,7 @@ dbg_check() {
 		set -e # -o errexit	# Exit on most errors (see the manual)
 		set -E # -o errtrace	# Make sure any error trap is inherited
 		set -o pipefail	# Use last non-zero exit code in a pipeline
-		#set -u # -o nounset	# Disallow expansion of unset variables
+		set -u # -o nounset	# Disallow expansion of unset variables
 		declare -g DEBUG_PAUSE	;	DEBUG_PAUSE=0
 	fi
 }
@@ -289,7 +310,6 @@ dbg_restore() {
 go_home(){
 	info_line "go_home: Where are we being called from?"
 	declare -g CURRENT_DIR=$(pwd)
-	#CURRENT_DIR+="/"
 	if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]
 	then
 		info_line "go_home: We're being called outside our basedir, going home to \"$SCRIPT_DIR\"..."
