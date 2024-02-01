@@ -4,8 +4,8 @@
 # (C)2017-2024 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
 # License: MIT							#	Please keep my name in the credits #
 ################################################################################
-# Version: 0.3.0-ALPHA
-# Build: 20240126
+# Ver 0.3.2-ALPHA
+# Build 20240130
 
 # enable bash strict mode
 set -euo pipefail; IFS=$'\n\t'
@@ -14,6 +14,8 @@ unset CDPATH				# prevent mishaps using cd with relative paths
 declare -gr COMMAND="$0"	# Making the command that called this script portable
 declare -gr SCRIPT_FULL="${COMMAND##*/}"	# Making Commandline "portable"
 declare -agr ARGS=$@		# Making ARGS portable
+declare -g LOG_FILE_CREATED	;	LOG_FILE_CREATED=false
+
 
 # mod: PLAT::subheader
 # txt: subheader to all major scripts in the suite
@@ -50,13 +52,27 @@ preinit() {
 	declare -gr SYS_DOC_DIR="/usr/share/doc/$BASE"
 	##################################################################
 	declare -g SCREEN_WIDTH	;	SCREEN_WIDTH=80
+	##################################################################
+	declare -g INI_PREFIX="INI"
+	declare -g INI_PATH="${SCRIPT_DIR}/INI/${INI_FILE}"
+
+	dbg_restore
+}
+
+# fun: set_version
+# txt: declares global constants with script version information.
+# use: set_version
+# api: internal
+set_version() {
+	dbg_pause
+   	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
+	declare -gr SHORT_VER="$VER_MAJOR.$VER_MINOR.$VER_PATCH-$VER_STATE"
+	declare -gr VER="Ver$SHORT_VER build $BUILD"
 	dbg_restore
 }
 
 ### LOGGING FUNCTIONS
-get_timestamp() {
-	echo $(date +"%Y-%m-%d_%H.%M.%S.%3N")
-}
+get_timestamp() { $(date +"%Y-%m-%d_%H.%M.%S.%3N") }
 
 # fun: log_line IMPORTANCE MESSAGE
 # txt: Creates a nice logline and decides what to print on screen and what to
@@ -110,7 +126,7 @@ exeqt() {
 # txt: Checks whether the log file has been created yet and whether the log
 #      buffer exists. The log entry will be added to the logfile if exist,
 #      otherwise it will be added to the buffer which will be created if needed.
-# use: log_line IMPORTANCE LOG_ENTRY
+# use: to_log LOG_ENTRY
 # api: logging_internal
 to_log() {
 	local _LOG_ENTRY	;	_LOG_ENTRY="$1"
@@ -192,7 +208,10 @@ info_line() {
 # use: dbg_line <var> MESSAGE
 # api: logging
 dbg_line() {
+    deg_pause
+    local _MESSAGE=$1
 	:
+	dbg_resume
 }
 
 # fun: create_log_file
@@ -211,7 +230,7 @@ create_log_file() {
     fi
     if [[ ! -d "$LOG_DIR" ]]
 	then
-	    mkdir -p "$LOG__DIR"
+	    mkdir -p "$LOG_DIR"
 	fi
 	declare -gr LOG_FILE="$LOG_DIR/${SCRIPT}_$START_TIME.log"
 	declare -gr LOG_FILE_CREATED=true
@@ -347,7 +366,7 @@ import() {
 			break
 		fi
 	done
-	if [[ "$SUCCESS" = false ]]
+	if [[ "$SUCCESS" != true ]]
 	then
 		if [[ "$_REQUIRED" = true ]]
 		then
@@ -364,3 +383,6 @@ su_check
 dbg_check
 bash_check
 preinit
+
+import "$LIB" "$LOCAL_LIB_DIR" true
+create_log_file "${SCRIPT_DIR}/LOGS"

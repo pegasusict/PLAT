@@ -16,7 +16,7 @@ START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 # Making sure this script is run by bash to prevent mishaps
 if [ "$(ps -p "$$" -o comm=)" != "bash" ]
 then
-	bash "$COMMAND" "$ARGS"
+	bash "$0"
 	exit "$?"
 fi
 # Making sure this script is run by bash 4+
@@ -34,7 +34,7 @@ if [[ $EUID -ne 0 ]]
 then
 	echo "This script must be run as root / with sudo"
 	echo "restarting script with sudo..."
-	sudo bash "$COMMAND" "$ARGS"
+	sudo bash sudo "$0"
 	exit "$?"
 fi
 echo "$START_TIME ## Starting Update Process #######################"

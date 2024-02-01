@@ -1,8 +1,7 @@
 #!/bin/bash
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 DEBUG=true
-declare -g VERBOSITY=2
-declare -g LOG_FILE_CREATED	;	LOG_FILE_CREATED=false
+declare -gr VERBOSITY=5
 ############################################################################
 # Pegasus' Linux Administration Tools #							 Bootstrap #
 # (C)2017-2024 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
@@ -29,49 +28,27 @@ init() {
 	declare -gir VER_MINOR=5
 	declare -gir VER_PATCH=0
 	declare -gr VER_STATE="ALPHA"
-	declare -gir BUILD=20240126
+	declare -gir BUILD=20240130
 	###
-	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
-	declare -gr SHORT_VER="$VER_MAJOR.$VER_MINOR.$VER_PATCH-$VER_STATE"
-	declare -gr VER="Ver$SHORT_VER build $BUILD"
+	set_version
 	###
-	dbg_restore
-}
-
-# fun: prep
-# txt: prep initializes default settings, imports the PBFL index and makes
-#      other preparations needed by the script
-# use: prep
-# api: prerun
-prep() {
-	#dbg_pause
 	declare -Ag SYSTEM_ROLE; SYSTEM_ROLE=(
-		[BASIC]=false
-		[WS]=false
-		[POSEIDON]=fasle
-		[SERVER]=false
-		[LXCHOST]=false
-		[MAINSERVER]=false
-		[CONTAINER]=false
-		[NAS]=false
-		[WEB]=false
-		[PXE]=false
-		[X11]=false
-		[HONEY]=false
-		[ROUTER]=false
-		[FIREWALL]=false
+		['BASIC']=false;    ['WS']=false;       ['ZEUS']=fasle
+		['SERVER']=false;   ['LXCHOST']=false;	['BACKUPSERVER']=false
+		['CONTAINER']=false
+		['NAS']=false;      ['WEB']=false;      ['PXE']=false
+		['X11']=false;		['HONEY']=false;	['ROUTER']=false
+		['FIREWALL']=false
 	)
-	import "$LIB" "$LOCAL_LIB_DIR" true
-	import "$FUNC_FILE" "${SCRIPT_DIR}/lib/" true
-	create_log_file "${SCRIPT_DIR}/LOGS"
-	header
-	declare -gr INI_PREFIX="INI"
-	declare -gr INI_PATH="${SCRIPT_DIR}/INI/${INI_FILE}"
-	read_ini "$INI_PATH"
+    declare -g CONTAINER_ROLE_CHOSEN=false
 
-	merge_ini_vals SYSTEM_ROLE
+
+
+    import "$FUNC_FILE" "${SCRIPT_DIR}/lib/" true
+	header
+	read_ini "$INI_PATH"
 	get_args
-	#dbg_restore
+	dbg_restore
 }
 
 # fun: main
@@ -82,46 +59,39 @@ main() {
 	# check whether SYSTEM_ROLE_container has been checked and if yes,
 	#+ nas,web,ws,pxe,basic or router have been checked
 	create_dir "$SYS_BIN_DIR"
-	if [[ ${SYSTEM_ROLE[CONTAINER]} == true ]]
-	then
-		dbg_line "SYSTEM_ROLE CONTAINER was chosen, see if there's a containerrole as well"
-		declare -g CONTAINER_ROLE_CHOSEN=false
-		for ROLE in BASIC WS SERVER NAS PXE ROUTER WEB X11 FIREWALL
-		do
-			if [[ ${SYSTEM_ROLE["$ROLE"]} == true ]]
-			then
+	if [[ ${SYSTEM_ROLE[CONTAINER]} == true ]]; then
+		dbg_line "SYSTEM_ROLE CONTAINER was chosen, checking for containerrole"
+		for ROLE in BASIC WS SERVER NAS PXE ROUTER WEB X11 FIREWALL; do
+			if [[ ${SYSTEM_ROLE["$ROLE"]} == true ]]; then
 				CONTAINER_ROLE_CHOSEN=true
 			fi
 		done
-		if [[ $CONTAINER_ROLE_CHOSEN == true ]]
-		then
-			dbg_line "CONTAINER ROLE(s) was/were chosen, we're good"
+		if [[ $CONTAINER_ROLE_CHOSEN == true ]]; then
+			dbg_line "CONTAINER ROLE(s) chosen, we're good"
 		else
 			crit_line "NO CONTAINER ROLE was chosen"
 			exit 1
 		fi
 	fi
 	############################################################################
-	if [[ ${SYSTEM_ROLE[MAINSERVER]} == true ]]
-	then
+	if [[ ${SYSTEM_ROLE[BACKUPSERVER]} == true ]]; then
 		info_line "Injecting interfaces file into network config"
-		cat templates/lxchost_interfaces.txt > /etc/network/interfaces ### TODO(pegasusict): convert to sed insert/replace
+		cat templates/lxchost_interfaces.txt > /etc/network/interfaces
+		### TODO(pegasusict): convert to sed insert/replace
 	fi
-	############################################################################
 	############################################################################
 	info_line "Copying Ubuntu sources and some extras"
 	exeqt "cp apt/base.list /etc/apt/sources.list.d/"
+	### TODO(pegasusict) turn into dynamic insert based on release info
 	############################################################################
-	info_line "Installing extra PPA's"
-	for ROLE in ${SYSTEM_ROLE[@]}
-	do
-		if [[ "$ROLE"==true ]]
-		then
-			for PPA_KEY in $INI_PPA_KEYS
-			do
+	info_line "Installing extra PPAs"
+	for ROLE in ${SYSTEM_ROLE[@]}; do
+		if [[ ${ROLE}==true ]]; then
+			for PPA_KEY in $INI_PPA_KEYS["$ROLE"]; do
 				info_line "Adding $PPA_KEY PPA key"
-				info_line "add_ppa $INI_PPA_KEYS[PPA_KEY][0] $INI_PPA_KEYS[PPA_KEY][1] $INI_PPA_KEYS[PPA_KEY][2]"
-				add_ppa_key "$INI_PPA_KEYS[PPA_KEY][0]" "$INI_PPA_KEYS[PPA_KEY][1]" "$INI_PPA_KEYS[PPA_KEY][2]"
+				local _LINE = "add_ppa " + ${INI_PPA_KEYS[$PPA_KEY][0]} + " " + ${INI_PPA_KEYS[PPA_KEY][1]} + " " + ${INI_PPA_KEYS[PPA_KEY][2]}
+				info_line $_LINE
+				add_ppa_key ${INI_PPA_KEYS[PPA_KEY][0]} ${INI_PPA_KEYS[PPA_KEY][1]} ${INI_PPA_KEYS[PPA_KEY][2]}
 			done
 		fi
 	done
@@ -133,61 +103,15 @@ main() {
 	info_line "Installing updates"
 	apt-get --allow-unauthenticated upgrade -qy 2>&1 | dbg_line
 	############################################################################
-	############################################################################
 	info_line "Installing extra packages"
-	for ROLE in ${SYSTEM_ROLE[@]}
-	do
-		if [[ "$ROLE"==true ]]
-		then
+	for ROLE in ${SYSTEM_ROLE[@]}; do
+		if [[ "$ROLE"==true ]]; then
 		info_line "Installing packages for SYSTEM_ROLE $ROLE"
-			for PKG in $INI_PACKAGES
-			do
-				i
+			for PKG in $INI_PACKAGES; do
+				:
 			done
 		fi
 	done
-	### TODO(pegasusict): Rewrite to incorporate INI
-	if [[ ${SYSTEM_ROLE[BASIC]} == true ]]
-	then
-		info_line "Installing packages for SYSTEM_ROLE BASIC"
-		apt-inst "${PACKAGES[SYSTEMROLE]}"
-	fi
-	if [[ ${SYSTEM_ROLE[WS]} == true ]]
-	then
-		info_line "Installing packages for SYSTEM_ROLE POSEIDON"
-		apt-inst mc
-	fi
-	if [[ ${SYSTEM_ROLE[SERVER]} == true ]]		;	then apt-inst ssh-server screen webmin; fi
-	if [[ ${SYSTEM_ROLE[LXC_HOST]} == true ]]	;	then apt-inst python3-crontab lxc lxcfs lxd lxd-tools bridge-utils xfsutils-linux criu apt-cacher-ng; fi
-
-	if [[ ${SYSTEM_ROLE[POSEIDON]} == true ]]
-	then
-		info_line "Installing packages for SYSTEM_ROLE POSEIDON"
-		apt-inst audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full gparted picard
-	fi
-	if [[ ${SYSTEM_ROLE[CONTAINER]} == true ]]
-	then
-		info_line "Installing packages for SYSTEM_ROLE POSEIDON"
-		apt-inst mc
-	fi
-
-	if [[ ${SYSTEM_ROLE[WEB]} == true ]]
-	then
-		info_line "Installing packages for SYSTEM_ROLE WEB"
-		apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin
-	fi
-	if [[ ${SYSTEM_ROLE[NAS]} == true ]]
-	then
-		info_line "Installing packages for SYSTEM_ROLE NAS"
-		apt-inst samba nfsd proftpd
-	fi
-	if [[ ${SYSTEM_ROLE[PXE]} == true ]]
-	then
-		info_line "Installing packages for SYSTEM_ROLE PXE"
-		apt-inst atftpd ; fi
-
-
-	if [[ ${SYSTEM_ROLE[ROUTER]} == true ]]		;	then apt-inst bridge-utils ufw; fi
 	############################################################################
 	info_line "Cleaning up obsolete packages"
 	apt-get -qqy autoremove 2>&1 | dbg_line
@@ -207,11 +131,11 @@ main() {
 	###
 	dbg_line "Purging TMP dirs of files unchanged for at least $TMP_AGE days"
 	CRUNCHIFY_TMP_DIRS="/tmp /var/tmp"	# List of directories to search
-	find $CRUNCHIFY_TMP_DIRS -depth -type f -a -ctime $TMP_AGE -print -delete 2>&1 dbg_line
-	find $CRUNCHIFY_TMP_DIRS -depth -type l -a -ctime $TMP_AGE -print -delete 2>&1 dbg_line
-	find $CRUNCHIFY_TMP_DIRS -depth -type f -a -empty -print -delete 2>&1 dbg_line
-	find $CRUNCHIFY_TMP_DIRS -depth -type s -a -ctime $TMP_AGE -a -size 0 -print -delete 2>&1 dbg_line
-	find $CRUNCHIFY_TMP_DIRS -depth -mindepth 1 -type d -a -empty -a ! -name 'lost+found' -print -delete 2>&1 dbg_line
+	find $CRUNCHIFY_TMP_DIRS -depth -type f -a -ctime $TMP_AGE -print -delete 2>&1 | dbg_line
+	find $CRUNCHIFY_TMP_DIRS -depth -type l -a -ctime $TMP_AGE -print -delete 2>&1 | dbg_line
+	find $CRUNCHIFY_TMP_DIRS -depth -type f -a -empty -print -delete 2>&1 | dbg_line
+	find $CRUNCHIFY_TMP_DIRS -depth -type s -a -ctime $TMP_AGE -a -size 0 -print -delete 2>&1 | dbg_line
+	find $CRUNCHIFY_TMP_DIRS -depth -mindepth 1 -type d -a -empty -a ! -name 'lost+found' -print -delete 2>&1 | dbg_line
 	############################################################################
 
 	### TODO(pegasusict): download & install software from INI based on SYSTEM_ROLE
@@ -220,7 +144,7 @@ main() {
 	############################################################################
 	info_line "Building maintenance script"
 	build_maintenance_script "$MAINTENANCE_SCRIPT"
-	if [[ ${SYSTEM_ROLE[LXC_HOST]} == true ]]
+	if [[ ${SYSTEM_ROLE['LXC_HOST']} == true ]]
 	then
 		build_maintenance_script "$CONTAINER_SCRIPT"
 	fi
@@ -232,7 +156,7 @@ main() {
 		dbg_line "This is a container; NOT adding $MAINTENANCE_SCRIPT to a sheduler"
 	else
 		dbg_line "adding $MAINTENANCE_SCRIPT to sheduler"
-		if [[ ${SYSTEM_ROLE[MAIN_SERVER]} == true ]]
+		if [[ ${SYSTEM_ROLE['BACKUP_SERVER']} == true ]]
 		then
 			CRON_FILE="/etc/crontab"
 			LINE_TO_ADD="\n0 6 * * 0 root bash $SYS_BIN_DIR$MAINTENANCE_SCRIPT #PLAT maintenance"

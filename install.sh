@@ -40,7 +40,7 @@ prep() {
 	import "PBFL/default.inc.bash"
 	create_dir "$LOG_DIR"
 	header
-	read_ini ${SCRIPT_DIR}${INI_FILE}
+	read_ini "${SCRIPT_DIR}${INI_FILE}"
 	get_args
 }
 
@@ -48,11 +48,12 @@ prep() {
 # txt: main install thread
 # use: main
 # api: PLAT::install
-main(){
-	# askuser install complete suite or just some bits?
+main() {
+	# ask user install complete suite or just some bits?
 	# default install: PLAT & PBFL
 	# optional: WordPress, Container, apt_cacher, Internet_Watchdog,
 	###TODO(pegasusict): Continue developing this script
+	:
 }
 
 ##### BOILERPLATE #####

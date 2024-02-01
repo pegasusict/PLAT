@@ -117,7 +117,7 @@ build_maintenance_script() { ### TODO(pegasusict): convert to template
 		if [[ $_SCRIPT == $MAINTENANCE_SCRIPT ]] ; then
 			if [[ $SYSTEMROLE_LXCHOST == true ]] ; then
 				sed -e 1d "${TPL_DIR}${MAINT_PRFX}"body-lxchost0.sh >> "$_SCRIPT"
-				if [[ $SYSTEMROLE_MAINSERVER == true ]] ; then
+				if [[ $SYSTEMROLE_BACKUPSERVER == true ]] ; then
 					sed -e 1d "${TPL_DIR}${MAINT_PRFX}"backup2tape.sh >> "$_SCRIPT"
 				fi
 				sed -e 1d "${TPL_DIR}${MAINT_PRFX}"body-lxchost1.sh >> "$_SCRIPT"
@@ -154,14 +154,14 @@ check_role() {
 	local _ROLE=$1
 	case "$_ROLE" in
 		"ws"			)	SYSTEMROLE_WS=true			;	dbg_line "role=ws"			;;
-		"poseidon"		)	SYSTEMROLE_WS=true			;
+		"zeus"		)	SYSTEMROLE_WS=true			;
 							#SYSTEMROLE_SERVER=true		;
 							#SYSTEMROLE_LXCHOST=true		;
-							SYSTEMROLE_POSEIDON=true	;
+							SYSTEMROLE_ZEUS=true	;
 							#SYSTEMROLE_NAS=true			;
-							dbg_line "role=poseidon"	;;
+							dbg_line "role=zeus"	;;
 		"mainserver"	)	SYSTEMROLE_SERVER=true		;
-							SYSTEMROLE_MAINSERVER=true	;
+							SYSTEMROLE_BACKUPSERVER=true	;
 							SYSTEMROLE_LXCHOST=true		;	dbg_line "role=mainserver"	;;
 		"container"		)	SYSTEMROLE_SERVER=true		;
 							SYSTEMROLE_CONTAINER=true	;	dbg_line "role=container"	;;
@@ -183,7 +183,7 @@ usage() {
 		OPTIONS
 
 		   -r or --role tells the script what kind of system we are dealing with.
-		      Valid options: ws, poseidon, mainserver, container << REQUIRED >>
+		      Valid options: ws, zeus, mainserver, container << REQUIRED >>
 		   -c or --containertype tells the script what kind of container we are working on.
 		      Valid options are: basic, nas, web, x11, pxe, router << REQUIRED if -r=container >>
 		   -v or --verbosity defines the amount of chatter. 0=CRITICAL, 1=WARNING, 2=INFO, 3=VERBOSE, 4=DEBUG. default=2

@@ -41,7 +41,7 @@ Constructive criticism and suggestions are very welcome!
 		 OPTIONS
 
 		   -r or --role tells the script what kind of system we are dealing with.
-			  Valid options: ws, poseidon, mainserver, container << REQUIRED >>
+			  Valid options: ws, zeus, mainserver, container << REQUIRED >>
 		   -c or --containertype tells the script what kind of container we are working on.
 			  Valid options are: basic, nas, web, x11, pxe << REQUIRED if -r=container >>
 		   -v or --verbosity defines the amount of chatter. 0=CRITICAL, 1=WARNING, 2=INFO, 3=VERBOSE,
@@ -64,7 +64,7 @@ Constructive criticism and suggestions are very welcome!
 		ws:		Adds maintenance script to anacrontab weekly
 				Installs synaptic, tilda, audacious, samba, wine-stable, playonlinux, winetricks
 
-		poseidon:
+		zeus:
 				Adds maintenance script to anacrontab weekly
 				Installs staruml, gitkraken, picard, audacity, calibre, fastboot, adb, fslint,
 				gadmin-proftpd, geany, gprename, lame, masscan, forensics-all, forensics-extra,

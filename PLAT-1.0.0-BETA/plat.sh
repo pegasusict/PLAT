@@ -86,7 +86,7 @@ init() {
 							[HONEY]=false
 							[ROUTER]=false
 							[FIREWALL]=false
-							[POSEIDON)=false
+							[ZEUS)=false
 							[LXC_HOST]=false
 							[MAIN_SERVER]=false
 							[CONTAINER]=false
@@ -204,7 +204,7 @@ EOT
 	then
 		if [[ $SYSTEM_ROLE[LXCHOST == true ]] ; then
 			sed -e 1d maintenance/body-lxchost0.sh >> "$_SCRIPT"
-			if [[ $SYSTEM_ROLE[MAINSERVER == true ]] ; then sed -e 1d maintenance/backup2tape.sh >> "$_SCRIPT" ; fi
+			if [[ $SYSTEM_ROLE[BACKUPSERVER == true ]] ; then sed -e 1d maintenance/backup2tape.sh >> "$_SCRIPT" ; fi
 			sed -e 1d maintenance/body-lxchost1.sh >> "$_SCRIPT"
 		fi
 	fi; fi
@@ -235,15 +235,15 @@ check_role() {
 	case "$_ROLE" in
 		"ws"			)	SYSTEM_ROLE[WS=true
 							verb_line "role=ws";;
-		"poseidon" 		)	SYSTEM_ROLE[WS=true
+		"zeus" 		)	SYSTEM_ROLE[WS=true
 							SYSTEM_ROLE[SERVER=true
 							SYSTEM_ROLE[LXCHOST=true
-							SYSTEM_ROLE[POSEIDON=true
+							SYSTEM_ROLE[ZEUS=true
 							SYSTEM_ROLE[NAS=true
-							verb_line "role=poseidon";;
+							verb_line "role=zeus";;
 		"mainserver"	)	verb_line "role=mainserver"
 							SYSTEM_ROLE[SERVER=true
-							SYSTEM_ROLE[MAINSERVER=true
+							SYSTEM_ROLE[BACKUPSERVER=true
 							SYSTEM_ROLE[LXCHOST=true;;
 		"container"		)	verb_line "role=container"
 							SYSTEM_ROLE[SERVER=true
@@ -384,7 +384,7 @@ usage() {
 		 OPTIONS
 
 		   -r or --role tells the script what kind of system we are dealing with.
-			  Valid options: ws, poseidon, mainserver, container << REQUIRED >>
+			  Valid options: ws, zeus, mainserver, container << REQUIRED >>
 		   -c or --containertype tells the script what kind of container we are working on.
 			  Valid options are: basic, nas, web, x11, pxe, router << REQUIRED if -r=container >>
 		   -v or --verbosity defines the amount of chatter. 0=CRITICAL, 1=WARNING, 2=INFO, 3=VERBOSE, 4=DEBUG. default=2
@@ -430,7 +430,7 @@ info_line <<EOT
 
 EOT
 ################################################################################
-if [[ $SYSTEM_ROLE[MAINSERVER] == true ]]
+if [[ $SYSTEM_ROLE[BACKUPSERVER] == true ]]
 then
 	cr_log_line "Injecting interfaces file"
 	cat lxchost_interfaces.txt > /etc/network/interfaces
@@ -461,7 +461,7 @@ cr_log_line "Installing updates"; apt-get --allow-unauthenticated upgrade -qy 2>
 ######
 cr_log_line "Installing extra packages";  apt-inst mc trash-cli snapd git
 if [[ $SYSTEM_ROLE[WS == true ]] ; 		then apt-inst synaptic tilda audacious samba wine-stable playonlinux winetricks; fi
-if [[ $SYSTEM_ROLE[POSEIDON == true ]] ; then apt-inst picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted ; fi
+if [[ $SYSTEM_ROLE[ZEUS == true ]] ; then apt-inst picard audacity calibre fastboot adb fslint gadmin-proftpd geany* gprename lame masscan forensics-all forensics-extra forensics-extra-gui forensics-full chromium-browser gparted ; fi
 if [[ $SYSTEM_ROLE[WEB == true ]] ;		then apt-inst apache2 phpmyadmin mysql-server mytop proftpd webmin ; fi
 if [[ $SYSTEM_ROLE[NAS == true ]] ;		then apt-inst samba nfsd proftpd ; fi
 if [[ $SYSTEM_ROLE[PXE == true ]] ;		then apt-inst atftpd ; fi
@@ -475,7 +475,7 @@ cr_sec_line "Installing TeamViewer"
 download "https://download.teamviewer.com/download/teamviewer_i386.deb"
 install teamviewer_i386.deb
 apt-get install -fy 2>&1 | dbg_line
-if [[ $SYSTEM_ROLE[POSEIDON == true ]]
+if [[ $SYSTEM_ROLE[ZEUS == true ]]
 then
   cr_sec_line "Installing StarUML"
   download "http://nl.archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt11/libgcrypt11_1.5.3-2ubuntu4.5_amd64.deb"
@@ -495,7 +495,7 @@ if [[ $SYSTEM_ROLE[LXCHOST == true ]] ; then build_maintenance_script "$CONTAINE
 if [[ $SYSTEM_ROLE[CONTAINER == true ]] ; then cr_sec_line "NOT adding $MAINTENANCE_SCRIPT to sheduler"
 else
 	cr_sec_line "adding $MAINTENANCE_SCRIPT to sheduler"
-	if [[ $SYSTEM_ROLE[MAINSERVER == true ]]
+	if [[ $SYSTEM_ROLE[BACKUPSERVER == true ]]
 		then CRON_FILE="/etc/crontab" ; LINE_TO_ADD="\n0 * * 4 0 bash $MAINTENANCE_SCRIPT" ; dbg_line "using cron"
 		else CRON_FILE="/etc/anacrontab" ; LINE_TO_ADD="\n@weekly\t10\tplat_maintenance\tbash $MAINTENANCE_SCRIPT" ; dbg_line "using anacron"
 	fi
