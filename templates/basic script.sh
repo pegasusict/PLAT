@@ -13,7 +13,7 @@ START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 # "<<date>>" with todays date
 # <<script title>> with the title of the script and adjust the number of tabs if needed for proper alignment
 
-source ./lib/subheader.sh
+source ./../lib/subheader.sh
 
 # mod: bootstrap
 # txt: This script is meant to run as bootstrap on a freshly installed system
