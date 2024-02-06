@@ -7,7 +7,7 @@ declare -gr VERBOSITY=5
 # (C)2017-2024 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
 # License: MIT						  # Please keep my name in the credits #
 ############################################################################
-source ./lib/subheader.sh
+source ../lib/subheader.sh
 echo "$START_TIME ## Starting Bootstrap Process #######################"
 
 # mod: bootstrap
@@ -38,9 +38,7 @@ init() {
 		['X11']=false, ['HONEY']=false, ['ROUTER']=false, ['FIREWALL']=false )
     declare -g CONTAINER_ROLE_CHOSEN=false
 
-
-
-    import "$FUNC_FILE" "${SCRIPT_DIR}/lib/" true
+    import "$FUNC_FILE" "${BASE_DIR}/lib/" true
 	header
 	read_ini "$INI_PATH"
 	get_args
@@ -77,16 +75,15 @@ main() {
 	fi
 	############################################################################
 	info_line "Copying Ubuntu sources and some extras"
-	exeqt "cp apt/base.list /etc/apt/sources.list.d/"
+	exeqt "cp ./base_files/apt/base.list /etc/apt/sources.list.d/"
 	### TODO(pegasusict) turn into dynamic insert based on release info
 	############################################################################
 	info_line "Installing extra PPAs"
-	for ROLE in ${SYSTEM_ROLE[@]}; do
-		if [[ ${ROLE}==true ]]; then
-			for PPA_KEY in $INI_PPA_KEYS["$ROLE"]; do
+	for role in ${SYSTEM_ROLE[@]}; do
+		if [[ ${role}==true ]]; then
+			for PPA_KEY in ${INI_PPA_KEYS["$role"]}; do
 				info_line "Adding $PPA_KEY PPA key"
-				local _LINE = "add_ppa " + ${INI_PPA_KEYS[$PPA_KEY][0]} + " " + ${INI_PPA_KEYS[PPA_KEY][1]} + " " + ${INI_PPA_KEYS[PPA_KEY][2]}
-				info_line $_LINE
+#				info_line {"add_ppa " + ${INI_PPA_KEYS[$PPA_KEY][0]} + " " + ${INI_PPA_KEYS[PPA_KEY][1]} + " " + ${INI_PPA_KEYS[PPA_KEY][2]}}
 				add_ppa_key ${INI_PPA_KEYS[PPA_KEY][0]} ${INI_PPA_KEYS[PPA_KEY][1]} ${INI_PPA_KEYS[PPA_KEY][2]}
 			done
 		fi

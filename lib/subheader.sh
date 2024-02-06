@@ -36,6 +36,7 @@ preinit() {
 	declare -gr SCRIPT="${SCRIPT_FULL%.*}"
 	declare -gr SCRIPT_PATH="$(readlink -fn $COMMAND)"
 	declare -gr SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
+	declare -gr BASE_DIR="$(dirname "$SCRIPT_PATH"../)"
 	###
 	declare -gr MAINTENANCE_SCRIPT="maintenance.sh"
 	declare -gr MAINTENANCE_SCRIPT_TITLE="Maintenance Script"

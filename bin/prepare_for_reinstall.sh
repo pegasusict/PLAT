@@ -8,7 +8,7 @@
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 declare -g VERBOSITY=5
 
-source ./lib/subheader.sh
+source ../lib/subheader.sh
 echo "$START_TIME ## Starting PLAT Pre-Install Process #######################"
 
 # mod: PLAT::Preinstall

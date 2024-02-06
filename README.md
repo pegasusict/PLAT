@@ -51,8 +51,13 @@ This script also generates a maintenance & backup script tailor made to the
  system's characteristics and roles it will preform.
 
 More information can be found under the news messages.
-<<updated: 22nd of march 2018>>
+<<updated: 6th of februari 2024>>
 ---
+# ROADMAP
+[ ] add ubuntu/debiand detection
+[ ] add version detection
+[ ] add auto-update
+
 # NEWS
 
  ## 20180313 UPDATE: The BASH version is now V1.0.0-beta
