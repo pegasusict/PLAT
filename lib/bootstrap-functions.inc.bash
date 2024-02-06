@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################################################################
 # Pegasus' Linux Administration Tools	#		   Bootstrap Functions Library #
-# (C)2017-2018 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
+# (C)2017-2024 Mattijs Snepvangers		#				 pegasus.ict@gmail.com #
 # License: MIT							#	Please keep my name in the credits #
 ################################################################################
 
@@ -11,10 +11,10 @@
 # MAINTAINER="Mattijs Snepvangers"					  #
 # MAINTAINER_EMAIL="pegasus.ict@gmail.com"			  #
 # VER_MAJOR=0										  #
-# VER_MINOR=1										  #
-# VER_PATCH=46										  #
+# VER_MINOR=2										  #
+# VER_PATCH=0 										  #
 # VER_STATE="ALPHA"									  #
-# VER_BUILD=20180807								  #
+# VER_BUILD=20240204								  #
 # LICENSE="MIT"										  #
 #######################################################
 
@@ -29,8 +29,7 @@
 get_args() {
 	getopt_test
 	local _OPTIONS		;	_OPTIONS="r:c:g:l:t:"
-	local _LONG_OPTIONS
-	_LONG_OPTIONS="role:,containertype:garbageage:logage:tmpage:"
+	local _LONG_OPTIONS ;	_LONG_OPTIONS="role:,containertype:garbageage:logage:tmpage:"
 	PARSED=$(arg_parse "$_OPTIONS" "$_LONG_OPTIONS")
 	eval set -- "$PARSED"
 	while true; do
@@ -154,15 +153,11 @@ check_role() {
 	local _ROLE=$1
 	case "$_ROLE" in
 		"ws"			)	SYSTEMROLE_WS=true			;	dbg_line "role=ws"			;;
-		"zeus"		)	SYSTEMROLE_WS=true			;
-							#SYSTEMROLE_SERVER=true		;
-							#SYSTEMROLE_LXCHOST=true		;
+		"zeus"		    )	SYSTEMROLE_WS=true			;
 							SYSTEMROLE_ZEUS=true	;
-							#SYSTEMROLE_NAS=true			;
 							dbg_line "role=zeus"	;;
-		"mainserver"	)	SYSTEMROLE_SERVER=true		;
-							SYSTEMROLE_BACKUPSERVER=true	;
-							SYSTEMROLE_LXCHOST=true		;	dbg_line "role=mainserver"	;;
+		"backupserver"	)	SYSTEMROLE_SERVER=true		;	SYSTEMROLE_BACKUPSERVER=true	;
+							SYSTEMROLE_LXCHOST=true		;	dbg_line "role=backupserver"	;;
 		"container"		)	SYSTEMROLE_SERVER=true		;
 							SYSTEMROLE_CONTAINER=true	;	dbg_line "role=container"	;;
 		*				)	critline "CRITICAL: Unknown systemrole $ROLE, exiting..."	;	exit 1;;
@@ -183,7 +178,7 @@ usage() {
 		OPTIONS
 
 		   -r or --role tells the script what kind of system we are dealing with.
-		      Valid options: ws, zeus, mainserver, container << REQUIRED >>
+		      Valid options: ws, zeus, backupserver, container << REQUIRED >>
 		   -c or --containertype tells the script what kind of container we are working on.
 		      Valid options are: basic, nas, web, x11, pxe, router << REQUIRED if -r=container >>
 		   -v or --verbosity defines the amount of chatter. 0=CRITICAL, 1=WARNING, 2=INFO, 3=VERBOSE, 4=DEBUG. default=2

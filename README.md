@@ -82,7 +82,7 @@ More information can be found under the news messages.
          OPTIONS
 
            -r or --role tells the script what kind of system we are dealing with.
-              Valid options: ws, zeus, mainserver, container << REQUIRED >>
+              Valid options: ws, zeus, backupserver, container << REQUIRED >>
            -c or --containertype tells the script what kind of container we are working on.
               Valid options are: basic, nas, web, x11, pxe << REQUIRED if -r=container >>
            -v or --verbosity defines the amount of chatter. 0=CRITICAL, 1=WARNING, 2=INFO, 3=VERBOSE,
@@ -135,5 +135,5 @@ More information can be found under the news messages.
             remove 7+ day old trash files, remove temp-files which haven't been accessed in the
             past 2+ days, remove 30+ days old logs
     Poseidon/lxdhost: also handles maintenance of containers, first creates snapshots, then maintenance
-    Mainserver: also handles maintenance of containers, first creates snapshots, then tape backup, then
+    Backupserver: also handles maintenance of containers, first creates snapshots, then tape backup, then
             maintenance

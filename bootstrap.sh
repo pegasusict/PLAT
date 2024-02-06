@@ -7,7 +7,7 @@ declare -gr VERBOSITY=5
 # (C)2017-2024 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
 # License: MIT						  # Please keep my name in the credits #
 ############################################################################
-source lib/subheader.sh
+source ./lib/subheader.sh
 echo "$START_TIME ## Starting Bootstrap Process #######################"
 
 # mod: bootstrap
@@ -32,14 +32,10 @@ init() {
 	###
 	set_version
 	###
-	declare -Ag SYSTEM_ROLE; SYSTEM_ROLE=(
-		['BASIC']=false;    ['WS']=false;       ['ZEUS']=fasle
-		['SERVER']=false;   ['LXCHOST']=false;	['BACKUPSERVER']=false
-		['CONTAINER']=false
-		['NAS']=false;      ['WEB']=false;      ['PXE']=false
-		['X11']=false;		['HONEY']=false;	['ROUTER']=false
-		['FIREWALL']=false
-	)
+	declare -Ag SYSTEM_ROLE
+	SYSTEM_ROLE=( ['BASIC']=false, ['WS']=false, ['ZEUS']=false, ['SERVER']=false, ['LXCHOST']=false,\
+		['BACKUPSERVER']=false, ['CONTAINER']=false, ['NAS']=false, ['WEB']=false, ['PXE']=false,\
+		['X11']=false, ['HONEY']=false, ['ROUTER']=false, ['FIREWALL']=false )
     declare -g CONTAINER_ROLE_CHOSEN=false
 
 
