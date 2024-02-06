@@ -7,7 +7,7 @@ declare -gr VERBOSITY=5
 # (C)2017-2024 Mattijs Snepvangers	  #				 pegasus.ict@gmail.com #
 # License: MIT						  # Please keep my name in the credits #
 ############################################################################
-source ../lib/subheader.sh
+source ./../lib/subheader.sh
 echo "$START_TIME ## Starting Bootstrap Process #######################"
 
 # mod: bootstrap
@@ -26,9 +26,9 @@ init() {
 	declare -gr SCRIPT_TITLE="Bootstrap"
 	declare -gir VER_MAJOR=1
 	declare -gir VER_MINOR=5
-	declare -gir VER_PATCH=0
+	declare -gir VER_PATCH=1
 	declare -gr VER_STATE="ALPHA"
-	declare -gir BUILD=20240130
+	declare -gir BUILD=20240206
 	###
 	set_version
 	###

@@ -8,7 +8,7 @@
 START_TIME=$(date +"%Y-%m-%d_%H.%M.%S.%3N")
 declare -g VERBOSITY=5
 
-source ../lib/subheader.sh
+source ./../lib/subheader.sh
 echo "$START_TIME ## Starting PLAT Pre-Install Process #######################"
 
 # mod: PLAT::Preinstall
@@ -22,9 +22,9 @@ init() {
 	declare -gr SCRIPT_TITLE="PLAT Pre-Installer"
 	declare -gr VER_MAJOR=0
 	declare -gr VER_MINOR=0
-	declare -gr VER_PATCH=1
+	declare -gr VER_PATCH=2
 	declare -gr VER_STATE="ALPHA"
-	declare -gr BUILD=20240124
+	declare -gr BUILD=20240206
 	###
 	declare -gr PROGRAM="$PROGRAM_SUITE - $SCRIPT_TITLE"
 	declare -gr SHORT_VER="$VER_MAJOR.$VER_MINOR.$VER_PATCH-$VER_STATE"
