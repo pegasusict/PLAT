@@ -1,0 +1,14 @@
+main:
+  verbosity: 2
+  reboot_time: "23:59"
+
+garbage:
+  tmp_age: 2
+  garbage_age: 7
+  log_age: 30
+
+
+mail:
+  sender: null
+  recipient: null
+  password: null

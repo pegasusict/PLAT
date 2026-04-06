@@ -1,19 +1,17 @@
 ################################################################################
 ##                           OFFICIAL UBUNTU REPOS                            ##
 ################################################################################
-###### Ubuntu Main Repos
-deb http://archive.ubuntu.com/ubuntu/ jammy main restricted universe multiverse
-deb-src http://archive.ubuntu.com/ubuntu/ jammy main restricted universe multiverse
+Types: deb
+URIs: http://nl.archive.ubuntu.com/ubuntu/
+Suites: questing questing-updates questing-backports questing-proposed
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 
-###### Ubuntu Update Repos
-deb http://archive.ubuntu.com/ubuntu/ jammy-security main restricted universe multiverse
-deb-src http://archive.ubuntu.com/ubuntu/ jammy-security main restricted universe multiverse
-deb http://archive.ubuntu.com/ubuntu/ jammy-updates main restricted universe multiverse
-deb-src http://archive.ubuntu.com/ubuntu/ jammy-updates main restricted universe multiverse
-#deb http://archive.ubuntu.com/ubuntu/ jammy-proposed main restricted universe multiverse
-#deb-src http://archive.ubuntu.com/ubuntu/ jammy-proposed main restricted universe multiverse
-deb http://archive.ubuntu.com/ubuntu/ jammy-backports main restricted universe multiverse
-deb-src http://archive.ubuntu.com/ubuntu/ jammy-backports main restricted universe multiverse
+Types: deb
+URIs: http://security.ubuntu.com/ubuntu/
+Suites: questing-security
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 
 ################################################################################
 ##                           3rd Party Binary Repos                           ##

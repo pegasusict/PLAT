@@ -9,4 +9,4 @@ alias ll='ls $LS_OPTIONS -l'
 alias l='ls $LS_OPTIONS -lA'
 
 alias apt="apt-get -qy"
-alias update="apt update && apt dist-upgrade && apt autoremove && apt autoclean"
+alias update="apt update && apt dist-upgrade && apt autoremove && apt autoclean && snap refresh"

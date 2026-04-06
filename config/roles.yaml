@@ -1,0 +1,180 @@
+BASIC:
+  depends: []
+  ppas:
+    - ppa:teamviewer/teamviewer
+    - ppa:getdeb/apps
+    - ppa:webmin/release
+    - ppa:syncthing/syncthing
+  packages:
+    - mc
+    - trash-cli
+    - snapd
+    - git
+    - screen
+    - curl
+    - htop
+    - tmux
+    - teamviewer
+    - webmin
+    - syncthing
+
+WS:
+  depends:
+    - BASIC
+  ppas:
+    - ppa:dropbox/stable
+    - ppa:otto-kesselgulasch/gimp
+    - ppa:gnome3-team/gnome3
+    - ppa:dhor/myway
+    - ppa:bunkus/mkvtoolnix
+    - ppa:ubuntuhandbook1/apps
+    - ppa:wine/wine-builds
+  packages:
+    - firefox
+    - vlc
+    - dropbox
+    - gimp
+    - gnome-tweaks
+    - gparted
+    - lame
+    - playonlinux
+    - samba
+    - synaptic
+    - tilda
+    - winetricks
+    - wine-stable
+
+ZEUS:
+  depends:
+    - WS
+  ppas:
+    - ppa:teamviewer/teamviewer
+    - ppa:getdeb/apps
+    - ppa:webmin/release
+    - ppa:syncthing/syncthing
+  packages:
+    - adb
+    - audacity
+    - calibre
+    - fastboot
+    - fdupes
+    - "forensics*"
+    - "geany*"
+    - gprename
+    - masscan
+    - picard
+    - getdeb-apps
+  snaps:
+    - name: code
+      channel: latest/stable
+      classic: true
+    - name: libation
+    - name: snapd-desktop-integration
+    - name: snap-store
+    - name: ubuntu-mate-welcome
+    - name: video-downloader
+    - name: fslint
+    - name: gpt-desktop
+
+SERVER:
+  depends:
+    - BASIC
+  ppas:
+    - ppa:certbot/certbot
+    - ppa:nginx/stable
+    - ppa:webmin/release
+  packages:
+    - nginx
+    - certbot
+    - openssh-server
+
+LXCHOST:
+  depends:
+    - SERVER
+  ppas:
+    - ppa:ubuntu-lxc/lxd-stable
+  packages:
+    - bridge-utils
+    - lxc
+    - lxcfs
+    - lxd
+    - lxd-tools
+    - xfsprogs
+
+BACKUPSERVER:
+  depends:
+    - SERVER
+  packages:
+    - borgbackup
+    - rsnapshot
+
+CONTAINER:
+  depends:
+    - BASIC
+
+NAS:
+  depends:
+    - CONTAINER
+  packages:
+    - samba
+    - smartmontools
+    - nfs-kernel-server
+    - proftpd
+    - apt-cacher-ng
+
+PXE:
+  depends:
+    - CONTAINER
+  packages:
+    - atftpd
+
+ROUTER:
+  depends:
+    - CONTAINER
+  packages:
+    - bridge-utils
+    - ufw
+    - dnsutils
+    - isc-dhcp-server
+    - iptables-persistent
+    - nginx
+    - certbot
+    - openssh-server
+
+WEB:
+  depends:
+    - CONTAINER
+  ppas:
+    - ppa:certbot/certbot
+    - ppa:nginx/stable
+  packages:
+    - certbot
+    - nginx
+    - apache2
+    - proftpd
+
+DB:
+  depends:
+    - CONTAINER
+  packages:
+    - mariadb-server
+    - mariadb-client
+    - mariadb-common
+    - phpmyadmin
+
+X11:
+  depends:
+    - CONTAINER
+  packages:
+    - xorg
+    - xinit
+    - x11-xserver-utils
+    - x11vnc
+    - xrdp
+    - xubuntu-desktop
+
+HONEY:
+  depends:
+    - CONTAINER
+  packages:
+    - cowrie
